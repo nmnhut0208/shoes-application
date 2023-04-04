@@ -17,7 +17,8 @@ function reducer (state, action) {
             break
         }
         default:
-            throw new Error("Action is not supported")
+            // throw new Error("Action is not supported")
+            break
     }
     return {...state, inforCurrentTask: info}
 }

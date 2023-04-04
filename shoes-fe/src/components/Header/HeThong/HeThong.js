@@ -1,21 +1,22 @@
-// import { useContext } from 'react'
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
-import { itemsHeThong } from './ConstantVariable'
-// import { GlobalContext } from '../../GlobalContext';
+import { itemsHeThong } from './ConstantVariable' 
 import { useTaskContext, actions } from '../../../Task';
 
 
 const HeThong = () => {
-    // const [stateTask, dispatchTask] = useTaskContext()
-    // const inforCurrentTask = stateTask.inforCurrentTask
-    // console.log("inforCurrentTask: ", inforCurrentTask)
+    const [stateTask, dispatchTask] = useTaskContext()
+    const inforCurrentTask = stateTask.inforCurrentTask
+    console.log("inforCurrentTask: ", inforCurrentTask)
+    console.log("itemsHeThong: ", itemsHeThong)
+    const handleOnclick = (e) => {
+        dispatchTask(actions.setTaskHeThong(e.key))
+    }
     return (
-        <>
         <Dropdown
             menu={{
                 items: itemsHeThong,
-                // onClick: (e) => {dispatchTask(actions.setTaskDanhMuc(e.key))} ,
+                onClick: handleOnclick,
             }}
         >
             <a onClick={(e) => e.preventDefault()}> 
@@ -25,7 +26,6 @@ const HeThong = () => {
                 </Space>
             </a>
         </Dropdown>
-        </>
         
     )
 }

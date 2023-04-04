@@ -1,18 +1,20 @@
-import { useContext } from 'react'
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { itemsHangHoa } from './ConstantVariable'
-// import { GlobalContext } from '../../GlobalContext';
-import { TaskContext } from '../../../Task';
+import { useTaskContext, actions } from '../../../Task';
 
 const DanhMuc = () => {
-    // const context = useContext(TaskContext)
-    // console.log("context: ", context)
+    const [stateTask, dispatchTask] = useTaskContext()
+    const inforCurrentTask = stateTask.inforCurrentTask
+    console.log("inforCurrentTask: ", inforCurrentTask)
+    const handleDanhMuc = (e) => {
+        dispatchTask(actions.setTaskDanhMuc(e.key))
+    }
     return (
             <Dropdown
                 menu={{
                     items: itemsHangHoa,
-                    // onClick: context.handleDanhMuc,
+                    onClick: handleDanhMuc,
                 }}
             >
                 <a onClick={(e) => e.preventDefault()}>

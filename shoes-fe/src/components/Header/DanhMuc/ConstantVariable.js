@@ -29,4 +29,8 @@ export const itemsHangHoa = [
       key: 'Nhân viên',
       label: 'Nhân viên',
     },
+    {
+      key: 'Khách hàng',
+      label: 'Khách hàng',
+    },
   ]
