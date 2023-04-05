@@ -5,6 +5,8 @@ const Content = () => {
     const [stateTask, dispatchTask] = useTaskContext()
     const inforCurrentTask = stateTask.inforCurrentTask
     switch (inforCurrentTask.infoContent){
+        case "Header":
+            return <></>
         case "DanhMuc":
             return <DanhMuc></DanhMuc>
         default:

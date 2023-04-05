@@ -1,6 +1,6 @@
 import { SET_TASK_DANH_MUC, SET_TASK_HE_THONG } from "./constants"
 const initState = {
-    inforCurrentTask: {}
+    inforCurrentTask: {"infoContent": "Header"}
 }
 
 function reducer (state, action) {
