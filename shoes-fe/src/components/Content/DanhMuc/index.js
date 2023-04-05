@@ -1,1 +1,1 @@
-export { DanhMuch } from './DanhMuc'
+export { default } from './DanhMuc'

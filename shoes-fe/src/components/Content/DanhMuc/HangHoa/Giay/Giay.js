@@ -82,4 +82,4 @@ const Giay = () => {
 
     )
 }
-export default Giay;
+export default Giay
