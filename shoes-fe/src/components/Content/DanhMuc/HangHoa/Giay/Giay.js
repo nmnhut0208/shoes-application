@@ -1,7 +1,8 @@
-import { Table, Space } from 'antd';
+import { Table, Space, Modal } from 'antd';
 import ResizableAntdTable from 'resizable-antd-table';
 import { useEffect, useState } from 'react'
 import styles from "./Giay.module.scss"
+import FormGiay from './FormGiay';
 
 const list_key = ["STT", "Mã giày", "Đơn giá",
     "Tên giày", "Mã đế", "Tên đế",
@@ -24,12 +25,12 @@ infoColumns.push({
     title: 'Action',
     key: 'action',
     render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
+        <Space size="middle">
+            <a>Invite {record.name}</a>
+            <a>Delete</a>
+        </Space>
     ),
-  })
+})
 
 console.log("infoColumns: ", infoColumns)
 
@@ -38,6 +39,7 @@ const Giay = () => {
     const [infoGiay, setInfoGiay] = useState({})
     const [showGiay, setShowGiay] = useState(false)
     const [record, setRecord] = useState([]);
+    const [visible, setVisible] = useState(false);
 
     console.log("infoGiay: ", infoGiay)
     console.log("showGiay: ", showGiay)
@@ -58,6 +60,10 @@ const Giay = () => {
             })
     }, [])
 
+    const handleCancel = () => {
+        setVisible(false);
+    }
+
     return (
         <>
             {showGiay && <ResizableAntdTable
@@ -71,11 +77,19 @@ const Giay = () => {
                 onRow={(record) => {
                     return {
                         onDoubleClick: () => {
-                            setRecord(record);
+                            setRecord(record)
+                            setVisible(true)
                         }
                     }
                 }}
             />}
+
+            <Modal title="Thông tin chi tiết"
+                open={visible}
+                onCancel={handleCancel}
+            >
+                <FormGiay></FormGiay>
+            </Modal>
 
         </>
 
