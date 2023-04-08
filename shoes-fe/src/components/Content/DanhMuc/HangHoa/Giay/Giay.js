@@ -1,9 +1,11 @@
-import { Table, Space, Modal } from 'antd';
-import ResizableAntdTable from 'resizable-antd-table';
+import { Table, Space } from 'antd';
+// import ResizableAntdTable from 'resizable-antd-table';
 import { useEffect, useState } from 'react'
 import styles from "./Giay.module.scss"
 import FormGiay from './FormGiay';
 import './antd.css'
+import MyModal from './MyModal';
+
 
 const list_key = ["STT", "Mã giày", "Đơn giá",
     "Tên giày", "Mã đế", "Tên đế",
@@ -86,11 +88,13 @@ const Giay = () => {
                 }}
             />}
 
-            <Modal title="Thông tin chi tiết"
+            <MyModal
+                title="Thông tin chi tiết"
                 open={visible}
-                onCancel={handleCancel}>
+                onCancel={handleCancel}
+            >
                 <FormGiay record={record}></FormGiay>
-            </Modal>
+            </MyModal>
 
         </>
 

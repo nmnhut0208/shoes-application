@@ -7,23 +7,23 @@ html {
 }
 
 .form label {
-    width: 10rem;
+    width: 6.25rem;
 }
 
 .form_context_span {
     display: inline-block;
-    width: 20rem;
-    border: 0.1rem solid rgba(122, 116, 116, 0.3);
-    padding: 0.5rem;
-    margin-left: 0.4rem;
+    width: 12.5rem;
+    border: 0.0625rem solid rgba(122, 116, 116, 0.3);
+    padding: 0.3125rem;
+    margin-left: 0.25rem;
     box-sizing: border-box;
-    height: 3.2rem;
+    height: 2rem;
 }
 
 // first group component includes group_first__1 and group_first__2
 .group_first {
     // background-color: burlywood;
-    height: 26rem;
+    height: 16.25rem;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -31,7 +31,8 @@ html {
 
 .group_first__1 {
     // background-color:darkkhaki;
-    width: 60rem;
+    width: 37.5rem;
+    padding: 0rem 0.3125rem 0rem 0rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -43,13 +44,14 @@ html {
 }
 
 .group_first__1_row input {
-    width: 15rem;
+    width: 9.375rem;
 }
 
 // ========================
 .group_first__2 {
     // background-color: crimson;
-    width: 33.5rem;
+    width: 18.75rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -64,22 +66,22 @@ html {
     width: 100%;
     display: block;
     position: relative;
-    border: 0.1rem solid rgba(27, 26, 26, 0.348);
 }
 
 .group_first__2_image_container img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height: 20rem;
-    object-fit:cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 12.5rem;
+    object-fit: cover;
 }
 
 // ===========================================
 
 .group_second {
     // background-color:cadetblue;
-    height: 15rem;
+    height: 9.375rem;
     width: 100%;
 }
 
@@ -90,38 +92,39 @@ html {
     // background-color: chartreuse;
 }
 .group_second_row__1 {
-    width: 60rem;
+    width: 37.5rem;
     display: flex;
     // background-color:gray;
     flex-direction: row;
-
+    padding: 0rem 0.3125rem 0rem 0rem;
 }
 
 .group_second_row__2 {
     display: flex;
     justify-content: space-between;
-    width: 33.5rem;
+    width: 21rem;
     flex-direction: row;
     // background-color: aqua;
     
 }
 
 .group_second_row__2 input {
-    width: 5.5rem;
+    width: 3.5rem;
 }
 .group_second_row__2_gia_von input {
-    width: 23.5rem ;
+    width: 14.8rem ;
 }
 // ============================================
 .group_third {
     // background-color:rgb(160, 95, 99);
     height: 15.625rem;
     width: 100%;
+    // padding-right: 1rem;
 }
 
 .group_third textarea {
-    width: 30rem;
-    height: 7rem;
+    width: 21rem;
+    height: 6.25rem;
 }
 
 .group_third_row {
@@ -133,14 +136,14 @@ html {
 // ============================================
 
 .item_size_middle {
-    width: 25rem;
+    width: 15.6rem;
 }
 
 .item_size_small {
-    width: 20rem;
+    width: 12.5rem;
 }
 
 .item_size_big {
-    width: 48rem;
+    width: 30rem;
 }
 
