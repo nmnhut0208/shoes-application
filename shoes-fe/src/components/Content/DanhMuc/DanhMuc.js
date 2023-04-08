@@ -1,7 +1,7 @@
 import { useTaskContext } from '../../../Task'
 import Giay from "./HangHoa/Giay"
 
-const DanhMuc = ({infoShow}) => {
+const DanhMuc = () => {
     const [stateTask, dispatchTask] = useTaskContext()
     const inforCurrentTask = stateTask.inforCurrentTask
     switch (inforCurrentTask.infoDetail){

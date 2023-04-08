@@ -3,6 +3,7 @@ import ResizableAntdTable from 'resizable-antd-table';
 import { useEffect, useState } from 'react'
 import styles from "./Giay.module.scss"
 import FormGiay from './FormGiay';
+import './antd.css'
 
 const list_key = ["STT", "Mã giày", "Đơn giá",
     "Tên giày", "Mã đế", "Tên đế",
@@ -66,13 +67,14 @@ const Giay = () => {
 
     return (
         <>
-            {showGiay && <ResizableAntdTable
-                caption="Thông tin Giày"
+            {showGiay && <Table
+                // caption="Thông tin Giày"
                 className={styles.tableCustom}
                 columns={infoColumns}
                 dataSource={infoGiay}
                 scroll={{
                     x: 1300,
+                    y: 500
                 }}
                 onRow={(record) => {
                     return {
@@ -86,9 +88,8 @@ const Giay = () => {
 
             <Modal title="Thông tin chi tiết"
                 open={visible}
-                onCancel={handleCancel}
-            >
-                <FormGiay></FormGiay>
+                onCancel={handleCancel}>
+                <FormGiay record={record}></FormGiay>
             </Modal>
 
         </>
