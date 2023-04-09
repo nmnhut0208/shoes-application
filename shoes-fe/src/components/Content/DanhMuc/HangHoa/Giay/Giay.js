@@ -3,8 +3,7 @@ import { Table, Space } from 'antd';
 import { useEffect, useState } from 'react'
 import styles from "./Giay.module.scss"
 import FormGiay from './FormGiay';
-import './antd.css'
-import MyModal from './MyModal';
+import Modal from '../../../Modal';
 
 
 const list_key = ["STT", "Mã giày", "Đơn giá",
@@ -88,13 +87,13 @@ const Giay = () => {
                 }}
             />}
 
-            <MyModal
+            <Modal
                 title="Thông tin chi tiết"
                 open={visible}
                 onCancel={handleCancel}
             >
                 <FormGiay record={record}></FormGiay>
-            </MyModal>
+            </Modal>
 
         </>
 

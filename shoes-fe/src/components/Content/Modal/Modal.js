@@ -1,8 +1,7 @@
-import './MyModal.css'
-import { useState } from 'react'
+import './Modal.css'
 
 
-const MyModal = ({ title, open, onCancel, children }) => {
+const Modal = ({ title, open, onCancel, children }) => {
     if (!open) { return null }
     return (
         <div className="modal" >
@@ -21,4 +20,4 @@ const MyModal = ({ title, open, onCancel, children }) => {
     )
 }
 
-export default MyModal
+export default Modal
