@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Form, Input, Button } from 'antd';
+// import { Form, Input, Button } from 'antd';
 import styles from "./FormGiay.module.scss"
 
 
@@ -16,77 +16,82 @@ const FormGiay = ({ record }) => {
   var image_url = "https://images.unsplash.com/photo-1589816365021-a76a9422f6a3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
   return (
     <div className={clsx(styles.form)}>
-      <Form
-        initialValues={record}
-        name="basic"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-      // closeIcon={<img style={{ height: '20px', width: '20px' }} 
-      // src={"./close-icon.png"}  /> }
+      <form
+      // initialValues={record}
+      // name="basic"
+      // onFinish={onFinish}
+      // onFinishFailed={onFinishFailed}
       >
         <div className={styles.group_first}>
           <div className={styles.group_first__1}>
-            {/* <div className={styles.group_first__1_row}> */}
-            <Form.Item
-              label="Mã giày"
-              name="Mã giày"
-            >
-              <Input className={styles.item_size_middle} />
-            </Form.Item>
-            {/* </div> */}
+            <div className={styles.group_first__1_row}>
+              <label
+                label="Mã giày"
+                name="Mã giày"
+              >
+                Mã giày:
+              </label>
+              <input className={styles.item_size_middle} />
+            </div>
+            <div className={styles.group_first__1_row}>
+              <label
+                label="Mã tham chiếu"
+                name="Mã tham chiếu"
+              >
+                Mã tham chiếu:
+              </label>
+              <input className={styles.item_size_middle} />
 
-            <Form.Item
-              label="Mã tham chiếu"
-              name="Mã tham chiếu"
-            >
-              <Input className={styles.item_size_middle} />
-            </Form.Item>
-
-            {/* <div className={styles.group_first__1_row}> */}
-            <Form.Item
-              label="Tên giày"
-              name="Tên giày"
-            >
-              <Input className={styles.item_size_big} />
-            </Form.Item>
-            {/* </div> */}
-
-            <Form.Item
-              label="Khách hàng"
-              name="Khách hàng"
-            >
-              <Input className={styles.item_size_middle} />
-            </Form.Item>
+            </div>
 
             <div className={styles.group_first__1_row}>
-              <Form.Item
+              <label
+                label="Tên giày"
+                name="Tên giày"
+              >
+                Tên giày:
+              </label>
+              <input className={styles.item_size_big} />
+            </div>
+            <div className={styles.group_first__1_row}>
+
+              <label
+                label="Khách hàng"
+                name="Khách hàng"
+              >
+                Khách hàng:
+              </label>
+              <input className={styles.item_size_small} />
+            </div>
+
+            <div className={styles.group_first__1_row}>
+              <label
                 label="Mã đế"
                 name="Mã đế"
               >
-                <Input />
-              </Form.Item>
+                Mã đế:
+              </label>
+              <input className={styles.item_size_small} />
               <span className={styles.form_context_span}> Tên đế </span>
             </div>
 
             <div className={styles.group_first__1_row}>
-              <Form.Item
+              <label
                 label="Mã sườn"
                 name="Mã sườn"
-              >
-                <Input />
-
-              </Form.Item>
+              >Mã sườn:
+              </label>
+              <input className={styles.item_size_small} />
               <span className={styles.form_context_span}> Tên sườn </span>
             </div>
 
             <div className={styles.group_first__1_row}>
-              <Form.Item
+              <label
                 label="Mã cá"
                 name="Mã cá"
-              >
-                <Input />
-
-              </Form.Item>
+              >Mã cá:
+              </label>
+              <input className={styles.item_size_small} />
               <span className={styles.form_context_span}> Tên cá </span>
             </div>
           </div>
@@ -94,12 +99,12 @@ const FormGiay = ({ record }) => {
           <div className={styles.group_first__2}>
             <div className={styles.group_first__2_image}>
               <div className={styles.group_first__2_image_container}>
-                <img 
+                <img
                   // src="https://images.pexels.com/photos/19090/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                src = {image_url}
+                  src={image_url}
                 />
               </div>
-              <Button>Chọn hình ảnh</Button>
+              <button>Chọn hình ảnh</button>
             </div>
           </div>
         </div>
@@ -109,83 +114,97 @@ const FormGiay = ({ record }) => {
           <div className={styles.group_second_row}>
 
             <div className={styles.group_second_row__1}>
-              <Form.Item
+              <label
                 label="Mã quai"
                 name="Mã quai"
-              >
-                <Input />
-              </Form.Item>
+              >Mã quai:
+              </label>
+              <input className={styles.item_size_small} />
               <span className={styles.form_context_span}> Tên quai </span>
             </div>
 
             <div className={styles.group_second_row__2}>
-              <Form.Item
-                label="Giá trang trí"
-                name="Giá trang trí"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Giá tân trang"
-                name="Giá tân trang"
-              >
-                <Input />
-              </Form.Item>
+              <div className={styles.group_second_row__2_pair}>
+
+                <label
+                  label="Giá trang trí"
+                  name="Giá trang trí"
+                >Giá trang trí:
+                </label>
+                <input />
+              </div>
+              <div className={styles.group_second_row__2_pair}>
+
+                <label className={styles.label_custom}
+                  label="Giá tân trang"
+                  name="Giá tân trang"
+                >Giá tân trang:
+                </label>
+                <input />
+              </div>
             </div>
-
-
           </div>
 
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__1}>
-              <Form.Item
+              <label
                 label="Màu"
                 name="Màu"
               >
-                <Input />
-
-              </Form.Item>
+                Màu:
+              </label>
+              <input className={styles.item_size_small} />
               <span className={styles.form_context_span}> Tên màu </span>
             </div>
             <div className={styles.group_second_row__2}>
-              <Form.Item
-                label="Giá sườn"
-                name="Giá sườn"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Nhân công"
-                name="Nhân công"
-              >
-                <Input />
-              </Form.Item>
+              <div className={styles.group_second_row__2_pair}>
+
+                <label
+                  label="Giá sườn"
+                  name="Giá sườn"
+                >Giá sườn:
+                </label>
+                <input />
+              </div>
+              <div className={styles.group_second_row__2_pair}>
+
+                <label className={styles.label_custom}
+                  label="Nhân công"
+                  name="Nhân công"
+                >Nhân công:
+                </label>
+                <input />
+              </div>
             </div>
           </div>
 
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__1}>
-              <Form.Item
+              <label
                 label="Đơn giá"
                 name="Đơn giá"
-              >
-                <Input className={styles.item_size_middle} />
-              </Form.Item>
+              >Đơn giá:
+              </label>
+              <input className={styles.item_size_middle} />
 
             </div>
             <div className={styles.group_second_row__2}>
-              <Form.Item
-                label="Giá gót"
-                name="Giá gót"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Giá keo"
-                name="Giá keo"
-              >
-                <Input />
-              </Form.Item>
+              <div className={styles.group_second_row__2_pair}>
+                <label
+                  label="Giá gót"
+                  name="Giá gót"
+                >Giá gót:
+                </label>
+                <input />
+              </div>
+              <div className={styles.group_second_row__2_pair}>
+                <label className={styles.label_custom}
+                  label="Giá keo"
+                  name="Giá keo"
+                >Giá keo:
+                </label>
+                <input />
+              </div>
             </div>
 
           </div>
@@ -193,22 +212,25 @@ const FormGiay = ({ record }) => {
           <div className={styles.group_second_row}>
 
             <div className={styles.group_second_row__1}>
-              <Form.Item
+              <label
                 label="Ghi chú"
                 name="Ghi chú"
-              >
-                <Input className={styles.item_size_big} />
-              </Form.Item>
+              >Ghi chú:
+              </label>
+              <input className={styles.item_size_big} />
             </div>
 
             <div className={clsx(styles.group_second_row__2,
               styles.group_second_row__2_gia_von)}>
-              <Form.Item
-                label="Giá vốn"
-                name="Giá vốn"
-              >
-                <Input className={styles.item_size_small} />
-              </Form.Item>
+              <div className={styles.group_second_row__2_pair}>
+
+                <label
+                  label="Giá vốn"
+                  name="Giá vốn"
+                >Giá vốn:
+                </label>
+                <input className={styles.item_size_small} />
+              </div>
             </div>
 
           </div>
@@ -217,45 +239,51 @@ const FormGiay = ({ record }) => {
 
         <div className={styles.group_third}>
           <div className={styles.group_third_row}>
-            <Form.Item
-              label="Trang trí đế"
-              name="Trang trí đế"
-            >
+            <div className={styles.group_third_row_item}>
+              <label
+                label="Trang trí đế"
+                name="Trang trí đế"
+              >Trang trí đế:
+              </label>
               <textarea />
-            </Form.Item>
-
-            <Form.Item
-              label="Trang trí quai"
-              name="Trang trí quai"
-            >
+            </div>
+            <div className={styles.group_third_row_item}>
+              <label
+                label="Trang trí quai"
+                name="Trang trí quai"
+              >Trang trí quai:
+              </label>
               <textarea />
-            </Form.Item>
+            </div>
           </div>
 
           <div className={styles.group_third_row}>
-            <Form.Item
-              label="Ghi chú đế"
-              name="Ghi chú đế"
-            >
+            <div className={styles.group_third_row_item}>
+              <label
+                label="Ghi chú đế"
+                name="Ghi chú đế"
+              >Ghi chú đế:
+              </label>
               <textarea />
-            </Form.Item>
-
-            <Form.Item
-              label="Ghi chú quai"
-              name="Ghi chú quai"
-            >
+            </div>
+            <div className={styles.group_third_row_item}>
+              <label
+                label="Ghi chú quai"
+                name="Ghi chú quai"
+              >Ghi chú quai:
+              </label>
               <textarea />
-            </Form.Item>
+            </div>
           </div>
 
         </div>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
+        <label>
+          <button type="primary" htmlType="submit">
             Submit
-          </Button>
-        </Form.Item>
-      </Form>
+          </button>
+        </label>
+      </form>
     </div>
 
   );
