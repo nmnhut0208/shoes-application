@@ -1,6 +1,6 @@
 import { Table, Space } from 'antd';
 // import ResizableAntdTable from 'resizable-antd-table';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import styles from "./Giay.module.scss"
 import FormGiay from './FormGiay';
 import Modal from '../../../Modal';
@@ -37,11 +37,12 @@ infoColumns.push({
 console.log("infoColumns: ", infoColumns)
 
 const Giay = () => {
-
     const [infoGiay, setInfoGiay] = useState({})
     const [showGiay, setShowGiay] = useState(false)
-    const [record, setRecord] = useState([]);
+    const [record, setRecord] = useState({"Tên giày": "11"});
     const [visible, setVisible] = useState(false);
+
+    const [thu, setThu] = useState("Thu");
 
     console.log("infoGiay: ", infoGiay)
     console.log("showGiay: ", showGiay)
@@ -68,6 +69,7 @@ const Giay = () => {
 
     return (
         <>
+            <h1>{thu}</h1>
             {showGiay && <Table
                 // caption="Thông tin Giày"
                 className={styles.tableCustom}
@@ -82,6 +84,7 @@ const Giay = () => {
                         onDoubleClick: () => {
                             setRecord(record)
                             setVisible(true)
+                            setThu(record["Tên giày"])
                         }
                     }
                 }}
@@ -92,7 +95,11 @@ const Giay = () => {
                 open={visible}
                 onCancel={handleCancel}
             >
-                <FormGiay record={record}></FormGiay>
+                <FormGiay 
+                    record={record}
+                    setRecord={setThu}
+                    handleCancel={handleCancel}
+                ></FormGiay>
             </Modal>
 
         </>

@@ -1,15 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect  } from 'react'
 import clsx from 'clsx'
 import styles from "./FormGiay.module.scss"
 
 
-const FormGiay = ({ record }) => {
-  const [inputForm, setInputForm] = useState({})
-  console.log("inputForm: ", inputForm)
-
-  useEffect(() => {
-    setInputForm(record)
-  }, [])
+const FormGiay = ({ record, setRecord, handleCancel }) => {
+  const [inputForm, setInputForm] = useState(record)
+  console.log("record form: re-render")
 
   var image_url = "https://img.freepik.com/free-vector/cats-doodle-pattern-background_53876-100663.jpg?w=900&t=st=1680945739~exp=1680946339~hmac=0a6288d0cf4d9b1a566b96eeaad8db3beb69fa0729f4ffecfcc866bbfecaf4e2"
   // var image_url = "https://images.unsplash.com/photo-1589816365021-a76a9422f6a3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
@@ -18,6 +14,15 @@ const FormGiay = ({ record }) => {
     const data = { ...inputForm }
     data[e.target.name] = e.target.value
     setInputForm(data)
+    setRecord(e.target.value)
+    
+  }
+
+  const handleSaveFrom = () => {
+    // saveDataBase()
+    setRecord(inputForm)
+    handleCancel(false)
+    
   }
 
   return (
@@ -274,7 +279,7 @@ const FormGiay = ({ record }) => {
           </div>
 
           <div>
-            <button>Lưu</button>
+            <button onClick={handleSaveFrom}>Lưu</button>
             <button>Nhập tiếp</button>
             <button>Đóng</button>
 
