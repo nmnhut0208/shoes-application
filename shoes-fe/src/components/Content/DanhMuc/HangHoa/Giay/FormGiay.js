@@ -1,9 +1,16 @@
+import { useState, useEffect } from 'react'
 import clsx from 'clsx'
-// import { Form, Input, Button } from 'antd';
 import styles from "./FormGiay.module.scss"
 
 
 const FormGiay = ({ record }) => {
+  const [inputForm, setInputForm] = useState({})
+  console.log("inputForm: ", inputForm)
+
+  useEffect(() => {
+    setInputForm(record)
+  }, [])
+
 
   const onFinish = (values) => {
     console.log('Success:', values);
@@ -12,86 +19,84 @@ const FormGiay = ({ record }) => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  // var image_url = "https://img.freepik.com/free-vector/cats-doodle-pattern-background_53876-100663.jpg?w=900&t=st=1680945739~exp=1680946339~hmac=0a6288d0cf4d9b1a566b96eeaad8db3beb69fa0729f4ffecfcc866bbfecaf4e2"
-  var image_url = "https://images.unsplash.com/photo-1589816365021-a76a9422f6a3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+  var image_url = "https://img.freepik.com/free-vector/cats-doodle-pattern-background_53876-100663.jpg?w=900&t=st=1680945739~exp=1680946339~hmac=0a6288d0cf4d9b1a566b96eeaad8db3beb69fa0729f4ffecfcc866bbfecaf4e2"
+  // var image_url = "https://images.unsplash.com/photo-1589816365021-a76a9422f6a3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+  const handleChangeInformationForm = (e) => {
+    const data = {...inputForm}
+    data[e.target.name] = e.target.value
+    setInputForm(data)
+  }
+
   return (
     <div className={clsx(styles.form)}>
       <form
-      // initialValues={record}
-      // name="basic"
       // onFinish={onFinish}
       // onFinishFailed={onFinishFailed}
       >
         <div className={styles.group_first}>
           <div className={styles.group_first__1}>
             <div className={styles.group_first__1_row}>
-              <label
-                label="Mã giày"
+              <label>Mã giày:</label>
+              <input
+                value={inputForm["Mã giày"]}
+                onChange={(e) => handleChangeInformationForm(e)}
                 name="Mã giày"
-              >
-                Mã giày:
-              </label>
-              <input className={styles.item_size_middle} />
+                className={styles.item_size_middle} />
             </div>
             <div className={styles.group_first__1_row}>
-              <label
-                label="Mã tham chiếu"
+              <label>Mã tham chiếu:</label>
+              <input
                 name="Mã tham chiếu"
-              >
-                Mã tham chiếu:
-              </label>
-              <input className={styles.item_size_middle} />
-
+                value={inputForm["Mã tham chiếu"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                className={styles.item_size_middle} />
             </div>
 
             <div className={styles.group_first__1_row}>
-              <label
-                label="Tên giày"
+              <label>Tên giày:
+              </label>
+              <input
                 name="Tên giày"
-              >
-                Tên giày:
-              </label>
-              <input className={styles.item_size_big} />
+                value={inputForm["Tên giày"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                className={styles.item_size_big} />
             </div>
             <div className={styles.group_first__1_row}>
-
-              <label
-                label="Khách hàng"
+              <label>Khách hàng:</label>
+              <input
                 name="Khách hàng"
-              >
-                Khách hàng:
-              </label>
-              <input className={styles.item_size_small} />
+                value={inputForm["Khách hàng"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                className={styles.item_size_small} />
             </div>
 
             <div className={styles.group_first__1_row}>
-              <label
-                label="Mã đế"
+              <label>Mã đế:</label>
+              <input
                 name="Mã đế"
-              >
-                Mã đế:
-              </label>
-              <input className={styles.item_size_small} />
+                value={inputForm["Mã đế"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                className={styles.item_size_small} />
               <span className={styles.form_context_span}> Tên đế </span>
             </div>
 
             <div className={styles.group_first__1_row}>
-              <label
-                label="Mã sườn"
+              <label>Mã sườn:</label>
+              <input
                 name="Mã sườn"
-              >Mã sườn:
-              </label>
-              <input className={styles.item_size_small} />
+                value={inputForm["Mã sườn"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                className={styles.item_size_small} />
               <span className={styles.form_context_span}> Tên sườn </span>
             </div>
 
             <div className={styles.group_first__1_row}>
-              <label
-                label="Mã cá"
+              <label>Mã cá:</label>
+              <input
                 name="Mã cá"
-              >Mã cá:
-              </label>
-              <input className={styles.item_size_small} />
+                value={inputForm["Mã cá"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                className={styles.item_size_small} />
               <span className={styles.form_context_span}> Tên cá </span>
             </div>
           </div>
@@ -112,98 +117,92 @@ const FormGiay = ({ record }) => {
 
         <div className={styles.group_second}>
           <div className={styles.group_second_row}>
-
             <div className={styles.group_second_row__1}>
-              <label
-                label="Mã quai"
+              <label>Mã quai:</label>
+              <input
                 name="Mã quai"
-              >Mã quai:
-              </label>
-              <input className={styles.item_size_small} />
+                value={inputForm["Mã quai"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                className={styles.item_size_small} />
               <span className={styles.form_context_span}> Tên quai </span>
             </div>
 
             <div className={styles.group_second_row__2}>
               <div className={styles.group_second_row__2_pair}>
-
-                <label
-                  label="Giá trang trí"
-                  name="Giá trang trí"
-                >Giá trang trí:
-                </label>
-                <input />
+                <label>Giá trang trí:</label>
+                <input
+                  name="Giá trang trí" 
+                  value={inputForm["Giá trang trí"]}
+                  onChange={(e) => handleChangeInformationForm(e)}
+                />
               </div>
               <div className={styles.group_second_row__2_pair}>
 
-                <label className={styles.label_custom}
-                  label="Giá tân trang"
-                  name="Giá tân trang"
-                >Giá tân trang:
-                </label>
-                <input />
+                <label className={styles.label_custom}>Giá tân trang:</label>
+                <input
+                  name="Giá trang trí" 
+                  value={inputForm["Giá trang trí"]}
+                  onChange={(e) => handleChangeInformationForm(e)}
+                  />
               </div>
             </div>
           </div>
 
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__1}>
-              <label
-                label="Màu"
+              <label>Màu:</label>
+              <input 
                 name="Màu"
-              >
-                Màu:
-              </label>
-              <input className={styles.item_size_small} />
+                value={inputForm["Màu"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                className={styles.item_size_small} />
               <span className={styles.form_context_span}> Tên màu </span>
             </div>
             <div className={styles.group_second_row__2}>
               <div className={styles.group_second_row__2_pair}>
-
-                <label
-                  label="Giá sườn"
+                <label>Giá sườn:</label>
+                <input 
                   name="Giá sườn"
-                >Giá sườn:
-                </label>
-                <input />
+                  value={inputForm["Giá sườn"]}
+                  onChange={(e) => handleChangeInformationForm(e)}
+                />
               </div>
               <div className={styles.group_second_row__2_pair}>
-
-                <label className={styles.label_custom}
-                  label="Nhân công"
+                <label className={styles.label_custom}>Nhân công:</label>
+                <input 
                   name="Nhân công"
-                >Nhân công:
-                </label>
-                <input />
+                  value={inputForm["Nhân công"]}
+                  onChange={(e) => handleChangeInformationForm(e)}
+                  />
               </div>
             </div>
           </div>
 
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__1}>
-              <label
-                label="Đơn giá"
+              <label>Đơn giá:</label>
+              <input 
                 name="Đơn giá"
-              >Đơn giá:
-              </label>
-              <input className={styles.item_size_middle} />
-
+                value={inputForm["Đơn giá"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                className={styles.item_size_middle} />
             </div>
             <div className={styles.group_second_row__2}>
               <div className={styles.group_second_row__2_pair}>
-                <label
-                  label="Giá gót"
+                <label>Giá gót:</label>
+                <input 
                   name="Giá gót"
-                >Giá gót:
-                </label>
-                <input />
+                  value={inputForm["Giá gót"]}
+                  onChange={(e) => handleChangeInformationForm(e)}
+                  />
               </div>
               <div className={styles.group_second_row__2_pair}>
-                <label className={styles.label_custom}
-                  label="Giá keo"
+                <label className={styles.label_custom}>Giá keo:</label>
+                <input 
                   name="Giá keo"
-                >Giá keo:
-                </label>
-                <input />
+                  value={inputForm["Giá keo"]}
+                  onChange={(e) => handleChangeInformationForm(e)}
+                  />
               </div>
             </div>
 
@@ -212,67 +211,64 @@ const FormGiay = ({ record }) => {
           <div className={styles.group_second_row}>
 
             <div className={styles.group_second_row__1}>
-              <label
-                label="Ghi chú"
+              <label>Ghi chú:</label>
+              <input 
                 name="Ghi chú"
-              >Ghi chú:
-              </label>
-              <input className={styles.item_size_big} />
+                value={inputForm["Ghi chú"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                className={styles.item_size_big} />
             </div>
 
             <div className={clsx(styles.group_second_row__2,
               styles.group_second_row__2_gia_von)}>
               <div className={styles.group_second_row__2_pair}>
-
-                <label
-                  label="Giá vốn"
+                <label>Giá vốn:</label>
+                <input 
                   name="Giá vốn"
-                >Giá vốn:
-                </label>
-                <input className={styles.item_size_small} />
+                  value={inputForm["Giá vốn"]}
+                  onChange={(e) => handleChangeInformationForm(e)}
+                  className={styles.item_size_small} />
               </div>
             </div>
-
           </div>
-
         </div>
 
         <div className={styles.group_third}>
           <div className={styles.group_third_row}>
             <div className={styles.group_third_row_item}>
-              <label
-                label="Trang trí đế"
+              <label>Trang trí đế:</label>
+              <textarea 
                 name="Trang trí đế"
-              >Trang trí đế:
-              </label>
-              <textarea />
+                value={inputForm["Trang trí đế"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                />
             </div>
             <div className={styles.group_third_row_item}>
-              <label
-                label="Trang trí quai"
+              <label>Trang trí quai:</label>
+              <textarea 
                 name="Trang trí quai"
-              >Trang trí quai:
-              </label>
-              <textarea />
+                value={inputForm["Trang trí quai"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                />
             </div>
           </div>
 
           <div className={styles.group_third_row}>
             <div className={styles.group_third_row_item}>
-              <label
-                label="Ghi chú đế"
+              <label>Ghi chú đế:</label>
+              <textarea 
                 name="Ghi chú đế"
-              >Ghi chú đế:
-              </label>
-              <textarea />
+                value={inputForm["Ghi chú đế"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                />
             </div>
             <div className={styles.group_third_row_item}>
-              <label
-                label="Ghi chú quai"
+              <label>Ghi chú quai:</label>
+              <textarea 
                 name="Ghi chú quai"
-              >Ghi chú quai:
-              </label>
-              <textarea />
+                value={inputForm["Ghi chú quai"]}
+                onChange={(e) => handleChangeInformationForm(e)}
+                />
             </div>
           </div>
 
