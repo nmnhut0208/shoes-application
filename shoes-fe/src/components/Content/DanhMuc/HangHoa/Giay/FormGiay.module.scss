@@ -154,6 +154,10 @@ html {
     flex-direction: row;
 }
 
+.group_third_row button:not(:first-child) {
+    margin-left: 0.5rem;
+    margin-top: 1rem;
+}
 // ============================================
 
 .item_size_middle {

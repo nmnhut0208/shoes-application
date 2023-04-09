@@ -11,18 +11,11 @@ const FormGiay = ({ record }) => {
     setInputForm(record)
   }, [])
 
-
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
   var image_url = "https://img.freepik.com/free-vector/cats-doodle-pattern-background_53876-100663.jpg?w=900&t=st=1680945739~exp=1680946339~hmac=0a6288d0cf4d9b1a566b96eeaad8db3beb69fa0729f4ffecfcc866bbfecaf4e2"
   // var image_url = "https://images.unsplash.com/photo-1589816365021-a76a9422f6a3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+
   const handleChangeInformationForm = (e) => {
-    const data = {...inputForm}
+    const data = { ...inputForm }
     data[e.target.name] = e.target.value
     setInputForm(data)
   }
@@ -105,7 +98,6 @@ const FormGiay = ({ record }) => {
             <div className={styles.group_first__2_image}>
               <div className={styles.group_first__2_image_container}>
                 <img
-                  // src="https://images.pexels.com/photos/19090/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                   src={image_url}
                 />
               </div>
@@ -131,7 +123,7 @@ const FormGiay = ({ record }) => {
               <div className={styles.group_second_row__2_pair}>
                 <label>Giá trang trí:</label>
                 <input
-                  name="Giá trang trí" 
+                  name="Giá trang trí"
                   value={inputForm["Giá trang trí"]}
                   onChange={(e) => handleChangeInformationForm(e)}
                 />
@@ -140,10 +132,10 @@ const FormGiay = ({ record }) => {
 
                 <label className={styles.label_custom}>Giá tân trang:</label>
                 <input
-                  name="Giá trang trí" 
+                  name="Giá trang trí"
                   value={inputForm["Giá trang trí"]}
                   onChange={(e) => handleChangeInformationForm(e)}
-                  />
+                />
               </div>
             </div>
           </div>
@@ -151,7 +143,7 @@ const FormGiay = ({ record }) => {
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__1}>
               <label>Màu:</label>
-              <input 
+              <input
                 name="Màu"
                 value={inputForm["Màu"]}
                 onChange={(e) => handleChangeInformationForm(e)}
@@ -161,7 +153,7 @@ const FormGiay = ({ record }) => {
             <div className={styles.group_second_row__2}>
               <div className={styles.group_second_row__2_pair}>
                 <label>Giá sườn:</label>
-                <input 
+                <input
                   name="Giá sườn"
                   value={inputForm["Giá sườn"]}
                   onChange={(e) => handleChangeInformationForm(e)}
@@ -169,11 +161,11 @@ const FormGiay = ({ record }) => {
               </div>
               <div className={styles.group_second_row__2_pair}>
                 <label className={styles.label_custom}>Nhân công:</label>
-                <input 
+                <input
                   name="Nhân công"
                   value={inputForm["Nhân công"]}
                   onChange={(e) => handleChangeInformationForm(e)}
-                  />
+                />
               </div>
             </div>
           </div>
@@ -181,7 +173,7 @@ const FormGiay = ({ record }) => {
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__1}>
               <label>Đơn giá:</label>
-              <input 
+              <input
                 name="Đơn giá"
                 value={inputForm["Đơn giá"]}
                 onChange={(e) => handleChangeInformationForm(e)}
@@ -190,19 +182,19 @@ const FormGiay = ({ record }) => {
             <div className={styles.group_second_row__2}>
               <div className={styles.group_second_row__2_pair}>
                 <label>Giá gót:</label>
-                <input 
+                <input
                   name="Giá gót"
                   value={inputForm["Giá gót"]}
                   onChange={(e) => handleChangeInformationForm(e)}
-                  />
+                />
               </div>
               <div className={styles.group_second_row__2_pair}>
                 <label className={styles.label_custom}>Giá keo:</label>
-                <input 
+                <input
                   name="Giá keo"
                   value={inputForm["Giá keo"]}
                   onChange={(e) => handleChangeInformationForm(e)}
-                  />
+                />
               </div>
             </div>
 
@@ -212,7 +204,7 @@ const FormGiay = ({ record }) => {
 
             <div className={styles.group_second_row__1}>
               <label>Ghi chú:</label>
-              <input 
+              <input
                 name="Ghi chú"
                 value={inputForm["Ghi chú"]}
                 onChange={(e) => handleChangeInformationForm(e)}
@@ -223,7 +215,7 @@ const FormGiay = ({ record }) => {
               styles.group_second_row__2_gia_von)}>
               <div className={styles.group_second_row__2_pair}>
                 <label>Giá vốn:</label>
-                <input 
+                <input
                   name="Giá vốn"
                   value={inputForm["Giá vốn"]}
                   onChange={(e) => handleChangeInformationForm(e)}
@@ -237,48 +229,60 @@ const FormGiay = ({ record }) => {
           <div className={styles.group_third_row}>
             <div className={styles.group_third_row_item}>
               <label>Trang trí đế:</label>
-              <textarea 
+              <textarea
                 name="Trang trí đế"
                 value={inputForm["Trang trí đế"]}
                 onChange={(e) => handleChangeInformationForm(e)}
-                />
+              />
             </div>
             <div className={styles.group_third_row_item}>
               <label>Trang trí quai:</label>
-              <textarea 
+              <textarea
                 name="Trang trí quai"
                 value={inputForm["Trang trí quai"]}
                 onChange={(e) => handleChangeInformationForm(e)}
-                />
+              />
             </div>
           </div>
 
           <div className={styles.group_third_row}>
             <div className={styles.group_third_row_item}>
               <label>Ghi chú đế:</label>
-              <textarea 
+              <textarea
                 name="Ghi chú đế"
                 value={inputForm["Ghi chú đế"]}
                 onChange={(e) => handleChangeInformationForm(e)}
-                />
+              />
             </div>
             <div className={styles.group_third_row_item}>
               <label>Ghi chú quai:</label>
-              <textarea 
+              <textarea
                 name="Ghi chú quai"
                 value={inputForm["Ghi chú quai"]}
                 onChange={(e) => handleChangeInformationForm(e)}
-                />
+              />
             </div>
           </div>
 
         </div>
 
-        <label>
-          <button type="primary" htmlType="submit">
-            Submit
-          </button>
-        </label>
+        {/* button here */}
+        <div className={styles.group_third_row}>
+          <div> 
+            <button>Button first</button>
+            <button>Second first</button>
+          </div>
+
+          <div>
+            <button>Lưu</button>
+            <button>Nhập tiếp</button>
+            <button>Đóng</button>
+
+          </div>
+
+
+        </div>
+
       </form>
     </div>
 
