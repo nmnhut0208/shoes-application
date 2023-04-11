@@ -3,7 +3,7 @@ import { Table, Space } from 'antd';
 import { useEffect, useState, useRef } from 'react'
 import styles from "./Giay.module.scss"
 import FormGiay from './FormGiay';
-import Modal from '../../../Modal';
+import Modal from '../../../common_tag';
 
 
 const list_key = ["STT", "Mã giày", "Đơn giá",
