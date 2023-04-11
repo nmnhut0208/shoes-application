@@ -1,73 +1,5 @@
-html {
-    font-size: 62.5%;
-}
+@import '@common_scss/form.module.scss';
 
-:root {
-    --margin-bottom-config: 0.6rem;
-    --height-region: auto;
-    --height-image: 18rem;
-    --padding-setting: 4px 11px;
-    --border-setting:  0.1rem solid rgba(0, 0, 0, 0.3);
-}
-
-.font-setting {
-    margin-top: auto;
-    margin-bottom: auto;
-    font-size: 1.4rem;
-    font-family: Arial;
-}
-
-.flex-row {
-    display: flex;
-    flex-direction: row;
-}
-
-.flex-column {
-    display: flex;
-    flex-direction: column;
-}
-
-.flex_row_space-between {
-    @extend .flex-row;
-    justify-content: space-between;
-}
-
-.form {
-    input {
-        display: inline-block;
-        padding: var(--padding-setting);
-        border: var(--border-setting);
-        @extend .font-setting;
-    }
-
-    span {
-        display: inline-block;
-        width: 20rem;
-        padding: var(--padding-setting);
-        border: var(--border-setting);
-        margin-left: 0.5rem;
-        @extend .font-setting;
-    }
-
-    button {
-        padding: var(--padding-setting);
-    }
-
-    label {
-        width: 10rem;
-        display: inline-block;
-        @extend .font-setting;
-    }
-
-    img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        height: var(--height-image);
-        object-fit: cover;
-    }
-}
-// ======================================
 .group_first {
     height: var(--height-region);
     width: 100%;
@@ -81,7 +13,6 @@ html {
         }
     }
 
-    // ========================
     .group_first__right {
         width: 33.5rem;
         @extend .flex-column;
@@ -92,7 +23,7 @@ html {
     }
 }
 
-// ===========================================
+
 .group_second {
     .group_second_row {
         @extend .flex_row_space-between;
@@ -127,7 +58,6 @@ html {
     }
 }
 
-// ============================================
 .group_third {
     .group_third_row {
         @extend .flex_row_space-between;

@@ -1,7 +1,6 @@
 import styles from './Modal.module.scss'
 
 const Modal = ({ title, open, onCancel, children }) => {
-    console.log("re-render modal")
     if (!open) { return null }
     return (
         <div className={styles.modal} >

@@ -1,9 +1,10 @@
 import { Table, Space } from 'antd';
 // import ResizableAntdTable from 'resizable-antd-table';
 import { useEffect, useState, useRef } from 'react'
+import Modal from '@common_tag';
 import styles from "./Giay.module.scss"
 import FormGiay from './FormGiay';
-import Modal from '../../../common_tag';
+
 
 
 const list_key = ["STT", "Mã giày", "Đơn giá",

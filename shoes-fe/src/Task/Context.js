@@ -1,5 +1,4 @@
-import { useState, createContext } from "react";
-// import { getHandleHeThong, getHandleDanhMuc } from './InfoHandleClick'
+import { createContext } from "react";
 
 const Context = createContext()
 

@@ -40,6 +40,7 @@ const FormGiay = ({ record, setRecord, handleCancel }) => {
                 className={styles.item_size_middle}
               />
             </div>
+
             <div className={styles.group_first__left_row}>
               <label>Mã tham chiếu:</label>
               <input
@@ -59,6 +60,7 @@ const FormGiay = ({ record, setRecord, handleCancel }) => {
                 className={styles.item_size_big}
               />
             </div>
+
             <div className={styles.group_first__left_row}>
               <label>Khách hàng:</label>
               <input
@@ -133,6 +135,7 @@ const FormGiay = ({ record, setRecord, handleCancel }) => {
                   onChange={(e) => handleChangeInformationForm(e)}
                 />
               </div>
+
               <div className={styles.group_second_row__right_pair}>
                 <label className={styles.label_custom}>Giá tân trang:</label>
                 <input
@@ -155,6 +158,7 @@ const FormGiay = ({ record, setRecord, handleCancel }) => {
               />
               <span> Tên màu </span>
             </div>
+
             <div className={styles.group_second_row__right}>
               <div className={styles.group_second_row__right_pair}>
                 <label>Giá sườn:</label>
@@ -164,6 +168,7 @@ const FormGiay = ({ record, setRecord, handleCancel }) => {
                   onChange={(e) => handleChangeInformationForm(e)}
                 />
               </div>
+
               <div className={styles.group_second_row__right_pair}>
                 <label className={styles.label_custom}>Nhân công:</label>
                 <input
@@ -216,13 +221,9 @@ const FormGiay = ({ record, setRecord, handleCancel }) => {
               />
             </div>
 
-            <div
-              className={clsx(
-                styles.group_second_row__right,
-                styles.group_second_row__right_gia_von
-              )}
-            >
-              <div className={styles.group_second_row__right_pair}>
+            <div className={styles.group_second_row__right}>
+              <div className={clsx(styles.group_second_row__right_pair,
+              styles.group_second_row__right_gia_von)}>
                 <label>Giá vốn:</label>
                 <input
                   name="Giá vốn"
@@ -245,6 +246,7 @@ const FormGiay = ({ record, setRecord, handleCancel }) => {
                 onChange={(e) => handleChangeInformationForm(e)}
               />
             </div>
+
             <div className={styles.group_third_row_item}>
               <label>Trang trí quai:</label>
               <textarea
@@ -264,6 +266,7 @@ const FormGiay = ({ record, setRecord, handleCancel }) => {
                 onChange={(e) => handleChangeInformationForm(e)}
               />
             </div>
+            
             <div className={styles.group_third_row_item}>
               <label>Ghi chú quai:</label>
               <textarea

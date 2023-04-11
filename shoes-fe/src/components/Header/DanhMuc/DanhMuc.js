@@ -1,7 +1,8 @@
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { itemsHangHoa } from './ConstantVariable'
-import { useTaskContext, actions } from '../../../Task';
+import { useTaskContext, actions } from '@task';
+
 
 const DanhMuc = () => {
     const [stateTask, dispatchTask] = useTaskContext()

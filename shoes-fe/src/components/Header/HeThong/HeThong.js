@@ -1,7 +1,7 @@
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { itemsHeThong } from './ConstantVariable' 
-import { useTaskContext, actions } from '../../../Task';
+import { useTaskContext, actions } from '@task';
 
 
 const HeThong = () => {
