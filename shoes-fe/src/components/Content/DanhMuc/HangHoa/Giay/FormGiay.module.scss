@@ -1,175 +1,176 @@
 html {
     font-size: 62.5%;
-  }
+}
 
 :root {
     --margin-bottom-config: 0.6rem;
     --height-region: auto;
     --height-image: 18rem;
-  }
-.form {
-    display: flex;
-    justify-content: center;
+    --padding-setting: 4px 11px;
+    --border-setting:  0.1rem solid rgba(0, 0, 0, 0.3);
 }
 
-.form input {
-    display: inline-block;
-    padding: 4px 11px;
+.font-setting {
+    margin-top: auto;
+    margin-bottom: auto;
     font-size: 1.4rem;
     font-family: Arial;
-    border: 0.1rem solid rgba(0, 0, 0, 0.3);
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex_row_space-between {
+    @extend .flex-row;
+    justify-content: space-between;
+}
+
+.form {
+    // display: flex;
+    // justify-content: center;
+    input {
+        display: inline-block;
+        padding: var(--padding-setting);
+        border: var(--border-setting);
+        @extend .font-setting;
+    }
+
+    span {
+        display: inline-block;
+        width: 20rem;
+        padding: var(--padding-setting);
+        border: var(--border-setting);
+        margin-left: 0.5rem;
+        @extend .font-setting;
+    }
+
+    button {
+        padding: var(--padding-setting);
+    }
+
+    label {
+        width: 10rem;
+        display: inline-block;
+        @extend .font-setting;
+        // box-sizing: border-box;
+        
+    }
+    
     
 }
-
-.form span {
-    display: inline-block;
-    width: 20rem;
-    padding: 4px 11px;
-    margin-top: auto;
-    margin-bottom: auto;
-    font-size: 1.4rem;
-    font-family: Arial;
-    border: 0.1rem solid rgba(0, 0, 0, 0.3);
-    margin-left: 0.5rem;
-}
-
-.form button {
-    padding: 4px 11px;
-}
-
-.form label {
-    width: 10rem;
-    display: inline-block;
-    font-size: 1.4rem;
-    font-family: Arial;
-    box-sizing: border-box;
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
 // ======================================
 .group_first {
     height: var(--height-region);
     width: 100%;
-    display: flex;
-    flex-direction: row;
-}
+    @extend .flex-row;
 
-.group_first__1 {
-    width: 60rem;
-    display: flex;
-    flex-direction: column;
-}
+    .group_first__1 {
+        width: 60rem;
+        display: flex;
+        flex-direction: column;
 
-.group_first__1_row {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: var(--margin-bottom-config);
-}
+        .group_first__1_row {
+            @extend .flex-row;
+            margin-bottom: var(--margin-bottom-config);
+        }
+    }
 
-// ========================
-.group_first__2 {
-    width: 33.5rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.group_first__2_image {
-    display: flex;
-    flex-direction: column-reverse;
-}
-
-.group_first__2_image_container {
-    width: 100%;
-    display: block;
-    position: relative;
-    border: 0.1rem solid rgba(27, 26, 26, 0.348);
-}
-
-.group_first__2_image_container img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height: var(--height-image);
-    object-fit:cover;
+    // ========================
+    .group_first__2 {
+        width: 33.5rem;
+        display: flex;
+        flex-direction: column;
+        .group_first__2_image {
+            display: flex;
+            flex-direction: column-reverse;
+            .group_first__2_image_container {
+                // width: 100%;
+                // display: block;
+                // position: relative;
+                border: var(--border-setting);
+            }
+            .group_first__2_image_container img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                height: var(--height-image);
+                object-fit: cover;
+                border: var(--border-setting);
+            }
+        }
+    }
 }
 
 // ===========================================
+.group_second {
+    .group_second_row {
+        @extend .flex_row_space-between;
+        margin-bottom: var(--margin-bottom-config);
+        width: 100%;
+    }
+    .group_second_row__1 {
+        width: 60rem;
+        @extend .flex-row;
+    }
+    .group_second_row__2 {
+        @extend .flex_row_space-between;
+        width: 33.5rem;
+        .group_second_row__2_pair {
+            @extend .flex_row_space-between;
+            width: 33.5rem;
+            input {
+                width: 4rem;
+            }
+            label {
+                max-width: 9rem;
+            }
+            .label_custom {
+                margin-left: 0.5rem;
+            }
+        }
+        .group_second_row__2_gia_von {
+            input {
+                width: 20.7rem;
+            }
+        }
+    }
+}
 
-.group_second_row {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin-bottom: var(--margin-bottom-config);
-    justify-content: space-between;
-}
-.group_second_row__1 {
-    width: 60rem;
-    display: flex;
-    flex-direction: row;
-}
-
-.group_second_row__2 {
-    display: flex;
-    justify-content: space-between;
-    width: 33.5rem;
-    flex-direction: row;    
-}
-
-.group_second_row__2_pair {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 33.5rem;
-}
-
-.group_second_row__2 input {
-    width: 4rem;
-}
-.group_second_row__2_pair .label_custom {
-    margin-left: 0.5rem;
-}
-.group_second_row__2_pair label {
-    max-width: 9rem;
-}
-.group_second_row__2_gia_von input {
-    width: 20.7rem ;
-}
 // ============================================
-
-.group_third textarea {
-    width: 30rem;
-    height: 7rem;
+.group_third {
+    .group_third_row {
+        @extend .flex_row_space-between;
+        margin-bottom: var(--margin-bottom-config);
+        textarea {
+            width: 30rem;
+            height: 7rem;
+            border: var(--border-setting);
+        }
+        .group_third_row_item {
+            @extend .flex-row;
+        }
+    }
 }
 
-.group_third_row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.group_button {
+    @extend .flex_row_space-between;
     margin-bottom: var(--margin-bottom-config);
+    button:not(:first-child) {
+        margin-left: 0.5rem;
+        margin-top: 1rem;
+    }
 }
-
-.group_third_row_item {
-    display: flex;
-    flex-direction: row;
-}
-
-.group_third_row button:not(:first-child) {
-    margin-left: 0.5rem;
-    margin-top: 1rem;
-}
-// ============================================
 
 .item_size_middle {
     width: 24rem;
 }
 
 .item_size_small {
-    width: 15rem;;
+    width: 15rem;
 }
 
 .item_size_big {
     width: 45rem;
 }
-
-
