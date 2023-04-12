@@ -2,8 +2,14 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 import styles from "./FormGiay.module.scss";
 
-const FormGiay = ({ record, setRecord, handleCancel }) => {
-  const [inputForm, setInputForm] = useState(record);
+const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
+  // TODO: Sau này sửa STT thành tên duy nhất.
+  const [inputForm, setInputForm] = useState(() => {
+    var infos = infoGiay.filter((obj) => {
+      return obj.STT === id;
+    });
+    return infos[0];
+  });
   console.log("record form: re-render");
 
   var image_url =
@@ -14,12 +20,15 @@ const FormGiay = ({ record, setRecord, handleCancel }) => {
     const data = { ...inputForm };
     data[e.target.name] = e.target.value;
     setInputForm(data);
-    setRecord(e.target.value);
   };
 
   const handleSaveFrom = () => {
     // saveDataBase()
-    setRecord(inputForm);
+    setInfoGiay(
+      infoGiay.map((info) =>
+      info.STT === inputForm.STT ? inputForm : info
+      )
+    );
     handleCancel(false);
   };
 
@@ -222,8 +231,12 @@ const FormGiay = ({ record, setRecord, handleCancel }) => {
             </div>
 
             <div className={styles.group_second_row__right}>
-              <div className={clsx(styles.group_second_row__right_pair,
-              styles.group_second_row__right_gia_von)}>
+              <div
+                className={clsx(
+                  styles.group_second_row__right_pair,
+                  styles.group_second_row__right_gia_von
+                )}
+              >
                 <label>Giá vốn:</label>
                 <input
                   name="Giá vốn"
@@ -266,7 +279,7 @@ const FormGiay = ({ record, setRecord, handleCancel }) => {
                 onChange={(e) => handleChangeInformationForm(e)}
               />
             </div>
-            
+
             <div className={styles.group_third_row_item}>
               <label>Ghi chú quai:</label>
               <textarea

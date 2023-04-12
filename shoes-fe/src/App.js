@@ -1,5 +1,4 @@
-import { CustomHeader, ShopContent } from './components'
-
+import { CustomHeader, ShopContent } from "./components";
 
 function App() {
   return (

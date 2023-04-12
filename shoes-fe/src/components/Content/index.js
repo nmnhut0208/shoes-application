@@ -1,1 +1,1 @@
-export { default as ShopContent } from './Content'
+export { default as ShopContent } from "./Content";

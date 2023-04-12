@@ -1,2 +1,2 @@
-export { CustomHeader } from './Header/'
-export { ShopContent } from './Content'
+export { CustomHeader } from "./Header/";
+export { ShopContent } from "./Content";

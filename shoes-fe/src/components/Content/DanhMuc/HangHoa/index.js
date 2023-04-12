@@ -1,1 +1,1 @@
-export { Giay } from './Giay'
+export { Giay } from "./Giay";
