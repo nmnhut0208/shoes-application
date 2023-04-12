@@ -8,7 +8,6 @@ export const setTaskHeThong = (payload) => {
 };
 
 export const setTaskDanhMuc = (payload) => {
-  console.log("setTaskDanhMuc: ", payload);
   return {
     type: SET_TASK_DANH_MUC,
     payload,

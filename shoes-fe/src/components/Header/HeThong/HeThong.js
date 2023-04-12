@@ -6,8 +6,6 @@ import { useTaskContext, actions } from "@task";
 const HeThong = () => {
   const [stateTask, dispatchTask] = useTaskContext();
   const inforCurrentTask = stateTask.inforCurrentTask;
-  console.log("inforCurrentTask: ", inforCurrentTask);
-  console.log("itemsHeThong: ", itemsHeThong);
   const handleOnclick = (e) => {
     dispatchTask(actions.setTaskHeThong(e.key));
   };

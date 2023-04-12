@@ -12,7 +12,6 @@ const FormGot = () => {
     });
     return infos[0];
   });
-  console.log("record form: re-render");
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };

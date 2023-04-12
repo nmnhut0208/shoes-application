@@ -32,7 +32,6 @@ infoColumns.push({
 
 const Mau = () => {
   const [renderUI, setRenderUI] = useState(false);
-  console.log("useTableContext: ", useTableContext())
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
@@ -49,11 +48,21 @@ const Mau = () => {
         // if neu co thong tin moi show ne 
         dispatchTable(actions_table.setModeShowTable(true));
         setRenderUI(true);
-        console.log("stateTable: ", stateTable);
       })
       .catch((err) => {
         console.log(":error: ", err);
       });
+
+      // cleanup function
+      return () =>{
+        console.log("cleanup mau")
+        dispatchTable(actions_table.setInforColumnTable({}));
+        dispatchTable(actions_table.setInforTable([]));
+        dispatchTable(actions_table.setModeShowTable(false));
+        dispatchTable(actions_table.setTitleModal(""));
+        dispatchTable(actions_table.setComponentForm(<></>));
+        dispatchTable(actions_table.setInforRecordTable({}));
+      }
   }, []);
 
   return (

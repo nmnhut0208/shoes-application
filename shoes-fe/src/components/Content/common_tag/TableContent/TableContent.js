@@ -23,9 +23,7 @@ const TableContent = () => {
             return {
               onDoubleClick: () => {
                 dispatchTable(actions_table.setInforRecordTable(record));
-                console.log("double click 1 row");
                 dispatchTable(actions_table.setModeShowModal(true));
-                console.log("stateTable sau khi double click: ", stateTable);
               },
             };
           }}
