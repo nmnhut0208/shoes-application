@@ -6,6 +6,11 @@
   --height-image: 18rem;
   --padding-setting: 4px 11px;
   --border-setting: 0.1rem solid rgba(0, 0, 0, 0.3);
+  --tag-info-margin-left-size: 0.5rem;
+  --tag-div-margin-right-size: 1rem;
+  --input-width-min: 10rem;
+  --input-width-middle: 15rem;
+  --input-width-big: calc(var(--input-width-middle) * 2);
 }
 
 .font-setting {
@@ -31,6 +36,8 @@
 }
 
 .form {
+  display: block;
+  height: auto;
   input {
     display: inline-block;
     padding: var(--padding-setting);
@@ -43,7 +50,7 @@
     width: 20rem;
     padding: var(--padding-setting);
     border: var(--border-setting);
-    margin-left: 0.5rem;
+    margin-left: var(--tag-info-margin-left-size);
     @extend .font-setting;
   }
 
@@ -55,6 +62,10 @@
     width: 10rem;
     display: inline-block;
     @extend .font-setting;
+  }
+  
+  label:after{
+    content: ":";
   }
 
   img {

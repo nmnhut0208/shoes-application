@@ -17,8 +17,11 @@
   }
 
   .model__body {
+    height: fit-content;
     background-color: white;
     margin: 0 auto;
+    margin-top: auto;
+    margin-bottom: auto;;
     position: relative;
     z-index: 3;
     border-radius: var(--border-radius-size);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import styles from "./FormGiay.module.scss";
 
@@ -41,7 +41,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
         <div className={styles.group_first}>
           <div className={styles.group_first__left}>
             <div className={styles.group_first__left_row}>
-              <label>Mã giày:</label>
+              <label>Mã giày</label>
               <input
                 value={inputForm["Mã giày"]}
                 onChange={(e) => handleChangeInformationForm(e)}
@@ -51,7 +51,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
             </div>
 
             <div className={styles.group_first__left_row}>
-              <label>Mã tham chiếu:</label>
+              <label>Mã tham chiếu</label>
               <input
                 name="Mã tham chiếu"
                 value={inputForm["Mã tham chiếu"]}
@@ -61,7 +61,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
             </div>
 
             <div className={styles.group_first__left_row}>
-              <label>Tên giày:</label>
+              <label>Tên giày</label>
               <input
                 name="Tên giày"
                 value={inputForm["Tên giày"]}
@@ -71,7 +71,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
             </div>
 
             <div className={styles.group_first__left_row}>
-              <label>Khách hàng:</label>
+              <label>Khách hàng</label>
               <input
                 name="Khách hàng"
                 value={inputForm["Khách hàng"]}
@@ -81,36 +81,36 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
             </div>
 
             <div className={styles.group_first__left_row}>
-              <label>Mã đế:</label>
+              <label>Mã đế</label>
               <input
                 name="Mã đế"
                 value={inputForm["Mã đế"]}
                 onChange={(e) => handleChangeInformationForm(e)}
                 className={styles.item_size_small}
               />
-              <span> Tên đế </span>
+              <span>Tên đế</span>
             </div>
 
             <div className={styles.group_first__left_row}>
-              <label>Mã sườn:</label>
+              <label>Mã sườn</label>
               <input
                 name="Mã sườn"
                 value={inputForm["Mã sườn"]}
                 onChange={(e) => handleChangeInformationForm(e)}
                 className={styles.item_size_small}
               />
-              <span> Tên sườn </span>
+              <span>Tên sườn</span>
             </div>
 
             <div className={styles.group_first__left_row}>
-              <label>Mã cá:</label>
+              <label>Mã cá</label>
               <input
                 name="Mã cá"
                 value={inputForm["Mã cá"]}
                 onChange={(e) => handleChangeInformationForm(e)}
                 className={styles.item_size_small}
               />
-              <span> Tên cá </span>
+              <span>Tên cá</span>
             </div>
           </div>
 
@@ -125,19 +125,19 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
         <div className={styles.group_second}>
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__left}>
-              <label>Mã quai:</label>
+              <label>Mã quai</label>
               <input
                 name="Mã quai"
                 value={inputForm["Mã quai"]}
                 onChange={(e) => handleChangeInformationForm(e)}
                 className={styles.item_size_small}
               />
-              <span> Tên quai </span>
+              <span>Tên quai</span>
             </div>
 
             <div className={styles.group_second_row__right}>
               <div className={styles.group_second_row__right_pair}>
-                <label>Giá trang trí:</label>
+                <label>Giá trang trí</label>
                 <input
                   name="Giá trang trí"
                   value={inputForm["Giá trang trí"]}
@@ -146,7 +146,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
               </div>
 
               <div className={styles.group_second_row__right_pair}>
-                <label className={styles.label_custom}>Giá tân trang:</label>
+                <label className={styles.label_custom}>Giá tân trang</label>
                 <input
                   name="Giá trang trí"
                   value={inputForm["Giá trang trí"]}
@@ -158,7 +158,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
 
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__left}>
-              <label>Màu:</label>
+              <label>Màu</label>
               <input
                 name="Màu"
                 value={inputForm["Màu"]}
@@ -170,7 +170,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
 
             <div className={styles.group_second_row__right}>
               <div className={styles.group_second_row__right_pair}>
-                <label>Giá sườn:</label>
+                <label>Giá sườn</label>
                 <input
                   name="Giá sườn"
                   value={inputForm["Giá sườn"]}
@@ -179,7 +179,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
               </div>
 
               <div className={styles.group_second_row__right_pair}>
-                <label className={styles.label_custom}>Nhân công:</label>
+                <label className={styles.label_custom}>Nhân công</label>
                 <input
                   name="Nhân công"
                   value={inputForm["Nhân công"]}
@@ -191,7 +191,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
 
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__left}>
-              <label>Đơn giá:</label>
+              <label>Đơn giá</label>
               <input
                 name="Đơn giá"
                 value={inputForm["Đơn giá"]}
@@ -201,7 +201,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
             </div>
             <div className={styles.group_second_row__right}>
               <div className={styles.group_second_row__right_pair}>
-                <label>Giá gót:</label>
+                <label>Giá gót</label>
                 <input
                   name="Giá gót"
                   value={inputForm["Giá gót"]}
@@ -209,7 +209,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
                 />
               </div>
               <div className={styles.group_second_row__right_pair}>
-                <label className={styles.label_custom}>Giá keo:</label>
+                <label className={styles.label_custom}>Giá keo</label>
                 <input
                   name="Giá keo"
                   value={inputForm["Giá keo"]}
@@ -221,7 +221,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
 
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__left}>
-              <label>Ghi chú:</label>
+              <label>Ghi chú</label>
               <input
                 name="Ghi chú"
                 value={inputForm["Ghi chú"]}
@@ -237,7 +237,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
                   styles.group_second_row__right_gia_von
                 )}
               >
-                <label>Giá vốn:</label>
+                <label>Giá vốn</label>
                 <input
                   name="Giá vốn"
                   value={inputForm["Giá vốn"]}
@@ -252,7 +252,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
         <div className={styles.group_third}>
           <div className={styles.group_third_row}>
             <div className={styles.group_third_row_item}>
-              <label>Trang trí đế:</label>
+              <label>Trang trí đế</label>
               <textarea
                 name="Trang trí đế"
                 value={inputForm["Trang trí đế"]}
@@ -261,7 +261,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
             </div>
 
             <div className={styles.group_third_row_item}>
-              <label>Trang trí quai:</label>
+              <label>Trang trí quai</label>
               <textarea
                 name="Trang trí quai"
                 value={inputForm["Trang trí quai"]}
@@ -272,7 +272,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
 
           <div className={styles.group_third_row}>
             <div className={styles.group_third_row_item}>
-              <label>Ghi chú đế:</label>
+              <label>Ghi chú đế</label>
               <textarea
                 name="Ghi chú đế"
                 value={inputForm["Ghi chú đế"]}
@@ -281,7 +281,7 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
             </div>
 
             <div className={styles.group_third_row_item}>
-              <label>Ghi chú quai:</label>
+              <label>Ghi chú quai</label>
               <textarea
                 name="Ghi chú quai"
                 value={inputForm["Ghi chú quai"]}
