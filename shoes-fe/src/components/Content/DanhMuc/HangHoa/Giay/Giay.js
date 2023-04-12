@@ -1,9 +1,11 @@
 import { Table, Space } from "antd";
 // import ResizableAntdTable from 'resizable-antd-table';
 import { useEffect, useState } from "react";
-import { Modal } from "@common_tag";
+import { TableContent } from "@common_tag";
 import styles from "./Giay.module.scss";
 import FormGiay from "./FormGiay";
+import { useTableContext, actions_table } from "@table_context";
+
 
 const list_key = [
   "STT",
@@ -46,63 +48,34 @@ infoColumns.push({
 console.log("infoColumns: ", infoColumns);
 
 const Giay = () => {
-  const [infoGiay, setInfoGiay] = useState({});
-  const [showGiay, setShowGiay] = useState(false);
-  const [record, setRecord] = useState({});
-  const [visible, setVisible] = useState(false);
+  const [renderUI, setRenderUI] = useState(false);
+  console.log("useTableContext: ", useTableContext())
+  const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
+    dispatchTable(actions_table.setTitleModal("Giay - F"));
+    dispatchTable(actions_table.setComponentForm(FormGiay));
     fetch("http://localhost:8000/items")
       .then((response) => {
         console.log("response: ", response);
         return response.json();
       })
       .then((info) => {
-        console.log(":info: ", info);
-        setInfoGiay(info);
-        setShowGiay(true);
+        dispatchTable(actions_table.setInforColumnTable(infoColumns));
+        dispatchTable(actions_table.setInforTable(info));
+        // if neu co thong tin moi show ne 
+        dispatchTable(actions_table.setModeShowTable(true));
+        setRenderUI(true);
+        console.log("stateTable: ", stateTable);
       })
       .catch((err) => {
         console.log(":error: ", err);
       });
   }, []);
 
-  const handleCancel = () => {
-    setVisible(false);
-  };
-
   return (
     <>
-      {showGiay && (
-        <Table
-          // caption="Thông tin Giày"
-          className={styles.tableCustom}
-          columns={infoColumns}
-          dataSource={infoGiay}
-          scroll={{
-            x: 1300,
-            y: 500,
-          }}
-          onRow={(record) => {
-            return {
-              onDoubleClick: () => {
-                setRecord(record);
-                setVisible(true);
-              },
-            };
-          }}
-        />
-      )}
-
-      <Modal title="Thông tin chi tiết" open={visible} onCancel={handleCancel}>
-        <FormGiay
-        // TODO: sau này sửa STT thành key duy nhất nè
-          id={record.STT}
-          handleCancel={handleCancel}
-          infoGiay={infoGiay}
-          setInfoGiay={setInfoGiay}
-        ></FormGiay>
-      </Modal>
+        {(renderUI && <TableContent/>)}
     </>
   );
 };

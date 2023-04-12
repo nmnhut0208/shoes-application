@@ -1,12 +1,14 @@
 import { useState } from "react";
 import clsx from "clsx";
 import styles from "./FormGiay.module.scss";
+import { useTableContext, actions_table } from "@table_context";
 
-const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
+const FormGiay = () => {
   // TODO: Sau này sửa STT thành tên duy nhất.
+  const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(() => {
-    var infos = infoGiay.filter((obj) => {
-      return obj.STT === id;
+    var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
+      return obj.STT === stateTable.inforShowTable.record.STT;
     });
     return infos[0];
   });
@@ -24,16 +26,18 @@ const FormGiay = ({ id, handleCancel, infoGiay, setInfoGiay }) => {
 
   const handleSaveFrom = () => {
     // saveDataBase()
-    setInfoGiay(
-      infoGiay.map((info) =>
-      info.STT === inputForm.STT ? inputForm : info
+    dispatchTable(
+      actions_table.setInforTable(
+        stateTable.inforShowTable.infoTable.map((info) =>
+          info.STT === inputForm.STT ? inputForm : info
+        )
       )
     );
-    handleCancel(false);
+    dispatchTable(actions_table.setModeShowModal(false));
   };
 
   return (
-    <div className={clsx(styles.form)}>
+    <div className={styles.form}>
       <form
       // onFinish={onFinish}
       // onFinishFailed={onFinishFailed}

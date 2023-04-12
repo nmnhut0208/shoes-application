@@ -1,16 +1,18 @@
 import { useState } from "react";
 import clsx from "clsx";
 import styles from "./FormQuai.module.scss";
+import { useTableContext, actions_table } from "@table_context";
 
-const FormQuai = ({ id, handleCancelForm, infoTable, setInfoTable }) => {
-  // TODO: Sau này sửa STT thành tên duy nhất.
+const FormQuai = () => {
+  const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(() => {
-    var infos = infoTable.filter((obj) => {
-      return obj.STT === id;
+    var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
+      return obj.STT === stateTable.inforShowTable.record.STT;
     });
     return infos[0];
   });
   console.log("record form: re-render");
+
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -20,10 +22,14 @@ const FormQuai = ({ id, handleCancelForm, infoTable, setInfoTable }) => {
 
   const handleSaveFrom = () => {
     // saveDataBase()
-    setInfoTable(
-      infoTable.map((info) => (info.STT === inputForm.STT ? inputForm : info))
+    dispatchTable(
+      actions_table.setInforTable(
+        stateTable.inforShowTable.infoTable.map((info) =>
+          info.STT === inputForm.STT ? inputForm : info
+        )
+      )
     );
-    handleCancelForm(false);
+    dispatchTable(actions_table.setModeShowModal(false));
   };
 
   var image_url =
