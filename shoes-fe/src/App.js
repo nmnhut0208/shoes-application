@@ -1,10 +1,14 @@
 import { CustomHeader, ShopContent } from "./components";
+import { ProviderTable } from '@table_context';
 
 function App() {
   return (
     <div className="App">
       <CustomHeader />
-      <ShopContent />
+      <ProviderTable>
+        <ShopContent />
+      </ProviderTable>
+
     </div>
   );
 }

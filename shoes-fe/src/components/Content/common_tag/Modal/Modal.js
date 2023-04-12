@@ -1,7 +1,12 @@
+import { useTableContext, actions_table } from "@table_context";
 import styles from "./Modal.module.scss";
 
-const Modal = ({ title, open, onCancel, children }) => {
-  if (!open) {
+
+const Modal = ({children }) => {
+  const [stateTable, dispatchTable] = useTableContext();
+  const infoShowModal = stateTable["infoShowModal"];
+  
+  if (!infoShowModal.visible) {
     return null;
   }
   return (
@@ -9,8 +14,10 @@ const Modal = ({ title, open, onCancel, children }) => {
       <div className={styles.modal__overlay}></div>
       <div className={styles.model__body}>
         <div className={styles.header_modal}>
-          <label className={styles.title_modal}>{title}</label>
-          <button className={styles.button_close_modal} onClick={onCancel}>
+          <label className={styles.title_modal}>{infoShowModal.title}</label>
+          <button className={styles.button_close_modal} 
+            onClick={()=>dispatchTable(actions_table.setModeShowModal(false))}
+            >
             X
           </button>
         </div>

@@ -1,7 +1,7 @@
 import { Table, Space } from "antd";
 // import ResizableAntdTable from 'resizable-antd-table';
 import { useEffect, useState } from "react";
-import Modal from "@common_tag";
+import { Modal } from "@common_tag";
 import FormSuon from "./FormSuon";
 
 const list_key = ["STT", "Mã sườn", "Tên sườn", 
