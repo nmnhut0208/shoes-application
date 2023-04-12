@@ -1,7 +1,7 @@
-import { Table, Space } from "antd";
+import { Space } from "antd";
 // import ResizableAntdTable from 'resizable-antd-table';
 import { useEffect, useState } from "react";
-import { Modal, TableContent} from "@common_tag";
+import { TableContent} from "@common_tag";
 import FormGot from "./FormGot";
 import { useTableContext, actions_table } from "@table_context";
 
