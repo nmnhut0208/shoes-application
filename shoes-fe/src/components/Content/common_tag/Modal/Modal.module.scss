@@ -1,3 +1,6 @@
+@import "@GlobalStyle/global.module.scss";
+@import "@common_scss/form.module.scss";
+
 :root {
   --border-radius-size: 0.5rem;
 }
@@ -21,7 +24,7 @@
     background-color: white;
     margin: 0 auto;
     margin-top: auto;
-    margin-bottom: auto;;
+    margin-bottom: auto;
     position: relative;
     z-index: 3;
     border-radius: var(--border-radius-size);
@@ -32,20 +35,23 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: rgb(116, 227, 227);
+    background-image: var(--background-image);
+    padding: 0.5rem;
 
     label {
-      font-weight: bold;
+      color: white;
+      @extend .font-setting;
       font-size: 2rem;
     }
   }
 
   .button_close_modal {
-    background-color: red;
-    border-color: red;
-    font-weight: bold;
-    font-size: 1.5rem;
-    color: white;
+    background-color: white;
+    border-color: white;
+    @extend .font-setting;
+    font-size: 2rem;
+    color: red;
+    border-radius: 0.1rem;
   }
 
   .content_modal {

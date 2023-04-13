@@ -1,0 +1,20 @@
+.ant-table-row td {
+  border-bottom: 0.1rem solid #ddd !important;
+  border-left: 0.1rem solid #ddd;
+}
+
+.ant-table-cell {
+  white-space: nowrap;
+  padding: 0.25rem 0.5rem !important;
+}
+.ant-table-cell th {
+  margin-left: 0 auto;
+  margin-right: 0 auto;
+}
+
+.ant-table-title {
+  font-size: 2rem;
+  padding: 0 1rem 0 0!important;
+  color: rgb(94, 2, 2);
+}
+

@@ -1,5 +1,4 @@
 import { Space } from "antd";
-// import ResizableAntdTable from 'resizable-antd-table';
 import { useEffect, useState } from "react";
 import { TableContent } from "@common_tag";
 import FormGot from "./FormGot";
@@ -39,6 +38,7 @@ const Got = () => {
 
   useEffect(() => {
     dispatchTable(actions_table.setTitleModal("Gót - F0014"));
+    dispatchTable(actions_table.setTitleTable("Gót - F0013"));
     dispatchTable(actions_table.setComponentForm(FormGot));
     fetch("http://localhost:8000/items_got")
       .then((response) => {

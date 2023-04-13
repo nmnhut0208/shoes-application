@@ -1,8 +1,7 @@
 import { Table } from "antd";
-// import ResizableAntdTable from 'resizable-antd-table';
-import { useEffect, useState } from "react";
 import { Modal } from "@common_tag";
 import { useTableContext, actions_table } from "@table_context";
+import "./table_ant.css";
 
 const TableContent = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -13,6 +12,8 @@ const TableContent = () => {
     <>
       {inforShowTable.showTable && (
         <Table
+          pagination={{ defaultPageSize: 15 }}
+          title={() => (<div>{inforShowTable.title}</div>)}
           columns={inforShowTable.infoColumnTable}
           dataSource={inforShowTable.infoTable}
           scroll={{
@@ -31,10 +32,9 @@ const TableContent = () => {
       )}
 
       <Modal>
-        < ComponentForm /> 
+        <ComponentForm />
       </Modal>
     </>
   );
-
 };
 export default TableContent;

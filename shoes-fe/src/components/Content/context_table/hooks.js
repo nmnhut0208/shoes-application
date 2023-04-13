@@ -7,10 +7,11 @@ export const useTableContext = () => {
 };
 
 export const cleanupContextTable = (dispatch) => {
+  dispatch(actions_table.setTitleTable(""));
   dispatch(actions_table.setInforColumnTable({}));
   dispatch(actions_table.setInforTable([]));
+  dispatch(actions_table.setInforRecordTable({}));
   dispatch(actions_table.setModeShowTable(false));
   dispatch(actions_table.setTitleModal(""));
   dispatch(actions_table.setComponentForm(<></>));
-  dispatch(actions_table.setInforRecordTable({}));
 };

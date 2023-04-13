@@ -1,8 +1,6 @@
-import { Table, Space } from "antd";
-// import ResizableAntdTable from 'resizable-antd-table';
+import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "@common_tag";
-import styles from "./Giay.module.scss";
 import FormGiay from "./FormGiay";
 import {
   useTableContext,
@@ -11,31 +9,32 @@ import {
 } from "@table_context";
 
 const list_key = [
-  "STT",
-  "Mã giày",
-  "Đơn giá",
-  "Tên giày",
-  "Mã đế",
-  "Tên đế",
-  "Mã sườn",
-  "Tên sườn",
-  "Mã cá",
-  "Tên cá",
-  "Item 3",
-  "Item 4",
+  {key: "STT", width: "7rem"},
+  {key: "Mã giày", width: "21rem"},
+  {key: "Đơn giá", width: "10rem"},
+  {key: "Tên giày", width: "40rem"},
+  {key: "Mã đế", width: "8rem"},
+  {key: "Tên đế", width: "16rem"},
+  {key: "Mã sườn", width: "8rem"},
+  {key: "Tên sườn", width: "16rem"},
+  {key: "Mã cá", width: "8rem"},
+  {key: "Tên cá", width: "16rem"},
+  {key: "Mã quai", width: "8rem"},
+  {key: "Tên quai", width: "16rem"},
 ];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    title: list_key[obj],
-    width: 100,
-    dataIndex: list_key[obj],
-    key: list_key[obj].toLowerCase(),
-    // fixed: 'left',
+    title: list_key[obj]["key"],
+    width: list_key[obj]["width"],
+    dataIndex: list_key[obj]["key"],
+    key: list_key[obj]["key"].toLowerCase(),
   };
   infoColumns.push(info);
 }
+
+console.log(infoColumns);
 
 infoColumns.push({
   title: "Action",
@@ -53,7 +52,8 @@ const Giay = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Giay - F"));
+    dispatchTable(actions_table.setTitleModal("Giay - F0025"));
+    dispatchTable(actions_table.setTitleTable("Giày - F0024"));
     dispatchTable(actions_table.setComponentForm(FormGiay));
     fetch("http://localhost:8000/items")
       .then((response) => {

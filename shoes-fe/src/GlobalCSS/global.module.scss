@@ -1,0 +1,50 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+:root {
+  // --background-image: linear-gradient(
+  //   to right top,
+  //   #e4761e,
+  //   #e66b18,
+  //   #e85f14,
+  //   #e95112,
+  //   #eb4112
+  // );
+  --background-image: linear-gradient(
+    to right bottom,
+    #e4931e,
+    #e68211,
+    #e87009,
+    #ea5b0b,
+    #eb4112
+  );
+  // --background-image: linear-gradient(
+  //   to right bottom,
+  //   #e45a1e,
+  //   #ec790d,
+  //   #f09700,
+  //   #efb400,
+  //   #ebd112
+  // );
+}
+
+html {
+  font-size: 62.5%;
+}
+
+.area_header {
+  background-image: var(--background-image);
+  padding: 1rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.area_body {
+  max-height: 50% !important;
+  // overflow: auto;
+  margin-left: 2rem !important;
+  margin-right: 2rem !important;
+}

@@ -1,5 +1,4 @@
-import { Table, Space } from "antd";
-// import ResizableAntdTable from 'resizable-antd-table';
+import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "@common_tag";
 import FormSuon from "./FormSuon";
@@ -47,7 +46,8 @@ const Suon = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Sườn - F0020"));
+    dispatchTable(actions_table.setTitleModal("Sườn - F0022"));
+    dispatchTable(actions_table.setTitleTable("Sườn - F0020"));
     dispatchTable(actions_table.setComponentForm(FormSuon));
     fetch("http://localhost:8000/items_suon")
       .then((response) => {

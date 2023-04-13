@@ -1,5 +1,6 @@
 import {
   SET_INFOR_COLUMN_TABLE,
+  SET_TITLE_TABLE,
   SET_INFOR_TABLE,
   SET_MODE_SHOW_TABLE,
   SET_INFOR_RECORD_TABLE,
@@ -10,6 +11,7 @@ import {
 
 const initState = {
   inforShowTable: {
+    title: "",
     infoColumnTable: {},
     infoTable: [],
     showTable: false,
@@ -21,6 +23,11 @@ const initState = {
 
 function reducer(state, action) {
   switch (action.type) {
+    case SET_TITLE_TABLE: {
+      const info = state["inforShowTable"];
+      info["title"] = action.payload;
+      return { ...state, inforShowTable: info };
+    }
     case SET_INFOR_COLUMN_TABLE: {
       const info = state["inforShowTable"];
       info["infoColumnTable"] = action.payload;

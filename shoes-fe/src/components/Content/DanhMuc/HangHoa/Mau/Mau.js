@@ -1,5 +1,4 @@
 import { Space } from "antd";
-// import ResizableAntdTable from 'resizable-antd-table';
 import { useEffect, useState } from "react";
 import { TableContent } from "@common_tag";
 import FormMau from "./FormMau";
@@ -38,7 +37,8 @@ const Mau = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Màu sắc - F0009"));
+    dispatchTable(actions_table.setTitleModal("Màu sắc - F0010"));
+    dispatchTable(actions_table.setTitleTable("Màu sắc - F0009"));
     dispatchTable(actions_table.setComponentForm(FormMau));
     fetch("http://localhost:8000/items_mau")
       .then((response) => {

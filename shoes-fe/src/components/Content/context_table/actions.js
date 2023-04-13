@@ -1,5 +1,6 @@
 import {
   SET_INFOR_COLUMN_TABLE,
+  SET_TITLE_TABLE,
   SET_INFOR_TABLE,
   SET_MODE_SHOW_TABLE,
   SET_INFOR_RECORD_TABLE,
@@ -11,6 +12,13 @@ import {
 export const setInforColumnTable = (payload) => {
   return {
     type: SET_INFOR_COLUMN_TABLE,
+    payload,
+  };
+};
+
+export const setTitleTable = (payload) => {
+  return {
+    type: SET_TITLE_TABLE,
     payload,
   };
 };

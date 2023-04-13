@@ -1,5 +1,4 @@
-import { Table, Space } from "antd";
-// import ResizableAntdTable from 'resizable-antd-table';
+import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "@common_tag";
 import FormQuai from "./FormQuai";
@@ -39,6 +38,7 @@ const Quai = () => {
 
   useEffect(() => {
     dispatchTable(actions_table.setTitleModal("Quai - F0019"));
+    dispatchTable(actions_table.setTitleTable("Quai - F0018"));
     dispatchTable(actions_table.setComponentForm(FormQuai));
     fetch("http://localhost:8000/items_quai")
       .then((response) => {
