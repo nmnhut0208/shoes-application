@@ -3,11 +3,22 @@ import { Table, Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "@common_tag";
 import FormSuon from "./FormSuon";
-import { useTableContext, actions_table } from "@table_context";
+import {
+  useTableContext,
+  actions_table,
+  cleanupContextTable,
+} from "@table_context";
 
-
-const list_key = ["STT", "Mã sườn", "Tên sườn", 
-"Mã gót", "Tên gót", "Mã mũi", "Tên mũi", "Ghi chú"];
+const list_key = [
+  "STT",
+  "Mã sườn",
+  "Tên sườn",
+  "Mã gót",
+  "Tên gót",
+  "Mã mũi",
+  "Tên mũi",
+  "Ghi chú",
+];
 
 const infoColumns = [];
 for (var obj in list_key) {
@@ -39,14 +50,14 @@ const Suon = () => {
     dispatchTable(actions_table.setTitleModal("Sườn - F0020"));
     dispatchTable(actions_table.setComponentForm(FormSuon));
     fetch("http://localhost:8000/items_suon")
-    .then((response) => {
+      .then((response) => {
         console.log("response: ", response);
         return response.json();
       })
       .then((info) => {
         dispatchTable(actions_table.setInforColumnTable(infoColumns));
         dispatchTable(actions_table.setInforTable(info));
-        // if neu co thong tin moi show ne 
+        // if neu co thong tin moi show ne
         dispatchTable(actions_table.setModeShowTable(true));
         setRenderUI(true);
       })
@@ -54,24 +65,12 @@ const Suon = () => {
         console.log(":error: ", err);
       });
 
-      // cleanup function
-      return () =>{
-        console.log("cleanup suon")
-        dispatchTable(actions_table.setInforColumnTable({}));
-        dispatchTable(actions_table.setInforTable([]));
-        dispatchTable(actions_table.setModeShowTable(false));
-        dispatchTable(actions_table.setTitleModal(""));
-        dispatchTable(actions_table.setComponentForm(<></>));
-        dispatchTable(actions_table.setInforRecordTable({}));
-      }
+    // cleanup function
+    return () => {
+      cleanupContextTable(dispatchTable);
+    };
   }, []);
 
-
-  return (
-    <>
-        {(renderUI && <TableContent/>)}
-    </>
-  );
-
+  return <>{renderUI && <TableContent />}</>;
 };
 export default Suon;
