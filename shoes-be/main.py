@@ -88,11 +88,26 @@ def read_item():
         data.append(_data)
     return data
 
+
+@app.get("/items_nhan_vien")
+def read_item():
+    data = []
+    list_key = ["key", "STT", "Mã nhân viên", "Tên nhân viên", "Loại nhân viên",
+                "Ghi chú", ]
+
+    for i in range(100):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return data
+
+
 @app.get("/items_mau")
 def read_item():
     data = []
     list_key = ["STT", "Mã màu", "Tên màu", "Ghi chú"]
-    
+
     for i in range(250):
         _data = {}
         for key in list_key:
@@ -104,9 +119,9 @@ def read_item():
 @app.get("/items_suon")
 def read_item():
     data = []
-    list_key = ["STT", "Mã sườn", "Tên sườn", "Mã gót", 
+    list_key = ["STT", "Mã sườn", "Tên sườn", "Mã gót",
                 "Tên gót", "Mã mũi", "Tên mũi", "Ghi chú"]
-    
+
     for i in range(250):
         _data = {}
         for key in list_key:
@@ -118,9 +133,9 @@ def read_item():
 @app.get("/items_got")
 def read_item():
     data = []
-    list_key = ["STT", "Mã gót", "Tên gót", 
-                 "Ghi chú"]
-    
+    list_key = ["STT", "Mã gót", "Tên gót",
+                "Ghi chú"]
+
     for i in range(250):
         _data = {}
         for key in list_key:
@@ -134,7 +149,7 @@ def read_item():
     data = []
     list_key = ["STT", "Mã quai", "Tên quai",
                 "Đơn giá lương", "Ghi chú"]
-    
+
     for i in range(250):
         _data = {}
         for key in list_key:
