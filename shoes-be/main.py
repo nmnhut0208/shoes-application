@@ -87,3 +87,57 @@ def read_item():
             _data[key] = "{} - {}".format(key, i+1)
         data.append(_data)
     return data
+
+@app.get("/items_mau")
+def read_item():
+    data = []
+    list_key = ["STT", "Mã màu", "Tên màu", "Ghi chú"]
+    
+    for i in range(250):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
+
+
+@app.get("/items_suon")
+def read_item():
+    data = []
+    list_key = ["STT", "Mã sườn", "Tên sườn", "Mã gót", 
+                "Tên gót", "Mã mũi", "Tên mũi", "Ghi chú"]
+    
+    for i in range(250):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
+
+
+@app.get("/items_got")
+def read_item():
+    data = []
+    list_key = ["STT", "Mã gót", "Tên gót", 
+                 "Ghi chú"]
+    
+    for i in range(250):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
+
+
+@app.get("/items_quai")
+def read_item():
+    data = []
+    list_key = ["STT", "Mã quai", "Tên quai",
+                "Đơn giá lương", "Ghi chú"]
+    
+    for i in range(250):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
