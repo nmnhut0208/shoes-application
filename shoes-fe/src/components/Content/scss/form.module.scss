@@ -1,4 +1,4 @@
-@import "@GlobalStyle/global.module.scss";
+@import "~GlobalStyle/global.module.scss";
 
 :root {
   --margin-bottom-config: 0.6rem;
@@ -35,6 +35,11 @@
   justify-content: space-between;
 }
 
+.flex_row_flex-end {
+  @extend .flex-row;
+  justify-content: flex-end;
+}
+
 .form {
   display: block;
   height: auto;
@@ -63,8 +68,8 @@
     display: inline-block;
     @extend .font-setting;
   }
-  
-  label:after{
+
+  label:after {
     content: ":";
   }
 

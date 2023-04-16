@@ -24,8 +24,16 @@ export const itemsHangHoa = [
         label: "Sườn",
       },
       {
+        key: "Đế",
+        label: "Đế",
+      },
+      {
         key: "Gót",
         label: "Gót",
+      },
+      {
+        key: "Cá",
+        label: "Cá",
       },
       {
         key: "Quai",

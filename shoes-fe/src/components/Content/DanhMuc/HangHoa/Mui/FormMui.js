@@ -1,10 +1,9 @@
 import { useState } from "react";
 import clsx from "clsx";
-import styles from "./FormGot.module.scss";
+import styles from "./FormMui.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 
-const FormGot = () => {
-  // TODO: Sau này sửa STT thành tên duy nhất.
+const FormMui = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(() => {
     var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
@@ -12,6 +11,7 @@ const FormGot = () => {
     });
     return infos[0];
   });
+  console.log("record form: re-render");
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -31,54 +31,48 @@ const FormGot = () => {
     dispatchTable(actions_table.setModeShowModal(false));
   };
 
-  var image_url =
-    "https://img.freepik.com/free-vector/cats-doodle-pattern-background_53876-100663.jpg?w=900&t=st=1680945739~exp=1680946339~hmac=0a6288d0cf4d9b1a566b96eeaad8db3beb69fa0729f4ffecfcc866bbfecaf4e2";
-
   return (
     <div className={styles.form}>
-      <div className={styles.content}>
-        <div className={styles.items_container}>
-          <div className={styles.item}>
-            <label>Mã gót</label>
+      <form>
+        <div className={styles.group_first}>
+          <div className={styles.group_first_row}>
+            <label>Mã Mũi</label>
             <input
-              name="Mã gót"
-              value={inputForm["Mã gót"]}
+              value={inputForm["Mã Mũi"]}
               onChange={(e) => handleChangeInformationForm(e)}
+              name="Mã Mũi"
+              className={styles.item_size_middle}
             />
           </div>
-
-          <div className={styles.item}>
-            <label>Tên gót</label>
+          <div className={styles.group_first_row}>
+            <label>Tên Mũi</label>
             <input
-              name="Tên gót"
-              value={inputForm["Tên gót"]}
+              value={inputForm["Tên Mũi"]}
               onChange={(e) => handleChangeInformationForm(e)}
+              name="Tên Mũi"
+              className={styles.item_size_big}
             />
           </div>
-
-          <div className={styles.item}>
+          <div className={styles.group_first_row}>
             <label>Ghi chú</label>
             <input
-              name="Ghi chú"
               value={inputForm["Ghi chú"]}
               onChange={(e) => handleChangeInformationForm(e)}
+              name="Ghi chú"
+              className={styles.item_size_big}
             />
           </div>
         </div>
-
-        <div className={styles.image_container}>
-          <button>Chọn hình ảnh</button>
-          <img src={image_url} />
+        <div className={styles.group_button}>
+          <div>
+            <button onClick={handleSaveFrom}>Lưu</button>
+            <button>Nhập tiếp</button>
+            <button>Đóng</button>
+          </div>
         </div>
-      </div>
-
-      <div className={styles.button_container}>
-        <button onClick={handleSaveFrom}>Lưu</button>
-        <button>Button 2</button>
-        <button>Đóng</button>
-      </div>
+      </form>
     </div>
   );
 };
 
-export default FormGot;
+export default FormMui;

@@ -1,25 +1,32 @@
 import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
-import FormGot from "./FormGot";
+import FormKhoHang from "./FormKhoHang";
 import {
   useTableContext,
   actions_table,
   cleanupContextTable,
 } from "~table_context";
 
-const list_key = ["STT", "Mã gót", "Tên gót", "Ghi chú"];
+const list_key = [
+  { key: "STT", width: "7rem" },
+  { key: "Mã kho hàng", width: "21rem" },
+  { key: "Tên kho hàng", width: "21rem" },
+  { key: "Ghi chú", width: "21rem" },
+];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    title: list_key[obj],
-    width: 100,
-    dataIndex: list_key[obj],
-    key: list_key[obj].toLowerCase(),
+    title: list_key[obj]["key"],
+    width: list_key[obj]["width"],
+    dataIndex: list_key[obj]["key"],
+    key: list_key[obj]["key"].toLowerCase(),
   };
   infoColumns.push(info);
 }
+
+console.log(infoColumns);
 
 infoColumns.push({
   title: "Action",
@@ -32,17 +39,16 @@ infoColumns.push({
   ),
 });
 
-const Got = () => {
+const KhoHang = () => {
   const [renderUI, setRenderUI] = useState(false);
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Gót - F0014"));
-    dispatchTable(actions_table.setTitleTable("Gót - F0013"));
-    dispatchTable(actions_table.setComponentForm(FormGot));
-    fetch("http://localhost:8000/items_got")
+    dispatchTable(actions_table.setTitleModal("Kho hàng - F0025"));
+    dispatchTable(actions_table.setTitleTable("Kho hàng - F0024"));
+    dispatchTable(actions_table.setComponentForm(FormKhoHang));
+    fetch("http://localhost:8000/items_kho_hang")
       .then((response) => {
-        console.log("response: ", response);
         return response.json();
       })
       .then((info) => {
@@ -56,7 +62,6 @@ const Got = () => {
         console.log(":error: ", err);
       });
 
-    // cleanup function
     return () => {
       cleanupContextTable(dispatchTable);
     };
@@ -64,4 +69,5 @@ const Got = () => {
 
   return <>{renderUI && <TableContent />}</>;
 };
-export default Got;
+
+export default KhoHang;

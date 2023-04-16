@@ -1,6 +1,6 @@
 import { Table } from "antd";
-import { Modal } from "@common_tag";
-import { useTableContext, actions_table } from "@table_context";
+import { Modal } from "~common_tag";
+import { useTableContext, actions_table } from "~table_context";
 import "./table_ant.css";
 
 const TableContent = () => {
@@ -13,7 +13,7 @@ const TableContent = () => {
       {inforShowTable.showTable && (
         <Table
           pagination={{ defaultPageSize: 15 }}
-          title={() => (<div>{inforShowTable.title}</div>)}
+          title={() => <div>{inforShowTable.title}</div>}
           columns={inforShowTable.infoColumnTable}
           dataSource={inforShowTable.infoTable}
           scroll={{

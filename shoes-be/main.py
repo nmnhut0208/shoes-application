@@ -4,7 +4,6 @@ from fastapi import Body, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 
 
-
 app = FastAPI()
 
 origins = ["*"]
@@ -18,6 +17,73 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.get("/items")
+def read_item():
+    data = []
+    list_key = ["key", "STT", "Mã giày", "Đơn giá",
+                "Tên giày", "Mã đế", "Tên đế",
+                "Mã sườn", "Tên sườn", "Mã cá",
+                "Tên cá", "Item 3", "Item 4"]
+
+    for i in range(100):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return data
+
+
+@app.get("/items_kho_hang")
+def read_item():
+    data = []
+    list_key = ["key", "STT", "Mã kho hàng", "Tên kho hàng",
+                "Ghi chú", ]
+
+    for i in range(100):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return data
+
+
+@app.get("/items_mui")
+def read_item():
+    data = []
+    list_key = ["key", "STT", "Mã Mũi", "Tên Mũi",
+                "Ghi chú", ]
+
+    for i in range(100):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return data
+
+
+@app.get("/items_de")
+def read_item():
+    data = []
+    list_key = ["key", "STT", "Mã Đế", "Tên Đế", "Đơn giá Đế",
+                "Ghi chú", ]
+
+    for i in range(100):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return data
+
+
+@app.get("/items_ca")
+def read_item():
+    data = []
+    list_key = ["key", "STT", "Mã Cá", "Tên Cá",
+                "Ghi chú", ]
+
+    for i in range(100):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return data

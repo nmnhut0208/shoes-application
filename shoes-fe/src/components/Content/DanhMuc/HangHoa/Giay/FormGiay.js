@@ -1,7 +1,7 @@
 import { useState } from "react";
 import clsx from "clsx";
 import styles from "./FormGiay.module.scss";
-import { useTableContext, actions_table } from "@table_context";
+import { useTableContext, actions_table } from "~table_context";
 
 const FormGiay = () => {
   // TODO: Sau này sửa STT thành tên duy nhất.

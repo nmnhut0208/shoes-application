@@ -1,12 +1,12 @@
 import { Space } from "antd";
 import { useEffect, useState } from "react";
-import { TableContent } from "@common_tag";
+import { TableContent } from "~common_tag";
 import FormMau from "./FormMau";
 import {
   useTableContext,
   actions_table,
   cleanupContextTable,
-} from "@table_context";
+} from "~table_context";
 
 const list_key = ["STT", "Mã màu", "Tên màu", "Ghi chú"];
 

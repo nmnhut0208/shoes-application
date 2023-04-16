@@ -1,25 +1,33 @@
 import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
-import FormGot from "./FormGot";
+import FormDe from "./FormDe";
 import {
   useTableContext,
   actions_table,
   cleanupContextTable,
 } from "~table_context";
 
-const list_key = ["STT", "Mã gót", "Tên gót", "Ghi chú"];
+const list_key = [
+  { key: "STT", width: "7rem" },
+  { key: "Mã Đế", width: "21rem" },
+  { key: "Tên Đế", width: "21rem" },
+  { key: "Đơn giá Đế", width: "21rem" },
+  { key: "Ghi chú", width: "21rem" },
+];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    title: list_key[obj],
-    width: 100,
-    dataIndex: list_key[obj],
-    key: list_key[obj].toLowerCase(),
+    title: list_key[obj]["key"],
+    width: list_key[obj]["width"],
+    dataIndex: list_key[obj]["key"],
+    key: list_key[obj]["key"].toLowerCase(),
   };
   infoColumns.push(info);
 }
+
+console.log(infoColumns);
 
 infoColumns.push({
   title: "Action",
@@ -32,17 +40,16 @@ infoColumns.push({
   ),
 });
 
-const Got = () => {
+const De = () => {
   const [renderUI, setRenderUI] = useState(false);
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Gót - F0014"));
-    dispatchTable(actions_table.setTitleTable("Gót - F0013"));
-    dispatchTable(actions_table.setComponentForm(FormGot));
-    fetch("http://localhost:8000/items_got")
+    dispatchTable(actions_table.setTitleModal("Đế - F0025"));
+    dispatchTable(actions_table.setTitleTable("Đế - F0024"));
+    dispatchTable(actions_table.setComponentForm(FormDe));
+    fetch("http://localhost:8000/items_de")
       .then((response) => {
-        console.log("response: ", response);
         return response.json();
       })
       .then((info) => {
@@ -51,17 +58,10 @@ const Got = () => {
         // if neu co thong tin moi show ne
         dispatchTable(actions_table.setModeShowTable(true));
         setRenderUI(true);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
       });
-
-    // cleanup function
-    return () => {
-      cleanupContextTable(dispatchTable);
-    };
   }, []);
 
-  return <>{renderUI && <TableContent />}</>;
+  return <div>{renderUI && <TableContent />}</div>;
 };
-export default Got;
+
+export default De;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import clsx from "clsx";
 import styles from "./FormQuai.module.scss";
-import { useTableContext, actions_table } from "@table_context";
+import { useTableContext, actions_table } from "~table_context";
 
 const FormQuai = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -12,7 +12,6 @@ const FormQuai = () => {
     return infos[0];
   });
   console.log("record form: re-render");
-
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };

@@ -1,26 +1,26 @@
 import { Space } from "antd";
 import { useEffect, useState } from "react";
-import { TableContent } from "@common_tag";
+import { TableContent } from "~common_tag";
 import FormGiay from "./FormGiay";
 import {
   useTableContext,
   actions_table,
   cleanupContextTable,
-} from "@table_context";
+} from "~table_context";
 
 const list_key = [
-  {key: "STT", width: "7rem"},
-  {key: "Mã giày", width: "21rem"},
-  {key: "Đơn giá", width: "10rem"},
-  {key: "Tên giày", width: "40rem"},
-  {key: "Mã đế", width: "8rem"},
-  {key: "Tên đế", width: "16rem"},
-  {key: "Mã sườn", width: "8rem"},
-  {key: "Tên sườn", width: "16rem"},
-  {key: "Mã cá", width: "8rem"},
-  {key: "Tên cá", width: "16rem"},
-  {key: "Mã quai", width: "8rem"},
-  {key: "Tên quai", width: "16rem"},
+  { key: "STT", width: "7rem" },
+  { key: "Mã giày", width: "21rem" },
+  { key: "Đơn giá", width: "10rem" },
+  { key: "Tên giày", width: "40rem" },
+  { key: "Mã đế", width: "8rem" },
+  { key: "Tên đế", width: "16rem" },
+  { key: "Mã sườn", width: "8rem" },
+  { key: "Tên sườn", width: "16rem" },
+  { key: "Mã cá", width: "8rem" },
+  { key: "Tên cá", width: "16rem" },
+  { key: "Mã quai", width: "8rem" },
+  { key: "Tên quai", width: "16rem" },
 ];
 
 const infoColumns = [];

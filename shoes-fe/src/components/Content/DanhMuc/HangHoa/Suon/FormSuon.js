@@ -1,7 +1,7 @@
 import { useState } from "react";
 import clsx from "clsx";
 import styles from "./FormSuon.module.scss";
-import { useTableContext, actions_table } from "@table_context";
+import { useTableContext, actions_table } from "~table_context";
 
 const FormSuon = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -22,13 +22,13 @@ const FormSuon = () => {
   const handleSaveFrom = () => {
     // saveDataBase()
     dispatchTable(
-        actions_table.setInforTable(
-          stateTable.inforShowTable.infoTable.map((info) =>
-            info.STT === inputForm.STT ? inputForm : info
-          )
+      actions_table.setInforTable(
+        stateTable.inforShowTable.infoTable.map((info) =>
+          info.STT === inputForm.STT ? inputForm : info
         )
-      );
-      dispatchTable(actions_table.setModeShowModal(false));
+      )
+    );
+    dispatchTable(actions_table.setModeShowModal(false));
   };
 
   var image_url =

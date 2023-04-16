@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ContextTable, actions_table } from "@table_context";
+import { ContextTable, actions_table } from "~table_context";
 
 export const useTableContext = () => {
   const [state, dispatch] = useContext(ContextTable);

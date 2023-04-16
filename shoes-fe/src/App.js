@@ -1,7 +1,7 @@
 import { CustomHeader, ShopContent } from "./components";
-import { ProviderTable } from "@table_context";
-import styles from "@GlobalStyle/global.module.scss";
-import "@GlobalStyle/AntCustom.css";
+import { ProviderTable } from "~table_context";
+import styles from "~GlobalStyle/global.module.scss";
+import "~GlobalStyle/AntCustom.css";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       </header>
       <ProviderTable>
         <section className={styles.area_body}>
-        <ShopContent />
+          <ShopContent />
         </section>
       </ProviderTable>
     </div>

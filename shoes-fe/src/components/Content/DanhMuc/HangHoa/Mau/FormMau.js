@@ -1,7 +1,7 @@
 import { useState } from "react";
 import clsx from "clsx";
 import styles from "./FormMau.module.scss";
-import { useTableContext, actions_table } from "@table_context";
+import { useTableContext, actions_table } from "~table_context";
 
 const FormMau = () => {
   // TODO: Sau này sửa STT thành tên duy nhất.
@@ -68,7 +68,6 @@ const FormMau = () => {
         <button>Button 2</button>
         <button>Đóng</button>
       </div>
-      
     </div>
   );
 };
