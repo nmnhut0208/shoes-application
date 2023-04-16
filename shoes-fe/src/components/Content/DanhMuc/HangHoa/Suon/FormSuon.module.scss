@@ -1,0 +1,62 @@
+@import "~common_scss/form.module.scss";
+
+.div_common {
+  input {
+    width: var(--input-width-min);
+  }
+  span {
+    width: 17.1rem;
+  }
+}
+
+.content {
+  @extend .flex-row;
+
+  .items_container {
+    margin-right: var(--tag-div-margin-right-size);
+    margin-bottom: var(--margin-bottom-config);
+    .item {
+      margin-bottom: var(--margin-bottom-config);
+    }
+    .item:first-child {
+      input {
+        width: var(--input-width-middle);
+      }
+    }
+
+    .item:nth-child(2) {
+      input {
+        width: var(--input-width-big);
+      }
+    }
+
+    .item:nth-child(3) {
+      @extend .div_common;
+    }
+
+    .item:nth-child(4) {
+      @extend .div_common;
+    }
+
+    .item:last-child {
+      input {
+        width: var(--input-width-big);
+      }
+    }
+  }
+
+  .image_container {
+    @extend .flex-column;
+    img {
+      height: 12rem;
+    }
+  }
+}
+
+.button_container {
+  @extend .flex-row;
+  justify-content: flex-end;
+  button {
+    margin-left: var(--tag-info-margin-left-size);
+  }
+}

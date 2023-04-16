@@ -1,0 +1,42 @@
+@import "~common_scss/form.module.scss";
+
+.content {
+  @extend .flex-row;
+  margin-bottom: var(--margin-bottom-config);
+
+  .items_container {
+    margin-right: var(--tag-div-margin-right-size);
+    margin-bottom: var(--margin-bottom-config);
+
+    .item {
+      margin-bottom: var(--margin-bottom-config);
+    }
+
+    .item:first-child {
+      input {
+        width: var(--input-width-middle);
+      }
+    }
+
+    .item:not(:first-child) {
+      input {
+        width: var(--input-width-big);
+      }
+    }
+  }
+
+  .image_container {
+    @extend .flex-column;
+    img {
+      height: 14rem;
+    }
+  }
+}
+
+.button_container {
+  @extend .flex-row;
+  justify-content: flex-end;
+  button {
+    margin-left: var(--tag-info-margin-left-size);
+  }
+}

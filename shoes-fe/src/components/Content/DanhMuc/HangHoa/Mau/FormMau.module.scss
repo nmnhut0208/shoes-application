@@ -1,0 +1,27 @@
+@import "~common_scss/form.module.scss";
+
+.items_container {
+  margin-bottom: var(--margin-bottom-config);
+  .item {
+    margin-bottom: var(--margin-bottom-config);
+  }
+  .item:first-child {
+    input {
+      width: var(--input-width-middle);
+    }
+  }
+
+  .item:not(:first-child) {
+    input {
+      width: var(--input-width-big) !important;
+    }
+  }
+}
+
+.button_container {
+  @extend .flex-row;
+  justify-content: flex-end;
+  button {
+    margin-left: var(--tag-info-margin-left-size);
+  }
+}
