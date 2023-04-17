@@ -34,9 +34,9 @@
     .item_column {
       @extend .flex-column;
       align-content: end;
-      margin-left: var(--tag-div-margin-size);
       .pair {
         margin-top: var(--margin-bottom-config);
+        margin-right: var(--margin-bottom-config);
       }
       .label_for_textatea {
         vertical-align: top;
