@@ -1,23 +1,23 @@
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space } from "antd";
-import { itemsHangHoa } from "./ConstantVariable";
+import { itemsNghiepVu } from "./ConstantVariable";
 import { useTaskContext, actions } from "~task";
 
-const DanhMuc = () => {
+const NghiepVu = () => {
   const [stateTask, dispatchTask] = useTaskContext();
-  const handleDanhMuc = (e) => {
-    dispatchTask(actions.setTaskDanhMuc(e.key));
+  const handleOnclick = (e) => {
+    dispatchTask(actions.setTaskNghiepVu(e.key));
   };
   return (
     <Dropdown
       menu={{
-        items: itemsHangHoa,
-        onClick: handleDanhMuc,
+        items: itemsNghiepVu,
+        onClick: handleOnclick,
       }}
     >
       <a onClick={(e) => e.preventDefault()}>
         <Space>
-          Danh mục
+          Nghiệp vụ
           <DownOutlined />
         </Space>
       </a>
@@ -25,4 +25,4 @@ const DanhMuc = () => {
   );
 };
 
-export default DanhMuc;
+export default NghiepVu;

@@ -1,5 +1,6 @@
 import { useTaskContext } from "~task";
 import { Giay, KhoHang, Mau, Mui, Suon, De, Got, Ca, Quai } from "./HangHoa";
+import KhachHang from "./KhachHang";
 
 const DanhMuc = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -23,6 +24,8 @@ const DanhMuc = () => {
       return <Ca />;
     case "Quai":
       return <Quai />;
+    case "Khách hàng":
+      return <KhachHang />;
     default:
       alert("Chua xu ly ngoai Giay");
   }
