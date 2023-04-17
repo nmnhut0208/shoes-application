@@ -26,7 +26,7 @@
     @extend .flex-row;
     justify-content: flex-end;
     button {
-      margin-left: var(--tag-info-margin-left-size);
+      margin-left: var(--margin-bottom-config);
     }
   }
 }

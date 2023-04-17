@@ -1,15 +1,15 @@
 import { useTaskContext } from "~task";
-// import NhapKho from "./NhapKho";
+import DonHang from "./DonHang";
 
 const NghiepVu = () => {
   const [stateTask, dispatchTask] = useTaskContext();
   const inforCurrentTask = stateTask.inforCurrentTask;
+  console.log(inforCurrentTask);
   switch (inforCurrentTask.infoDetail) {
-    case "Nhập kho":
-      // return <NhapKho />;
-      return <></>;
+    case "Đơn hàng":
+      return <DonHang />;
     default:
-      alert("Chua xu ly ngoai NhapKho");
+      alert("Chua xu ly ngoai DonHang");
   }
 };
 

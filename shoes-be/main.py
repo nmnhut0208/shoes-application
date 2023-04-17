@@ -88,11 +88,12 @@ def read_item():
         data.append(_data)
     return data
 
+
 @app.get("/items_mau")
 def read_item():
     data = []
     list_key = ["STT", "Mã màu", "Tên màu", "Ghi chú"]
-    
+
     for i in range(250):
         _data = {}
         for key in list_key:
@@ -104,9 +105,9 @@ def read_item():
 @app.get("/items_suon")
 def read_item():
     data = []
-    list_key = ["STT", "Mã sườn", "Tên sườn", "Mã gót", 
+    list_key = ["STT", "Mã sườn", "Tên sườn", "Mã gót",
                 "Tên gót", "Mã mũi", "Tên mũi", "Ghi chú"]
-    
+
     for i in range(250):
         _data = {}
         for key in list_key:
@@ -118,9 +119,9 @@ def read_item():
 @app.get("/items_got")
 def read_item():
     data = []
-    list_key = ["STT", "Mã gót", "Tên gót", 
-                 "Ghi chú"]
-    
+    list_key = ["STT", "Mã gót", "Tên gót",
+                "Ghi chú"]
+
     for i in range(250):
         _data = {}
         for key in list_key:
@@ -134,7 +135,7 @@ def read_item():
     data = []
     list_key = ["STT", "Mã quai", "Tên quai",
                 "Đơn giá lương", "Ghi chú"]
-    
+
     for i in range(250):
         _data = {}
         for key in list_key:
@@ -147,18 +148,18 @@ def read_item():
 def read_item():
     data = []
     info_key = list_key = [
-  { "key": "STT", "width": "7rem" },
-  { "key": "Mã khách hàng", "width": "21rem" },
-  { "key": "Tên khách hàng", "width": "10rem" },
-  { "key": "Địa chỉ", "width": "40rem" },
-  { "key": "Điện thoại", "width": "8rem" },
-  { "key": "Fax", "width": "16rem" },
-  { "key": "Email", "width": "8rem" },
-  { "key": "Ghi chú", "width": "16rem" },
-]
+        {"key": "STT", "width": "7rem"},
+        {"key": "Mã khách hàng", "width": "21rem"},
+        {"key": "Tên khách hàng", "width": "10rem"},
+        {"key": "Địa chỉ", "width": "40rem"},
+        {"key": "Điện thoại", "width": "8rem"},
+        {"key": "Fax", "width": "16rem"},
+        {"key": "Email", "width": "8rem"},
+        {"key": "Ghi chú", "width": "16rem"},
+    ]
     list_key = [a["key"] for a in info_key]
     print("list_key")
-    
+
     for i in range(250):
         _data = {}
         for key in list_key:

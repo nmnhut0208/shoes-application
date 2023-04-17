@@ -1,0 +1,46 @@
+@import "~common_scss/form.module.scss";
+
+.form {
+  margin-bottom: calc(var(--margin-bottom-config) * 2);
+  .group_item {
+    @extend .flex-row;
+    input {
+      width: var(--input-width-middle);
+    }
+    label {
+      min-width: 12rem;
+    }
+    span {
+      width: var(--input-width-big);
+      margin-right: calc(var(--margin-bottom-config) * 2);
+    }
+
+    textarea {
+      width: 45.5rem;
+      height: 6rem;
+    }
+
+    .checkbox {
+      width: 1rem;
+      margin-right: var(--margin-bottom-config);
+    }
+    .span_for_checkbox {
+      border: none;
+      width: fit-content;
+      margin-left: 0.05rem;
+      padding: 0 0;
+    }
+
+    .item_column {
+      @extend .flex-column;
+      align-content: end;
+      margin-left: var(--tag-div-margin-size);
+      .pair {
+        margin-top: var(--margin-bottom-config);
+      }
+      .label_for_textatea {
+        vertical-align: top;
+      }
+    }
+  }
+}
