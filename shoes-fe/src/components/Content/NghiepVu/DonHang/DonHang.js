@@ -123,8 +123,8 @@ const DonHang = () => {
             </div>
           </div>
         </div>
-        <div className={styles.group_item}>{renderUI && <TableContent />}</div>
       </div>
+      {renderUI && <TableContent />}
     </>
   );
 };
