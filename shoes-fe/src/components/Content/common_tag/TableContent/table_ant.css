@@ -14,7 +14,10 @@
 
 .ant-table-title {
   font-size: 2rem;
-  padding: 0 1rem 0 0!important;
+  padding: 0 1rem 0 0 !important;
   color: rgb(94, 2, 2);
 }
 
+.MuiTableCell-root {
+  font-size: 1.6rem !important;
+}

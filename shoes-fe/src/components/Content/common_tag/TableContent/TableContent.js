@@ -1,7 +1,11 @@
 import { Table } from "antd";
 import { Modal } from "~common_tag";
+import MaterialReactTable from "material-react-table";
+import { TableTitle } from "material-react-table";
 import { useTableContext, actions_table } from "~table_context";
 import "./table_ant.css";
+import { Box, IconButton, Tooltip } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
 
 const columns = [
   {
@@ -85,38 +89,68 @@ const TableContent = () => {
   return (
     <>
       {inforShowTable.showTable && (
-        <Table
-          pagination={{ defaultPageSize: 15 }}
-          title={() => <div>{inforShowTable.title}</div>}
-          columns={inforShowTable.infoColumnTable}
-          dataSource={inforShowTable.infoTable}
-          scroll={{
-            x: 1300,
-            y: 500,
-          }}
-          onRow={(record) => {
-            return {
-              onDoubleClick: () => {
-                dispatchTable(actions_table.setInforRecordTable(record));
-                dispatchTable(actions_table.setModeShowModal(true));
-              },
-            };
-          }}
-        />
-        // <MaterialReactTable
-        //   columns={columns}
-        //   data={data}
-        //   components
-        //   // handle double click row
-        //   //optionally override the default column widths
-        //   defaultColumn={{
-        //     maxSize: 400,
-        //     minSize: 80,
-        //     size: 150, //default size is usually 180
+        // <Table
+        //   pagination={{ defaultPageSize: 15 }}
+        //   title={() => <div>{inforShowTable.title}</div>}
+        //   columns={inforShowTable.infoColumnTable}
+        //   dataSource={inforShowTable.infoTable}
+        //   scroll={{
+        //     x: 1300,
+        //     y: 500,
         //   }}
-        //   enableColumnResizing
-        //   columnResizeMode="onChange" //default
+        //   onRow={(record) => {
+        //     return {
+        //       onDoubleClick: () => {
+        //         dispatchTable(actions_table.setInforRecordTable(record));
+        //         dispatchTable(actions_table.setModeShowModal(true));
+        //       },
+        //     };
+        //   }}
         // />
+        <div>
+          <header>{inforShowTable.title}</header>
+          <MaterialReactTable
+            columns={inforShowTable.infoColumnTable}
+            data={inforShowTable.infoTable}
+            components
+            // handle double click row
+            //optionally override the default column widths
+            defaultColumn={{
+              maxSize: 400,
+              minSize: 80,
+              size: 150, //default size is usually 180
+            }}
+            enableColumnResizing
+            // columnResizeMode="onChange" //default
+            enableEditing
+            // onEditingRowSave={handleSaveRowEdits}
+            // onEditingRowCancel={handleCancelRowEdits}
+            renderRowActions={({ row, table }) => (
+              <Box sx={{ display: "flex", gap: "1rem" }}>
+                <Tooltip arrow placement="left" title="Edit">
+                  <IconButton
+                    onClick={() => {
+                      dispatchTable(
+                        actions_table.setInforRecordTable(row.original)
+                      );
+                      dispatchTable(actions_table.setModeShowModal(true));
+                    }}
+                  >
+                    <Edit />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip arrow placement="right" title="Delete">
+                  <IconButton
+                    color="error"
+                    // onClick={() => handleDeleteRow(row)}
+                  >
+                    <Delete />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            )}
+          />
+        </div>
       )}
 
       <Modal>

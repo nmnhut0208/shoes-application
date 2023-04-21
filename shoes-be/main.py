@@ -25,7 +25,7 @@ def read_item():
                 "Mã sườn", "Tên sườn", "Mã cá",
                 "Tên cá", "Item 3", "Item 4"]
 
-    for i in range(3):
+    for i in range(100):
         _data = {}
         for key in list_key:
             _data[key] = "{} - {}".format(key, i+1)
