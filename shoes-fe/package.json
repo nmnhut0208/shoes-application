@@ -40,6 +40,7 @@
     ]
   },
   "devDependencies": {
+    "material-react-table": "^1.10.0",
     "moment": "^2.29.4"
   }
 }
