@@ -11,4 +11,12 @@ export const itemsHeThong = [
     key: "Đổi mật khẩu",
     label: "Đổi mật khẩu",
   },
+  {
+    key: "Phân quyền",
+    label: "Phân quyền",
+  },
+  {
+    key: "Thoát",
+    label: "Thoát",
+  },
 ];
