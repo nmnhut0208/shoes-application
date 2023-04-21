@@ -49,4 +49,12 @@ export const itemsHangHoa = [
     key: "Khách hàng",
     label: "Khách hàng",
   },
+  {
+    key: "Kỳ tính lương",
+    label: "Kỳ tính lương",
+  },
+  {
+    key: "Xuất danh mục ra mã vạch",
+    label: "Xuất danh mục ra mã vạch",
+  },
 ];

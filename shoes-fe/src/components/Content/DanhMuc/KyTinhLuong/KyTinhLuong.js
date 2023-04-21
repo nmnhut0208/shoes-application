@@ -1,7 +1,7 @@
 import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
-import FormGiay from "./FormGiay";
+import FormKyTinhLuong from "./FormKyTinhLuong";
 import {
   useTableContext,
   actions_table,
@@ -9,18 +9,11 @@ import {
 } from "~table_context";
 
 const list_key = [
-  { key: "STT" },
-  { key: "Mã giày" },
-  { key: "Đơn giá" },
-  { key: "Tên giày" },
-  { key: "Mã đế" },
-  { key: "Tên đế" },
-  { key: "Mã sườn" },
-  { key: "Tên sườn" },
-  { key: "Mã cá" },
-  { key: "Tên cá" },
-  { key: "Mã quai" },
-  { key: "Tên quai" },
+  { key: "STT", width: "7rem" },
+  { key: "Mã kỳ", width: "21rem" },
+  { key: "Tên kỳ", width: "21rem" },
+  { key: "Từ ngày", width: "21rem" },
+  { key: "Đến ngày", width: "21rem" },
 ];
 
 const infoColumns = [];
@@ -47,15 +40,15 @@ infoColumns.push({
   ),
 });
 
-const Giay = () => {
+const KyTinhLuong = () => {
   const [renderUI, setRenderUI] = useState(false);
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Giay - F0025"));
-    dispatchTable(actions_table.setTitleTable("Giày - F0024"));
-    dispatchTable(actions_table.setComponentForm(FormGiay));
-    fetch("http://localhost:8000/items")
+    dispatchTable(actions_table.setTitleModal("Kỳ tính lương - F0021"));
+    dispatchTable(actions_table.setTitleTable("Kỳ tính lương - F0020"));
+    dispatchTable(actions_table.setComponentForm(FormKyTinhLuong));
+    fetch("http://localhost:8000/items_ky_tinh_luong")
       .then((response) => {
         return response.json();
       })
@@ -65,12 +58,7 @@ const Giay = () => {
         // if neu co thong tin moi show ne
         dispatchTable(actions_table.setModeShowTable(true));
         setRenderUI(true);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
       });
-
-    // cleanup function
     return () => {
       cleanupContextTable(dispatchTable);
     };
@@ -78,4 +66,5 @@ const Giay = () => {
 
   return <>{renderUI && <TableContent />}</>;
 };
-export default Giay;
+
+export default KyTinhLuong;

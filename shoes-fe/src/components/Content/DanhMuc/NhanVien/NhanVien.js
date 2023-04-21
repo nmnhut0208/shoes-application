@@ -1,7 +1,7 @@
 import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
-import FormGiay from "./FormGiay";
+import FormNhanVien from "./FormNhanVien";
 import {
   useTableContext,
   actions_table,
@@ -9,18 +9,11 @@ import {
 } from "~table_context";
 
 const list_key = [
-  { key: "STT" },
-  { key: "Mã giày" },
-  { key: "Đơn giá" },
-  { key: "Tên giày" },
-  { key: "Mã đế" },
-  { key: "Tên đế" },
-  { key: "Mã sườn" },
-  { key: "Tên sườn" },
-  { key: "Mã cá" },
-  { key: "Tên cá" },
-  { key: "Mã quai" },
-  { key: "Tên quai" },
+  { key: "STT", width: "7rem" },
+  { key: "Mã nhân viên", width: "21rem" },
+  { key: "Tên nhân viên", width: "21rem" },
+  { key: "Loại nhân viên", width: "21rem" },
+  { key: "Ghi chú", width: "21rem" },
 ];
 
 const infoColumns = [];
@@ -47,15 +40,15 @@ infoColumns.push({
   ),
 });
 
-const Giay = () => {
+const NhanVien = () => {
   const [renderUI, setRenderUI] = useState(false);
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Giay - F0025"));
-    dispatchTable(actions_table.setTitleTable("Giày - F0024"));
-    dispatchTable(actions_table.setComponentForm(FormGiay));
-    fetch("http://localhost:8000/items")
+    dispatchTable(actions_table.setTitleModal("Nhân viên - F0023"));
+    dispatchTable(actions_table.setTitleTable("Nhân viên - F0022"));
+    dispatchTable(actions_table.setComponentForm(FormNhanVien));
+    fetch("http://localhost:8000/items_nhan_vien")
       .then((response) => {
         return response.json();
       })
@@ -67,10 +60,8 @@ const Giay = () => {
         setRenderUI(true);
       })
       .catch((err) => {
-        console.log(":error: ", err);
+        console.log(err);
       });
-
-    // cleanup function
     return () => {
       cleanupContextTable(dispatchTable);
     };
@@ -78,4 +69,5 @@ const Giay = () => {
 
   return <>{renderUI && <TableContent />}</>;
 };
-export default Giay;
+
+export default NhanVien;

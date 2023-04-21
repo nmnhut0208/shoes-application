@@ -1,5 +1,7 @@
 import { useTaskContext } from "~task";
 import { Giay, KhoHang, Mau, Mui, Suon, De, Got, Ca, Quai } from "./HangHoa";
+import NhanVien from "./NhanVien";
+import KyTinhLuong from "./KyTinhLuong";
 import KhachHang from "./KhachHang";
 
 const DanhMuc = () => {
@@ -24,6 +26,10 @@ const DanhMuc = () => {
       return <Ca />;
     case "Quai":
       return <Quai />;
+    case "Nhân viên":
+      return <NhanVien />;
+    case "Kỳ tính lương":
+      return <KyTinhLuong />;
     case "Khách hàng":
       return <KhachHang />;
     default:
