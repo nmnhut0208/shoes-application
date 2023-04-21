@@ -1,5 +1,4 @@
 import { Table } from "antd";
-import MaterialReactTable from "material-react-table";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
 import "./table_ant.css";

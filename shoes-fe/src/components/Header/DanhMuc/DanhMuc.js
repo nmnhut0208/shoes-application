@@ -5,7 +5,6 @@ import { useTaskContext, actions } from "~task";
 
 const DanhMuc = () => {
   const [stateTask, dispatchTask] = useTaskContext();
-  const inforCurrentTask = stateTask.inforCurrentTask;
   const handleDanhMuc = (e) => {
     console.log("key: ", e.key);
     dispatchTask(actions.setTaskDanhMuc(e.key));

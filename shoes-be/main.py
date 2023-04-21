@@ -25,7 +25,7 @@ def read_item():
                 "Mã sườn", "Tên sườn", "Mã cá",
                 "Tên cá", "Item 3", "Item 4"]
 
-    for i in range(100):
+    for i in range(3):
         _data = {}
         for key in list_key:
             _data[key] = "{} - {}".format(key, i+1)
@@ -165,6 +165,30 @@ def read_item():
     data = []
     list_key = ["STT", "Mã quai", "Tên quai",
                 "Đơn giá lương", "Ghi chú"]
+
+    for i in range(250):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
+
+
+@app.get("/items_khachhang")
+def read_item():
+    data = []
+    info_key = list_key = [
+        {"key": "STT", "width": "7rem"},
+        {"key": "Mã khách hàng", "width": "21rem"},
+        {"key": "Tên khách hàng", "width": "10rem"},
+        {"key": "Địa chỉ", "width": "40rem"},
+        {"key": "Điện thoại", "width": "8rem"},
+        {"key": "Fax", "width": "16rem"},
+        {"key": "Email", "width": "8rem"},
+        {"key": "Ghi chú", "width": "16rem"},
+    ]
+    list_key = [a["key"] for a in info_key]
+    print("list_key")
 
     for i in range(250):
         _data = {}

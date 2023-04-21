@@ -14,6 +14,10 @@ module.exports = {
         "src/components/Content/common_tag"
       ),
       "~common_scss": path.resolve(__dirname, "src/components/Content/scss"),
+      "~hang_hoa": path.resolve(
+        __dirname,
+        "src/components/Content/DanhMuc/HangHoa"
+      ),
     },
   },
 };

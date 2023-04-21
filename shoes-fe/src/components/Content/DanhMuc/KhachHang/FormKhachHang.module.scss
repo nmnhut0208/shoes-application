@@ -1,0 +1,32 @@
+@import "~common_scss/form.module.scss";
+
+.form {
+  .item {
+    margin-bottom: var(--margin-bottom-config);
+    label {
+      width: 13rem;
+    }
+    input {
+      width: var(--input-width-big);
+    }
+  }
+  .item:first-child {
+    input {
+      width: var(--input-width-middle);
+    }
+  }
+
+  .item:nth-child(7) {
+    input {
+      width: var(--input-width-middle);
+    }
+  }
+
+  .button_container {
+    @extend .flex-row;
+    justify-content: flex-end;
+    button {
+      margin-left: var(--margin-bottom-config);
+    }
+  }
+}

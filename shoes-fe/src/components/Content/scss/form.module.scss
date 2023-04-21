@@ -6,8 +6,7 @@
   --height-image: 18rem;
   --padding-setting: 4px 11px;
   --border-setting: 0.1rem solid rgba(0, 0, 0, 0.3);
-  --tag-info-margin-left-size: 0.5rem;
-  --tag-div-margin-right-size: 1rem;
+  --tag-div-margin-size: 1rem;
   --input-width-min: 10rem;
   --input-width-middle: 15rem;
   --input-width-big: calc(var(--input-width-middle) * 2);
@@ -55,7 +54,7 @@
     width: 20rem;
     padding: var(--padding-setting);
     border: var(--border-setting);
-    margin-left: var(--tag-info-margin-left-size);
+    margin-left: var(--margin-bottom-config);
     @extend .font-setting;
   }
 
@@ -71,6 +70,10 @@
 
   label:after {
     content: ":";
+  }
+
+  textarea {
+    border: var(--border-setting);
   }
 
   img {

@@ -5,7 +5,7 @@
   margin-bottom: var(--margin-bottom-config);
 
   .items_container {
-    margin-right: var(--tag-div-margin-right-size);
+    margin-right: var(--tag-div-margin-size);
     margin-bottom: var(--margin-bottom-config);
 
     .item {
@@ -37,6 +37,6 @@
   @extend .flex-row;
   justify-content: flex-end;
   button {
-    margin-left: var(--tag-info-margin-left-size);
+    margin-left: var(--margin-bottom-config);
   }
 }

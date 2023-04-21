@@ -1,5 +1,6 @@
 import { useTaskContext } from "~task";
 import DanhMuc from "./DanhMuc";
+import NghiepVu from "./NghiepVu";
 
 const Content = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -7,8 +8,14 @@ const Content = () => {
   switch (inforCurrentTask.infoContent) {
     case "Header":
       return <></>;
-    case "DanhMuc":
-      return <DanhMuc></DanhMuc>;
+    case "Danh mục":
+      return <DanhMuc />;
+    case "Nghiệp vụ":
+      return <NghiepVu />;
+    case "Truy vấn":
+      return alert("Truy vấn thông tin");
+    case "Báo cáo":
+      return alert("Báo cáo");
     default:
       alert("Chua xu ly ngoai Danh Muc");
   }

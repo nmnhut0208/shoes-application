@@ -1,4 +1,10 @@
-import { SET_TASK_DANH_MUC, SET_TASK_HE_THONG } from "./constants";
+import {
+  SET_TASK_DANH_MUC,
+  SET_TASK_HE_THONG,
+  SET_TASK_NGHIEP_VU,
+  SET_TASK_TRUY_VAN,
+  SET_TASK_BAO_CAO,
+} from "./constants";
 const initState = {
   inforCurrentTask: { infoContent: "Header" },
 };
@@ -7,12 +13,28 @@ function reducer(state, action) {
   const info = {};
   switch (action.type) {
     case SET_TASK_DANH_MUC: {
-      info["infoContent"] = "DanhMuc";
+      info["infoContent"] = "Danh mục";
       info["infoDetail"] = action.payload;
       break;
     }
     case SET_TASK_HE_THONG: {
-      info["infoContent"] = "HeThong";
+      info["infoContent"] = "Hệ thống";
+      info["infoDetail"] = action.payload;
+      break;
+    }
+    case SET_TASK_NGHIEP_VU: {
+      info["infoContent"] = "Nghiệp vụ";
+      info["infoDetail"] = action.payload;
+      break;
+    }
+
+    case SET_TASK_TRUY_VAN: {
+      info["infoContent"] = "Truy vấn";
+      info["infoDetail"] = action.payload;
+      break;
+    }
+    case SET_TASK_BAO_CAO: {
+      info["infoContent"] = "Báo cáo";
       info["infoDetail"] = action.payload;
       break;
     }
