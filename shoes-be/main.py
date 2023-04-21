@@ -103,6 +103,22 @@ def read_item():
     return data
 
 
+@app.get("/items_ky_tinh_luong")
+def read_item():
+    data = []
+    list_key = ["key", "STT", "Mã kỳ", "Tên kỳ", "Từ ngày",
+                "Đến ngày", ]
+
+    for i in range(100):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+            _data["Từ ngày"] = "29-04-2023"
+            _data["Đến ngày"] = "30-4-2023"
+        data.append(_data)
+    return data
+
+
 @app.get("/items_mau")
 def read_item():
     data = []

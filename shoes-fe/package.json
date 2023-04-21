@@ -39,5 +39,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "material-react-table": "^1.10.0",
+    "moment": "^2.29.4"
   }
 }
