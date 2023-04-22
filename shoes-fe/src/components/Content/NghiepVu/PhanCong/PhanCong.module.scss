@@ -1,5 +1,13 @@
 @import "~common_scss/form.module.scss";
 
-// .tableDonHang {
-//   height: 20rem;
-// }
+.tableDonHang {
+  height: 20rem;
+  position: relative;
+  display: block;
+  //   height: 40rem;
+  //   background-color: aquamarine;
+}
+
+.area_flex {
+  margin-bottom: 1rem !important;
+}

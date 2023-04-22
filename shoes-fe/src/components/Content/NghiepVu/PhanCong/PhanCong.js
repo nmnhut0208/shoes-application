@@ -50,6 +50,7 @@ const PhanCong = () => {
           row_each_page={5}
         />
       </div>
+
       <div className={styles.area_flex}>
         <h2 className={styles.row_content}>Phân công</h2>
         <div className={styles.row_content}>
