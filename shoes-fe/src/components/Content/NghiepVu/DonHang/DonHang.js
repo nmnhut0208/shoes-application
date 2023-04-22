@@ -1,4 +1,3 @@
-import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
 import {
@@ -34,19 +33,6 @@ for (var obj in list_key) {
   };
   infoColumns.push(info);
 }
-
-console.log(infoColumns);
-
-infoColumns.push({
-  title: "Action",
-  key: "action",
-  render: (_, record) => (
-    <Space size="middle">
-      <a>Invite {record.name}</a>
-      <a>Delete</a>
-    </Space>
-  ),
-});
 
 const DonHang = () => {
   const [renderUI, setRenderUI] = useState(false);

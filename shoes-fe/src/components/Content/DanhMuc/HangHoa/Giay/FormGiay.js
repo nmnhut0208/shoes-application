@@ -152,8 +152,8 @@ const FormGiay = () => {
               <div className={styles.group_second_row__right_pair}>
                 <label className={styles.label_custom}>Giá tân trang</label>
                 <input
-                  name="Giá trang trí"
-                  value={inputForm["Giá trang trí"]}
+                  name="Giá tân trang"
+                  value={inputForm["Giá tân trang"]}
                   onChange={(e) => handleChangeInformationForm(e)}
                 />
               </div>
