@@ -1,0 +1,7 @@
+.MuiTableCell-head {
+    border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
+}
+
+.MuiTableCell-body {
+    border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
+}
