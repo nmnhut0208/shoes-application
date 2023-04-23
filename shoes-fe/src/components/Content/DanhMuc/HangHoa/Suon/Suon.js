@@ -22,24 +22,13 @@ const list_key = [
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    title: list_key[obj],
+    header: list_key[obj],
     width: 100,
-    dataIndex: list_key[obj],
+    accessorKey: list_key[obj],
     key: list_key[obj].toLowerCase(),
   };
   infoColumns.push(info);
 }
-
-infoColumns.push({
-  title: "Action",
-  key: "action",
-  render: (_, record) => (
-    <Space size="middle">
-      <a>Invite {record.name}</a>
-      <a>Delete</a>
-    </Space>
-  ),
-});
 
 const Suon = () => {
   const [renderUI, setRenderUI] = useState(false);
