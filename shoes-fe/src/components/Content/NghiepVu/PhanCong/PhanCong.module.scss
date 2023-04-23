@@ -1,7 +1,7 @@
 @import "~common_scss/form.module.scss";
 
 .tableDonHang {
-  height: 20rem;
+  height: 30rem;
   position: relative;
   display: block;
   //   height: 40rem;
@@ -17,10 +17,16 @@
       text-align: right;
       padding-right: 0.2rem;
     }
+    span {
+      width: 45rem;
+    }
     select {
       margin-right: 1rem;
     }
-    input,
+    input {
+      width: 25rem;
+    }
+
     select {
       width: 20rem;
     }
@@ -47,19 +53,15 @@
 .input_query {
   .pair_info:last-child {
     input {
-      width: 80rem;
+      width: 70rem;
     }
   }
 }
 
-.info_giay {
-  span {
-    width: 30rem;
-  }
-}
-
 .info_tho {
-  span {
-    width: 50rem;
+  .pair_info:last-child {
+    span {
+      width: 71rem;
+    }
   }
 }

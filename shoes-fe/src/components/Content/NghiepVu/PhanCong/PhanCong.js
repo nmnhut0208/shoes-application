@@ -55,7 +55,7 @@ const PhanCong = () => {
         <SubTable
           columns={infoTableDonHang}
           data={dataDonHang}
-          row_each_page={5}
+          row_each_page={10}
         />
       </div>
 
