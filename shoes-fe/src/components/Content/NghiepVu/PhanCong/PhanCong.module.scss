@@ -9,5 +9,57 @@
 }
 
 .area_flex {
-  margin-bottom: 1rem !important;
+  margin-bottom: 1rem;
+  .row_content {
+    margin-bottom: var(--margin-bottom-config);
+    @extend .flex_row_space-between;
+    label:not(:first-child) {
+      text-align: right;
+      padding-right: 0.2rem;
+    }
+    select {
+      margin-right: 1rem;
+    }
+    input,
+    select {
+      width: 20rem;
+    }
+  }
+  .content_size {
+    input {
+      width: var(--input-width-middle);
+    }
+  }
+  .pair_info:not(:first-child) {
+    label {
+      text-align: right;
+      padding-right: 0.2rem;
+    }
+  }
+
+  .content_dien_dai {
+    input {
+      width: 180rem !important;
+    }
+  }
+}
+
+.input_query {
+  .pair_info:last-child {
+    input {
+      width: 80rem;
+    }
+  }
+}
+
+.info_giay {
+  span {
+    width: 30rem;
+  }
+}
+
+.info_tho {
+  span {
+    width: 50rem;
+  }
 }
