@@ -1,5 +1,6 @@
 import { useTaskContext } from "~task";
 import DonHang from "./DonHang";
+import ChiTien from "./ChiTien";
 
 const NghiepVu = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -8,6 +9,8 @@ const NghiepVu = () => {
   switch (inforCurrentTask.infoDetail) {
     case "Đơn hàng":
       return <DonHang />;
+    case "Chi tiền":
+      return <ChiTien />;
     default:
       alert("Chua xu ly ngoai DonHang");
   }

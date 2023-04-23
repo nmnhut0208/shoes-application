@@ -4,6 +4,7 @@ import {
   SET_TASK_NGHIEP_VU,
   SET_TASK_TRUY_VAN,
   SET_TASK_BAO_CAO,
+  SET_DEFAULT_HEADER,
 } from "./constants";
 
 export const setTaskHeThong = (payload) => {
@@ -37,6 +38,13 @@ export const setTaskTruyVan = (payload) => {
 export const setTaskBaoCao = (payload) => {
   return {
     type: SET_TASK_BAO_CAO,
+    payload,
+  };
+};
+
+export const setDefaultHeader = (payload) => {
+  return {
+    type: SET_DEFAULT_HEADER,
     payload,
   };
 };
