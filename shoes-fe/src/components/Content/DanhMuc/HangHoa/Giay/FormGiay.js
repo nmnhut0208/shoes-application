@@ -246,7 +246,6 @@ const FormGiay = () => {
                   name="Giá vốn"
                   value={inputForm["Giá vốn"]}
                   onChange={(e) => handleChangeInformationForm(e)}
-                  className={styles.item_size_small}
                 />
               </div>
             </div>
