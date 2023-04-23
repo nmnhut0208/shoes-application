@@ -48,6 +48,17 @@
       width: 180rem !important;
     }
   }
+  .button_group {
+    @extend .flex-row;
+    justify-content: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    button {
+      margin-right: 1rem;
+      width: 10rem;
+      font-size: 1.7rem;
+    }
+  }
 }
 
 .input_query {

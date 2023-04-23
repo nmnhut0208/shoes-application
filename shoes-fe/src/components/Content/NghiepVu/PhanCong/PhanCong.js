@@ -22,6 +22,10 @@ const PhanCong = () => {
     renderDataEmpty(list_key_ChiTietPhanCong, 21)
   );
 
+  const handleClickAdd = () => {};
+  const handleClickDelete = () => {};
+  const handleClickEdit = () => {};
+
   return (
     <div>
       <h2>Phân công - F0037</h2>
@@ -136,6 +140,14 @@ const PhanCong = () => {
         >
           <label>Diễn giải</label>
           <input name="Diễn giải" />
+        </div>
+      </div>
+
+      <div className={styles.area_flex}>
+        <div className={clsx(styles.button_group, styles.form)}>
+          <button onClick={handleClickAdd}>Thêm</button>
+          <button onClick={handleClickDelete}>Xóa</button>
+          <button onClick={handleClickEdit}>Sửa</button>
         </div>
       </div>
 

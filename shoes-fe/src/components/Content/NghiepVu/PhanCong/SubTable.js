@@ -8,6 +8,8 @@ const SubTable = ({ row_each_page, columns, data }) => {
         columns={columns}
         data={data}
         // components
+        enableColumnActions={false}
+        enableSorting={false}
         enableColumnResizing
         initialState={{ pagination: { pageSize: row_each_page, pageIndex: 0 } }}
         enablePinning
