@@ -12,7 +12,7 @@ const list_key = [
   { key: "STT", width: 7 * rem_to_px, enableEditing: false },
   { key: "Mã giày", width: 21 * rem_to_px, enableEditing: false },
   { key: "Tên giày", width: 40 * rem_to_px, enableEditing: false },
-  { key: "Màu đế", width: 12 * rem_to_px, enableEditing: false },
+  { key: "Màu đế", width: 12 * rem_to_px, enableEditing: true },
   { key: "Màu sườn", width: 12 * rem_to_px, enableEditing: false },
   { key: "Màu cá", width: 12 * rem_to_px, enableEditing: false },
   { key: "Màu quai", width: 12 * rem_to_px, enableEditing: false },
@@ -55,6 +55,18 @@ const DonHang = () => {
         enableEditing: list_key[obj]["enableEditing"],
         key: list_key[obj]["key"].toLowerCase(),
       };
+
+      // thử thêm select box vô 1 cell
+      if (key === "Màu đế") {
+        info["editSelectOptions"] = [
+          "Màu đế - 1",
+          "Màu đế - 2",
+          "Màu đế - 3",
+          "Màu đế - 4",
+        ];
+        info["editVariant"] = "select";
+        info["enableEditing"] = true;
+      }
 
       if (key === "Tên giày") info["Footer"] = () => <div>Tổng cộng</div>;
       if (columns_have_sum_feature.includes(key)) {
