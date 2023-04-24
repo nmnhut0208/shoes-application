@@ -234,7 +234,7 @@ def read_item():
         "Giá bán",
     ]
 
-    for i in range(20):
+    for i in range(5):
         _data = {}
         for key in list_key:
             _data[key] = "{} - {}".format(key, i+1)

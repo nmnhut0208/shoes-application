@@ -9,21 +9,21 @@ const font_size_default_rem = 16;
 const rem_to_px = (font_size_html * font_size_default_rem) / 100;
 
 const list_key = [
-  { key: "STT", width: 7 * rem_to_px },
-  { key: "Mã giày", width: 21 * rem_to_px },
-  { key: "Tên giày", width: 40 * rem_to_px },
-  { key: "Màu đế", width: 12 * rem_to_px },
-  { key: "Màu sườn", width: 12 * rem_to_px },
-  { key: "Màu cá", width: 12 * rem_to_px },
-  { key: "Màu quai", width: 12 * rem_to_px },
-  { key: "Size 5", width: 8 * rem_to_px },
-  { key: "Size 6", width: 8 * rem_to_px },
-  { key: "Size 7", width: 8 * rem_to_px },
-  { key: "Size 8", width: 8 * rem_to_px },
-  { key: "Size 9", width: 8 * rem_to_px },
-  { key: "Size 0", width: 8 * rem_to_px },
-  { key: "Số lượng", width: 24 * rem_to_px },
-  { key: "Giá bán", width: 24 * rem_to_px },
+  { key: "STT", width: 7 * rem_to_px, enableEditing: false },
+  { key: "Mã giày", width: 21 * rem_to_px, enableEditing: false },
+  { key: "Tên giày", width: 40 * rem_to_px, enableEditing: false },
+  { key: "Màu đế", width: 12 * rem_to_px, enableEditing: false },
+  { key: "Màu sườn", width: 12 * rem_to_px, enableEditing: false },
+  { key: "Màu cá", width: 12 * rem_to_px, enableEditing: false },
+  { key: "Màu quai", width: 12 * rem_to_px, enableEditing: false },
+  { key: "Size 5", width: 8 * rem_to_px, enableEditing: true },
+  { key: "Size 6", width: 8 * rem_to_px, enableEditing: true },
+  { key: "Size 7", width: 8 * rem_to_px, enableEditing: true },
+  { key: "Size 8", width: 8 * rem_to_px, enableEditing: true },
+  { key: "Size 9", width: 8 * rem_to_px, enableEditing: true },
+  { key: "Size 0", width: 8 * rem_to_px, enableEditing: true },
+  { key: "Số lượng", width: 24 * rem_to_px, enableEditing: false },
+  { key: "Giá bán", width: 24 * rem_to_px, enableEditing: false },
 ];
 
 const columns_have_sum_feature = [
@@ -34,7 +34,6 @@ const columns_have_sum_feature = [
   "Size 9",
   "Size 0",
   "Số lượng",
-  "Giá bán",
 ];
 
 const DonHang = () => {
@@ -43,10 +42,6 @@ const DonHang = () => {
   // const [dataTable, setDataTable] = useState(() => {
   //   return renderDataEmpty(infoColumns, 50);
   // });
-
-  const sumColumns = useMemo(() => {
-    return dataTable.reduce((total, row) => total + row["Size 0"], 0);
-  }, [dataTable]);
 
   const infoColumns = useMemo(() => {
     const infoColumnsInit = [];
@@ -57,6 +52,7 @@ const DonHang = () => {
         header: list_key[obj]["key"],
         size: list_key[obj]["width"],
         accessorKey: list_key[obj]["key"],
+        enableEditing: list_key[obj]["enableEditing"],
         key: list_key[obj]["key"].toLowerCase(),
       };
 
@@ -131,7 +127,13 @@ const DonHang = () => {
           </div>
         </div>
       </div>
-      {<SubTable columns={infoColumns} data={dataTable} row_each_page={20} />}
+      {
+        <SubTable
+          columns={infoColumns}
+          data={dataTable}
+          setDataTable={setDataTable}
+        />
+      }
     </>
   );
 };
