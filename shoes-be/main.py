@@ -177,7 +177,7 @@ def read_item():
 @app.get("/items_khachhang")
 def read_item():
     data = []
-    info_key = list_key = [
+    info_key = [
         {"key": "STT", "width": "7rem"},
         {"key": "Mã khách hàng", "width": "21rem"},
         {"key": "Tên khách hàng", "width": "10rem"},
@@ -194,5 +194,51 @@ def read_item():
         _data = {}
         for key in list_key:
             _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
+
+
+@app.get("/items_donhang")
+def read_item():
+    data = []
+    rem_to_px = 1
+    info_key = [
+        {"key": "STT", "width": 7 * rem_to_px},
+        {"key": "Mã giày", "width": 21 * rem_to_px},
+        {"key": "Tên giày", "width": 40 * rem_to_px},
+        {"key": "Màu đế", "width": 8 * rem_to_px},
+        {"key": "Màu sườn", "width": 8 * rem_to_px},
+        {"key": "Màu cá", "width": 8 * rem_to_px},
+        {"key": "Màu quai", "width": 8 * rem_to_px},
+        {"key": "Size 5", "width": 16 * rem_to_px},
+        {"key": "Size 6", "width": 16 * rem_to_px},
+        {"key": "Size 7", "width": 16 * rem_to_px},
+        {"key": "Size 8", "width": 16 * rem_to_px},
+        {"key": "Size 9", "width": 16 * rem_to_px},
+        {"key": "Size 0", "width": 8 * rem_to_px},
+        {"key": "Số lượng", "width": 24 * rem_to_px},
+        {"key": "Giá bán", "width": 24 * rem_to_px},
+    ]
+    print("info_key: ", info_key)
+    list_key = [a["key"] for a in info_key]
+    print("list_key")
+
+    columns_have_sum_feature = [
+        "Size 5",
+        "Size 6",
+        "Size 7",
+        "Size 8",
+        "Size 9",
+        "Size 0",
+        "Số lượng",
+        "Giá bán",
+    ]
+
+    for i in range(20):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+            if key in columns_have_sum_feature:
+                _data[key] = i + columns_have_sum_feature.index(key)
         data.append(_data)
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)

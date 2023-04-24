@@ -1,67 +1,88 @@
-import { useEffect, useState } from "react";
-import { TableContent } from "~common_tag";
-import {
-  useTableContext,
-  actions_table,
-  cleanupContextTable,
-} from "~table_context";
+import { useEffect, useState, useMemo } from "react";
 import styles from "./DonHang.module.scss";
 import { FormGiay } from "~hang_hoa";
+import SubTable from "./SubTable";
+import { renderDataEmpty } from "../PhanCong/ConstantVariable";
+
+const font_size_html = 62.5;
+const font_size_default_rem = 16;
+const rem_to_px = (font_size_html * font_size_default_rem) / 100;
 
 const list_key = [
-  { key: "STT", width: "7rem" },
-  { key: "Mã giày", width: "21rem" },
-  { key: "Đơn giá", width: "10rem" },
-  { key: "Tên giày", width: "40rem" },
-  { key: "Mã đế", width: "8rem" },
-  { key: "Tên đế", width: "16rem" },
-  { key: "Mã sườn", width: "8rem" },
-  { key: "Tên sườn", width: "16rem" },
-  { key: "Mã cá", width: "8rem" },
-  { key: "Tên cá", width: "16rem" },
-  { key: "Mã quai", width: "8rem" },
-  { key: "Tên quai", width: "16rem" },
+  { key: "STT", width: 7 * rem_to_px },
+  { key: "Mã giày", width: 21 * rem_to_px },
+  { key: "Tên giày", width: 40 * rem_to_px },
+  { key: "Màu đế", width: 12 * rem_to_px },
+  { key: "Màu sườn", width: 12 * rem_to_px },
+  { key: "Màu cá", width: 12 * rem_to_px },
+  { key: "Màu quai", width: 12 * rem_to_px },
+  { key: "Size 5", width: 8 * rem_to_px },
+  { key: "Size 6", width: 8 * rem_to_px },
+  { key: "Size 7", width: 8 * rem_to_px },
+  { key: "Size 8", width: 8 * rem_to_px },
+  { key: "Size 9", width: 8 * rem_to_px },
+  { key: "Size 0", width: 8 * rem_to_px },
+  { key: "Số lượng", width: 24 * rem_to_px },
+  { key: "Giá bán", width: 24 * rem_to_px },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    title: list_key[obj]["key"],
-    width: list_key[obj]["width"],
-    dataIndex: list_key[obj]["key"],
-    key: list_key[obj]["key"].toLowerCase(),
-  };
-  infoColumns.push(info);
-}
+const columns_have_sum_feature = [
+  "Size 5",
+  "Size 6",
+  "Size 7",
+  "Size 8",
+  "Size 9",
+  "Size 0",
+  "Số lượng",
+  "Giá bán",
+];
 
 const DonHang = () => {
   const [renderUI, setRenderUI] = useState(false);
-  const [stateTable, dispatchTable] = useTableContext();
+  const [dataTable, setDataTable] = useState([]);
+  // const [dataTable, setDataTable] = useState(() => {
+  //   return renderDataEmpty(infoColumns, 50);
+  // });
+
+  const sumColumns = useMemo(() => {
+    return dataTable.reduce((total, row) => total + row["Size 0"], 0);
+  }, [dataTable]);
+
+  const infoColumns = useMemo(() => {
+    const infoColumnsInit = [];
+
+    for (var obj in list_key) {
+      let key = list_key[obj]["key"];
+      var info = {
+        header: list_key[obj]["key"],
+        size: list_key[obj]["width"],
+        accessorKey: list_key[obj]["key"],
+        key: list_key[obj]["key"].toLowerCase(),
+      };
+
+      if (key === "Tên giày") info["Footer"] = () => <div>Tổng cộng</div>;
+      if (columns_have_sum_feature.includes(key)) {
+        let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
+        info["Footer"] = () => <div>{sum_value}</div>;
+      }
+      infoColumnsInit.push(info);
+    }
+    return infoColumnsInit;
+  }, [dataTable]);
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Giay - F0025"));
-    dispatchTable(actions_table.setTitleTable(""));
-    dispatchTable(actions_table.setComponentForm(FormGiay));
-    fetch("http://localhost:8000/items")
+    fetch("http://localhost:8000/items_donhang")
       .then((response) => {
         return response.json();
       })
       .then((info) => {
-        dispatchTable(actions_table.setInforColumnTable(infoColumns));
-        dispatchTable(actions_table.setInforTable(info));
-        // if neu co thong tin moi show ne
-        dispatchTable(actions_table.setModeShowTable(true));
         setRenderUI(true);
-        console.log("stateTable: ", stateTable);
+        setDataTable(info);
+        console.log(dataTable);
       })
       .catch((err) => {
         console.log(":error: ", err);
       });
-
-    // cleanup function
-    return () => {
-      cleanupContextTable(dispatchTable);
-    };
   }, []);
 
   return (
@@ -110,7 +131,7 @@ const DonHang = () => {
           </div>
         </div>
       </div>
-      {renderUI && <TableContent />}
+      {<SubTable columns={infoColumns} data={dataTable} row_each_page={20} />}
     </>
   );
 };
