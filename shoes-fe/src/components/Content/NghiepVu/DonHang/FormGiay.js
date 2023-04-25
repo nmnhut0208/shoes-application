@@ -2,13 +2,21 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 import { FormGiayBasic, FormMauBasic } from "~hang_hoa";
 import styles from "./FormGiay.module.scss";
+import { Modal } from "~common_tag";
+import { useTableContext, actions_table } from "~table_context";
 
 const FormGiay = () => {
   const [dataForm, setDataForm] = useState({});
-  console.log("record form: re-render", dataForm);
+  const [stateTable, dispatchTable] = useTableContext();
+
+  // useEffect(() => {
+  //   dispatchTable(actions_table.setTitleModal("Giày - F0025"));
+  //   dispatchTable(actions_table.setModeShowModal(true));
+  // }, []);
 
   const handleSaveFrom = () => {
     // saveDataBase()
+    dispatchTable(actions_table.setModeShowModal(false));
   };
 
   const handleNhapTiep = () => {

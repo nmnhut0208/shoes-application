@@ -1,16 +1,22 @@
 import { useEffect, useState, useMemo } from "react";
 import SubTable from "./SubTable";
-import { renderDataEmpty } from "../PhanCong/ConstantVariable";
-import { Modal } from "~common_tag";
 import FormGiay from "./FormGiay";
 import FormMau from "./FormMau";
-import { useTableContext, actions_table } from "~table_context";
+import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import styles from "./DonHang.module.scss";
 import { list_key, columns_have_sum_feature } from "./config";
+import { Modal } from "~common_tag";
+import { useTableContext, actions_table } from "~table_context";
 
 const DonHang = () => {
-  const [renderUI, setRenderUI] = useState(false);
   const [dataTable, setDataTable] = useState([]);
+  const [stateTable, dispatchTable] = useTableContext();
+  const [infoFormWillShow, setInfoFormWillShow] = useState({
+    giay: false,
+    mau: false,
+    dmGiaykh: false,
+  });
+  console.log("dataTable: ", dataTable);
 
   /*
   TODO: Add logic
@@ -21,7 +27,7 @@ const DonHang = () => {
        -> Chỗ này khó quá, select muti option 
          => mà nhìn giống kiểu bảng con
       Có thể chỉnh thành logic: click vô ô mã giày
-      => show ra bảng con, chọn nhiều row, trả về kết quả 
+      => show ra modal có bảng con, chọn nhiều row, trả về kết quả 
       chứ select option làm sao hiện ra được full bảng @@ 
   - Trường hợp chú muốn thêm 1 mã giày mới mà khách hàng chưa đặt
        -> Mình đoán: sẽ bấm vào thêm giày để tạo thông tin 
@@ -34,22 +40,24 @@ const DonHang = () => {
   //   return renderDataEmpty(infoColumns, 50);
   // });
 
-  const [showFormGiay, setShowFormGiay] = useState(false);
-  const [showFormMau, setShowFormMau] = useState(false);
-  const [stateTable, dispatchTable] = useTableContext();
-
   const handleThemGiay = () => {
+    setInfoFormWillShow({
+      giay: true,
+      mau: false,
+      dmGiaykh: false,
+    });
     dispatchTable(actions_table.setTitleModal("Giày - F0025"));
     dispatchTable(actions_table.setModeShowModal(true));
-    setShowFormGiay(true);
-    setShowFormMau(false);
   };
 
   const handleThemMau = () => {
+    setInfoFormWillShow({
+      giay: false,
+      mau: true,
+      dmGiaykh: false,
+    });
     dispatchTable(actions_table.setTitleModal("Màu sắc - F0010"));
     dispatchTable(actions_table.setModeShowModal(true));
-    setShowFormMau(true);
-    setShowFormGiay(false);
   };
 
   const handleNhapTiep = () => {
@@ -57,6 +65,18 @@ const DonHang = () => {
     // Reset lại hết những thông tin hiện có
     // để chú nhận đơn hàng mới
     setDataTable([]);
+  };
+
+  const handleClickMaGiay = () => {
+    setInfoFormWillShow({
+      giay: false,
+      mau: false,
+      dmGiaykh: true,
+    });
+    dispatchTable(
+      actions_table.setTitleModal("Danh mục giày của Khách hàng - F0049")
+    );
+    dispatchTable(actions_table.setModeShowModal(true));
   };
 
   const infoColumns = useMemo(() => {
@@ -72,6 +92,11 @@ const DonHang = () => {
         key: list_key[obj]["key"].toLowerCase(),
       };
 
+      if (key === "Mã giày") {
+        info["Cell"] = ({ cell }) => (
+          <button onClick={handleClickMaGiay}>{cell.getValue()}</button>
+        );
+      }
       // thử thêm select box vô 1 cell
       if (key === "Màu đế") {
         info["editSelectOptions"] = [
@@ -100,7 +125,6 @@ const DonHang = () => {
         return response.json();
       })
       .then((info) => {
-        setRenderUI(true);
         setDataTable(info);
         console.log(dataTable);
       })
@@ -173,15 +197,22 @@ const DonHang = () => {
           <button>Đóng</button>
         </div>
       </div>
-      {showFormGiay && (
+      {infoFormWillShow["giay"] && (
         <Modal>
           <FormGiay />
         </Modal>
       )}
-
-      {showFormMau && (
+      {infoFormWillShow["mau"] && (
         <Modal>
           <FormMau />
+        </Modal>
+      )}
+      {infoFormWillShow["dmGiaykh"] && (
+        <Modal>
+          <DanhMucGiayKhachHang
+            dataOrigin={dataTable}
+            setInfoSelection={setDataTable}
+          />
         </Modal>
       )}
     </>

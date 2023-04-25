@@ -242,3 +242,29 @@ def read_item():
                 _data[key] = i + columns_have_sum_feature.index(key)
         data.append(_data)
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
+
+
+@app.get("/items_danhmuc_giay_khachhang")
+def read_item():
+    data = []
+    rem_to_px = 1
+    info_key = [
+        {"key": "STT", "width": 7 * rem_to_px, "enableEditing": False},
+        {"key": "Mã giày", "width": 21 * rem_to_px, "enableEditing": False},
+        {"key": "Tên giày", "width": 40 * rem_to_px, "enableEditing": False},
+        {"key": "Màu đế", "width": 12 * rem_to_px, "enableEditing": True},
+        {"key": "Màu gót", "width": 12 * rem_to_px, "enableEditing": True},
+        {"key": "Màu sườn", "width": 12 * rem_to_px, "enableEditing": False},
+        {"key": "Màu cá", "width": 12 * rem_to_px, "enableEditing": False},
+        {"key": "Màu quai", "width": 12 * rem_to_px, "enableEditing": False},
+        {"key": "Giá bán", "width": 24 * rem_to_px, "enableEditing": False},
+    ]
+    print("info_key: ", info_key)
+    list_key = [a["key"] for a in info_key]
+
+    for i in range(15):
+        _data = {}
+        for key in list_key:
+            _data[key] = "kh-{} - {}".format(key, i+1)
+        data.append(_data)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)

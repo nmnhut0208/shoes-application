@@ -29,3 +29,15 @@ export const columns_have_sum_feature = [
   "Size 0",
   "Số lượng",
 ];
+
+export const COL_GIAY_KHACHHANG = [
+  { key: "STT", width: 7 * rem_to_px, enableEditing: false },
+  { key: "Mã giày", width: 21 * rem_to_px, enableEditing: false },
+  { key: "Tên giày", width: 40 * rem_to_px, enableEditing: false },
+  { key: "Màu đế", width: 12 * rem_to_px, enableEditing: true },
+  { key: "Màu gót", width: 12 * rem_to_px, enableEditing: true },
+  { key: "Màu sườn", width: 12 * rem_to_px, enableEditing: false },
+  { key: "Màu cá", width: 12 * rem_to_px, enableEditing: false },
+  { key: "Màu quai", width: 12 * rem_to_px, enableEditing: false },
+  { key: "Giá bán", width: 24 * rem_to_px, enableEditing: false },
+];
