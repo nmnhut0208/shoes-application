@@ -1,50 +1,63 @@
 import { useEffect, useState, useMemo } from "react";
-import styles from "./DonHang.module.scss";
-// import { FormGiay } from "./FormGiay";
 import SubTable from "./SubTable";
 import { renderDataEmpty } from "../PhanCong/ConstantVariable";
-import clsx from "clsx";
-
-const font_size_html = 62.5;
-const font_size_default_rem = 16;
-const rem_to_px = (font_size_html * font_size_default_rem) / 100;
-
-const list_key = [
-  { key: "STT", width: 7 * rem_to_px, enableEditing: false },
-  { key: "Mã giày", width: 21 * rem_to_px, enableEditing: false },
-  { key: "Tên giày", width: 40 * rem_to_px, enableEditing: false },
-  { key: "Màu đế", width: 12 * rem_to_px, enableEditing: true },
-  { key: "Màu sườn", width: 12 * rem_to_px, enableEditing: false },
-  { key: "Màu cá", width: 12 * rem_to_px, enableEditing: false },
-  { key: "Màu quai", width: 12 * rem_to_px, enableEditing: false },
-  { key: "Size 5", width: 8 * rem_to_px, enableEditing: true },
-  { key: "Size 6", width: 8 * rem_to_px, enableEditing: true },
-  { key: "Size 7", width: 8 * rem_to_px, enableEditing: true },
-  { key: "Size 8", width: 8 * rem_to_px, enableEditing: true },
-  { key: "Size 9", width: 8 * rem_to_px, enableEditing: true },
-  { key: "Size 0", width: 8 * rem_to_px, enableEditing: true },
-  { key: "Số lượng", width: 24 * rem_to_px, enableEditing: false },
-  { key: "Giá bán", width: 24 * rem_to_px, enableEditing: false },
-];
-
-const columns_have_sum_feature = [
-  "Size 5",
-  "Size 6",
-  "Size 7",
-  "Size 8",
-  "Size 9",
-  "Size 0",
-  "Số lượng",
-];
+import { Modal } from "~common_tag";
+import FormGiay from "./FormGiay";
+import FormMau from "./FormMau";
+import { useTableContext, actions_table } from "~table_context";
+import styles from "./DonHang.module.scss";
+import { list_key, columns_have_sum_feature } from "./config";
 
 const DonHang = () => {
   const [renderUI, setRenderUI] = useState(false);
   const [dataTable, setDataTable] = useState([]);
+
+  /*
+  TODO: Add logic
+  - Chọn khách hàng A từ select option
+  - Ở mã giày sẽ là select option tất cả các giày khách hàng
+    A đã đặt trước đó 
+       -> Chọn những mã khách hàng A đã đặt để đặt lại nếu muốn
+       -> Chỗ này khó quá, select muti option 
+         => mà nhìn giống kiểu bảng con
+      Có thể chỉnh thành logic: click vô ô mã giày
+      => show ra bảng con, chọn nhiều row, trả về kết quả 
+      chứ select option làm sao hiện ra được full bảng @@ 
+  - Trường hợp chú muốn thêm 1 mã giày mới mà khách hàng chưa đặt
+       -> Mình đoán: sẽ bấm vào thêm giày để tạo thông tin 
+       -> Bữa sau test trường hợp này
+  - Sau khi chọn những giày muốn lấy 
+       -> Hiện xuống bảng bên dưới để nhập số lượng 
+   */
+
   // const [dataTable, setDataTable] = useState(() => {
   //   return renderDataEmpty(infoColumns, 50);
   // });
 
-  const handleThemGiay = () => {};
+  const [showFormGiay, setShowFormGiay] = useState(false);
+  const [showFormMau, setShowFormMau] = useState(false);
+  const [stateTable, dispatchTable] = useTableContext();
+
+  const handleThemGiay = () => {
+    dispatchTable(actions_table.setTitleModal("Giày - F0025"));
+    dispatchTable(actions_table.setModeShowModal(true));
+    setShowFormGiay(true);
+    setShowFormMau(false);
+  };
+
+  const handleThemMau = () => {
+    dispatchTable(actions_table.setTitleModal("Màu sắc - F0010"));
+    dispatchTable(actions_table.setModeShowModal(true));
+    setShowFormMau(true);
+    setShowFormGiay(false);
+  };
+
+  const handleNhapTiep = () => {
+    // Render lại số đơn hàng
+    // Reset lại hết những thông tin hiện có
+    // để chú nhận đơn hàng mới
+    setDataTable([]);
+  };
 
   const infoColumns = useMemo(() => {
     const infoColumnsInit = [];
@@ -153,13 +166,24 @@ const DonHang = () => {
         {/* Không hiểu tại sao gộp 2 form lại thì ko nhận extend nên phải tách đỡ ra vầy */}
         <div className={styles.group_button}>
           <button onClick={handleThemGiay}>Thêm giày</button>
-          <button>Thêm màu</button>
-          <button>Nhập tiếp</button>
+          <button onClick={handleThemMau}>Thêm màu</button>
+          <button onClick={handleNhapTiep}>Nhập tiếp</button>
           <button>Lưu</button>
           <button>In</button>
           <button>Đóng</button>
         </div>
       </div>
+      {showFormGiay && (
+        <Modal>
+          <FormGiay />
+        </Modal>
+      )}
+
+      {showFormMau && (
+        <Modal>
+          <FormMau />
+        </Modal>
+      )}
     </>
   );
 };

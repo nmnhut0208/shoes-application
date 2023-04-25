@@ -1,1 +1,2 @@
-export { default } from "./Mau";
+export { default as Mau } from "./Mau";
+export { default as FormMauBasic } from "./FormMauBasic";

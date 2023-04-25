@@ -28,6 +28,8 @@ const FormGiay = () => {
         )
       )
     );
+
+    dispatchTable(actions_table.setModeShowModal(false));
   };
 
   const handleNhapTiep = () => {

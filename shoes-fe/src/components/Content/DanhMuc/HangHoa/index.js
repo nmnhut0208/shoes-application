@@ -1,6 +1,6 @@
-export { Giay, FormGiay } from "./Giay";
+export { Giay, FormGiayBasic } from "./Giay";
 export { default as KhoHang } from "./KhoHang";
-export { default as Mau } from "./Mau";
+export { Mau, FormMauBasic } from "./Mau";
 export { default as Mui } from "./Mui";
 export { default as Suon } from "./Suon";
 export { default as De } from "./De";
