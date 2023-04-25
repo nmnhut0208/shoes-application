@@ -1,8 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import styles from "./DonHang.module.scss";
-import { FormGiay } from "~hang_hoa";
+// import { FormGiay } from "./FormGiay";
 import SubTable from "./SubTable";
 import { renderDataEmpty } from "../PhanCong/ConstantVariable";
+import clsx from "clsx";
 
 const font_size_html = 62.5;
 const font_size_default_rem = 16;
@@ -42,6 +43,8 @@ const DonHang = () => {
   // const [dataTable, setDataTable] = useState(() => {
   //   return renderDataEmpty(infoColumns, 50);
   // });
+
+  const handleThemGiay = () => {};
 
   const infoColumns = useMemo(() => {
     const infoColumnsInit = [];
@@ -146,6 +149,17 @@ const DonHang = () => {
           setDataTable={setDataTable}
         />
       }
+      <div className={styles.form}>
+        {/* Không hiểu tại sao gộp 2 form lại thì ko nhận extend nên phải tách đỡ ra vầy */}
+        <div className={styles.group_button}>
+          <button onClick={handleThemGiay}>Thêm giày</button>
+          <button>Thêm màu</button>
+          <button>Nhập tiếp</button>
+          <button>Lưu</button>
+          <button>In</button>
+          <button>Đóng</button>
+        </div>
+      </div>
     </>
   );
 };
