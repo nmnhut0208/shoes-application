@@ -35,6 +35,14 @@ const SubTable = ({ columns, data, setDataTable, handleAddGiay }) => {
     setDataTable([...data]); //re-render with new data
   };
 
+  const handleDeleteRow = (row) => {
+    let index = row.index;
+    setDataTable([
+      ...data.slice(0, index),
+      ...data.slice(index + 1, data.length),
+    ]);
+  };
+
   return (
     <div>
       <MaterialReactTable
@@ -91,10 +99,7 @@ const SubTable = ({ columns, data, setDataTable, handleAddGiay }) => {
             )}
             {row.original["Mã giày"] !== "" && (
               <Tooltip arrow title="Delete">
-                <IconButton
-                  color="error"
-                  // onClick={() => handleDeleteRow(row)}
-                >
+                <IconButton color="error" onClick={() => handleDeleteRow(row)}>
                   <Delete />
                 </IconButton>
               </Tooltip>
