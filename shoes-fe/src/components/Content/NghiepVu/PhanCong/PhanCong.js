@@ -33,35 +33,35 @@ const PhanCong = () => {
   const handleClickEdit = () => {};
 
   return (
-    <div>
-      <h2>Phân công - F0037</h2>
-      <div className={clsx(styles.area_flex, styles.form, styles.input_query)}>
-        <div className={clsx(styles.row_content, styles.form)}>
-          <div className={styles.pair_info}>
-            <label>Số phiếu</label>
-            <input name="Số phiếu" />
-          </div>
-          <div className={styles.pair_info}>
-            <label>Ngày phiếu</label>
-            <input name="Ngày phiếu" />
-          </div>
-          <div className={styles.pair_info}>
-            <label>Kỳ</label>
-            <select name="Kỳ" id="Kỳ">
-              <option value="volvo">Volvo</option>
-              <option value="saab">Saab</option>
-              <option value="mercedes">Mercedes</option>
-              <option value="audi">Audi</option>
-            </select>
-          </div>
-          <div className={styles.pair_info}>
-            <label>Diễn dãi phiếu</label>
-            <input name="Diễn dãi phiếu" />
-          </div>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Phân công - F0037</h2>
+
+      <div className={clsx(styles.form, styles.input_query)}>
+        <div className={styles.pair}>
+          <label>Số phiếu</label>
+          <input name="Số phiếu" />
+        </div>
+        <div className={styles.pair}>
+          <label>Ngày phiếu</label>
+          <input name="Ngày phiếu" />
+        </div>
+        <div className={styles.pair}>
+          <label>Kỳ</label>
+          <select name="Kỳ" id="Kỳ">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+          </select>
+        </div>
+        <div className={clsx(styles.pair, styles.header_diendai)}>
+          <label>Diễn dãi phiếu</label>
+          <input name="Diễn dãi phiếu" />
         </div>
       </div>
 
-      <div className={(styles.area_flex, styles.tableDonHang)}>
+      <div className={styles.table_content}>
+        {/* <span>Table 1</span> */}
         <SubTable
           columns={infoTableDonHang}
           data={dataDonHang}
@@ -70,49 +70,54 @@ const PhanCong = () => {
         />
       </div>
 
-      <div className={styles.area_flex}>
-        <h1 className={styles.row_content}>Phân công</h1>
-        <div
-          className={clsx(styles.row_content, styles.form, styles.info_giay)}
-        >
-          <div className={styles.pair_info}>
-            <label>Mã giày</label>
-            <input name="Mã giày" />
-            {/* slelect box ne */}
-            <span>Tên giày</span>
-          </div>
-          <div className={styles.pair_info}>
+      <div className={clsx(styles.phan_cong, styles.form)}>
+        <h1 className={styles.title_phancong}>Phân công</h1>
+        <label className={clsx(styles.phancong_label, styles.form)}>
+          Mã giày
+        </label>
+        <input
+          className={clsx(styles.phancong_input, styles.form)}
+          name="Mã giày"
+        />
+        <span className={clsx(styles.phancong_span, styles.form)}>
+          Tên giày
+        </span>
+        <div className={clsx(styles.phancong_remain, styles.form)}>
+          <div className={styles.pair}>
             <label>Màu sườn</label>
             <input name="Màu sườn" />
           </div>
-          <div className={styles.pair_info}>
+          <div className={styles.pair}>
             <label>Màu cá</label>
             <input name="Màu cá" />
           </div>
-          <div className={styles.pair_info}>
+          <div className={styles.pair}>
             <label>Màu quai</label>
             <input name="Màu quai" />
           </div>
         </div>
 
-        <div className={clsx(styles.row_content, styles.form, styles.info_tho)}>
-          <div className={styles.pair_info}>
-            <label>Thợ đế</label>
-            <input name="Thợ đế" />
-            {/* select box */}
-            <span>Tên thợ đế</span>
-          </div>
+        <label className={clsx(styles.phancong_label, styles.form)}>
+          Thợ đế
+        </label>
+        <input
+          className={clsx(styles.phancong_input, styles.form)}
+          name="Thợ đế"
+        />
+        <span className={clsx(styles.phancong_span, styles.form)}>
+          Tên thợ đế
+        </span>
 
-          <div className={styles.pair_info}>
+        <div className={clsx(styles.phancong_remain, styles.form)}>
+          <div className={styles.pair_tho_quai}>
             <label>Thợ quai</label>
             <input name="Thợ quai" />
             {/* select box */}
             <span>Tên thợ quai</span>
           </div>
         </div>
-        <div
-          className={clsx(styles.row_content, styles.form, styles.content_size)}
-        >
+
+        <div className={clsx(styles.content_size, styles.form)}>
           <div className={styles.pair_info}>
             <label>Size 0</label>
             <input name="Size 0" />
@@ -138,27 +143,23 @@ const PhanCong = () => {
             <input name="Size 9" />
           </div>
         </div>
-        <div
-          className={clsx(
-            styles.row_content,
-            styles.form,
-            styles.content_dien_dai
-          )}
-        >
-          <label>Diễn giải</label>
-          <input name="Diễn giải" />
-        </div>
+
+        <label>Diễn giải</label>
+        <input
+          className={styles.input_diengiai}
+          name="Diễn giải"
+          value="Dien dai"
+        />
       </div>
 
-      <div className={styles.area_flex}>
-        <div className={clsx(styles.button_group, styles.form)}>
-          <button onClick={handleClickAdd}>Thêm</button>
-          <button onClick={handleClickDelete}>Xóa</button>
-          <button onClick={handleClickEdit}>Sửa</button>
-        </div>
+      <div className={clsx(styles.button_group, styles.form)}>
+        <button onClick={handleClickAdd}>Thêm</button>
+        <button onClick={handleClickDelete}>Xóa</button>
+        <button onClick={handleClickEdit}>Sửa</button>
       </div>
 
-      <div className={styles.area_flex}>
+      <div className={styles.table_content}>
+        {/* <span>Table 2</span> */}
         <SubTable
           columns={infoTableChiTietPhanCong}
           data={dataChiTietPhanCong}
