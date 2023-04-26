@@ -61,7 +61,6 @@ const PhanCong = () => {
       </div>
 
       <div className={styles.table_content}>
-        {/* <span>Table 1</span> */}
         <SubTable
           columns={infoTableDonHang}
           data={dataDonHang}
@@ -159,7 +158,6 @@ const PhanCong = () => {
       </div>
 
       <div className={styles.table_content}>
-        {/* <span>Table 2</span> */}
         <SubTable
           columns={infoTableChiTietPhanCong}
           data={dataChiTietPhanCong}
