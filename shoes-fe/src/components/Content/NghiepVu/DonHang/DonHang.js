@@ -68,7 +68,7 @@ const DonHang = () => {
     // Render lại số đơn hàng
     // Reset lại hết những thông tin hiện có
     // để chú nhận đơn hàng mới
-    setDataTable([]);
+    setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
   };
 
   const handleClickMaGiay = () => {
