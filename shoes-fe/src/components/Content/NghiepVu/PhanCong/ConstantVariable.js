@@ -2,7 +2,7 @@ const font_size_html = 62.5;
 const font_size_default_rem = 16;
 const rem_to_px = (font_size_html * font_size_default_rem) / 100;
 
-export const list_key_DonHang = [
+export const INFO_COLS_DONHANG = [
   { key: "STT", width: 5 * rem_to_px },
   { key: "Số đơn hàng", width: 21 * rem_to_px },
   { key: "Ngày đơn hàng", width: 16 * rem_to_px },
@@ -12,7 +12,7 @@ export const list_key_DonHang = [
   { key: "Tổng số lượng đặt hàng", width: 21 * rem_to_px },
 ];
 
-export const list_key_ChiTietPhanCong = [
+export const INFO_COLS_CHITIET_PHANCONG = [
   { key: "STT", width: 5 * rem_to_px },
   { key: "Số đơn hàng", width: 15 * rem_to_px },
   { key: "Mã giày", width: 20 * rem_to_px },
@@ -31,30 +31,3 @@ export const list_key_ChiTietPhanCong = [
   { key: "Size 0", width: 7 * rem_to_px },
   { key: "Tên giày", width: 15 * rem_to_px },
 ];
-
-export const processingInfoTable = (list_key) => {
-  const infoColumns = [];
-  for (var obj in list_key) {
-    const info = {
-      header: list_key[obj]["key"],
-      size: list_key[obj]["width"],
-      accessorKey: list_key[obj]["key"],
-      key: list_key[obj]["key"].toLowerCase(),
-    };
-    infoColumns.push(info);
-  }
-  return infoColumns;
-};
-
-export const renderDataEmpty = (list_key, number_rows) => {
-  const data = [];
-  const object_empty = {};
-  for (var i = 0; i < list_key.length; i++) {
-    object_empty[list_key[i]["key"]] = "";
-  }
-  for (var i = 0; i < number_rows; i++) {
-    data.push(object_empty);
-  }
-
-  return data;
-};

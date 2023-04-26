@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
+import { Box, IconButton, Tooltip } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
 
-const SubTable = ({ columns, data, setDataTable }) => {
+const SubTable = ({ columns, data, setDataTable, handleAddGiay }) => {
   const handleSaveCell = (cell, value) => {
     console.log("cell, value: ", cell, value);
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
@@ -64,6 +66,40 @@ const SubTable = ({ columns, data, setDataTable }) => {
           <Typography sx={{ fontStyle: "italic", p: "0 1rem" }} variant="body2">
             Double-Click a Cell to Edit
           </Typography>
+        )}
+        // add action in row
+        enableRowActions
+        renderRowActions={({ row, table }) => (
+          <Box
+            sx={{
+              display: "flex",
+              "align-content": "center",
+              // "flex-direction": "row",
+            }}
+          >
+            {row.original["Mã giày"] === "" && (
+              <Tooltip arrow title="Edit">
+                <IconButton
+                  onClick={() => {
+                    console.log("row dang xem: ", row);
+                    handleAddGiay();
+                  }}
+                >
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            )}
+            {row.original["Mã giày"] !== "" && (
+              <Tooltip arrow title="Delete">
+                <IconButton
+                  color="error"
+                  // onClick={() => handleDeleteRow(row)}
+                >
+                  <Delete />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Box>
         )}
       />
     </div>

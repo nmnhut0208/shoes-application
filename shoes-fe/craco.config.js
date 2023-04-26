@@ -18,6 +18,8 @@ module.exports = {
         __dirname,
         "src/components/Content/DanhMuc/HangHoa"
       ),
+
+      "~utils": path.resolve(__dirname, "src/utils/"),
     },
   },
 };

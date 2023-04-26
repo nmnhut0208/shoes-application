@@ -2,7 +2,7 @@ const font_size_html = 62.5;
 const font_size_default_rem = 16;
 const rem_to_px = (font_size_html * font_size_default_rem) / 100;
 
-export const list_key = [
+export const INFO_COLS_DONHANG = [
   { key: "STT", width: 7 * rem_to_px, enableEditing: false },
   { key: "Mã giày", width: 21 * rem_to_px, enableEditing: false },
   { key: "Tên giày", width: 40 * rem_to_px, enableEditing: false },
@@ -20,7 +20,7 @@ export const list_key = [
   { key: "Giá bán", width: 24 * rem_to_px, enableEditing: false },
 ];
 
-export const columns_have_sum_feature = [
+export const COLS_HAVE_SUM_FOOTER = [
   "Size 5",
   "Size 6",
   "Size 7",

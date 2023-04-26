@@ -63,7 +63,11 @@ const DanhMucGiayKhachHang = ({
       columns_selected.push(info);
     }
     console.log("data updated: ", [...dataOrigin, ...columns_selected]);
-    setInfoSelection([...dataOrigin, ...columns_selected]);
+    setInfoSelection([
+      ...dataOrigin.slice(0, -1),
+      ...columns_selected,
+      dataOrigin[dataOrigin.length - 1],
+    ]);
     dispatchTable(actions_table.setModeShowModal(false));
   };
 

@@ -4,12 +4,20 @@ import FormGiay from "./FormGiay";
 import FormMau from "./FormMau";
 import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import styles from "./DonHang.module.scss";
-import { list_key, columns_have_sum_feature } from "./config";
+import { INFO_COLS_DONHANG, COLS_HAVE_SUM_FOOTER } from "./config";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
+import { renderDataEmpty } from "~utils/processing_data_table";
 
 const DonHang = () => {
-  const [dataTable, setDataTable] = useState([]);
+  // const [dataTable, setDataTable] = useState([]);
+  const [dataTable, setDataTable] = useState(() => {
+    return renderDataEmpty(INFO_COLS_DONHANG, 1);
+  });
+
+  // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
+  // nên đành để thành thêm 1 dòng trống sau dataTable
+
   const [stateTable, dispatchTable] = useTableContext();
   const [infoFormWillShow, setInfoFormWillShow] = useState({
     giay: false,
@@ -35,10 +43,6 @@ const DonHang = () => {
   - Sau khi chọn những giày muốn lấy 
        -> Hiện xuống bảng bên dưới để nhập số lượng 
    */
-
-  // const [dataTable, setDataTable] = useState(() => {
-  //   return renderDataEmpty(infoColumns, 50);
-  // });
 
   const handleThemGiay = () => {
     setInfoFormWillShow({
@@ -82,21 +86,22 @@ const DonHang = () => {
   const infoColumns = useMemo(() => {
     const infoColumnsInit = [];
 
-    for (var obj in list_key) {
-      let key = list_key[obj]["key"];
+    for (var obj in INFO_COLS_DONHANG) {
+      let key = INFO_COLS_DONHANG[obj]["key"];
       var info = {
-        header: list_key[obj]["key"],
-        size: list_key[obj]["width"],
-        accessorKey: list_key[obj]["key"],
-        enableEditing: list_key[obj]["enableEditing"],
-        key: list_key[obj]["key"].toLowerCase(),
+        header: INFO_COLS_DONHANG[obj]["key"],
+        size: INFO_COLS_DONHANG[obj]["width"],
+        accessorKey: INFO_COLS_DONHANG[obj]["key"],
+        enableEditing: INFO_COLS_DONHANG[obj]["enableEditing"],
+        key: INFO_COLS_DONHANG[obj]["key"].toLowerCase(),
       };
 
-      if (key === "Mã giày") {
-        info["Cell"] = ({ cell }) => (
-          <button onClick={handleClickMaGiay}>{cell.getValue()}</button>
-        );
-      }
+      // if (key === "Mã giày") {
+      //   info["Cell"] = ({ cell }) => (
+      //     <button onClick={handleClickMaGiay}>{cell.getValue()}</button>
+      //     // <button onClick={handleClickMaGiay}></button>
+      //   );
+      // }
       // thử thêm select box vô 1 cell
       if (key === "Màu đế") {
         info["editSelectOptions"] = [
@@ -110,7 +115,7 @@ const DonHang = () => {
       }
 
       if (key === "Tên giày") info["Footer"] = () => <div>Tổng cộng</div>;
-      if (columns_have_sum_feature.includes(key)) {
+      if (COLS_HAVE_SUM_FOOTER.includes(key)) {
         let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
         info["Footer"] = () => <div>{sum_value}</div>;
       }
@@ -119,19 +124,20 @@ const DonHang = () => {
     return infoColumnsInit;
   }, [dataTable]);
 
-  useEffect(() => {
-    fetch("http://localhost:8000/items_donhang")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        setDataTable(info);
-        console.log(dataTable);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://localhost:8000/items_donhang")
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((info) => {
+  //       info = [...info, ...renderDataEmpty(INFO_COLS_DONHANG, 1)];
+  //       setDataTable(info);
+  //       console.log(dataTable);
+  //     })
+  //     .catch((err) => {
+  //       console.log(":error: ", err);
+  //     });
+  // }, []);
 
   return (
     <>
@@ -184,6 +190,7 @@ const DonHang = () => {
           columns={infoColumns}
           data={dataTable}
           setDataTable={setDataTable}
+          handleAddGiay={handleClickMaGiay}
         />
       }
       <div className={styles.form}>

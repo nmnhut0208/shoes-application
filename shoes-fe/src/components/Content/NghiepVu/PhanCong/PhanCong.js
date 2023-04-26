@@ -3,23 +3,27 @@ import { useEffect, useState } from "react";
 import styles from "./PhanCong.module.scss";
 import "./PhanCong.css";
 import {
-  list_key_DonHang,
-  list_key_ChiTietPhanCong,
-  processingInfoTable,
-  renderDataEmpty,
+  INFO_COLS_DONHANG,
+  INFO_COLS_CHITIET_PHANCONG,
 } from "./ConstantVariable";
+import {
+  renderDataEmpty,
+  processingInfoColumnTable,
+} from "~utils/processing_data_table";
 
 import SubTable from "./SubTable";
 
-const infoTableDonHang = processingInfoTable(list_key_DonHang);
-const infoTableChiTietPhanCong = processingInfoTable(list_key_ChiTietPhanCong);
+const infoTableDonHang = processingInfoColumnTable(INFO_COLS_DONHANG);
+const infoTableChiTietPhanCong = processingInfoColumnTable(
+  INFO_COLS_CHITIET_PHANCONG
+);
 
 const PhanCong = () => {
   const [dataDonHang, setDataDonHang] = useState(() =>
-    renderDataEmpty(list_key_DonHang, 13)
+    renderDataEmpty(INFO_COLS_DONHANG, 13)
   );
   const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState(() =>
-    renderDataEmpty(list_key_ChiTietPhanCong, 21)
+    renderDataEmpty(INFO_COLS_CHITIET_PHANCONG, 21)
   );
 
   const handleClickAdd = () => {};
