@@ -266,5 +266,7 @@ def read_item():
         _data = {}
         for key in list_key:
             _data[key] = "kh-{} - {}".format(key, i+1)
+            if key == "Mã giày":
+                _data[key] = "kh-{}-{}".format(key, i//5)
         data.append(_data)
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)

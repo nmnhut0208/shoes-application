@@ -35,21 +35,22 @@ const DanhMucGiayKhachHang = ({
 
   const handleSubmit = () => {
     const columns_selected = [];
-    console.log("rowSelection: ", rowSelection);
     for (var key in rowSelection) {
-      console.log(key, dataTable[key]);
-      const info = {
-        ...dataTable[key],
-        "Size 0": 0,
-        "Size 5": 0,
-        "Size 6": 0,
-        "Size 7": 0,
-        "Size 8": 0,
-        "Size 9": 0,
-        "Số lượng": 0,
-      };
-      columns_selected.push(info);
+      if (!isNaN(key)) {
+        const info = {
+          ...dataTable[key],
+          "Size 0": 0,
+          "Size 5": 0,
+          "Size 6": 0,
+          "Size 7": 0,
+          "Size 8": 0,
+          "Size 9": 0,
+          "Số lượng": 0,
+        };
+        columns_selected.push(info);
+      }
     }
+
     setInfoSelection([
       ...dataOrigin.slice(0, -1),
       ...columns_selected,
@@ -63,8 +64,8 @@ const DanhMucGiayKhachHang = ({
       <MaterialReactTable
         columns={infoColumns}
         data={dataTable}
+        // row selection
         enableRowSelection
-        getRowId={(row) => row.userId} //give each row a more useful id
         onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
         state={{ rowSelection }} //pass our managed row selection state to the table to use
         // knmhgk
@@ -73,6 +74,9 @@ const DanhMucGiayKhachHang = ({
         // scroll to bottom
         enableRowVirtualization
         muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+        // group Mã giày
+        enableGrouping
+        initialState={{ grouping: ["Mã giày"], expanded: true }}
       />
       <div className={styles.group_button}>
         <button onClick={handleSubmit}>Đồng ý</button>
