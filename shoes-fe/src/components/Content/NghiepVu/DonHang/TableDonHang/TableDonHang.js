@@ -4,7 +4,7 @@ import MaterialReactTable from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 
-const SubTable = ({ columns, data, setDataTable, handleAddGiay }) => {
+const TableDonHang = ({ columns, data, setDataTable, handleAddGiay }) => {
   const handleSaveCell = (cell, value) => {
     console.log("cell, value: ", cell, value);
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
@@ -111,4 +111,4 @@ const SubTable = ({ columns, data, setDataTable, handleAddGiay }) => {
   );
 };
 
-export default SubTable;
+export default TableDonHang;

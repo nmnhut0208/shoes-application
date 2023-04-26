@@ -1,10 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
 import MaterialReactTable from "material-react-table";
-// import SubTable from "./SubTable";
-// import { Modal } from "~common_tag";
+
 import { useTableContext, actions_table } from "~table_context";
-import { COL_GIAY_KHACHHANG } from "./config";
-import styles from "./DonHang.module.scss";
+import { COL_GIAY_KHACHHANG } from "../ConstantVariable";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
+import styles from "./DanhMucGiayKhachHang.module.scss";
 
 const DanhMucGiayKhachHang = ({
   id_khachhang,
@@ -16,19 +16,7 @@ const DanhMucGiayKhachHang = ({
   const [dataTable, setDataTable] = useState([]);
 
   const infoColumns = useMemo(() => {
-    const infoColumnsInit = [];
-    for (var obj in COL_GIAY_KHACHHANG) {
-      let key = COL_GIAY_KHACHHANG[obj]["key"];
-      var info = {
-        header: COL_GIAY_KHACHHANG[obj]["key"],
-        size: COL_GIAY_KHACHHANG[obj]["width"],
-        accessorKey: COL_GIAY_KHACHHANG[obj]["key"],
-        enableEditing: COL_GIAY_KHACHHANG[obj]["enableEditing"],
-        key: COL_GIAY_KHACHHANG[obj]["key"].toLowerCase(),
-      };
-      infoColumnsInit.push(info);
-    }
-    return infoColumnsInit;
+    return processingInfoColumnTable(COL_GIAY_KHACHHANG);
   }, []);
 
   useEffect(() => {
@@ -62,7 +50,6 @@ const DanhMucGiayKhachHang = ({
       };
       columns_selected.push(info);
     }
-    console.log("data updated: ", [...dataOrigin, ...columns_selected]);
     setInfoSelection([
       ...dataOrigin.slice(0, -1),
       ...columns_selected,

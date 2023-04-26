@@ -1,13 +1,15 @@
 import { useEffect, useState, useMemo } from "react";
-import SubTable from "./SubTable";
+
+import { INFO_COLS_DONHANG, COLS_HAVE_SUM_FOOTER } from "./ConstantVariable";
+import { Modal } from "~common_tag";
+import { useTableContext, actions_table } from "~table_context";
+import { renderDataEmpty } from "~utils/processing_data_table";
+
+import TableDonHang from "./TableDonHang";
 import FormGiay from "./FormGiay";
 import FormMau from "./FormMau";
 import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import styles from "./DonHang.module.scss";
-import { INFO_COLS_DONHANG, COLS_HAVE_SUM_FOOTER } from "./config";
-import { Modal } from "~common_tag";
-import { useTableContext, actions_table } from "~table_context";
-import { renderDataEmpty } from "~utils/processing_data_table";
 
 const DonHang = () => {
   // const [dataTable, setDataTable] = useState([]);
@@ -24,25 +26,6 @@ const DonHang = () => {
     mau: false,
     dmGiaykh: false,
   });
-  console.log("dataTable: ", dataTable);
-
-  /*
-  TODO: Add logic
-  - Chọn khách hàng A từ select option
-  - Ở mã giày sẽ là select option tất cả các giày khách hàng
-    A đã đặt trước đó 
-       -> Chọn những mã khách hàng A đã đặt để đặt lại nếu muốn
-       -> Chỗ này khó quá, select muti option 
-         => mà nhìn giống kiểu bảng con
-      Có thể chỉnh thành logic: click vô ô mã giày
-      => show ra modal có bảng con, chọn nhiều row, trả về kết quả 
-      chứ select option làm sao hiện ra được full bảng @@ 
-  - Trường hợp chú muốn thêm 1 mã giày mới mà khách hàng chưa đặt
-       -> Mình đoán: sẽ bấm vào thêm giày để tạo thông tin 
-       -> Bữa sau test trường hợp này
-  - Sau khi chọn những giày muốn lấy 
-       -> Hiện xuống bảng bên dưới để nhập số lượng 
-   */
 
   const handleThemGiay = () => {
     setInfoFormWillShow({
@@ -186,7 +169,7 @@ const DonHang = () => {
         </div>
       </div>
       {
-        <SubTable
+        <TableDonHang
           columns={infoColumns}
           data={dataTable}
           setDataTable={setDataTable}
