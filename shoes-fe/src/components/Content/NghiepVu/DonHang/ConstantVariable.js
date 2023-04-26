@@ -1,6 +1,4 @@
-const font_size_html = 62.5;
-const font_size_default_rem = 16;
-const rem_to_px = (font_size_html * font_size_default_rem) / 100;
+import { rem_to_px } from "~config/ui";
 
 export const INFO_COLS_DONHANG = [
   { key: "STT", width: 7 * rem_to_px, enableEditing: false },

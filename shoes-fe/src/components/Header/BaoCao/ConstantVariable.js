@@ -1,8 +1,8 @@
 export const itemsBaoCao = [
-  {
-    key: "Tồn kho",
-    label: "Tồn kho",
-  },
+  // {
+  //   key: "Tồn kho",
+  //   label: "Tồn kho",
+  // },
   {
     key: "Bảng lương",
     label: "Bảng lương",
