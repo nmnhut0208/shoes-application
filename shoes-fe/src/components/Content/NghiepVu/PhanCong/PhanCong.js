@@ -72,7 +72,7 @@ const PhanCong = () => {
         <label>Mã giày</label>
         <input name="Mã giày" />
         <span>Tên giày</span>
-        <div className={clsx(styles.phancong_remain, styles.form)}>
+        <div className={styles.phancong_remain}>
           <div className={styles.pair}>
             <label>Màu sườn</label>
             <input name="Màu sườn" />
@@ -93,7 +93,7 @@ const PhanCong = () => {
         <input name="Thợ đế" />
         <span>Tên thợ đế</span>
 
-        <div className={clsx(styles.phancong_remain, styles.form)}>
+        <div className={styles.phancong_remain}>
           <div className={styles.pair_tho_quai}>
             <label>Thợ quai</label>
             <input name="Thợ quai" />
@@ -102,7 +102,7 @@ const PhanCong = () => {
           <span className={styles.span_thoquai}>Tên thợ quai</span>
         </div>
 
-        <div className={clsx(styles.content_size, styles.form)}>
+        <div className={styles.content_size}>
           <div className={styles.pair_info}>
             <label>Size 0</label>
             <input name="Size 0" />
