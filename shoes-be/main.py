@@ -193,6 +193,9 @@ def read_item():
     for i in range(250):
         _data = {}
         for key in list_key:
+            if key == "STT":
+                _data[key] = i
+                continue
             _data[key] = "{} - {}".format(key, i+1)
         data.append(_data)
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
@@ -237,6 +240,9 @@ def read_item():
     for i in range(5):
         _data = {}
         for key in list_key:
+            if key == "STT":
+                _data[key] = i
+                continue
             _data[key] = "{} - {}".format(key, i+1)
             if key in columns_have_sum_feature:
                 _data[key] = i + columns_have_sum_feature.index(key)
@@ -265,8 +271,45 @@ def read_item():
     for i in range(15):
         _data = {}
         for key in list_key:
+            if key == "STT":
+                _data[key] = i
+                continue
             _data[key] = "kh-{} - {}".format(key, i+1)
             if key == "Mã giày":
                 _data[key] = "kh-{}-{}".format(key, i//5)
+        data.append(_data)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
+
+
+@app.get("/items_donhang_page_phan_cong")
+def read_item():
+    data = []
+    rem_to_px = 1
+    info_key = [
+        {"key": "STT", "width": 5 * rem_to_px},
+        {"key": "Số đơn hàng", "width": 21 * rem_to_px},
+        {"key": "Ngày đơn hàng", "width": 16 * rem_to_px},
+        {"key": "Mã khách hàng", "width": 16 * rem_to_px},
+        {"key": "Tên khách hàng", "width": 25 * rem_to_px},
+        {"key": "Diễn dãi", "width": 35 * rem_to_px},
+        {"key": "Tổng số lượng đặt hàng", "width": 21 * rem_to_px}
+    ]
+    print("info_key: ", info_key)
+    list_key = [a["key"] for a in info_key]
+    print("list_key")
+
+    columns_have_sum_feature = [
+        "Tổng số lượng đặt hàng",
+    ]
+
+    for i in range(5):
+        _data = {}
+        for key in list_key:
+            if key == "STT":
+                _data[key] = i
+                continue
+            _data[key] = "{} - {}".format(key, i+1)
+            if key in columns_have_sum_feature:
+                _data[key] = i + columns_have_sum_feature.index(key)+10
         data.append(_data)
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)

@@ -13,6 +13,15 @@ table {
 .Mui-TableHeadCell-Content-Labels {
     margin-top: auto;
     margin-bottom: auto;
-    font-size: 1.4rem;
-    font-family: Arial;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.6rem !important;
+    font-family: Arial !important;
+}
+
+.MuiTableCell-body {
+    font-size: 1.4rem !important;
+    font-family: Arial !important;
 }

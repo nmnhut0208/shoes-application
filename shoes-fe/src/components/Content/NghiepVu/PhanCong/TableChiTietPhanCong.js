@@ -1,6 +1,8 @@
 import MaterialReactTable from "material-react-table";
+import { memo } from "react";
 
-const SubTable = ({ row_each_page, columns, data, maxHeight }) => {
+const TableChiTietPhanCong = ({ row_each_page, columns, data, maxHeight }) => {
+  console.log("re-render table: ", maxHeight);
   return (
     <div>
       <MaterialReactTable
@@ -26,4 +28,4 @@ const SubTable = ({ row_each_page, columns, data, maxHeight }) => {
   );
 };
 
-export default SubTable;
+export default memo(TableChiTietPhanCong);
