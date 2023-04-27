@@ -34,7 +34,7 @@ const PhanCong = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Phân công - F0037</h2>
+      <h2>Phân công - F0037</h2>
 
       <div className={clsx(styles.form, styles.input_query)}>
         <div className={styles.pair}>
@@ -54,33 +54,24 @@ const PhanCong = () => {
             <option value="audi">Audi</option>
           </select>
         </div>
-        <div className={clsx(styles.pair, styles.header_diendai)}>
+        <div className={styles.pair}>
           <label>Diễn dãi phiếu</label>
           <input name="Diễn dãi phiếu" />
         </div>
       </div>
 
-      <div className={styles.table_content}>
-        <SubTable
-          columns={infoTableDonHang}
-          data={dataDonHang}
-          row_each_page={10}
-          maxHeight={22 * rem_to_px}
-        />
-      </div>
+      <SubTable
+        columns={infoTableDonHang}
+        data={dataDonHang}
+        row_each_page={10}
+        maxHeight={22 * rem_to_px}
+      />
 
       <div className={clsx(styles.phan_cong, styles.form)}>
         <h1 className={styles.title_phancong}>Phân công</h1>
-        <label className={clsx(styles.phancong_label, styles.form)}>
-          Mã giày
-        </label>
-        <input
-          className={clsx(styles.phancong_input, styles.form)}
-          name="Mã giày"
-        />
-        <span className={clsx(styles.phancong_span, styles.form)}>
-          Tên giày
-        </span>
+        <label>Mã giày</label>
+        <input name="Mã giày" />
+        <span>Tên giày</span>
         <div className={clsx(styles.phancong_remain, styles.form)}>
           <div className={styles.pair}>
             <label>Màu sườn</label>
@@ -98,16 +89,9 @@ const PhanCong = () => {
           </div>
         </div>
 
-        <label className={clsx(styles.phancong_label, styles.form)}>
-          Thợ đế
-        </label>
-        <input
-          className={clsx(styles.phancong_input, styles.form)}
-          name="Thợ đế"
-        />
-        <span className={clsx(styles.phancong_span, styles.form)}>
-          Tên thợ đế
-        </span>
+        <label>Thợ đế</label>
+        <input name="Thợ đế" />
+        <span>Tên thợ đế</span>
 
         <div className={clsx(styles.phancong_remain, styles.form)}>
           <div className={styles.pair_tho_quai}>
@@ -159,14 +143,12 @@ const PhanCong = () => {
         <button onClick={handleClickEdit}>Sửa</button>
       </div>
 
-      <div className={styles.table_content}>
-        <SubTable
-          columns={infoTableChiTietPhanCong}
-          data={dataChiTietPhanCong}
-          row_each_page={10}
-          maxHeight={40 * rem_to_px}
-        />
-      </div>
+      <SubTable
+        columns={infoTableChiTietPhanCong}
+        data={dataChiTietPhanCong}
+        row_each_page={10}
+        maxHeight={40 * rem_to_px}
+      />
     </div>
   );
 };
