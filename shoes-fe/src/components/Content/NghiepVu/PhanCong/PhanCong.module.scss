@@ -6,27 +6,20 @@
   row-gap: 1rem;
 
   .input_query {
-    @extend .flex_row_space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.75fr 3fr;
     .pair:not(:first-child) {
       label {
         text-align: right;
         padding-right: 0.2rem;
       }
     }
-    span {
-      width: 45rem;
-    }
-    select {
-      margin-right: 1rem;
-      width: 20rem;
-    }
-    input {
-      width: 25rem;
-    }
-
-    .header_diendai {
+    .pair:last-child {
+      display: flex;
+      flex-direction: row;
+      justify-content: end;
       input {
-        width: 50rem;
+        width: 85%;
       }
     }
   }
@@ -51,30 +44,39 @@
     }
     .phancong_remain {
       grid-column: 4/5;
-      @extend .flex-row;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 0.8fr 2.2fr;
       label {
         text-align: right;
         padding-right: 0.2rem;
       }
-    }
 
-    .pair_tho_quai {
-      @extend .flex-row;
-      justify-content: space-between;
-      width: 100%;
-      span {
-        width: 76.5%;
+      .group_input_row {
+        @extend .flex-row;
+        justify-content: space-between;
+      }
+
+      .pair_tho_quai {
+        grid-column: 1/2;
+      }
+      .span_thoquai {
+        grid-column: 2/3;
+        width: 100%;
+        margin-left: 0rem;
       }
     }
-    .phancong_span {
-      width: 95%;
-    }
+
     .content_size {
       grid-column: 1/5;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      .pair_info:not(:first-child) {
+        label {
+          text-align: right;
+          margin-right: 0.2rem;
+        }
+      }
     }
     .input_diengiai {
       grid-column: 2/5;

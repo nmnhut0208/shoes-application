@@ -86,13 +86,15 @@ const PhanCong = () => {
             <label>Màu sườn</label>
             <input name="Màu sườn" />
           </div>
-          <div className={styles.pair}>
-            <label>Màu cá</label>
-            <input name="Màu cá" />
-          </div>
-          <div className={styles.pair}>
-            <label>Màu quai</label>
-            <input name="Màu quai" />
+          <div className={styles.group_input_row}>
+            <div className={styles.pair}>
+              <label>Màu cá</label>
+              <input name="Màu cá" />
+            </div>
+            <div className={styles.pair}>
+              <label>Màu quai</label>
+              <input name="Màu quai" />
+            </div>
           </div>
         </div>
 
@@ -112,8 +114,8 @@ const PhanCong = () => {
             <label>Thợ quai</label>
             <input name="Thợ quai" />
             {/* select box */}
-            <span>Tên thợ quai</span>
           </div>
+          <span className={styles.span_thoquai}>Tên thợ quai</span>
         </div>
 
         <div className={clsx(styles.content_size, styles.form)}>
