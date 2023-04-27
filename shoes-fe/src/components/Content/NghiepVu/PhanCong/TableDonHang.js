@@ -1,8 +1,15 @@
 import MaterialReactTable from "material-react-table";
-import { memo } from "react";
+import { memo, useState } from "react";
 
-const TableDonHang = ({ row_each_page, columns, data, maxHeight }) => {
+const TableDonHang = ({
+  columns,
+  data,
+  maxHeight,
+  rowSelection,
+  setRowSelection,
+}) => {
   console.log("re-render table: ", maxHeight);
+
   return (
     <div>
       <MaterialReactTable
@@ -23,6 +30,11 @@ const TableDonHang = ({ row_each_page, columns, data, maxHeight }) => {
         muiTableContainerProps={{
           sx: { maxHeight: [maxHeight, "rem"].join("") },
         }}
+        // row selection
+        enableMultiRowSelection={false}
+        enableRowSelection
+        onRowSelectionChange={setRowSelection}
+        state={{ rowSelection }}
       />
     </div>
   );

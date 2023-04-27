@@ -29,6 +29,22 @@ const PhanCong = () => {
   const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState(() =>
     renderDataEmpty(INFO_COLS_CHITIET_PHANCONG, 10)
   );
+  const [rowSelectionToPhanCong, setRowSelectionToPhanCong] = useState({
+    0: true,
+  });
+
+  const [idDonHangDangPhanCong, setIdDonHangDangPhanCong] = useState();
+  const [nofDonHangDangPhanCong, setNofDonHangDangPhanCong] = useState(11);
+  // nofDonHangDangPhanCong: để test logic, sau này xóa đi => ko xài
+  // thử api đặng test logic thôi
+
+  useEffect(() => {
+    console.log("rowSelectionToPhanCong: ", rowSelectionToPhanCong);
+    for (var key in rowSelectionToPhanCong) {
+      setIdDonHangDangPhanCong(dataDonHang[key]["Số đơn hàng"]);
+      setNofDonHangDangPhanCong(dataDonHang[key]["Tổng số lượng đặt hàng"]);
+    }
+  }, [rowSelectionToPhanCong]);
 
   useEffect(() => {
     fetch("http://localhost:8000/items_donhang_page_phan_cong")
@@ -37,6 +53,8 @@ const PhanCong = () => {
       })
       .then((info) => {
         setDataDonHang(info);
+        setIdDonHangDangPhanCong(info[0]["Số đơn hàng"]);
+        setNofDonHangDangPhanCong(info[0]["Tổng số lượng đặt hàng"]);
       })
       .catch((err) => {
         console.log(":error: ", err);
@@ -55,9 +73,14 @@ const PhanCong = () => {
         data={dataDonHang}
         row_each_page={10}
         maxHeight={15}
+        rowSelection={rowSelectionToPhanCong}
+        setRowSelection={setRowSelectionToPhanCong}
       />
 
-      <PhanCongForm />
+      <PhanCongForm
+        idDonHang={idDonHangDangPhanCong}
+        nofDonHangDangPhanCong={nofDonHangDangPhanCong}
+      />
 
       <div className={clsx(styles.button_group, styles.form)}>
         <button onClick={handleClickAdd}>Thêm</button>

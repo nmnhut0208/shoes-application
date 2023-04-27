@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi import Body, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 
 app = FastAPI()
@@ -310,6 +311,76 @@ def read_item():
                 continue
             _data[key] = "{} - {}".format(key, i+1)
             if key in columns_have_sum_feature:
-                _data[key] = i + columns_have_sum_feature.index(key)+10
+                _data[key] = i + columns_have_sum_feature.index(key)+20
         data.append(_data)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
+
+
+class InfoDonHang (BaseModel):
+    id: str
+    nof: int
+
+
+@app.post("/items_donhang_with_id")
+def read_item(donhang: InfoDonHang):
+    print("donhang: ", donhang)
+    id_donhang = donhang.id
+    nof_giay = donhang.nof
+    data = []
+    rem_to_px = 1
+    info_key = [
+        {"key": "STT", "width": 7 * rem_to_px},
+        {"key": "Mã giày", "width": 21 * rem_to_px},
+        {"key": "Tên giày", "width": 40 * rem_to_px},
+        {"key": "Màu đế", "width": 8 * rem_to_px},
+        {"key": "Màu sườn", "width": 8 * rem_to_px},
+        {"key": "Màu cá", "width": 8 * rem_to_px},
+        {"key": "Màu quai", "width": 8 * rem_to_px},
+        {"key": "Size 5", "width": 16 * rem_to_px},
+        {"key": "Size 6", "width": 16 * rem_to_px},
+        {"key": "Size 7", "width": 16 * rem_to_px},
+        {"key": "Size 8", "width": 16 * rem_to_px},
+        {"key": "Size 9", "width": 16 * rem_to_px},
+        {"key": "Size 0", "width": 8 * rem_to_px},
+        {"key": "Số lượng", "width": 24 * rem_to_px},
+        {"key": "Giá bán", "width": 24 * rem_to_px},
+    ]
+    list_key = [a["key"] for a in info_key]
+
+    columns_have_sum_feature = [
+        "Size 5",
+        "Size 6",
+        "Size 7",
+        "Size 8",
+        "Size 9",
+        "Size 0",
+    ]
+    import random
+    nof_loop = random.randint(3, 5)
+    print("nof_loop: ", nof_loop)
+    nof_da_dat = 0
+    for i in range(nof_loop):
+        _data = {}
+        for key in list_key:
+            if key == "STT":
+                _data[key] = i
+                continue
+            if key == "Mã giày":
+                _data[key] = "{}-{} - {}".format(id_donhang, key, i+1)
+                continue
+            if key == "Số lượng":
+                _data[key] = nof_giay
+            _data[key] = "{} - {}".format(key, i+1)
+            if key in columns_have_sum_feature:
+                if nof_da_dat >= nof_giay:
+                    _data[key] = 0
+                else:
+                    _data[key] = min(nof_giay-nof_da_dat, random.randint(
+                        2, 5))
+
+                nof_da_dat += _data[key]
+
+        data.append(_data)
+
+    data[-1]["Size 0"] = nof_giay - nof_da_dat
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
