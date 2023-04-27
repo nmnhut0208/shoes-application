@@ -5,6 +5,7 @@ const SubTable = ({ row_each_page, columns, data, maxHeight }) => {
     <div>
       <MaterialReactTable
         enableTopToolbar={false}
+        enableBottomToolbar={false}
         columns={columns}
         data={data}
         // components
@@ -18,7 +19,7 @@ const SubTable = ({ row_each_page, columns, data, maxHeight }) => {
         // scroll to bottom
         enableRowVirtualization
         muiTableContainerProps={{
-          sx: { maxHeight: [maxHeight, "px"].join("") },
+          sx: { maxHeight: [maxHeight, "rem"].join("") },
         }}
       />
     </div>

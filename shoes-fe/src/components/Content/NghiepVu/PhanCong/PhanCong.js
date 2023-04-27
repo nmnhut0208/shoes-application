@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
-import { rem_to_px } from "~config/ui";
 import styles from "./PhanCong.module.scss";
 import "./PhanCong.css";
 import {
@@ -64,7 +63,7 @@ const PhanCong = () => {
         columns={infoTableDonHang}
         data={dataDonHang}
         row_each_page={10}
-        maxHeight={22 * rem_to_px}
+        maxHeight={15}
       />
 
       <div className={clsx(styles.phan_cong, styles.form)}>
@@ -147,7 +146,7 @@ const PhanCong = () => {
         columns={infoTableChiTietPhanCong}
         data={dataChiTietPhanCong}
         row_each_page={10}
-        maxHeight={40 * rem_to_px}
+        maxHeight={35}
       />
     </div>
   );
