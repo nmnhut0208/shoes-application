@@ -131,6 +131,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           <label>Size 0</label>
           <input
             name="Size 0"
+            type="number"
+            min="0"
+            readOnly={form["Size 0"] !== "" && parseInt(form["Size 0"]) == 0}
             value={form["Size 0"]}
             onChange={(e) => handleChangeForm(e)}
           />
@@ -140,6 +143,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           <input
             name="Size 5"
             value={form["Size 5"]}
+            type="number"
+            min="0"
+            readOnly={form["Size 5"] !== "" && parseInt(form["Size 5"]) == 0}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
@@ -148,6 +154,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           <input
             name="Size 6"
             value={form["Size 6"]}
+            type="number"
+            min="0"
+            readOnly={form["Size 6"] !== "" && parseInt(form["Size 6"]) == 0}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
@@ -156,6 +165,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           <input
             name="Size 7"
             value={form["Size 7"]}
+            type="number"
+            min="0"
+            readOnly={form["Size 7"] !== "" && parseInt(form["Size 7"]) == 0}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
@@ -164,6 +176,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           <input
             name="Size 8"
             value={form["Size 8"]}
+            type="number"
+            min="0"
+            readOnly={form["Size 8"] !== "" && parseInt(form["Size 8"]) == 0}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
@@ -172,6 +187,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           <input
             name="Size 9"
             value={form["Size 9"]}
+            type="number"
+            min="0"
+            readOnly={form["Size 9"] !== "" && parseInt(form["Size 9"]) == 0}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
