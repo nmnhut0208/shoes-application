@@ -1,12 +1,15 @@
 import { useState, memo, useEffect } from "react";
+import { Popover } from "antd";
+import MaterialReactTable from "material-react-table";
+
 import clsx from "clsx";
 import { rem_to_px } from "~config/ui";
 import {
   renderDataEmpty,
   processingInfoColumnTable,
 } from "~utils/processing_data_table";
-// import styles_form from "./PhanCongForm.module.scss";
 import styles from "../PhanCong.module.scss";
+import styles_form from "./PhanCongForm.module.scss";
 
 const listSubInforGiay = [
   { key: "Mã giày", width: 15 * rem_to_px, enableEditing: false },
@@ -18,8 +21,52 @@ const listSubInforGiay = [
 
 const columnsSubInfoGiay = processingInfoColumnTable(listSubInforGiay);
 
+const SubTable = ({ data, rowSelection, setRowSelection }) => {
+  console.log("re-render sub table when hover", data);
+  return (
+    <div style={{ height: "auto" }}>
+      <h1>{data.length}</h1>
+      <MaterialReactTable
+        enableTopToolbar={false}
+        columns={columnsSubInfoGiay}
+        data={data}
+        // components
+        enableColumnActions={false}
+        enableSorting={false}
+        // enable phân trang
+        enablePagination={false}
+        enableBottomToolbar={true}
+        // scroll to bottom
+        // enableRowVirtualization
+        // muiTableContainerProps={{
+        //   sx: { maxHeight: "30rem" },
+        // }}
+        // row selection
+        enableMultiRowSelection={false}
+        enableRowSelection
+        onRowSelectionChange={setRowSelection}
+        state={{ rowSelection }}
+      />
+    </div>
+  );
+};
+
 const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
   console.log("PhanCongForm: re-render", form);
+  console.log("listGiayWillPhanCong: ", listGiayWillPhanCong);
+  const [rowSelection, setRowSelection] = useState({});
+  console.log("rowSelection: ", rowSelection);
+  useEffect(() => {
+    let keys = Object.keys(rowSelection);
+    if (keys.length > 0) {
+      console.log("useEffect rowSelection: ", rowSelection);
+      setChiTietPhanCong(listGiayWillPhanCong[keys[0]]);
+    }
+  }, [rowSelection]);
+
+  useEffect(() => {
+    setRowSelection({});
+  }, [listGiayWillPhanCong]);
   /*
   1 đơn hàng có nhiều mã giày, nên sẽ cập nhật lại select option của
   giày => những thông tin liên quan khác tới giày chỉ show ra chứ ko sửa
@@ -46,13 +93,25 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
     <div className={clsx(styles.phan_cong, styles.form)}>
       <h1 className={styles.title_phancong}>Phân công</h1>
       <label>Mã giày</label>
-      {/* <input
-        name="Mã giày"
-        value={form["Mã giày"]}
-        onChange={(e) => handleChangeForm(e)}
-      /> */}
+      <Popover
+        placement="bottom"
+        content={
+          <SubTable
+            data={listGiayWillPhanCong}
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
+          />
+        }
+      >
+        <input
+          name="Mã giày"
+          value={form["Mã giày"]}
+          onChange={(e) => handleChangeForm(e)}
+          className={styles_form.input_ma_giay}
+        />
+      </Popover>
 
-      <select
+      {/* <select
         name="Mã giày"
         value={form["Mã giày"]}
         onChange={(e) => handleChangeMaGiay(e)}
@@ -70,7 +129,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
               ].join("|")}
             </option>
           ))}
-      </select>
+      </select> */}
 
       <span>{form["Tên giày"]}</span>
       <div className={styles.phancong_remain}>
@@ -205,4 +264,4 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
   );
 };
 
-export default memo(PhanCongForm);
+export default PhanCongForm;
