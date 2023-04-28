@@ -37,10 +37,8 @@ const TableDonHang = ({ columns, data, setDataTable, handleAddGiay }) => {
 
   const handleDeleteRow = (row) => {
     let index = row.index;
-    setDataTable([
-      ...data.slice(0, index),
-      ...data.slice(index + 1, data.length),
-    ]);
+    data.splice(index, 1);
+    setDataTable([...data]);
   };
 
   return (

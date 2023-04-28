@@ -115,20 +115,14 @@ const PhanCong = () => {
         if (remain[key] > 0) is_remain = true;
       }
     }
-
+    const new_list = listGiayWillPhanCong;
     if (is_remain) {
       setFormPhanCong(remain);
-      const new_list = [
-        ...listGiayWillPhanCong.slice(0, index),
-        remain,
-        ...listGiayWillPhanCong.slice(index + 1, listGiayWillPhanCong.length),
-      ];
+
+      new_list[index] = remain;
       setListGiayWillPhanCong(new_list);
     } else {
-      const new_list = [
-        ...listGiayWillPhanCong.slice(0, index),
-        ...listGiayWillPhanCong.slice(index + 1, listGiayWillPhanCong.length),
-      ];
+      new_list.splice(index, 1);
 
       if (new_list.length > 0) {
         setListGiayWillPhanCong(new_list);
