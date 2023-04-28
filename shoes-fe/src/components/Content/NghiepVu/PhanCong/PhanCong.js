@@ -96,6 +96,7 @@ const PhanCong = () => {
   }, []);
 
   const handleClickAdd = () => {
+    if (formPhanCong["Mã giày"] === "") return;
     let remain = { ...formPhanCong };
     const record = { ...formPhanCong };
     setDataChiTietPhanCong([...dataChiTietPhanCong, record]);
