@@ -1,5 +1,9 @@
-import { useState, memo, useEffect } from "react";
-import { Popover } from "antd";
+import { useState, memo, useEffect, React } from "react";
+
+// import { Popover } from "antd";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
+
 import MaterialReactTable from "material-react-table";
 
 import clsx from "clsx";
@@ -62,10 +66,12 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
       console.log("useEffect rowSelection: ", rowSelection);
       setChiTietPhanCong(listGiayWillPhanCong[keys[0]]);
     }
+    setAnchorEl(null);
   }, [rowSelection]);
 
   useEffect(() => {
     setRowSelection({});
+    console.log("how many rows");
   }, [listGiayWillPhanCong]);
   /*
   1 đơn hàng có nhiều mã giày, nên sẽ cập nhật lại select option của
@@ -89,11 +95,24 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
     setChiTietPhanCong(listGiayWillPhanCong[index]);
   };
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handlePopoverClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   return (
     <div className={clsx(styles.phan_cong, styles.form)}>
       <h1 className={styles.title_phancong}>Phân công</h1>
       <label>Mã giày</label>
-      <Popover
+      {/* <Popover
         placement="bottom"
         content={
           <SubTable
@@ -109,7 +128,35 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           onChange={(e) => handleChangeForm(e)}
           className={styles_form.input_ma_giay}
         />
-      </Popover>
+      </Popover> */}
+      <div>
+        <input
+          name="Mã giày"
+          value={form["Mã giày"]}
+          onChange={(e) => handleChangeForm(e)}
+          className={styles_form.input_ma_giay}
+          onClick={handlePopoverClick}
+        />
+
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        >
+          <Typography sx={{ p: 2 }}>
+            <SubTable
+              data={listGiayWillPhanCong}
+              rowSelection={rowSelection}
+              setRowSelection={setRowSelection}
+            />
+          </Typography>
+        </Popover>
+      </div>
 
       {/* <select
         name="Mã giày"
