@@ -18,30 +18,19 @@ const listSubInforGiay = [
 
 const columnsSubInfoGiay = processingInfoColumnTable(listSubInforGiay);
 
-const PhanCongForm = ({ setChiTietPhanCong, listGiayWillPhanCong }) => {
+const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
+  console.log("PhanCongForm: re-render", form);
   /*
   1 đơn hàng có nhiều mã giày, nên sẽ cập nhật lại select option của
   giày => những thông tin liên quan khác tới giày chỉ show ra chứ ko sửa
 
   Những thông tin liên quan tới phân công: thợ, size thì mới cho sửa
    */
-  const [form, setForm] = useState({});
-  const [showInfoListGiay, setShowInfoListGiay] = useState(false);
-  console.log("listGiayWillPhanCong: ", listGiayWillPhanCong);
-  useEffect(() => {
-    console.log("Update form: ", listGiayWillPhanCong);
-    if (listGiayWillPhanCong.length > 0) {
-      setForm(listGiayWillPhanCong[0]);
-      setChiTietPhanCong(listGiayWillPhanCong[0]);
-    } else {
-      setForm({});
-    }
-  }, [listGiayWillPhanCong]);
+  // const [form, setForm] = useState({});
 
   const handleChangeForm = (e) => {
     const data = { ...form };
     data[e.target.name] = e.target.value;
-    setForm(data);
     setChiTietPhanCong(data);
   };
   const handleChangeMaGiay = (e) => {
@@ -51,12 +40,9 @@ const PhanCongForm = ({ setChiTietPhanCong, listGiayWillPhanCong }) => {
       (item) => item["Mã giày"] == e.target.value
     );
     console.log("listGiayWillPhanCong[index]: ", listGiayWillPhanCong[index]);
-    setForm(listGiayWillPhanCong[index]);
     setChiTietPhanCong(listGiayWillPhanCong[index]);
   };
-  const handleChangGiay = () => {
-    setShowInfoListGiay(true);
-  };
+
   return (
     <div className={clsx(styles.phan_cong, styles.form)}>
       <h1 className={styles.title_phancong}>Phân công</h1>
@@ -65,7 +51,6 @@ const PhanCongForm = ({ setChiTietPhanCong, listGiayWillPhanCong }) => {
         name="Mã giày"
         value={form["Mã giày"]}
         onChange={(e) => handleChangeForm(e)}
-        onClick={handleChangGiay}
       /> */}
 
       <select
@@ -73,19 +58,19 @@ const PhanCongForm = ({ setChiTietPhanCong, listGiayWillPhanCong }) => {
         value={form["Mã giày"]}
         onChange={(e) => handleChangeMaGiay(e)}
       >
-        {listGiayWillPhanCong.map((info, index) => (
-          // <option value="1">Hello Thu</option>
-          <option value={info["Mã giày"]}>
-            {[
-              info["Mã giày"],
-              // ,
-              // info["Tên giày"],
-              // info["Màu sườn"],
-              // info["Màu cá"],
-              // info["Màu quai"],
-            ].join("|")}
-          </option>
-        ))}
+        {listGiayWillPhanCong.length > 0 &&
+          listGiayWillPhanCong.map((info, index) => (
+            <option value={info["Mã giày"]}>
+              {[
+                info["Mã giày"],
+                // ,
+                // info["Tên giày"],
+                // info["Màu sườn"],
+                // info["Màu cá"],
+                // info["Màu quai"],
+              ].join("|")}
+            </option>
+          ))}
       </select>
 
       <span>{form["Tên giày"]}</span>

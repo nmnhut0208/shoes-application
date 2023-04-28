@@ -23,21 +23,26 @@ const infoTableChiTietPhanCong = processingInfoColumnTable(
 );
 
 const PhanCong = () => {
+  // Phan Cong
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
   const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState(() =>
     renderDataEmpty(INFO_COLS_CHITIET_PHANCONG, 10)
   );
-  const [rowSelectionToPhanCong, setRowSelectionToPhanCong] = useState({
-    0: true,
-  });
+  const [rowSelectionToPhanCong, setRowSelectionToPhanCong] = useState({});
   const [listGiayWillPhanCong, setListGiayWillPhanCong] = useState([]);
   const [formPhanCong, setFormPhanCong] = useState({});
-  console.log("formPhanCong: ", formPhanCong);
+
+  const resetForm = () => {
+    let form_current = formPhanCong;
+    for (let key in form_current) {
+      form_current[key] = "";
+    }
+    setFormPhanCong(form_current);
+  };
 
   useEffect(() => {
-    console.log("rowSelectionToPhanCong: ", rowSelectionToPhanCong);
     for (var key in rowSelectionToPhanCong) {
       let idDonHang = dataDonHang[key]["Số đơn hàng"];
       let soluong = dataDonHang[key]["Tổng số lượng đặt hàng"];
@@ -59,10 +64,12 @@ const PhanCong = () => {
             return response.json();
           })
           .then((info) => {
-            console.log("info: ", info);
-            console.log("info 0: ", info[0]);
-            console.log("Mã giày", info[0]["Mã giày"]);
             setListGiayWillPhanCong(info);
+            if (info.length > 0) {
+              setFormPhanCong(info[0]);
+            } else {
+              resetForm();
+            }
           })
           .catch((err) => {
             console.log(":error: ", err);
@@ -78,6 +85,10 @@ const PhanCong = () => {
       })
       .then((info) => {
         setDataDonHang(info);
+        if (info.length > 0)
+          setRowSelectionToPhanCong({
+            0: true,
+          });
       })
       .catch((err) => {
         console.log(":error: ", err);
@@ -87,14 +98,11 @@ const PhanCong = () => {
   const handleClickAdd = () => {
     // listGiayWillPhanCong
     // formPhanCong
-    console.log("formPhanCong: ", formPhanCong);
+    // TODO: thêm table vừa add vô bảng bên dưới
     const remain = { ...formPhanCong };
     var index = listGiayWillPhanCong.findIndex(
       (item) => item["Mã giày"] == formPhanCong["Mã giày"]
     );
-    console.log("===========");
-    console.log("remain: ", remain);
-    console.log("index: ", index);
     let is_remain = false;
     for (let key in remain) {
       if (key.includes("Size")) {
@@ -103,17 +111,21 @@ const PhanCong = () => {
         if (remain[key] > 0) is_remain = true;
       }
     }
-    console.log("is_remain: ", is_remain);
-    console.log("listGiayWillPhanCong ban dau: ", listGiayWillPhanCong);
 
-    if (is_remain) setFormPhanCong(formPhanCong);
-    else {
+    if (is_remain) {
+      setFormPhanCong(remain);
+      const new_list = [
+        ...listGiayWillPhanCong.slice(0, index),
+        remain,
+        ...listGiayWillPhanCong.slice(index + 1, listGiayWillPhanCong.length),
+      ];
+      setListGiayWillPhanCong(new_list);
+    } else {
       const new_list = [
         ...listGiayWillPhanCong.slice(0, index),
         ...listGiayWillPhanCong.slice(index + 1, listGiayWillPhanCong.length),
       ];
-      console.log("listGiayWillPhanCong: ", listGiayWillPhanCong);
-      console.log("new_list: ", new_list);
+
       if (new_list.length > 0) {
         setListGiayWillPhanCong(new_list);
         setFormPhanCong(new_list[0]);
@@ -121,6 +133,7 @@ const PhanCong = () => {
         // TODO: Khi phân công xong thì nhảy qua thằng tiếp theo
         // nhảy qua đơn hàng tiếp theo
         setListGiayWillPhanCong([]);
+        resetForm();
       }
     }
   };
@@ -141,6 +154,7 @@ const PhanCong = () => {
       />
 
       <PhanCongForm
+        form={formPhanCong}
         setChiTietPhanCong={setFormPhanCong}
         listGiayWillPhanCong={listGiayWillPhanCong}
       />
