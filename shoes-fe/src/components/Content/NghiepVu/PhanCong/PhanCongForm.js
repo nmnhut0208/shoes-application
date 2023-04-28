@@ -1,13 +1,24 @@
 import styles from "./PhanCong.module.scss";
 import { useState, memo, useEffect } from "react";
 import clsx from "clsx";
+import { rem_to_px } from "~config/ui";
+import {
+  renderDataEmpty,
+  processingInfoColumnTable,
+} from "~utils/processing_data_table";
+import styles_form from "./PhanCongForm.module.scss";
 
-const PhanCongForm = ({
-  idDonHang,
-  nofDonHangDangPhanCong,
-  setChiTietPhanCong,
-}) => {
-  console.log("PhanCongForm re-render", idDonHang, nofDonHangDangPhanCong);
+const listSubInforGiay = [
+  { key: "Mã giày", width: 15 * rem_to_px, enableEditing: false },
+  { key: "Tên giày", width: 30 * rem_to_px, enableEditing: false },
+  { key: "Màu sườn", width: 12 * rem_to_px, enableEditing: false },
+  { key: "Màu cá", width: 12 * rem_to_px, enableEditing: false },
+  { key: "Màu quai", width: 12 * rem_to_px, enableEditing: true },
+];
+
+const columnsSubInfoGiay = processingInfoColumnTable(listSubInforGiay);
+
+const PhanCongForm = ({ setChiTietPhanCong, listGiayWillPhanCong }) => {
   /*
   1 đơn hàng có nhiều mã giày, nên sẽ cập nhật lại select option của
   giày => những thông tin liên quan khác tới giày chỉ show ra chứ ko sửa
@@ -15,54 +26,68 @@ const PhanCongForm = ({
   Những thông tin liên quan tới phân công: thợ, size thì mới cho sửa
    */
   const [form, setForm] = useState({});
-  const [listDonHang, setListDonHang] = useState([]);
+  const [showInfoListGiay, setShowInfoListGiay] = useState(false);
+  console.log("listGiayWillPhanCong: ", listGiayWillPhanCong);
   useEffect(() => {
-    console.log("goi api", idDonHang, typeof idDonHang === "undefined");
-    if (typeof idDonHang === "undefined") {
-      console.log("HAHAHAH");
+    console.log("Update form: ", listGiayWillPhanCong);
+    if (listGiayWillPhanCong.length > 0) {
+      setForm(listGiayWillPhanCong[0]);
+      setChiTietPhanCong(listGiayWillPhanCong[0]);
     } else {
-      // call API voi idDonHang để lấy chi tiết đơn hàng
-      // các mã giày và số lượng mà khách đã chọn
-      // update lại selection box cho mã giày
-      // mỗi lựa chọn sẽ là thông tin khác nhau của form
-      // nhớ xử lý vụ size nữa nè
-      fetch("http://localhost:8000/items_donhang_with_id", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: idDonHang, nof: nofDonHangDangPhanCong }),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((info) => {
-          console.log("info: ", nofDonHangDangPhanCong, info);
-          console.log("info 0: ", nofDonHangDangPhanCong, info[0]);
-
-          setListDonHang(info);
-          setForm(info[0]);
-        })
-        .catch((err) => {
-          console.log(":error: ", err);
-        });
+      setForm({});
     }
-  }, [idDonHang]);
+  }, [listGiayWillPhanCong]);
+
   const handleChangeForm = (e) => {
     const data = { ...form };
     data[e.target.name] = e.target.value;
     setForm(data);
+    setChiTietPhanCong(data);
+  };
+  const handleChangeMaGiay = (e) => {
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    console.log("e: ", e, e.target.value);
+    var index = listGiayWillPhanCong.findIndex(
+      (item) => item["Mã giày"] == e.target.value
+    );
+    console.log("listGiayWillPhanCong[index]: ", listGiayWillPhanCong[index]);
+    setForm(listGiayWillPhanCong[index]);
+    setChiTietPhanCong(listGiayWillPhanCong[index]);
+  };
+  const handleChangGiay = () => {
+    setShowInfoListGiay(true);
   };
   return (
     <div className={clsx(styles.phan_cong, styles.form)}>
       <h1 className={styles.title_phancong}>Phân công</h1>
       <label>Mã giày</label>
-      <input
+      {/* <input
         name="Mã giày"
         value={form["Mã giày"]}
         onChange={(e) => handleChangeForm(e)}
-      />
+        onClick={handleChangGiay}
+      /> */}
+
+      <select
+        name="Mã giày"
+        value={form["Mã giày"]}
+        onChange={(e) => handleChangeMaGiay(e)}
+      >
+        {listGiayWillPhanCong.map((info, index) => (
+          // <option value="1">Hello Thu</option>
+          <option value={info["Mã giày"]}>
+            {[
+              info["Mã giày"],
+              // ,
+              // info["Tên giày"],
+              // info["Màu sườn"],
+              // info["Màu cá"],
+              // info["Màu quai"],
+            ].join("|")}
+          </option>
+        ))}
+      </select>
+
       <span>{form["Tên giày"]}</span>
       <div className={styles.phancong_remain}>
         <div className={styles.pair}>
@@ -80,28 +105,43 @@ const PhanCongForm = ({
           </div>
         </div>
       </div>
-
       <label>Thợ đế</label>
-      <input
+      <select
         name="Thợ đế"
         value={form["Thợ đế"]}
         onChange={(e) => handleChangeForm(e)}
-      />
+      >
+        <option value="thu">De Thu</option>
+        <option value="ngoc">De Ngon</option>
+        <option value="an">De An</option>
+        <option value="nhien">De Nhien</option>
+      </select>
+      {/* <input
+        
+      /> */}
       <span>{form["Thợ đế"]}</span>
-
       <div className={styles.phancong_remain}>
         <div className={styles.pair_tho_quai}>
           <label>Thợ quai</label>
-          <input
+          <select
             name="Thợ quai"
             value={form["Thợ quai"]}
             onChange={(e) => handleChangeForm(e)}
-          />
+          >
+            <option value="Cong">Quai Cong</option>
+            <option value="Lan">Quai Lan</option>
+            <option value="Hoang">Quai Hoang</option>
+            <option value="Ly">Quang Ly</option>
+          </select>
+          {/* <input
+            name="Thợ quai"
+            value={form["Thợ quai"]}
+            onChange={(e) => handleChangeForm(e)}
+          /> */}
           {/* select box */}
         </div>
         <span className={styles.span_thoquai}>{form["Thợ quai"]}</span>
       </div>
-
       <div className={styles.content_size}>
         <div className={styles.pair_info}>
           <label>Size 0</label>
@@ -152,7 +192,6 @@ const PhanCongForm = ({
           />
         </div>
       </div>
-
       <label>Diễn giải</label>
       <input
         className={styles.input_diengiai}

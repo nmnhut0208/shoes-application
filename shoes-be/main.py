@@ -360,6 +360,7 @@ def read_item(donhang: InfoDonHang):
     print("nof_loop: ", nof_loop)
     nof_da_dat = 0
     for i in range(nof_loop):
+        _nof_each_loop = 0
         _data = {}
         for key in list_key:
             if key == "STT":
@@ -379,8 +380,10 @@ def read_item(donhang: InfoDonHang):
                         2, 5))
 
                 nof_da_dat += _data[key]
+                _nof_each_loop += _data[key]
 
-        data.append(_data)
+        if (_nof_each_loop > 0):
+            data.append(_data)
 
     data[-1]["Size 0"] = nof_giay - nof_da_dat
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)

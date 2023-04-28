@@ -32,17 +32,42 @@ const PhanCong = () => {
   const [rowSelectionToPhanCong, setRowSelectionToPhanCong] = useState({
     0: true,
   });
-
-  const [idDonHangDangPhanCong, setIdDonHangDangPhanCong] = useState();
-  const [nofDonHangDangPhanCong, setNofDonHangDangPhanCong] = useState(11);
-  // nofDonHangDangPhanCong: để test logic, sau này xóa đi => ko xài
-  // thử api đặng test logic thôi
+  const [listGiayWillPhanCong, setListGiayWillPhanCong] = useState([]);
+  const [formPhanCong, setFormPhanCong] = useState({});
+  console.log("formPhanCong: ", formPhanCong);
 
   useEffect(() => {
     console.log("rowSelectionToPhanCong: ", rowSelectionToPhanCong);
     for (var key in rowSelectionToPhanCong) {
-      setIdDonHangDangPhanCong(dataDonHang[key]["Số đơn hàng"]);
-      setNofDonHangDangPhanCong(dataDonHang[key]["Tổng số lượng đặt hàng"]);
+      let idDonHang = dataDonHang[key]["Số đơn hàng"];
+      let soluong = dataDonHang[key]["Tổng số lượng đặt hàng"];
+      if (typeof idDonHang !== "undefined") {
+        // call API voi idDonHang để lấy chi tiết đơn hàng
+        // các mã giày và số lượng mà khách đã chọn
+        // update lại selection box cho mã giày
+        // mỗi lựa chọn sẽ là thông tin khác nhau của form
+        // nhớ xử lý vụ size nữa nè
+        fetch("http://localhost:8000/items_donhang_with_id", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: idDonHang, nof: soluong }),
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((info) => {
+            console.log("info: ", info);
+            console.log("info 0: ", info[0]);
+            console.log("Mã giày", info[0]["Mã giày"]);
+            setListGiayWillPhanCong(info);
+          })
+          .catch((err) => {
+            console.log(":error: ", err);
+          });
+      }
     }
   }, [rowSelectionToPhanCong]);
 
@@ -53,14 +78,52 @@ const PhanCong = () => {
       })
       .then((info) => {
         setDataDonHang(info);
-        setIdDonHangDangPhanCong(info[0]["Số đơn hàng"]);
-        setNofDonHangDangPhanCong(info[0]["Tổng số lượng đặt hàng"]);
       })
       .catch((err) => {
         console.log(":error: ", err);
       });
   }, []);
-  const handleClickAdd = () => {};
+
+  const handleClickAdd = () => {
+    // listGiayWillPhanCong
+    // formPhanCong
+    console.log("formPhanCong: ", formPhanCong);
+    const remain = { ...formPhanCong };
+    var index = listGiayWillPhanCong.findIndex(
+      (item) => item["Mã giày"] == formPhanCong["Mã giày"]
+    );
+    console.log("===========");
+    console.log("remain: ", remain);
+    console.log("index: ", index);
+    let is_remain = false;
+    for (let key in remain) {
+      if (key.includes("Size")) {
+        remain[key] =
+          listGiayWillPhanCong[index][key] - parseInt(formPhanCong[key]);
+        if (remain[key] > 0) is_remain = true;
+      }
+    }
+    console.log("is_remain: ", is_remain);
+    console.log("listGiayWillPhanCong ban dau: ", listGiayWillPhanCong);
+
+    if (is_remain) setFormPhanCong(formPhanCong);
+    else {
+      const new_list = [
+        ...listGiayWillPhanCong.slice(0, index),
+        ...listGiayWillPhanCong.slice(index + 1, listGiayWillPhanCong.length),
+      ];
+      console.log("listGiayWillPhanCong: ", listGiayWillPhanCong);
+      console.log("new_list: ", new_list);
+      if (new_list.length > 0) {
+        setListGiayWillPhanCong(new_list);
+        setFormPhanCong(new_list[0]);
+      } else {
+        // TODO: Khi phân công xong thì nhảy qua thằng tiếp theo
+        // nhảy qua đơn hàng tiếp theo
+        setListGiayWillPhanCong([]);
+      }
+    }
+  };
   const handleClickDelete = () => {};
   const handleClickEdit = () => {};
 
@@ -78,8 +141,8 @@ const PhanCong = () => {
       />
 
       <PhanCongForm
-        idDonHang={idDonHangDangPhanCong}
-        nofDonHangDangPhanCong={nofDonHangDangPhanCong}
+        setChiTietPhanCong={setFormPhanCong}
+        listGiayWillPhanCong={listGiayWillPhanCong}
       />
 
       <div className={clsx(styles.button_group, styles.form)}>
