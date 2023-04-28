@@ -27,9 +27,10 @@ const PhanCong = () => {
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
-  const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState(() =>
-    renderDataEmpty(INFO_COLS_CHITIET_PHANCONG, 10)
-  );
+  // const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState(() =>
+  //   renderDataEmpty(INFO_COLS_CHITIET_PHANCONG, 10)
+  // );
+  const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState([]);
   const [rowSelectionToPhanCong, setRowSelectionToPhanCong] = useState({});
   const [listGiayWillPhanCong, setListGiayWillPhanCong] = useState([]);
   const [formPhanCong, setFormPhanCong] = useState({});
@@ -100,6 +101,9 @@ const PhanCong = () => {
     // formPhanCong
     // TODO: thêm table vừa add vô bảng bên dưới
     const remain = { ...formPhanCong };
+    const record = { ...formPhanCong };
+    console.log("add vo table: ", record);
+    setDataChiTietPhanCong([...dataChiTietPhanCong, record]);
     var index = listGiayWillPhanCong.findIndex(
       (item) => item["Mã giày"] == formPhanCong["Mã giày"]
     );

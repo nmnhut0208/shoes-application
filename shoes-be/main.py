@@ -329,6 +329,7 @@ def read_item(donhang: InfoDonHang):
     data = []
     rem_to_px = 1
     info_key = [
+        {"key": "Số đơn hàng"},
         {"key": "STT", "width": 7 * rem_to_px},
         {"key": "Mã giày", "width": 21 * rem_to_px},
         {"key": "Tên giày", "width": 40 * rem_to_px},
@@ -363,6 +364,8 @@ def read_item(donhang: InfoDonHang):
         _nof_each_loop = 0
         _data = {}
         for key in list_key:
+            if key == "Số đơn hàng":
+                _data[key] = id_donhang
             if key == "STT":
                 _data[key] = i
                 continue
