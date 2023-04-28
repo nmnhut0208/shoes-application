@@ -34,12 +34,11 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
     setChiTietPhanCong(data);
   };
   const handleChangeMaGiay = (e) => {
-    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    console.log("e: ", e, e.target.value);
+    // console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    // console.log("e: ", e, e.target.value);
     var index = listGiayWillPhanCong.findIndex(
       (item) => item["Mã giày"] == e.target.value
     );
-    console.log("listGiayWillPhanCong[index]: ", listGiayWillPhanCong[index]);
     setChiTietPhanCong(listGiayWillPhanCong[index]);
   };
 

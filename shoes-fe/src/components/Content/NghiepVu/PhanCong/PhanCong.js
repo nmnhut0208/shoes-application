@@ -99,7 +99,6 @@ const PhanCong = () => {
   const handleClickAdd = () => {
     // listGiayWillPhanCong
     // formPhanCong
-    // TODO: thêm table vừa add vô bảng bên dưới
     const remain = { ...formPhanCong };
     const record = { ...formPhanCong };
     console.log("add vo table: ", record);
@@ -115,18 +114,17 @@ const PhanCong = () => {
         if (remain[key] > 0) is_remain = true;
       }
     }
-    const new_list = listGiayWillPhanCong;
     if (is_remain) {
       setFormPhanCong(remain);
 
-      new_list[index] = remain;
-      setListGiayWillPhanCong(new_list);
+      listGiayWillPhanCong[index] = remain;
+      setListGiayWillPhanCong(listGiayWillPhanCong);
     } else {
-      new_list.splice(index, 1);
+      listGiayWillPhanCong.splice(index, 1);
 
-      if (new_list.length > 0) {
-        setListGiayWillPhanCong(new_list);
-        setFormPhanCong(new_list[0]);
+      if (listGiayWillPhanCong.length > 0) {
+        setListGiayWillPhanCong(listGiayWillPhanCong);
+        setFormPhanCong(listGiayWillPhanCong[0]);
       } else {
         // TODO: Khi phân công xong thì nhảy qua thằng tiếp theo
         // nhảy qua đơn hàng tiếp theo
