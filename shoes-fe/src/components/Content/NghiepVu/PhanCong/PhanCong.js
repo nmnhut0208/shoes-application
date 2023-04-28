@@ -99,18 +99,22 @@ const PhanCong = () => {
     if (formPhanCong["Mã giày"] === "") return;
     let remain = { ...formPhanCong };
     const record = { ...formPhanCong };
-    setDataChiTietPhanCong([...dataChiTietPhanCong, record]);
+
     let index = listGiayWillPhanCong.findIndex(
       (item) => item["Mã giày"] == formPhanCong["Mã giày"]
     );
     let is_remain = false;
+    let nof_giay_phan_cong = 0;
     for (let key in remain) {
       if (key.includes("Size")) {
+        nof_giay_phan_cong += parseInt(formPhanCong[key]);
         remain[key] =
           listGiayWillPhanCong[index][key] - parseInt(formPhanCong[key]);
         if (remain[key] > 0) is_remain = true;
       }
     }
+    if (nof_giay_phan_cong > 0)
+      setDataChiTietPhanCong([...dataChiTietPhanCong, record]);
     if (is_remain) {
       setFormPhanCong(remain);
       listGiayWillPhanCong[index] = remain;

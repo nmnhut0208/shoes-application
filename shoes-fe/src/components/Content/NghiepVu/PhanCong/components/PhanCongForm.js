@@ -1,6 +1,4 @@
 import { useState, memo, useEffect, React } from "react";
-
-// import { Popover } from "antd";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 
@@ -13,7 +11,6 @@ import {
   processingInfoColumnTable,
 } from "~utils/processing_data_table";
 import styles from "../PhanCong.module.scss";
-import styles_form from "./PhanCongForm.module.scss";
 
 const listSubInforGiay = [
   { key: "Mã giày", width: 15 * rem_to_px, enableEditing: false },
@@ -56,23 +53,15 @@ const SubTable = ({ data, rowSelection, setRowSelection }) => {
 };
 
 const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
-  console.log("PhanCongForm: re-render", form);
-  console.log("listGiayWillPhanCong: ", listGiayWillPhanCong);
   const [rowSelection, setRowSelection] = useState({});
-  console.log("rowSelection: ", rowSelection);
   useEffect(() => {
     let keys = Object.keys(rowSelection);
     if (keys.length > 0) {
-      console.log("useEffect rowSelection: ", rowSelection);
       setChiTietPhanCong(listGiayWillPhanCong[keys[0]]);
     }
     setAnchorEl(null);
   }, [rowSelection]);
 
-  useEffect(() => {
-    setRowSelection({});
-    console.log("how many rows");
-  }, [listGiayWillPhanCong]);
   /*
   1 đơn hàng có nhiều mã giày, nên sẽ cập nhật lại select option của
   giày => những thông tin liên quan khác tới giày chỉ show ra chứ ko sửa
@@ -85,14 +74,6 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
     const data = { ...form };
     data[e.target.name] = e.target.value;
     setChiTietPhanCong(data);
-  };
-  const handleChangeMaGiay = (e) => {
-    // console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    // console.log("e: ", e, e.target.value);
-    var index = listGiayWillPhanCong.findIndex(
-      (item) => item["Mã giày"] == e.target.value
-    );
-    setChiTietPhanCong(listGiayWillPhanCong[index]);
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -112,29 +93,11 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
     <div className={clsx(styles.phan_cong, styles.form)}>
       <h1 className={styles.title_phancong}>Phân công</h1>
       <label>Mã giày</label>
-      {/* <Popover
-        placement="bottom"
-        content={
-          <SubTable
-            data={listGiayWillPhanCong}
-            rowSelection={rowSelection}
-            setRowSelection={setRowSelection}
-          />
-        }
-      >
-        <input
-          name="Mã giày"
-          value={form["Mã giày"]}
-          onChange={(e) => handleChangeForm(e)}
-          className={styles_form.input_ma_giay}
-        />
-      </Popover> */}
       <div>
         <input
           name="Mã giày"
           value={form["Mã giày"]}
           onChange={(e) => handleChangeForm(e)}
-          className={styles_form.input_ma_giay}
           onClick={handlePopoverClick}
         />
 
@@ -151,32 +114,12 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           <Typography sx={{ p: 2 }}>
             <SubTable
               data={listGiayWillPhanCong}
-              rowSelection={rowSelection}
+              rowSelection={{}}
               setRowSelection={setRowSelection}
             />
           </Typography>
         </Popover>
       </div>
-
-      {/* <select
-        name="Mã giày"
-        value={form["Mã giày"]}
-        onChange={(e) => handleChangeMaGiay(e)}
-      >
-        {listGiayWillPhanCong.length > 0 &&
-          listGiayWillPhanCong.map((info, index) => (
-            <option value={info["Mã giày"]}>
-              {[
-                info["Mã giày"],
-                // ,
-                // info["Tên giày"],
-                // info["Màu sườn"],
-                // info["Màu cá"],
-                // info["Màu quai"],
-              ].join("|")}
-            </option>
-          ))}
-      </select> */}
 
       <span>{form["Tên giày"]}</span>
       <div className={styles.phancong_remain}>
@@ -206,9 +149,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
         <option value="an">De An</option>
         <option value="nhien">De Nhien</option>
       </select>
-      {/* <input
-        
-      /> */}
+
       <span>{form["Thợ đế"]}</span>
       <div className={styles.phancong_remain}>
         <div className={styles.pair_tho_quai}>
