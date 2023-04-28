@@ -1,8 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
-import styles from "./PhanCong.module.scss";
-import "./PhanCong.css";
 import {
   INFO_COLS_DONHANG,
   INFO_COLS_CHITIET_PHANCONG,
@@ -12,10 +10,13 @@ import {
   processingInfoColumnTable,
 } from "~utils/processing_data_table";
 
-import InfoPhieu from "./InfoPhieu";
-import PhanCongForm from "./PhanCongForm";
-import TableDonHang from "./TableDonHang";
-import TableChiTietPhanCong from "./TableChiTietPhanCong";
+import {
+  InfoPhieu,
+  PhanCongForm,
+  TableDonHang,
+  TableChiTietPhanCong,
+} from "./components";
+import styles from "./PhanCong.module.scss";
 
 const infoTableDonHang = processingInfoColumnTable(INFO_COLS_DONHANG);
 const infoTableChiTietPhanCong = processingInfoColumnTable(
@@ -27,9 +28,7 @@ const PhanCong = () => {
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
-  // const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState(() =>
-  //   renderDataEmpty(INFO_COLS_CHITIET_PHANCONG, 10)
-  // );
+
   const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState([]);
   const [rowSelectionToPhanCong, setRowSelectionToPhanCong] = useState({});
   const [listGiayWillPhanCong, setListGiayWillPhanCong] = useState([]);
@@ -97,13 +96,10 @@ const PhanCong = () => {
   }, []);
 
   const handleClickAdd = () => {
-    // listGiayWillPhanCong
-    // formPhanCong
-    const remain = { ...formPhanCong };
+    let remain = { ...formPhanCong };
     const record = { ...formPhanCong };
-    console.log("add vo table: ", record);
     setDataChiTietPhanCong([...dataChiTietPhanCong, record]);
-    var index = listGiayWillPhanCong.findIndex(
+    let index = listGiayWillPhanCong.findIndex(
       (item) => item["Mã giày"] == formPhanCong["Mã giày"]
     );
     let is_remain = false;
@@ -116,7 +112,6 @@ const PhanCong = () => {
     }
     if (is_remain) {
       setFormPhanCong(remain);
-
       listGiayWillPhanCong[index] = remain;
       setListGiayWillPhanCong(listGiayWillPhanCong);
     } else {
@@ -143,8 +138,7 @@ const PhanCong = () => {
       <TableDonHang
         columns={infoTableDonHang}
         data={dataDonHang}
-        row_each_page={10}
-        maxHeight={15}
+        maxHeight={18}
         rowSelection={rowSelectionToPhanCong}
         setRowSelection={setRowSelectionToPhanCong}
       />
@@ -164,7 +158,6 @@ const PhanCong = () => {
       <TableChiTietPhanCong
         columns={infoTableChiTietPhanCong}
         data={dataChiTietPhanCong}
-        row_each_page={10}
         maxHeight={35}
       />
     </div>

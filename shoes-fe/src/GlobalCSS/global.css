@@ -1,0 +1,31 @@
+.ant-space-item {
+  font-size: 1.7rem;
+}
+
+table {
+  border: 0.1rem solid rgba(0, 0, 0, 0.5);
+}
+
+.MuiTableCell-head {
+  border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
+}
+
+.MuiTableCell-body {
+  border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
+}
+
+.Mui-TableHeadCell-Content-Labels {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 1.6rem !important;
+  font-family: Arial !important;
+}
+
+.MuiTableCell-body {
+  font-size: 1.4rem !important;
+  font-family: Arial !important;
+}

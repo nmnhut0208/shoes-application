@@ -1,7 +1,7 @@
 import MaterialReactTable from "material-react-table";
 import { memo } from "react";
 
-const TableChiTietPhanCong = ({ row_each_page, columns, data, maxHeight }) => {
+const TableChiTietPhanCong = ({ columns, data, maxHeight }) => {
   console.log("re-render table: ", maxHeight);
   return (
     <div>
@@ -14,7 +14,6 @@ const TableChiTietPhanCong = ({ row_each_page, columns, data, maxHeight }) => {
         enableColumnActions={false}
         enableSorting={false}
         enableColumnResizing
-        // initialState={{ pagination: { pageSize: row_each_page, pageIndex: 0 } }}
         // enablePinning
         // enable phân trang
         enablePagination={false}

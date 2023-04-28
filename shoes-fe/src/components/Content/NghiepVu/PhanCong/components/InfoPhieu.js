@@ -1,6 +1,6 @@
-import styles from "./PhanCong.module.scss";
 import { useState, memo } from "react";
 import clsx from "clsx";
+import styles from "../PhanCong.module.scss";
 
 const InfoPhieu = () => {
   const [infoPhieu, setInfoPhieu] = useState({});

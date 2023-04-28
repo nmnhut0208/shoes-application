@@ -1,4 +1,3 @@
-import styles from "./PhanCong.module.scss";
 import { useState, memo, useEffect } from "react";
 import clsx from "clsx";
 import { rem_to_px } from "~config/ui";
@@ -6,7 +5,8 @@ import {
   renderDataEmpty,
   processingInfoColumnTable,
 } from "~utils/processing_data_table";
-import styles_form from "./PhanCongForm.module.scss";
+// import styles_form from "./PhanCongForm.module.scss";
+import styles from "../PhanCong.module.scss";
 
 const listSubInforGiay = [
   { key: "Mã giày", width: 15 * rem_to_px, enableEditing: false },
