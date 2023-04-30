@@ -1,5 +1,5 @@
 import MaterialReactTable from "material-react-table";
-import { memo, useState } from "react";
+import { memo } from "react";
 
 const TableDonHang = ({
   columns,
@@ -8,8 +8,6 @@ const TableDonHang = ({
   rowSelection,
   setRowSelection,
 }) => {
-  console.log("re-render table: ", maxHeight);
-
   return (
     <div>
       <MaterialReactTable

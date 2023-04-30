@@ -25,6 +25,8 @@ const infoTableChiTietPhanCong = processingInfoColumnTable(
 
 const PhanCong = () => {
   // Phan Cong
+  // TODO: delete button
+  // Add button: modify table Don Hang when a DonHang done delegated
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
@@ -99,11 +101,17 @@ const PhanCong = () => {
     if (formPhanCong["Mã giày"] === "") return;
     let remain = { ...formPhanCong };
     const record = { ...formPhanCong };
-
+    // TODO: kiểm tra 1 mã giày đã phân công xong chưa
+    // check lại logic nếu có mã giày + màu + sườn
+    // mới thành 1 loại giày hay ko
+    // nếu có thay đổi source cho phù hợp
+    // hiện tại đang giả định mã giày là duy nhất trong đơn hàng
+    // nếu có sửa findIndex lại cho phù hợp
     let index = listGiayWillPhanCong.findIndex(
       (item) => item["Mã giày"] == formPhanCong["Mã giày"]
     );
     let is_remain = false;
+
     let nof_giay_phan_cong = 0;
     for (let key in remain) {
       if (key.includes("Size")) {
@@ -120,6 +128,7 @@ const PhanCong = () => {
       listGiayWillPhanCong[index] = remain;
       setListGiayWillPhanCong(listGiayWillPhanCong);
     } else {
+      // xóa thằng đã phân công xong đi
       listGiayWillPhanCong.splice(index, 1);
 
       if (listGiayWillPhanCong.length > 0) {

@@ -22,8 +22,7 @@ const listSubInforGiay = [
 
 const columnsSubInfoGiay = processingInfoColumnTable(listSubInforGiay);
 
-const SubTable = ({ data, rowSelection, setRowSelection }) => {
-  console.log("re-render sub table when hover", data);
+const DetailInfoGiay = ({ data, rowSelection, setRowSelection }) => {
   return (
     <div style={{ height: "auto" }}>
       <h1>{data.length}</h1>
@@ -37,11 +36,6 @@ const SubTable = ({ data, rowSelection, setRowSelection }) => {
         // enable phân trang
         enablePagination={false}
         enableBottomToolbar={true}
-        // scroll to bottom
-        // enableRowVirtualization
-        // muiTableContainerProps={{
-        //   sx: { maxHeight: "30rem" },
-        // }}
         // row selection
         enableMultiRowSelection={false}
         enableRowSelection
@@ -54,21 +48,6 @@ const SubTable = ({ data, rowSelection, setRowSelection }) => {
 
 const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
   const [rowSelection, setRowSelection] = useState({});
-  useEffect(() => {
-    let keys = Object.keys(rowSelection);
-    if (keys.length > 0) {
-      setChiTietPhanCong(listGiayWillPhanCong[keys[0]]);
-    }
-    setAnchorEl(null);
-  }, [rowSelection]);
-
-  /*
-  1 đơn hàng có nhiều mã giày, nên sẽ cập nhật lại select option của
-  giày => những thông tin liên quan khác tới giày chỉ show ra chứ ko sửa
-
-  Những thông tin liên quan tới phân công: thợ, size thì mới cho sửa
-   */
-  // const [form, setForm] = useState({});
 
   const handleChangeForm = (e) => {
     const data = { ...form };
@@ -76,18 +55,23 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
     setChiTietPhanCong(data);
   };
 
+  // show DetailInfoGiay for MaGiay's detail information
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
   const handlePopoverClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  useEffect(() => {
+    let keys = Object.keys(rowSelection);
+    if (keys.length > 0) {
+      setChiTietPhanCong(listGiayWillPhanCong[keys[0]]);
+    }
+    setAnchorEl(null);
+  }, [rowSelection]);
 
   return (
     <div className={clsx(styles.phan_cong, styles.form)}>
@@ -112,7 +96,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           }}
         >
           <Typography sx={{ p: 2 }}>
-            <SubTable
+            <DetailInfoGiay
               data={listGiayWillPhanCong}
               rowSelection={{}}
               setRowSelection={setRowSelection}
@@ -252,4 +236,4 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
   );
 };
 
-export default PhanCongForm;
+export default memo(PhanCongForm);

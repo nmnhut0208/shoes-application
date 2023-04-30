@@ -10,7 +10,6 @@ const InfoPhieu = () => {
     data[e.target.name] = e.target.value;
     setInfoPhieu(data);
   };
-  console.log("infoPhieu: ", infoPhieu);
 
   return (
     <div className={clsx(styles.form, styles.input_query)}>

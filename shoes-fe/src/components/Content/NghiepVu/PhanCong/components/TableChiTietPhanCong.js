@@ -2,7 +2,6 @@ import MaterialReactTable from "material-react-table";
 import { memo } from "react";
 
 const TableChiTietPhanCong = ({ columns, data, maxHeight }) => {
-  console.log("re-render table: ", maxHeight);
   return (
     <div>
       <MaterialReactTable
