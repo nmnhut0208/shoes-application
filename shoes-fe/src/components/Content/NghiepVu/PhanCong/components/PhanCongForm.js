@@ -25,7 +25,6 @@ const columnsSubInfoGiay = processingInfoColumnTable(listSubInforGiay);
 const DetailInfoGiay = ({ data, rowSelection, setRowSelection }) => {
   return (
     <div style={{ height: "auto" }}>
-      <h1>{data.length}</h1>
       <MaterialReactTable
         enableTopToolbar={false}
         columns={columnsSubInfoGiay}
