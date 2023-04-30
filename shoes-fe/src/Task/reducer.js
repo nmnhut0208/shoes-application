@@ -4,6 +4,7 @@ import {
   SET_TASK_NGHIEP_VU,
   SET_TASK_TRUY_VAN,
   SET_TASK_BAO_CAO,
+  SET_DEFAULT_HEADER,
 } from "./constants";
 const initState = {
   inforCurrentTask: { infoContent: "Header" },
@@ -35,6 +36,11 @@ function reducer(state, action) {
     }
     case SET_TASK_BAO_CAO: {
       info["infoContent"] = "Báo cáo";
+      info["infoDetail"] = action.payload;
+      break;
+    }
+    case SET_DEFAULT_HEADER: {
+      info["infoContent"] = "Header";
       info["infoDetail"] = action.payload;
       break;
     }

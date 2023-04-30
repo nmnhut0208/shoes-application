@@ -6,11 +6,11 @@ import { TaskProvider } from "~task";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <TaskProvider>
-      <App />
-    </TaskProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <TaskProvider>
+    <App />
+  </TaskProvider>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

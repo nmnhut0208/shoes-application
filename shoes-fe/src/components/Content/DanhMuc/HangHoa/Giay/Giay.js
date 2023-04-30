@@ -53,6 +53,8 @@ const Giay = () => {
   const [renderUI, setRenderUI] = useState(false);
   const [stateTable, dispatchTable] = useTableContext();
 
+  console.log("Giay");
+
   useEffect(() => {
     dispatchTable(actions_table.setTitleModal("Giay - F0025"));
     dispatchTable(actions_table.setTitleTable("Giày - F0024"));
