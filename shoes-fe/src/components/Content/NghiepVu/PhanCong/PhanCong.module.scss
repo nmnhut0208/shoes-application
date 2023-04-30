@@ -50,6 +50,9 @@
 
       .pair_tho_quai {
         grid-column: 1/2;
+        select {
+          width: 64%;
+        }
       }
       .span_thoquai {
         grid-column: 2/3;
