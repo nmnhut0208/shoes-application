@@ -19,9 +19,9 @@ const list_key = [
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    title: list_key[obj]["key"],
+    header: list_key[obj]["key"],
     width: list_key[obj]["width"],
-    dataIndex: list_key[obj]["key"],
+    accessorKey: list_key[obj]["key"],
     key: list_key[obj]["key"].toLowerCase(),
   };
   infoColumns.push(info);
@@ -29,16 +29,16 @@ for (var obj in list_key) {
 
 console.log(infoColumns);
 
-infoColumns.push({
-  title: "Action",
-  key: "action",
-  render: (_, record) => (
-    <Space size="middle">
-      <a>Invite {record.name}</a>
-      <a>Delete</a>
-    </Space>
-  ),
-});
+// infoColumns.push({
+//   title: "Action",
+//   key: "action",
+//   render: (_, record) => (
+//     <Space size="middle">
+//       <a>Invite {record.name}</a>
+//       <a>Delete</a>
+//     </Space>
+//   ),
+// });
 
 const KyTinhLuong = () => {
   const [renderUI, setRenderUI] = useState(false);

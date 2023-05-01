@@ -103,6 +103,20 @@ def read_item():
     return data
 
 
+@app.get("/items_giao_hang")
+def read_item():
+    data = []
+    list_key = ["key", "Số đơn hàng", "Ngày đơn hàng", "Ngày giao hàng", "Diễn giải",
+                "Số lượng còn lại", ]
+
+    for i in range(100):
+        _data = {}
+        for key in list_key:
+            _data[key] = "{} - {}".format(key, i+1)
+        data.append(_data)
+    return data
+
+
 @app.get("/items_ky_tinh_luong")
 def read_item():
     data = []
