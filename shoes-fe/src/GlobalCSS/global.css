@@ -12,6 +12,8 @@ table {
 
 .MuiTableCell-body {
   border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
+  font-size: 1.4rem !important;
+  font-family: Arial !important;
 }
 
 .Mui-TableHeadCell-Content-Labels {
@@ -25,7 +27,6 @@ table {
   font-family: Arial !important;
 }
 
-.MuiTableCell-body {
-  font-size: 1.4rem !important;
-  font-family: Arial !important;
+.css-180500e {
+  position: relative !important;
 }

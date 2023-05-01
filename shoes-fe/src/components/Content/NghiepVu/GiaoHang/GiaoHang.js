@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import SubTable from "./SubTable";
 import styles from "./GiaoHang.module.scss";
-import "./GiaoHang.css";
-import { Header } from "antd/es/layout/layout";
+// import { Header } from "antd/es/layout/layout";
 
 const list_key = [
   { key: "Số đơn hàng" },
