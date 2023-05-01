@@ -1,0 +1,18 @@
+.MuiTableCell-head {
+  border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
+}
+
+.MuiTableCell-body {
+  border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
+}
+
+.Mui-TableHeadCell-Content-Labels {
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 1.4rem;
+  font-family: Arial;
+}
+
+.css-180500e {
+  position: relative !important;
+}
