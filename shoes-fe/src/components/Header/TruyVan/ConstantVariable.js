@@ -1,12 +1,12 @@
 export const itemsTruyVan = [
-  {
-    key: "Nhập kho",
-    label: "Nhập kho",
-  },
-  {
-    key: "Xuất kho",
-    label: "Xuất kho",
-  },
+  // {
+  //   key: "Nhập kho",
+  //   label: "Nhập kho",
+  // },
+  // {
+  //   key: "Xuất kho",
+  //   label: "Xuất kho",
+  // },
   {
     key: "Đơn hàng",
     label: "Đơn hàng",

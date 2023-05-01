@@ -44,3 +44,11 @@
     }
   }
 }
+
+.group_button {
+  @extend .flex_row_flex-end;
+  margin-top: 1rem;
+  button:not(:last-child) {
+    margin-right: 1rem;
+  }
+}

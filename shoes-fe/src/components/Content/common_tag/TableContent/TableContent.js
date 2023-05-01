@@ -115,11 +115,11 @@ const TableContent = () => {
             components
             // handle double click row
             //optionally override the default column widths
-            defaultColumn={{
-              maxSize: 400,
-              minSize: 80,
-              size: 150, //default size is usually 180
-            }}
+            // defaultColumn={{
+            //   maxSize: 400,
+            //   minSize: 80,
+            //   size: 150, //default size is usually 180
+            // }}
             enableColumnResizing
             // columnResizeMode="onChange" //default
             enableEditing

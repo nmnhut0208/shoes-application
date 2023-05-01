@@ -1,0 +1,95 @@
+@import "~common_scss/form.module.scss";
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 1rem;
+
+  .input_query {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.75fr 3fr;
+    .pair:not(:first-child) {
+      label {
+        text-align: right;
+        padding-right: 0.2rem;
+      }
+    }
+    .pair:last-child {
+      text-align: right;
+      input {
+        width: 85%;
+      }
+    }
+  }
+
+  .phan_cong {
+    display: grid;
+    grid-template-columns: 0.25fr 0.75fr 2fr 4fr;
+
+    row-gap: 0.5rem;
+    span {
+      width: 90%;
+      height: 100%;
+    }
+    .title_phancong {
+      grid-column: 1 / 5;
+    }
+    .phancong_remain {
+      grid-column: 4/5;
+      display: grid;
+      grid-template-columns: 1fr 2.2fr;
+      label {
+        text-align: right;
+        padding-right: 0.2rem;
+      }
+
+      .group_input_row {
+        @extend .flex-row;
+        justify-content: space-between;
+      }
+
+      .pair_tho_quai {
+        grid-column: 1/2;
+        select {
+          width: 64%;
+        }
+      }
+      .span_thoquai {
+        grid-column: 2/3;
+        width: 100%;
+        margin-left: 0rem;
+      }
+    }
+
+    .content_size {
+      grid-column: 1/5;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      input {
+        width: 12rem;
+      }
+      .pair_info:not(:first-child) {
+        label {
+          text-align: right;
+          margin-right: 0.2rem;
+        }
+        text-align: right;
+      }
+    }
+    .input_diengiai {
+      grid-column: 2/5;
+      grid-row: 5/6;
+    }
+  }
+
+  .button_group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    button {
+      margin-right: 1rem;
+      width: 10rem;
+      font-size: 1.7rem;
+    }
+  }
+}

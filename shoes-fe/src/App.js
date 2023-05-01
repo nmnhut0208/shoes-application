@@ -1,7 +1,7 @@
 import { CustomHeader, ShopContent } from "./components";
 import { ProviderTable } from "~table_context";
 import styles from "~GlobalStyle/global.module.scss";
-import "~GlobalStyle/AntCustom.css";
+import "~GlobalStyle/global.css";
 
 function App() {
   return (

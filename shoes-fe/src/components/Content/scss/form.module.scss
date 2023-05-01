@@ -49,6 +49,13 @@
     @extend .font-setting;
   }
 
+  select {
+    display: inline-block;
+    padding: var(--padding-setting);
+    border: var(--border-setting);
+    @extend .font-setting;
+  }
+
   span {
     display: inline-block;
     width: 20rem;

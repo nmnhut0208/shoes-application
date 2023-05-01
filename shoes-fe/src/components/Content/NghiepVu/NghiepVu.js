@@ -1,5 +1,6 @@
 import { useTaskContext } from "~task";
 import DonHang from "./DonHang";
+import PhanCong from "./PhanCong/";
 import ChiTien from "./ChiTien";
 import GiaoHang from "./GiaoHang";
 
@@ -10,6 +11,8 @@ const NghiepVu = () => {
   switch (inforCurrentTask.infoDetail) {
     case "Đơn hàng":
       return <DonHang />;
+    case "Phân công":
+      return <PhanCong />;
     case "Chi tiền":
       return <ChiTien />;
     case "Giao hàng":

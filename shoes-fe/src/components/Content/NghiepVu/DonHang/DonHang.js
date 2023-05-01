@@ -1,82 +1,126 @@
-import { Space } from "antd";
-import { useEffect, useState } from "react";
-import { TableContent } from "~common_tag";
-import {
-  useTableContext,
-  actions_table,
-  cleanupContextTable,
-} from "~table_context";
+import { useEffect, useState, useMemo } from "react";
+
+import { INFO_COLS_DONHANG, COLS_HAVE_SUM_FOOTER } from "./ConstantVariable";
+import { Modal } from "~common_tag";
+import { useTableContext, actions_table } from "~table_context";
+import { renderDataEmpty } from "~utils/processing_data_table";
+
+import TableDonHang from "./TableDonHang";
+import FormGiay from "./FormGiay";
+import FormMau from "./FormMau";
+import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import styles from "./DonHang.module.scss";
-import { FormGiay } from "~hang_hoa";
-
-const list_key = [
-  { key: "STT", width: "7rem" },
-  { key: "Mã giày", width: "21rem" },
-  { key: "Đơn giá", width: "10rem" },
-  { key: "Tên giày", width: "40rem" },
-  { key: "Mã đế", width: "8rem" },
-  { key: "Tên đế", width: "16rem" },
-  { key: "Mã sườn", width: "8rem" },
-  { key: "Tên sườn", width: "16rem" },
-  { key: "Mã cá", width: "8rem" },
-  { key: "Tên cá", width: "16rem" },
-  { key: "Mã quai", width: "8rem" },
-  { key: "Tên quai", width: "16rem" },
-];
-
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    title: list_key[obj]["key"],
-    width: list_key[obj]["width"],
-    dataIndex: list_key[obj]["key"],
-    key: list_key[obj]["key"].toLowerCase(),
-  };
-  infoColumns.push(info);
-}
-
-console.log(infoColumns);
-
-infoColumns.push({
-  title: "Action",
-  key: "action",
-  render: (_, record) => (
-    <Space size="middle">
-      <a>Invite {record.name}</a>
-      <a>Delete</a>
-    </Space>
-  ),
-});
 
 const DonHang = () => {
-  const [renderUI, setRenderUI] = useState(false);
+  // const [dataTable, setDataTable] = useState([]);
+  const [dataTable, setDataTable] = useState(() => {
+    return renderDataEmpty(INFO_COLS_DONHANG, 1);
+  });
+
+  // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
+  // nên đành để thành thêm 1 dòng trống sau dataTable
+
   const [stateTable, dispatchTable] = useTableContext();
+  const [infoFormWillShow, setInfoFormWillShow] = useState({
+    giay: false,
+    mau: false,
+    dmGiaykh: false,
+  });
 
-  useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Giay - F0025"));
-    dispatchTable(actions_table.setTitleTable(""));
-    dispatchTable(actions_table.setComponentForm(FormGiay));
-    fetch("http://localhost:8000/items")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        dispatchTable(actions_table.setInforColumnTable(infoColumns));
-        dispatchTable(actions_table.setInforTable(info));
-        // if neu co thong tin moi show ne
-        dispatchTable(actions_table.setModeShowTable(true));
-        setRenderUI(true);
-        console.log("stateTable: ", stateTable);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
+  const handleThemGiay = () => {
+    setInfoFormWillShow({
+      giay: true,
+      mau: false,
+      dmGiaykh: false,
+    });
+    dispatchTable(actions_table.setTitleModal("Giày - F0025"));
+    dispatchTable(actions_table.setModeShowModal(true));
+  };
 
-    // cleanup function
-    return () => {
-      cleanupContextTable(dispatchTable);
-    };
-  }, []);
+  const handleThemMau = () => {
+    setInfoFormWillShow({
+      giay: false,
+      mau: true,
+      dmGiaykh: false,
+    });
+    dispatchTable(actions_table.setTitleModal("Màu sắc - F0010"));
+    dispatchTable(actions_table.setModeShowModal(true));
+  };
+
+  const handleNhapTiep = () => {
+    // Render lại số đơn hàng
+    // Reset lại hết những thông tin hiện có
+    // để chú nhận đơn hàng mới
+    setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
+  };
+
+  const handleClickMaGiay = () => {
+    setInfoFormWillShow({
+      giay: false,
+      mau: false,
+      dmGiaykh: true,
+    });
+    dispatchTable(
+      actions_table.setTitleModal("Danh mục giày của Khách hàng - F0049")
+    );
+    dispatchTable(actions_table.setModeShowModal(true));
+  };
+
+  const infoColumns = useMemo(() => {
+    const infoColumnsInit = [];
+
+    for (var obj in INFO_COLS_DONHANG) {
+      let key = INFO_COLS_DONHANG[obj]["key"];
+      var info = {
+        header: INFO_COLS_DONHANG[obj]["key"],
+        size: INFO_COLS_DONHANG[obj]["width"],
+        accessorKey: INFO_COLS_DONHANG[obj]["key"],
+        enableEditing: INFO_COLS_DONHANG[obj]["enableEditing"],
+        key: INFO_COLS_DONHANG[obj]["key"].toLowerCase(),
+      };
+
+      // if (key === "Mã giày") {
+      //   info["Cell"] = ({ cell }) => (
+      //     <button onClick={handleClickMaGiay}>{cell.getValue()}</button>
+      //     // <button onClick={handleClickMaGiay}></button>
+      //   );
+      // }
+      // thử thêm select box vô 1 cell
+      if (key === "Màu đế") {
+        info["editSelectOptions"] = [
+          "Màu đế - 1",
+          "Màu đế - 2",
+          "Màu đế - 3",
+          "Màu đế - 4",
+        ];
+        info["editVariant"] = "select";
+        info["enableEditing"] = true;
+      }
+
+      if (key === "Tên giày") info["Footer"] = () => <div>Tổng cộng</div>;
+      if (COLS_HAVE_SUM_FOOTER.includes(key)) {
+        let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
+        info["Footer"] = () => <div>{sum_value}</div>;
+      }
+      infoColumnsInit.push(info);
+    }
+    return infoColumnsInit;
+  }, [dataTable]);
+
+  // useEffect(() => {
+  //   fetch("http://localhost:8000/items_donhang")
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((info) => {
+  //       info = [...info, ...renderDataEmpty(INFO_COLS_DONHANG, 1)];
+  //       setDataTable(info);
+  //       console.log(dataTable);
+  //     })
+  //     .catch((err) => {
+  //       console.log(":error: ", err);
+  //     });
+  // }, []);
 
   return (
     <>
@@ -124,7 +168,43 @@ const DonHang = () => {
           </div>
         </div>
       </div>
-      {renderUI && <TableContent />}
+      {
+        <TableDonHang
+          columns={infoColumns}
+          data={dataTable}
+          setDataTable={setDataTable}
+          handleAddGiay={handleClickMaGiay}
+        />
+      }
+      <div className={styles.form}>
+        {/* Không hiểu tại sao gộp 2 form lại thì ko nhận extend nên phải tách đỡ ra vầy */}
+        <div className={styles.group_button}>
+          <button onClick={handleThemGiay}>Thêm giày</button>
+          <button onClick={handleThemMau}>Thêm màu</button>
+          <button onClick={handleNhapTiep}>Nhập tiếp</button>
+          <button>Lưu</button>
+          <button>In</button>
+          <button>Đóng</button>
+        </div>
+      </div>
+      {infoFormWillShow["giay"] && (
+        <Modal>
+          <FormGiay />
+        </Modal>
+      )}
+      {infoFormWillShow["mau"] && (
+        <Modal>
+          <FormMau />
+        </Modal>
+      )}
+      {infoFormWillShow["dmGiaykh"] && (
+        <Modal>
+          <DanhMucGiayKhachHang
+            dataOrigin={dataTable}
+            setInfoSelection={setDataTable}
+          />
+        </Modal>
+      )}
     </>
   );
 };
