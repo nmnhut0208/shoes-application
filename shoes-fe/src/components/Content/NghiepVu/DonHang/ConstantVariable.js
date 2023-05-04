@@ -15,7 +15,10 @@ export const INFO_COLS_DONHANG = [
   { key: "Size 9", width: 8 * rem_to_px, enableEditing: true },
   { key: "Size 0", width: 8 * rem_to_px, enableEditing: true },
   { key: "Số lượng", width: 24 * rem_to_px, enableEditing: false },
-  { key: "Giá bán", width: 24 * rem_to_px, enableEditing: false },
+  { key: "Giá bán", width: 24 * rem_to_px, enableEditing: true },
+  { key: "Thành tiền", width: 24 * rem_to_px, enableEditing: false },
+  { key: "Diễn giải", width: 48 * rem_to_px, enableEditing: false },
+  { key: "In hiệu", width: 48 * rem_to_px, enableEditing: false },
 ];
 
 export const COLS_HAVE_SUM_FOOTER = [
@@ -26,6 +29,7 @@ export const COLS_HAVE_SUM_FOOTER = [
   "Size 9",
   "Size 0",
   "Số lượng",
+  "Thành tiền",
 ];
 
 export const COL_GIAY_KHACHHANG = [

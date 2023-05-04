@@ -384,11 +384,16 @@ def read_item(donhang: InfoDonHang):
                 _data[key] = i
                 continue
             if key == "Mã giày":
-                _data[key] = "{}-{} - {}".format(id_donhang, key, i+1)
+                _data[key] = "{}-{} - {}".format(id_donhang,
+                                                 key, random.randint(1, 3))
                 continue
             if key == "Số lượng":
                 _data[key] = nof_giay
             _data[key] = "{} - {}".format(key, i+1)
+
+            if key in ["Màu quai", "Màu giày", "Màu cá", "Màu đế"]:
+                _data[key] = "{}-{}".format(key, random.randint(1, 3))
+
             if key in columns_have_sum_feature:
                 if nof_da_dat >= nof_giay:
                     _data[key] = 0

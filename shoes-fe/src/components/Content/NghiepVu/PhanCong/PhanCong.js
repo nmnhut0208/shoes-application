@@ -31,6 +31,8 @@ const PhanCong = () => {
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
 
+  console.log("PhanCong re-render");
+  console.log("dataDonHang: ", dataDonHang);
   const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState([]);
   const [rowSelectionToPhanCong, setRowSelectionToPhanCong] = useState({});
   const [listGiayWillPhanCong, setListGiayWillPhanCong] = useState([]);
@@ -45,9 +47,17 @@ const PhanCong = () => {
   };
 
   useEffect(() => {
-    for (var key in rowSelectionToPhanCong) {
-      let idDonHang = dataDonHang[key]["Số đơn hàng"];
-      let soluong = dataDonHang[key]["Tổng số lượng đặt hàng"];
+    console.log("useEffect run again to get ds giay khach hang");
+    if (dataDonHang.length > 0) {
+      // get key
+      let index = 0;
+      if (Object.keys(rowSelectionToPhanCong).length > 0) {
+        let index = parseInt(Object.keys(rowSelectionToPhanCong)[0]);
+        index = Math.min(index, dataDonHang.length - 1);
+      }
+
+      let idDonHang = dataDonHang[index]["Số đơn hàng"];
+      let soluong = dataDonHang[index]["Tổng số lượng đặt hàng"];
       if (typeof idDonHang !== "undefined") {
         // call API voi idDonHang để lấy chi tiết đơn hàng
         // các mã giày và số lượng mà khách đã chọn
@@ -78,7 +88,7 @@ const PhanCong = () => {
           });
       }
     }
-  }, [rowSelectionToPhanCong]);
+  }, [rowSelectionToPhanCong, dataDonHang]);
 
   useEffect(() => {
     fetch("http://localhost:8000/items_donhang_page_phan_cong")
@@ -101,14 +111,14 @@ const PhanCong = () => {
     if (formPhanCong["Mã giày"] === "") return;
     let remain = { ...formPhanCong };
     const record = { ...formPhanCong };
-    // TODO: kiểm tra 1 mã giày đã phân công xong chưa
-    // check lại logic nếu có mã giày + màu + sườn
-    // mới thành 1 loại giày hay ko
-    // nếu có thay đổi source cho phù hợp
-    // hiện tại đang giả định mã giày là duy nhất trong đơn hàng
-    // nếu có sửa findIndex lại cho phù hợp
+
+    // TODO: khi đoạn này có giá trị null
     let index = listGiayWillPhanCong.findIndex(
-      (item) => item["Mã giày"] == formPhanCong["Mã giày"]
+      (item) =>
+        item["Mã giày"] == formPhanCong["Mã giày"] &&
+        item["Màu quai"] === formPhanCong["Màu quai"] &&
+        item["Màu sườn"] === formPhanCong["Màu sườn"] &&
+        item["Màu cá"] === formPhanCong["Màu cá"]
     );
     let is_remain = false;
 
@@ -126,17 +136,27 @@ const PhanCong = () => {
     if (is_remain) {
       setFormPhanCong(remain);
       listGiayWillPhanCong[index] = remain;
-      setListGiayWillPhanCong(listGiayWillPhanCong);
+      setListGiayWillPhanCong([...listGiayWillPhanCong]);
     } else {
       // xóa thằng đã phân công xong đi
       listGiayWillPhanCong.splice(index, 1);
 
       if (listGiayWillPhanCong.length > 0) {
-        setListGiayWillPhanCong(listGiayWillPhanCong);
+        setListGiayWillPhanCong([...listGiayWillPhanCong]);
         setFormPhanCong(listGiayWillPhanCong[0]);
       } else {
-        // TODO: Khi phân công xong thì nhảy qua thằng tiếp theo
+        // Khi phân công xong thì nhảy qua thằng tiếp theo
         // nhảy qua đơn hàng tiếp theo
+        let index_del = parseInt(Object.keys(rowSelectionToPhanCong)[0]);
+        dataDonHang.splice(index_del, 1);
+        setDataDonHang([...dataDonHang]);
+        // setDataDonHang(dataDonHang);
+        if (dataDonHang.length > 0 && index_del > 0) {
+          index_del -= 1;
+          const _row = {};
+          _row[index_del] = true;
+          setRowSelectionToPhanCong(_row);
+        }
         setListGiayWillPhanCong([]);
         resetForm();
       }
