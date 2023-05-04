@@ -1,7 +1,13 @@
 import MaterialReactTable from "material-react-table";
 import { memo } from "react";
 
-const TableChiTietPhanCong = ({ columns, data, maxHeight }) => {
+const TableChiTietPhanCong = ({
+  columns,
+  data,
+  maxHeight,
+  rowSelection,
+  setRowSelection,
+}) => {
   return (
     <div>
       <MaterialReactTable
@@ -21,6 +27,11 @@ const TableChiTietPhanCong = ({ columns, data, maxHeight }) => {
         muiTableContainerProps={{
           sx: { maxHeight: [maxHeight, "rem"].join("") },
         }}
+        // row selection
+        enableMultiRowSelection={false}
+        enableRowSelection
+        onRowSelectionChange={setRowSelection}
+        state={{ rowSelection }}
       />
     </div>
   );

@@ -11,11 +11,32 @@ import FormMau from "./FormMau";
 import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import styles from "./DonHang.module.scss";
 
-const DonHang = () => {
+const DonHang = ({ data_init, view }) => {
   // const [dataTable, setDataTable] = useState([]);
   const [dataTable, setDataTable] = useState(() => {
     return renderDataEmpty(INFO_COLS_DONHANG, 1);
   });
+
+  useEffect(() => {
+    if (view) {
+      //show information of DonHang without modify
+      // TODO: lấy thông tin chi tiết từ data để query chi tiết đơn hàng
+      // set thông tin cho form cũng như
+      // Show data sau khi query được ở table
+      fetch("http://localhost:8000/items_donhang")
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          info = [...info, ...renderDataEmpty(INFO_COLS_DONHANG, 1)];
+          setDataTable(info);
+          console.log(dataTable);
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+    }
+  }, [data_init]);
 
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
   // nên đành để thành thêm 1 dòng trống sau dataTable
@@ -26,7 +47,12 @@ const DonHang = () => {
     mau: false,
     dmGiaykh: false,
   });
-
+  const [formInfoDonHang, setFormInfoDonHang] = useState({});
+  const handleChangeForm = (e) => {
+    const data = { ...formInfoDonHang };
+    data[e.target.name] = e.target.value;
+    setFormInfoDonHang(data);
+  };
   const handleThemGiay = () => {
     setInfoFormWillShow({
       giay: true,
@@ -79,13 +105,6 @@ const DonHang = () => {
         key: INFO_COLS_DONHANG[obj]["key"].toLowerCase(),
       };
 
-      // if (key === "Mã giày") {
-      //   info["Cell"] = ({ cell }) => (
-      //     <button onClick={handleClickMaGiay}>{cell.getValue()}</button>
-      //     // <button onClick={handleClickMaGiay}></button>
-      //   );
-      // }
-      // thử thêm select box vô 1 cell
       if (key === "Màu đế") {
         info["editSelectOptions"] = [
           "Màu đế - 1",
@@ -107,21 +126,6 @@ const DonHang = () => {
     return infoColumnsInit;
   }, [dataTable]);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/items_donhang")
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((info) => {
-  //       info = [...info, ...renderDataEmpty(INFO_COLS_DONHANG, 1)];
-  //       setDataTable(info);
-  //       console.log(dataTable);
-  //     })
-  //     .catch((err) => {
-  //       console.log(":error: ", err);
-  //     });
-  // }, []);
-
   return (
     <>
       <div className={styles.form}>
@@ -129,20 +133,33 @@ const DonHang = () => {
           <div className={styles.item_column}>
             <div className={styles.pair}>
               <label>Số đơn hàng</label>
-              <input name="Số đơn hàng" />
+              <input
+                name="Số đơn hàng"
+                value={formInfoDonHang["Số đơn hàng"]}
+                onChange={(e) => setFormInfoDonHang(e)}
+                readOnly={view}
+              />
             </div>
           </div>
           <div className={styles.item_column}>
             <div className={styles.pair}>
               <label>Mã khách hàng</label>
-              <input name="Mã khách hàng" />
+              <input
+                name="Mã khách hàng"
+                value={formInfoDonHang["Mã khách hàng"]}
+                onChange={(e) => setFormInfoDonHang(e)}
+                readOnly={view}
+              />
               <span>Tên khách hàng</span>
             </div>
           </div>
           <input
             type="checkbox"
             name="Giá lẻ"
-            value="true"
+            // value="true"
+            value={formInfoDonHang["Giá lẻ"]}
+            onChange={(e) => setFormInfoDonHang(e)}
+            readOnly={view}
             className={styles.checkbox}
           />
           <span for="Giá lẻ" className={styles.span_for_checkbox}>
@@ -153,17 +170,33 @@ const DonHang = () => {
           <div className={styles.item_column}>
             <div className={styles.pair}>
               <label>Ngày đơn hàng</label>
-              <input type="date" name="Ngày đơn hàng" />
+              <input
+                type="date"
+                name="Ngày đơn hàng"
+                value={formInfoDonHang["Ngày đơn hàng"]}
+                onChange={(e) => setFormInfoDonHang(e)}
+                readOnly={view}
+              />
             </div>
             <div className={styles.pair}>
               <label>Ngày giao hàng</label>
-              <input type="date" name="Ngày giao hàng" />
+              <input
+                type="date"
+                name="Ngày giao hàng"
+                value={formInfoDonHang["Ngày giao hàng"]}
+                onChange={(e) => setFormInfoDonHang(e)}
+                readOnly={view}
+              />
             </div>
           </div>
           <div className={styles.item_column}>
             <div className={styles.pair}>
               <label className={styles.label_for_textatea}>Diễn dãi</label>
-              <textarea />
+              <textarea
+                value={formInfoDonHang["Diễn dãi"]}
+                onChange={(e) => setFormInfoDonHang(e)}
+                readOnly={view}
+              />
             </div>
           </div>
         </div>
@@ -174,6 +207,7 @@ const DonHang = () => {
           data={dataTable}
           setDataTable={setDataTable}
           handleAddGiay={handleClickMaGiay}
+          view={view}
         />
       }
       <div className={styles.form}>
@@ -181,8 +215,8 @@ const DonHang = () => {
         <div className={styles.group_button}>
           <button onClick={handleThemGiay}>Thêm giày</button>
           <button onClick={handleThemMau}>Thêm màu</button>
-          <button onClick={handleNhapTiep}>Nhập tiếp</button>
-          <button>Lưu</button>
+          {!view && <button onClick={handleNhapTiep}>Nhập tiếp</button>}
+          {!view && <button>Lưu</button>}
           <button>In</button>
           <button>Đóng</button>
         </div>

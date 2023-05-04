@@ -15,7 +15,12 @@ import {
   PhanCongForm,
   TableDonHang,
   TableChiTietPhanCong,
+  XemPhanCong,
 } from "./components";
+import DonHang from "../DonHang/";
+import { Modal } from "~common_tag";
+import { useTableContext, actions_table } from "~table_context";
+
 import styles from "./PhanCong.module.scss";
 
 const infoTableDonHang = processingInfoColumnTable(INFO_COLS_DONHANG);
@@ -26,17 +31,23 @@ const infoTableChiTietPhanCong = processingInfoColumnTable(
 const PhanCong = () => {
   // Phan Cong
   // TODO: delete button
-  // Add button: modify table Don Hang when a DonHang done delegated
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
 
-  console.log("PhanCong re-render");
-  console.log("dataDonHang: ", dataDonHang);
+  const [stateTable, dispatchTable] = useTableContext();
+  const [infoFormWillShow, setInfoFormWillShow] = useState({
+    chitiet_donhang: false,
+    xem_phancong: false,
+  });
+
   const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState([]);
   const [rowSelectionToPhanCong, setRowSelectionToPhanCong] = useState({});
   const [listGiayWillPhanCong, setListGiayWillPhanCong] = useState([]);
   const [formPhanCong, setFormPhanCong] = useState({});
+  const [listDonHangDonePhanCong, setListDonHangDonePhanCong] = useState([]);
+  const [rowSelectionChiTietPhanCong, setRowSelectionChiTietPhanCong] =
+    useState({});
 
   const resetForm = () => {
     let form_current = formPhanCong;
@@ -49,7 +60,6 @@ const PhanCong = () => {
   useEffect(() => {
     console.log("useEffect run again to get ds giay khach hang");
     if (dataDonHang.length > 0) {
-      // get key
       let index = 0;
       if (Object.keys(rowSelectionToPhanCong).length > 0) {
         let index = parseInt(Object.keys(rowSelectionToPhanCong)[0]);
@@ -115,7 +125,7 @@ const PhanCong = () => {
     // TODO: khi đoạn này có giá trị null
     let index = listGiayWillPhanCong.findIndex(
       (item) =>
-        item["Mã giày"] == formPhanCong["Mã giày"] &&
+        item["Mã giày"] === formPhanCong["Mã giày"] &&
         item["Màu quai"] === formPhanCong["Màu quai"] &&
         item["Màu sườn"] === formPhanCong["Màu sườn"] &&
         item["Màu cá"] === formPhanCong["Màu cá"]
@@ -148,6 +158,8 @@ const PhanCong = () => {
         // Khi phân công xong thì nhảy qua thằng tiếp theo
         // nhảy qua đơn hàng tiếp theo
         let index_del = parseInt(Object.keys(rowSelectionToPhanCong)[0]);
+        let id_donhang = dataDonHang[index_del]["Số đơn hàng"];
+        setListDonHangDonePhanCong([...listDonHangDonePhanCong, id_donhang]);
         dataDonHang.splice(index_del, 1);
         setDataDonHang([...dataDonHang]);
         // setDataDonHang(dataDonHang);
@@ -164,6 +176,42 @@ const PhanCong = () => {
   };
   const handleClickDelete = () => {};
   const handleClickEdit = () => {};
+  const handleClickSave = () => {
+    // update mode đã phân công cho các đơn hàng trong listDonHangDonePhanCong
+    // save thông tin chi tiết từng phân công ở dataChiTietPhanCong
+  };
+
+  const handleClickChiTietDonHang = () => {
+    if (
+      dataChiTietPhanCong.length == 0 ||
+      Object.keys(rowSelectionChiTietPhanCong).length == 0
+    ) {
+      return false;
+    }
+    // show page DonHang with mode view
+    setInfoFormWillShow({
+      chitiet_donhang: true,
+      xem_phancong: false,
+    });
+    dispatchTable(actions_table.setTitleModal("Đơn hàng - F0032"));
+    dispatchTable(actions_table.setModeShowModal(true));
+  };
+
+  const handleClickXemPhanCong = () => {
+    if (
+      dataChiTietPhanCong.length == 0 ||
+      Object.keys(rowSelectionChiTietPhanCong).length == 0
+    ) {
+      return false;
+    }
+    // show page DonHang with mode view
+    setInfoFormWillShow({
+      chitiet_donhang: false,
+      xem_phancong: true,
+    });
+    dispatchTable(actions_table.setTitleModal("Xem phân công - F0038"));
+    dispatchTable(actions_table.setModeShowModal(true));
+  };
 
   return (
     <div className={styles.container}>
@@ -193,7 +241,46 @@ const PhanCong = () => {
         columns={infoTableChiTietPhanCong}
         data={dataChiTietPhanCong}
         maxHeight={35}
+        rowSelection={rowSelectionChiTietPhanCong}
+        setRowSelection={setRowSelectionChiTietPhanCong}
       />
+
+      <div className={styles.button_group_end_page}>
+        <div className={styles.left}>
+          <button onClick={handleClickChiTietDonHang}>Chi tiết đơn hàng</button>
+          <button>In tổng hợp</button>
+        </div>
+
+        <div className={styles.right}>
+          <button>In</button>
+          <button onClick={handleClickXemPhanCong}>Xem phân công</button>
+          <button>Lưu</button>
+          {/* button Lưu để lưu thông tin đã phân công */}
+          {/* sau khi phân công xong sẽ lưu hết nguyên bảng chi tiết phân công lại */}
+        </div>
+      </div>
+
+      {infoFormWillShow["chitiet_donhang"] && (
+        <Modal>
+          <DonHang
+            data_init={
+              dataChiTietPhanCong[Object.keys(rowSelectionChiTietPhanCong)[0]]
+            }
+            view={true}
+          />
+        </Modal>
+      )}
+
+      {infoFormWillShow["xem_phancong"] && (
+        <Modal>
+          <XemPhanCong
+            data_init={
+              dataChiTietPhanCong[Object.keys(rowSelectionChiTietPhanCong)[0]]
+            }
+            view={true}
+          />
+        </Modal>
+      )}
     </div>
   );
 };
