@@ -19,6 +19,8 @@ module.exports = {
         "src/components/Content/DanhMuc/HangHoa"
       ),
 
+      "~nghiep_vu": path.resolve(__dirname, "src/components/Content/NghiepVu"),
+
       "~utils": path.resolve(__dirname, "src/utils/"),
       "~config": path.resolve(__dirname, "src/config/"),
     },
