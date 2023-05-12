@@ -1,5 +1,6 @@
 import { useTaskContext } from "~task";
 import { DonHang } from "./DonHang";
+import { PhanCong } from "./PhanCong";
 
 const TruyVan = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -8,8 +9,8 @@ const TruyVan = () => {
   switch (inforCurrentTask.infoDetail) {
     case "Đơn hàng":
       return <DonHang />;
-    // case "Phân công":
-    //   return <PhanCong />;
+    case "Phân công":
+      return <PhanCong />;
     // case "Chi tiền":
     //   return <ChiTien />;
     // case "Giao hàng":

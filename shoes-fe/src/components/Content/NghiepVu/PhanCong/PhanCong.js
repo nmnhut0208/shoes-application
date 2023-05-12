@@ -28,7 +28,7 @@ const infoTableChiTietPhanCong = processingInfoColumnTable(
   INFO_COLS_CHITIET_PHANCONG
 );
 
-const PhanCong = () => {
+const PhanCong = ({ view }) => {
   // Phan Cong
   // TODO: delete button
   const [dataDonHang, setDataDonHang] = useState(() =>
@@ -225,17 +225,21 @@ const PhanCong = () => {
         setRowSelection={setRowSelectionToPhanCong}
       />
 
-      <PhanCongForm
-        form={formPhanCong}
-        setChiTietPhanCong={setFormPhanCong}
-        listGiayWillPhanCong={listGiayWillPhanCong}
-      />
+      {!view && (
+        <PhanCongForm
+          form={formPhanCong}
+          setChiTietPhanCong={setFormPhanCong}
+          listGiayWillPhanCong={listGiayWillPhanCong}
+        />
+      )}
 
-      <div className={clsx(styles.button_group, styles.form)}>
-        <button onClick={handleClickAdd}>Thêm</button>
-        <button onClick={handleClickDelete}>Xóa</button>
-        <button onClick={handleClickEdit}>Sửa</button>
-      </div>
+      {!view && (
+        <div className={clsx(styles.button_group, styles.form)}>
+          <button onClick={handleClickAdd}>Thêm</button>
+          <button onClick={handleClickDelete}>Xóa</button>
+          <button onClick={handleClickEdit}>Sửa</button>
+        </div>
+      )}
 
       <TableChiTietPhanCong
         columns={infoTableChiTietPhanCong}
