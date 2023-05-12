@@ -9,15 +9,29 @@ const FormGiayBasic = ({ initForm, setDataForm }) => {
   }, [initForm]);
   console.log("record form FormGiayBasic: re-render");
 
-  var image_url =
-    "https://img.freepik.com/free-vector/cats-doodle-pattern-background_53876-100663.jpg?w=900&t=st=1680945739~exp=1680946339~hmac=0a6288d0cf4d9b1a566b96eeaad8db3beb69fa0729f4ffecfcc866bbfecaf4e2";
-  // var image_url = "https://images.unsplash.com/photo-1589816365021-a76a9422f6a3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+  const [image_base64, setImageBase64] = useState("");
+  const [image_url, setImageURL] = useState("");
 
   const handleChangeInformationForm = (e) => {
     const data = { ...form };
     data[e.target.name] = e.target.value;
     setForm(data);
     setDataForm(data);
+  };
+
+  const changeImage = (e) => {
+    if (e.target.value !== "") {
+      var reader = new FileReader();
+      reader.onload = function () {
+        let base64String = reader.result
+          .replace("data:", "")
+          .replace(/^.+,/, "");
+        setImageBase64("data:image/png;base64,".concat(base64String));
+        // TODO: update form to save image to database
+      };
+      reader.readAsDataURL(e.target.files[0]);
+      setImageURL("");
+    }
   };
 
   return (
@@ -101,8 +115,19 @@ const FormGiayBasic = ({ initForm, setDataForm }) => {
 
           <div className={styles.group_first__right}>
             <div className={styles.group_first__right_image}>
-              <button>Chọn hình ảnh</button>
-              <img src={image_url} />
+              <label className={styles.label_choose_image} for="img">
+                Chọn hình ảnh
+              </label>
+              <input
+                style={{ display: "none" }}
+                type="file"
+                id="img"
+                name="img"
+                accept="image/*"
+                value={image_url}
+                onChange={(e) => changeImage(e)}
+              />
+              <img src={image_base64} />
             </div>
           </div>
         </div>
