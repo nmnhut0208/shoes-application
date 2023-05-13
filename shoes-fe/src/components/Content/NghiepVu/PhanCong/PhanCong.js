@@ -16,6 +16,7 @@ import {
   TableDonHang,
   TableChiTietPhanCong,
   XemPhanCong,
+  InTongHop,
 } from "./components";
 import DonHang from "../DonHang/";
 import { Modal } from "~common_tag";
@@ -39,6 +40,7 @@ const PhanCong = ({ view }) => {
   const [infoFormWillShow, setInfoFormWillShow] = useState({
     chitiet_donhang: false,
     xem_phancong: false,
+    in_tonghop: false,
   });
 
   const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState([]);
@@ -192,6 +194,7 @@ const PhanCong = ({ view }) => {
     setInfoFormWillShow({
       chitiet_donhang: true,
       xem_phancong: false,
+      in_tonghop: false,
     });
     dispatchTable(actions_table.setTitleModal("Đơn hàng - F0032"));
     dispatchTable(actions_table.setModeShowModal(true));
@@ -208,8 +211,19 @@ const PhanCong = ({ view }) => {
     setInfoFormWillShow({
       chitiet_donhang: false,
       xem_phancong: true,
+      in_tonghop: false,
     });
     dispatchTable(actions_table.setTitleModal("Xem phân công - F0038"));
+    dispatchTable(actions_table.setModeShowModal(true));
+  };
+
+  const handle_in_tonghop = () => {
+    setInfoFormWillShow({
+      chitiet_donhang: false,
+      xem_phancong: false,
+      in_tonghop: true,
+    });
+    dispatchTable(actions_table.setTitleModal("In tổng hợp"));
     dispatchTable(actions_table.setModeShowModal(true));
   };
 
@@ -252,7 +266,7 @@ const PhanCong = ({ view }) => {
       <div className={styles.button_group_end_page}>
         <div className={styles.left}>
           <button onClick={handleClickChiTietDonHang}>Chi tiết đơn hàng</button>
-          <button>In tổng hợp</button>
+          <button onClick={handle_in_tonghop}>In tổng hợp</button>
         </div>
 
         <div className={styles.right}>
@@ -283,6 +297,12 @@ const PhanCong = ({ view }) => {
             }
             view={true}
           />
+        </Modal>
+      )}
+
+      {infoFormWillShow["in_tonghop"] && (
+        <Modal>
+          <InTongHop data={dataChiTietPhanCong} />
         </Modal>
       )}
     </div>
