@@ -5,10 +5,6 @@ import MaterialReactTable from "material-react-table";
 import styles from "./InTongHop.module.scss";
 import { INFO_COLS_THO, processingInfoColumnTable } from "./ConstantVariable";
 
-// Xài cái này có thể in hết các page mà ko mất
-// thông tin ko => do nó hay bị margin khi in
-//
-
 const Table = ({ columns, data }) => {
   return (
     <MaterialReactTable
@@ -20,7 +16,7 @@ const Table = ({ columns, data }) => {
       enableSorting={false}
       // enable phân trang
       enablePagination={false}
-      enableBottomToolbar={true}
+      enableBottomToolbar={false}
     />
   );
 };
@@ -34,10 +30,8 @@ const InTongHop = ({ data }) => {
   const handelPrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: "Thông tin phân công",
-    onAfterPrint: () => alert("In thành công"),
   });
   useEffect(() => {
-    console.log("pre-processing");
     let ma_giay_checked = [];
     let info_print = [];
     for (let i = 0; i < data.length; i++) {
@@ -46,13 +40,11 @@ const InTongHop = ({ data }) => {
         i++;
       } else {
         const info = { "Mã giày": ma_giay, "Tên giày": data[i]["Tên giày"] };
-        // let subdata = [...data]; //data.slice(i, data.length);
         info["Thợ"] = data.filter((_data) => _data["Mã giày"] === ma_giay);
         ma_giay_checked.push(ma_giay);
         info_print.push(info);
       }
     }
-    console.log("info_print: ", info_print);
     setDataPrint(info_print);
   }, []);
   useEffect(() => {
@@ -61,23 +53,31 @@ const InTongHop = ({ data }) => {
   return (
     <div
       ref={componentRef}
-      style={{ width: "100%", height: window.innerHeight }}
+      // style={{ width: "100%", height: window.innerHeight }}
+      className={styles.print_page}
     >
-      <header className={styles.print_header}>
-        Số phiếu: {data["Số phiếu"]}
-      </header>
+      <h1 className={styles.print_header}>Số phiếu: {data["Số phiếu"]}</h1>
       {dataPrint.length > 0 &&
         dataPrint.map((info, index) => (
           <div className={styles.print_object}>
             <div className={styles.info_giay}>
-              <span>{info["Tên giày"]}</span>
-              <span>{info["Mã giày"]}</span>
+              <table style={{ width: "100%" }}>
+                <tr className={styles.info_row_giay}>
+                  <th>{info["Tên giày"]}</th>
+                  <th>
+                    <img src="https://img.muji.net/img/item/4550344414620_1260.jpg" />
+                  </th>
+                  <th>{info["Mã giày"]}</th>
+                </tr>
+              </table>
+
+              {/* <span>{info["Tên giày"]}</span>
+              <img src="https://img.muji.net/img/item/4550344414620_1260.jpg" />
+              <span>{info["Mã giày"]}</span> */}
             </div>
             <Table data={info["Thợ"]} columns={columns} />
           </div>
         ))}
-
-      {/* <button onClick={handelPrint}>IN</button> */}
     </div>
   );
 };

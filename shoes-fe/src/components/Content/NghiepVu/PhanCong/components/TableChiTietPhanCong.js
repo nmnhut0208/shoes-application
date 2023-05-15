@@ -15,6 +15,7 @@ const TableChiTietPhanCong = ({
         enableBottomToolbar={false}
         columns={columns}
         data={data}
+        enableRowNumbers
         // components
         enableColumnActions={false}
         enableSorting={false}
