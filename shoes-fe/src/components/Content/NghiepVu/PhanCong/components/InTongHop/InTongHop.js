@@ -70,10 +70,6 @@ const InTongHop = ({ data }) => {
                   <th>{info["Mã giày"]}</th>
                 </tr>
               </table>
-
-              {/* <span>{info["Tên giày"]}</span>
-              <img src="https://img.muji.net/img/item/4550344414620_1260.jpg" />
-              <span>{info["Mã giày"]}</span> */}
             </div>
             <Table data={info["Thợ"]} columns={columns} />
           </div>

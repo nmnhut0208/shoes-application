@@ -26,6 +26,8 @@ const TableDonHang = ({ columns, data, setDataTable, handleAddGiay, view }) => {
         so_luong += row_current[list_size[i]];
       }
       row_current["Số lượng"] = so_luong;
+      row_current["Thành tiền"] =
+        row_current["Số lượng"] * row_current["Giá bán"];
       data[cell.row.index] = row_current;
     } else {
       data[cell.row.index][cell.column.id] = value;

@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from fastapi import Body, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import random 
 
 
 app = FastAPI()
@@ -292,6 +293,9 @@ def read_item():
             _data[key] = "kh-{} - {}".format(key, i+1)
             if key == "Mã giày":
                 _data[key] = "kh-{}-{}".format(key, i//5)
+            if key == "Giá bán":
+                _data[key] = random.randint(100, 200)
+                continue
         data.append(_data)
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
 
@@ -359,6 +363,7 @@ def read_item(donhang: InfoDonHang):
         {"key": "Size 0", "width": 8 * rem_to_px},
         {"key": "Số lượng", "width": 24 * rem_to_px},
         {"key": "Giá bán", "width": 24 * rem_to_px},
+        {"key": "Thành tiền"}
     ]
     list_key = [a["key"] for a in info_key]
 
@@ -388,8 +393,21 @@ def read_item(donhang: InfoDonHang):
                                                  key, random.randint(1, 3))
                 continue
             if key == "Số lượng":
-                _data[key] = nof_giay
+                _nums = 0
+                for _k in columns_have_sum_feature:
+                    _nums += _data[_k]
+                _data[key] = _nums
+                continue
+            if key == "Giá bán":
+                _data[key] = random.randint(100, 200)
+                continue
+            
+            if key == "Thành tiền":
+                _data[key] = _data["Số lượng"] * _data["Giá bán"]
+                continue
+
             _data[key] = "{} - {}".format(key, i+1)
+
 
             if key in ["Màu quai", "Màu giày", "Màu cá", "Màu đế"]:
                 _data[key] = "{}-{}".format(key, random.randint(1, 3))
@@ -408,4 +426,39 @@ def read_item(donhang: InfoDonHang):
             data.append(_data)
 
     data[-1]["Size 0"] = nof_giay - nof_da_dat
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)
+
+
+@app.get("/items_donhang_truy_van")
+def read_item():
+    data = []
+    rem_to_px = 1
+    info_key = [
+        {"key": "Số đơn hàng", "width": 21 * rem_to_px},
+        {"key": "Ngày đơn hàng", "width": 16 * rem_to_px},
+        {"key": "Ngày giao hàng", "width": 16 * rem_to_px},
+        {"key": "Mã khách hàng", "width": 16 * rem_to_px},
+        {"key": "Tên khách hàng", "width": 25 * rem_to_px},
+        {"key": "Diễn dãi", "width": 35 * rem_to_px},
+        {"key": "Số lượng", "width": 21 * rem_to_px},
+        {"key": "Giá lẻ"}
+    ]
+    list_key = [a["key"] for a in info_key]
+
+    columns_have_sum_feature = [
+    ]
+
+    for i in range(5):
+        _data = {}
+        for key in list_key:
+            if key == "Giá lẻ":
+                _data[key] = random.choice([True, False])
+                continue
+            if key == "STT":
+                _data[key] = i
+                continue
+            _data[key] = "{} - {}".format(key, i+1)
+            if key in columns_have_sum_feature:
+                _data[key] = i + columns_have_sum_feature.index(key)+20
+        data.append(_data)
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=data)

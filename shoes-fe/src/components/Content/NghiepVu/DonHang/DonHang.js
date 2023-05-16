@@ -11,24 +11,37 @@ import FormMau from "./FormMau";
 import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import styles from "./DonHang.module.scss";
 
-const DonHang = ({ data_init, view }) => {
-  // const [dataTable, setDataTable] = useState([]);
+const DonHang = ({ dataView, view }) => {
+  // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
+  // nên đành để thành thêm 1 dòng trống sau dataTable
   const [dataTable, setDataTable] = useState(() => {
     return renderDataEmpty(INFO_COLS_DONHANG, 1);
   });
 
+  // lúc đầu render form với ID Đơn hàng tự gen
+  // ngày tháng hiện tại
+
+  // TODO: còn thiếu 1 logic
+  // Khi user nhập số đơn hàng mà đủ format
+  // query thông tin => show => để user có thể chỉnh sửa khi lỡ nhập đơn hàng sai
+  // hay nên để chức năng sửa lúc truy vấn luôn ta @@
+  // thì khỏi làm thêm việc này
+
   useEffect(() => {
     if (view) {
-      //show information of DonHang without modify
-      // TODO: lấy thông tin chi tiết từ data để query chi tiết đơn hàng
-      // set thông tin cho form cũng như
-      // Show data sau khi query được ở table
-      fetch("http://localhost:8000/items_donhang")
+      setFormInfoDonHang(dataView);
+      fetch("http://localhost:8000/items_donhang_with_id", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: dataView["Số đơn hàng"], nof: 30 }),
+      })
         .then((response) => {
           return response.json();
         })
         .then((info) => {
-          info = [...info, ...renderDataEmpty(INFO_COLS_DONHANG, 1)];
           setDataTable(info);
           console.log(dataTable);
         })
@@ -36,10 +49,7 @@ const DonHang = ({ data_init, view }) => {
           console.log(":error: ", err);
         });
     }
-  }, [data_init]);
-
-  // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
-  // nên đành để thành thêm 1 dòng trống sau dataTable
+  }, [dataView]);
 
   const [stateTable, dispatchTable] = useTableContext();
   const [infoFormWillShow, setInfoFormWillShow] = useState({
