@@ -51,7 +51,6 @@ const Table = ({ columns, data }) => {
                 <Tooltip arrow title="View">
                   <IconButton
                     onClick={() => {
-                      console.log("row.original: ", row.original);
                       setRowInfo(row.original);
                       handleCheckDonHang();
                     }}

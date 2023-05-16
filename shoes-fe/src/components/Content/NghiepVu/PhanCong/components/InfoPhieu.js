@@ -2,9 +2,7 @@ import { useState, memo } from "react";
 import clsx from "clsx";
 import styles from "../PhanCong.module.scss";
 
-const InfoPhieu = () => {
-  const [infoPhieu, setInfoPhieu] = useState({});
-
+const InfoPhieu = ({ infoPhieu, setInfoPhieu }) => {
   const handleChangeInfoPhieu = (e) => {
     const data = { ...infoPhieu };
     data[e.target.name] = e.target.value;
@@ -47,8 +45,8 @@ const InfoPhieu = () => {
       <div className={styles.pair}>
         <label>Diễn dãi phiếu</label>
         <input
-          name="Diễn dãi phiếu"
-          value={infoPhieu["Diễn dãi phiếu"]}
+          name="Diễn dãi"
+          value={infoPhieu["Diễn dãi"]}
           onChange={(e) => handleChangeInfoPhieu(e)}
         />
       </div>

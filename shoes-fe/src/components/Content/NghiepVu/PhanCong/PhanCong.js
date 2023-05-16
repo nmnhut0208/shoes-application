@@ -29,12 +29,14 @@ const infoTableChiTietPhanCong = processingInfoColumnTable(
   INFO_COLS_CHITIET_PHANCONG
 );
 
-const PhanCong = ({ view }) => {
+const PhanCong = ({ dataView, view }) => {
   // Phan Cong
   // TODO: delete button
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
+  // lưu những đơn hàng đã phân công xong
+  // để sửa lý logic khi người dùng chỉnh sửa phân công
 
   const [stateTable, dispatchTable] = useTableContext();
   const [infoFormWillShow, setInfoFormWillShow] = useState({
@@ -43,11 +45,18 @@ const PhanCong = ({ view }) => {
     in_tonghop: false,
   });
 
+  const [infoPhieu, setInfoPhieu] = useState({});
   const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState([]);
-  const [rowSelectionToPhanCong, setRowSelectionToPhanCong] = useState({});
+  const [rowSelectionDonHangToPhanCong, setRowSelectionDonHangToPhanCong] =
+    useState({});
   const [listGiayWillPhanCong, setListGiayWillPhanCong] = useState([]);
   const [formPhanCong, setFormPhanCong] = useState({});
+
   const [listDonHangDonePhanCong, setListDonHangDonePhanCong] = useState([]);
+  const [dataDonHangDaPhanCong, setDataDonHangDaPhanCong] = useState([]);
+  console.log("listDonHangDonePhanCong: ", listDonHangDonePhanCong);
+  console.log("dataDonHangDaPhanCong: ", dataDonHangDaPhanCong);
+
   const [rowSelectionChiTietPhanCong, setRowSelectionChiTietPhanCong] =
     useState({});
 
@@ -63,8 +72,8 @@ const PhanCong = ({ view }) => {
     console.log("useEffect run again to get ds giay khach hang");
     if (dataDonHang.length > 0) {
       let index = 0;
-      if (Object.keys(rowSelectionToPhanCong).length > 0) {
-        let index = parseInt(Object.keys(rowSelectionToPhanCong)[0]);
+      if (Object.keys(rowSelectionDonHangToPhanCong).length > 0) {
+        let index = parseInt(Object.keys(rowSelectionDonHangToPhanCong)[0]);
         index = Math.min(index, dataDonHang.length - 1);
       }
 
@@ -88,9 +97,52 @@ const PhanCong = ({ view }) => {
             return response.json();
           })
           .then((info) => {
-            setListGiayWillPhanCong(info);
-            if (info.length > 0) {
-              setFormPhanCong(info[0]);
+            // TODO: lọc những mã giày đã phân công
+            // trừ số lượng nó đi
+            // làm API giả khéo léo xíu để dễ test nè
+            // Để khi user chỉnh sửa danh sách đã phân công thì
+            // dễ dàng show ra những đứa chưa phân công thôi
+            let list_index_done_phan_cong = [];
+            for (let index = 0; index < info.length; index++) {
+              // TODO: test khi có columns none khi so sánh
+              let col = dataChiTietPhanCong.findIndex(
+                (data) =>
+                  info[index]["Số đơn hàng"] === data["Số đơn hàng"] &&
+                  info[index]["Mã giày"] === data["Mã giày"] &&
+                  info[index]["Màu đế"] === data["Màu đế"] &&
+                  info[index]["Màu gót"] === data["Màu gót"] &&
+                  info[index]["Màu sườn"] === data["Màu sườn"] &&
+                  info[index]["Màu cá"] === data["Màu cá"] &&
+                  info[index]["Màu quai"] === data["Màu quai"]
+              );
+              if (col >= 0) {
+                // Cập nhật lại info
+                let nof_giay_se_phan_cong = 0;
+                for (let key in info[index]) {
+                  if (key.includes("Size")) {
+                    info[index][key] =
+                      info[index][key] - dataChiTietPhanCong[col][key];
+                    nof_giay_se_phan_cong += info[index][key];
+                  }
+                }
+                if (nof_giay_se_phan_cong == 0) {
+                  // delete row done PhanCong
+                  list_index_done_phan_cong.push(index);
+                }
+              }
+            }
+
+            // delete index in list_index_done_phan_cong
+            let list_data_will_phancong = [];
+            for (let index = 0; index < info.length; index++) {
+              if (!list_index_done_phan_cong.includes(index)) {
+                list_data_will_phancong.push(info[index]);
+              }
+            }
+
+            setListGiayWillPhanCong(list_data_will_phancong);
+            if (list_data_will_phancong.length > 0) {
+              setFormPhanCong(list_data_will_phancong[0]);
             } else {
               resetForm();
             }
@@ -100,23 +152,58 @@ const PhanCong = ({ view }) => {
           });
       }
     }
-  }, [rowSelectionToPhanCong, dataDonHang]);
+  }, [rowSelectionDonHangToPhanCong, dataDonHang]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/items_donhang_page_phan_cong")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        setDataDonHang(info);
-        if (info.length > 0)
-          setRowSelectionToPhanCong({
-            0: true,
-          });
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
+    // case 1: Nghiệp Vụ Phân Công
+    if (!view) {
+      fetch("http://localhost:8000/items_donhang_page_phan_cong")
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          setDataDonHang(info);
+          if (info.length > 0)
+            setRowSelectionDonHangToPhanCong({
+              0: true,
+            });
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+    }
+
+    // case 2: Truy Vấn Phân Công
+    if (view) {
+      // set Form Header
+      setInfoPhieu(dataView);
+      // query info to show for 2 table
+      // chỉnh lại API, query database để lấy những đơn hàng được
+      // phân công cho Số phiếu đang muốn xem
+
+      fetch("http://localhost:8000/items_donhang_page_phan_cong_by_so_phieu")
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          setDataDonHang(info);
+          if (info.length > 0)
+            setRowSelectionDonHangToPhanCong({
+              0: true,
+            });
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+
+      // query thông tin show bảng thứ 2
+    }
+
+    // case 3: người dùng query lại thông tin cũ
+    // giờ thì mình thấy cho edit từ truy vấn cũng tiện
+    // đỡ phải nhập mã phân công, rồi query
+    // => ko biết web hiện tại trường hợp này nó làm gì ta??
+    // khi ng dùng nhập mã phân công, mã đơn hàng á
   }, []);
 
   const handleClickAdd = () => {
@@ -125,6 +212,7 @@ const PhanCong = ({ view }) => {
     const record = { ...formPhanCong };
 
     // TODO: khi đoạn này có giá trị null
+    // luôn luôn tìm thấy nên ko check lại index
     let index = listGiayWillPhanCong.findIndex(
       (item) =>
         item["Mã giày"] === formPhanCong["Mã giày"] &&
@@ -159,17 +247,22 @@ const PhanCong = ({ view }) => {
       } else {
         // Khi phân công xong thì nhảy qua thằng tiếp theo
         // nhảy qua đơn hàng tiếp theo
-        let index_del = parseInt(Object.keys(rowSelectionToPhanCong)[0]);
+        let index_del = parseInt(Object.keys(rowSelectionDonHangToPhanCong)[0]);
         let id_donhang = dataDonHang[index_del]["Số đơn hàng"];
+        setDataDonHangDaPhanCong([
+          ...dataDonHangDaPhanCong,
+          dataDonHang[index_del],
+        ]);
+        // cái dưới chỉ lưu ID, sẽ mắc công lấy lại data
+        // => hơi cực nên mình lưu luôn nguyên record đã done phân công
         setListDonHangDonePhanCong([...listDonHangDonePhanCong, id_donhang]);
         dataDonHang.splice(index_del, 1);
         setDataDonHang([...dataDonHang]);
-        // setDataDonHang(dataDonHang);
         if (dataDonHang.length > 0 && index_del > 0) {
           index_del -= 1;
           const _row = {};
           _row[index_del] = true;
-          setRowSelectionToPhanCong(_row);
+          setRowSelectionDonHangToPhanCong(_row);
         }
         setListGiayWillPhanCong([]);
         resetForm();
@@ -230,13 +323,13 @@ const PhanCong = ({ view }) => {
   return (
     <div className={styles.container}>
       <h2>Phân công - F0037</h2>
-      <InfoPhieu />
+      <InfoPhieu infoPhieu={infoPhieu} setInfoPhieu={setInfoPhieu} />
       <TableDonHang
         columns={infoTableDonHang}
         data={dataDonHang}
         maxHeight={18}
-        rowSelection={rowSelectionToPhanCong}
-        setRowSelection={setRowSelectionToPhanCong}
+        rowSelection={rowSelectionDonHangToPhanCong}
+        setRowSelection={setRowSelectionDonHangToPhanCong}
       />
 
       {!view && (
