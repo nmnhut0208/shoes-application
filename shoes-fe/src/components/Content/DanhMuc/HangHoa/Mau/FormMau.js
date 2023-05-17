@@ -7,20 +7,14 @@ import { useTableContext, actions_table } from "~table_context";
 const FormMau = () => {
   // TODO: Sau này sửa STT thành tên duy nhất.
   const [stateTable, dispatchTable] = useTableContext();
-  const [dataForm, setDataForm] = useState(() => {
-    var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
-      return obj.STT === stateTable.inforShowTable.record.STT;
-    });
-    return infos[0];
-  });
-  console.log("record form: re-render");
+  const [dataForm, setDataForm] = useState(stateTable.inforShowTable.record);
 
   const handleSaveFrom = () => {
     // saveDataBase()
     dispatchTable(
       actions_table.setInforTable(
         stateTable.inforShowTable.infoTable.map((info) =>
-          info.STT === dataForm.STT ? dataForm : info
+          info.MAMAU === dataForm.MAMAU ? dataForm : info
         )
       )
     );

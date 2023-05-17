@@ -5,13 +5,7 @@ import { useTableContext, actions_table } from "~table_context";
 
 const FormQuai = () => {
   const [stateTable, dispatchTable] = useTableContext();
-  const [inputForm, setInputForm] = useState(() => {
-    var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
-      return obj.STT === stateTable.inforShowTable.record.STT;
-    });
-    return infos[0];
-  });
-  console.log("record form: re-render");
+  const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -24,7 +18,7 @@ const FormQuai = () => {
     dispatchTable(
       actions_table.setInforTable(
         stateTable.inforShowTable.infoTable.map((info) =>
-          info.STT === inputForm.STT ? inputForm : info
+          info.MAQUAI === inputForm.MAQUAI ? inputForm : info
         )
       )
     );
@@ -41,8 +35,8 @@ const FormQuai = () => {
           <div className={styles.item}>
             <label>Mã quai</label>
             <input
-              name="Mã quai"
-              value={inputForm["Mã quai"]}
+              name="MAQUAI"
+              value={inputForm["MAQUAI"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
           </div>
@@ -50,8 +44,8 @@ const FormQuai = () => {
           <div className={styles.item}>
             <label>Tên quai</label>
             <input
-              name="Tên quai"
-              value={inputForm["Tên quai"]}
+              name="TENQUAI"
+              value={inputForm["TENQUAI"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
           </div>
@@ -59,8 +53,8 @@ const FormQuai = () => {
           <div className={styles.item}>
             <label>Đơn giá quai</label>
             <input
-              name="Đơn giá lương"
-              value={inputForm["Đơn giá lương"]}
+              name="DONGIA"
+              value={inputForm["DONGIA"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
           </div>
@@ -68,8 +62,8 @@ const FormQuai = () => {
           <div className={styles.item}>
             <label>Ghi chú</label>
             <input
-              name="Ghi chú"
-              value={inputForm["Ghi chú"]}
+              name="GHICHU"
+              value={inputForm["GHICHU"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
           </div>

@@ -5,13 +5,7 @@ import { useTableContext, actions_table } from "~table_context";
 
 const FormSuon = () => {
   const [stateTable, dispatchTable] = useTableContext();
-  const [inputForm, setInputForm] = useState(() => {
-    var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
-      return obj.STT === stateTable.inforShowTable.record.STT;
-    });
-    return infos[0];
-  });
-  console.log("record form: re-render");
+  const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -24,7 +18,7 @@ const FormSuon = () => {
     dispatchTable(
       actions_table.setInforTable(
         stateTable.inforShowTable.infoTable.map((info) =>
-          info.STT === inputForm.STT ? inputForm : info
+          info.MASUON === inputForm.MASUON ? inputForm : info
         )
       )
     );
@@ -41,8 +35,8 @@ const FormSuon = () => {
           <div className={styles.item}>
             <label>Mã sườn</label>
             <input
-              name="Mã sườn"
-              value={inputForm["Mã sườn"]}
+              name="MASUON"
+              value={inputForm["MASUON"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
           </div>
@@ -50,8 +44,8 @@ const FormSuon = () => {
           <div className={styles.item}>
             <label>Tên sườn</label>
             <input
-              name="Tên sườn"
-              value={inputForm["Tên sườn"]}
+              name="TENSUON"
+              value={inputForm["TENSUON"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
           </div>
@@ -59,8 +53,8 @@ const FormSuon = () => {
           <div className={styles.item}>
             <label>Mã gót</label>
             <input
-              name="Mã gót"
-              value={inputForm["Mã gót"]}
+              name="MAGOT"
+              value={inputForm["MAGOT"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
             <span>Tên gót</span>
@@ -69,8 +63,8 @@ const FormSuon = () => {
           <div className={styles.item}>
             <label>Mã mũi</label>
             <input
-              name="Mã mũi"
-              value={inputForm["Mã mũi"]}
+              name="MAMUI"
+              value={inputForm["MAMUI"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
             <span>Tên mũi</span>
@@ -79,8 +73,8 @@ const FormSuon = () => {
           <div className={styles.item}>
             <label>Ghi chú</label>
             <input
-              name="Ghi chú"
-              value={inputForm["Ghi chú"]}
+              name="GHICHU"
+              value={inputForm["GHICHU"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
           </div>

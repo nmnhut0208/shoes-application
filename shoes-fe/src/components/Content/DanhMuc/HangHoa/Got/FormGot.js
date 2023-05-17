@@ -1,17 +1,11 @@
 import { useState } from "react";
-import clsx from "clsx";
 import styles from "./FormGot.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 
 const FormGot = () => {
   // TODO: Sau này sửa STT thành tên duy nhất.
   const [stateTable, dispatchTable] = useTableContext();
-  const [inputForm, setInputForm] = useState(() => {
-    var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
-      return obj.STT === stateTable.inforShowTable.record.STT;
-    });
-    return infos[0];
-  });
+  const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -24,7 +18,7 @@ const FormGot = () => {
     dispatchTable(
       actions_table.setInforTable(
         stateTable.inforShowTable.infoTable.map((info) =>
-          info.STT === inputForm.STT ? inputForm : info
+          info.MAGOT === inputForm.MAGOT ? inputForm : info
         )
       )
     );
@@ -41,8 +35,8 @@ const FormGot = () => {
           <div className={styles.item}>
             <label>Mã gót</label>
             <input
-              name="Mã gót"
-              value={inputForm["Mã gót"]}
+              name="MAGOT"
+              value={inputForm["MAGOT"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
           </div>
@@ -50,8 +44,8 @@ const FormGot = () => {
           <div className={styles.item}>
             <label>Tên gót</label>
             <input
-              name="Tên gót"
-              value={inputForm["Tên gót"]}
+              name="TENGOT"
+              value={inputForm["TENGOT"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
           </div>
@@ -59,8 +53,8 @@ const FormGot = () => {
           <div className={styles.item}>
             <label>Ghi chú</label>
             <input
-              name="Ghi chú"
-              value={inputForm["Ghi chú"]}
+              name="GHICHU"
+              value={inputForm["GHICHU"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
           </div>

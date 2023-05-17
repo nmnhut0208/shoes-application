@@ -1,4 +1,3 @@
-import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
 import FormGiay from "./FormGiay";
@@ -8,43 +7,27 @@ import {
   cleanupContextTable,
 } from "~table_context";
 
-// const list_key = [
-//   { key: "STT", width: "7rem" },
-//   { key: "Mã giày", width: "21rem" },
-//   { key: "Đơn giá", width: "10rem" },
-//   { key: "Tên giày", width: "40rem" },
-//   { key: "Mã đế", width: "10rem" },
-//   { key: "Tên đế", width: "20rem" },
-//   { key: "Mã sườn", width: "10rem" },
-//   { key: "Tên sườn", width: "20rem" },
-//   { key: "Mã cá", width: "10rem" },
-//   { key: "Tên cá", width: "20rem" },
-//   { key: "Mã quai", width: "10rem" },
-//   { key: "Tên quai", width: "20rem" },
-// ];
-
 const list_key = [
-  { key: "STT", width: 60 },
-  { key: "Mã giày", width: 90 },
-  { key: "Đơn giá", width: 70 },
-  { key: "Tên giày", width: 200 },
-  { key: "Mã đế", width: 80 },
-  { key: "Tên đế", width: 120 },
-  { key: "Mã sườn", width: 80 },
-  { key: "Tên sườn", width: 120 },
-  { key: "Mã cá", width: 80 },
-  { key: "Tên cá", width: 120 },
-  { key: "Mã quai", width: 80 },
-  { key: "Tên quai", width: 120 },
+  { header: "Mã giày", key: "MAGIAY", width: "21rem" },
+  { header: "Đơn giá", key: "DONGIA", width: "10rem" },
+  { header: "Tên giày", key: "TENGIAY", width: "40rem" },
+  { header: "Mã đế", key: "MADE", width: "10rem" },
+  { header: "Tên đế", key: "TENDE", width: "20rem" },
+  { header: "Mã sườn", key: "MASUON", width: "10rem" },
+  { header: "Tên sườn", key: "TENSUON", width: "20rem" },
+  { header: "Mã cá", key: "MACA", width: "10rem" },
+  { header: "Tên cá", key: "TENCA", width: "20rem" },
+  { header: "Mã quai", key: "MAQUAI", width: "10rem" },
+  { header: "Tên quai", key: "TENQUAI", width: "20rem" },
 ];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    header: list_key[obj]["key"],
+    header: list_key[obj]["header"],
     size: list_key[obj]["width"],
     accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"].toLowerCase(),
+    key: list_key[obj]["key"],
   };
   infoColumns.push(info);
 }
@@ -52,8 +35,6 @@ for (var obj in list_key) {
 const Giay = () => {
   const [renderUI, setRenderUI] = useState(false);
   const [stateTable, dispatchTable] = useTableContext();
-
-  console.log("Giay");
 
   useEffect(() => {
     dispatchTable(actions_table.setTitleModal("Giay - F0025"));

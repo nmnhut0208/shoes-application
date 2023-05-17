@@ -9,23 +9,22 @@ import {
 } from "~table_context";
 
 const list_key = [
-  { key: "STT", width: "7rem" },
-  { key: "Mã khách hàng", width: "15rem" },
-  { key: "Tên khách hàng", width: "20rem" },
-  { key: "Địa chỉ", width: "30rem" },
-  { key: "Điện thoại", width: "10rem" },
-  { key: "Fax", width: "10rem" },
-  { key: "Email", width: "10rem" },
-  { key: "Ghi chú", width: "16rem" },
+  { header: "Mã khách hàng", key: "MAKH", width: "15rem" },
+  { header: "Tên khách hàng", key: "TENKH", width: "20rem" },
+  { header: "Địa chỉ", key: "DIACHI", width: "30rem" },
+  { header: "Điện thoại", key: "TEL", width: "10rem" },
+  { header: "Fax", key: "FAX", width: "10rem" },
+  { header: "Email", key: "EMAIL", width: "10rem" },
+  { header: "Ghi chú", key: "GHICHU", width: "16rem" },
 ];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    header: list_key[obj]["key"],
+    header: list_key[obj]["header"],
     width: list_key[obj]["width"],
     accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"].toLowerCase(),
+    key: list_key[obj]["key"],
   };
   infoColumns.push(info);
 }
