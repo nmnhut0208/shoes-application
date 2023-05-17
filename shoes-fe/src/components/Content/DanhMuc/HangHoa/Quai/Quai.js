@@ -7,12 +7,13 @@ import {
   actions_table,
   cleanupContextTable,
 } from "~table_context";
+import { rem_to_px } from "~config/ui";
 
 const list_key = [
-  { header: "Mã quai", key: "MAQUAI", width: "21rem" },
-  { header: "Tên quai", key: "TENQUAI", width: "10rem" },
-  { header: "Đơn giá lương", key: "DONGIA", width: "40rem" },
-  { header: "Ghi chú", key: "GHICHU", width: "20rem" },
+  { header: "Mã quai", key: "MAQUAI", width: 21 * rem_to_px },
+  { header: "Tên quai", key: "TENQUAI", width: 10 * rem_to_px },
+  { header: "Đơn giá lương", key: "DONGIA", width: 40 * rem_to_px },
+  { header: "Ghi chú", key: "GHICHU", width: 20 * rem_to_px },
 ];
 
 const infoColumns = [];

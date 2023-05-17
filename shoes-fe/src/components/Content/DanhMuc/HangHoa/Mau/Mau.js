@@ -6,11 +6,12 @@ import {
   actions_table,
   cleanupContextTable,
 } from "~table_context";
+import { rem_to_px } from "~config/ui";
 
 const list_key = [
-  { header: "Mã màu", key: "MAMAU", width: "21rem" },
-  { header: "Tên màu", key: "TENMAU", width: "10rem" },
-  { header: "Ghi chú", key: "GHICHU", width: "40rem" },
+  { header: "Mã màu", key: "MAMAU", width: 21 * rem_to_px },
+  { header: "Tên màu", key: "TENMAU", width: 10 * rem_to_px },
+  { header: "Ghi chú", key: "GHICHU", width: 40 * rem_to_px },
 ];
 
 const infoColumns = [];

@@ -6,19 +6,20 @@ import {
   actions_table,
   cleanupContextTable,
 } from "~table_context";
+import { rem_to_px } from "~config/ui";
 
 const list_key = [
-  { header: "Mã giày", key: "MAGIAY", width: "21rem" },
-  { header: "Đơn giá", key: "DONGIA", width: "10rem" },
-  { header: "Tên giày", key: "TENGIAY", width: "40rem" },
-  { header: "Mã đế", key: "MADE", width: "10rem" },
-  { header: "Tên đế", key: "TENDE", width: "20rem" },
-  { header: "Mã sườn", key: "MASUON", width: "10rem" },
-  { header: "Tên sườn", key: "TENSUON", width: "20rem" },
-  { header: "Mã cá", key: "MACA", width: "10rem" },
-  { header: "Tên cá", key: "TENCA", width: "20rem" },
-  { header: "Mã quai", key: "MAQUAI", width: "10rem" },
-  { header: "Tên quai", key: "TENQUAI", width: "20rem" },
+  { header: "Mã giày", key: "MAGIAY", width: 21 * rem_to_px },
+  { header: "Đơn giá", key: "DONGIA", width: 10 * rem_to_px },
+  { header: "Tên giày", key: "TENGIAY", width: 40 * rem_to_px },
+  { header: "Mã đế", key: "MADE", width: 10 * rem_to_px },
+  { header: "Tên đế", key: "TENDE", width: 20 * rem_to_px },
+  { header: "Mã sườn", key: "MASUON", width: 10 * rem_to_px },
+  { header: "Tên sườn", key: "TENSUON", width: 20 * rem_to_px },
+  { header: "Mã cá", key: "MACA", width: 10 * rem_to_px },
+  { header: "Tên cá", key: "TENCA", width: 20 * rem_to_px },
+  { header: "Mã quai", key: "MAQUAI", width: 10 * rem_to_px },
+  { header: "Tên quai", key: "TENQUAI", width: 20 * rem_to_px },
 ];
 
 const infoColumns = [];
