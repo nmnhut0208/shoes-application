@@ -57,7 +57,7 @@ export const INFO_COLS_DONHANG = [
   },
   {
     header: "Thành tiền",
-    key: "",
+    key: "THANHTIEN",
     width: 24 * rem_to_px,
     enableEditing: false,
   },

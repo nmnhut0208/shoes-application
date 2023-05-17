@@ -29,6 +29,7 @@ const DonHang = ({ dataView, view }) => {
 
   useEffect(() => {
     if (view) {
+      console.log("dataView: ", dataView);
       setFormInfoDonHang(dataView);
       fetch("http://localhost:8000/items_donhang_with_id", {
         method: "POST",

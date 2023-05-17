@@ -373,7 +373,7 @@ def read_item(donhang: InfoDonHang):
                 _data[key] = id_donhang
                 continue
             if key == "MAGIAY":
-                _data[key] = "{}-{} - {}".format(id_donhang,
+                _data[key] = "{}-giay{} - {}".format(id_donhang,
                                                  key, random.randint(1, 3))
                 continue
             if key == "SOLUONG":

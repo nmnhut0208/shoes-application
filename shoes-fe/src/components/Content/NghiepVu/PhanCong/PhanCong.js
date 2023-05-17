@@ -56,6 +56,7 @@ const PhanCong = ({ dataView, view }) => {
   const [dataDonHangDaPhanCong, setDataDonHangDaPhanCong] = useState([]);
   console.log("listDonHangDonePhanCong: ", listDonHangDonePhanCong);
   console.log("dataDonHangDaPhanCong: ", dataDonHangDaPhanCong);
+  console.log("dataChiTietPhanCong:", dataChiTietPhanCong);
 
   const [rowSelectionChiTietPhanCong, setRowSelectionChiTietPhanCong] =
     useState({});
@@ -73,7 +74,7 @@ const PhanCong = ({ dataView, view }) => {
     if (dataDonHang.length > 0) {
       let index = 0;
       if (Object.keys(rowSelectionDonHangToPhanCong).length > 0) {
-        let index = parseInt(Object.keys(rowSelectionDonHangToPhanCong)[0]);
+        index = parseInt(Object.keys(rowSelectionDonHangToPhanCong)[0]);
         index = Math.min(index, dataDonHang.length - 1);
       }
 
@@ -374,8 +375,10 @@ const PhanCong = ({ dataView, view }) => {
       {infoFormWillShow["chitiet_donhang"] && (
         <Modal>
           <DonHang
-            data_init={
-              dataChiTietPhanCong[Object.keys(rowSelectionChiTietPhanCong)[0]]
+            dataView={
+              dataChiTietPhanCong[
+                parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])
+              ]
             }
             view={true}
           />
@@ -385,7 +388,7 @@ const PhanCong = ({ dataView, view }) => {
       {infoFormWillShow["xem_phancong"] && (
         <Modal>
           <XemPhanCong
-            data_init={
+            dataView={
               dataChiTietPhanCong[Object.keys(rowSelectionChiTietPhanCong)[0]]
             }
             view={true}
