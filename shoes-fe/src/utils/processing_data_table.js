@@ -2,10 +2,10 @@ export const processingInfoColumnTable = (list_key) => {
   const infoColumns = [];
   for (var obj in list_key) {
     const info = {
-      header: list_key[obj]["key"],
+      header: list_key[obj]["header"],
       size: list_key[obj]["width"],
       accessorKey: list_key[obj]["key"],
-      key: list_key[obj]["key"].toLowerCase(),
+      key: list_key[obj]["key"],
     };
     infoColumns.push(info);
   }

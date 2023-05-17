@@ -77,8 +77,8 @@ const PhanCong = ({ dataView, view }) => {
         index = Math.min(index, dataDonHang.length - 1);
       }
 
-      let idDonHang = dataDonHang[index]["Số đơn hàng"];
-      let soluong = dataDonHang[index]["Tổng số lượng đặt hàng"];
+      let idDonHang = dataDonHang[index]["SODH"];
+      let soluong = dataDonHang[index]["SOLUONG"];
       if (typeof idDonHang !== "undefined") {
         // call API voi idDonHang để lấy chi tiết đơn hàng
         // các mã giày và số lượng mà khách đã chọn
@@ -107,19 +107,19 @@ const PhanCong = ({ dataView, view }) => {
               // TODO: test khi có columns none khi so sánh
               let col = dataChiTietPhanCong.findIndex(
                 (data) =>
-                  info[index]["Số đơn hàng"] === data["Số đơn hàng"] &&
-                  info[index]["Mã giày"] === data["Mã giày"] &&
-                  info[index]["Màu đế"] === data["Màu đế"] &&
-                  info[index]["Màu gót"] === data["Màu gót"] &&
-                  info[index]["Màu sườn"] === data["Màu sườn"] &&
-                  info[index]["Màu cá"] === data["Màu cá"] &&
-                  info[index]["Màu quai"] === data["Màu quai"]
+                  info[index]["SODH"] === data["SODH"] &&
+                  info[index]["MAGIAY"] === data["MAGIAY"] &&
+                  info[index]["TENMAUDE"] === data["TENMAUDE"] &&
+                  info[index]["TENMAUGOT"] === data["TENMAUGOT"] &&
+                  info[index]["TENMAUSUON"] === data["TENMAUSUON"] &&
+                  info[index]["TENMAUCA"] === data["TENMAUCA"] &&
+                  info[index]["TENMAUQUAI"] === data["TENMAUQUAI"]
               );
               if (col >= 0) {
                 // Cập nhật lại info
                 let nof_giay_se_phan_cong = 0;
                 for (let key in info[index]) {
-                  if (key.includes("Size")) {
+                  if (key.includes("SIZE")) {
                     info[index][key] =
                       info[index][key] - dataChiTietPhanCong[col][key];
                     nof_giay_se_phan_cong += info[index][key];
@@ -207,7 +207,7 @@ const PhanCong = ({ dataView, view }) => {
   }, []);
 
   const handleClickAdd = () => {
-    if (formPhanCong["Mã giày"] === "") return;
+    if (formPhanCong["MAGIAY"] === "") return;
     let remain = { ...formPhanCong };
     const record = { ...formPhanCong };
 
@@ -215,16 +215,16 @@ const PhanCong = ({ dataView, view }) => {
     // luôn luôn tìm thấy nên ko check lại index
     let index = listGiayWillPhanCong.findIndex(
       (item) =>
-        item["Mã giày"] === formPhanCong["Mã giày"] &&
-        item["Màu quai"] === formPhanCong["Màu quai"] &&
-        item["Màu sườn"] === formPhanCong["Màu sườn"] &&
-        item["Màu cá"] === formPhanCong["Màu cá"]
+        item["MAGIAY"] === formPhanCong["MAGIAY"] &&
+        item["TENMAUQUAI"] === formPhanCong["TENMAUQUAI"] &&
+        item["TENMAUSUON"] === formPhanCong["TENMAUSUON"] &&
+        item["TENMAUCA"] === formPhanCong["TENMAUCA"]
     );
     let is_remain = false;
 
     let nof_giay_phan_cong = 0;
     for (let key in remain) {
-      if (key.includes("Size")) {
+      if (key.includes("SIZE")) {
         nof_giay_phan_cong += parseInt(formPhanCong[key]);
         remain[key] =
           listGiayWillPhanCong[index][key] - parseInt(formPhanCong[key]);
@@ -248,7 +248,7 @@ const PhanCong = ({ dataView, view }) => {
         // Khi phân công xong thì nhảy qua thằng tiếp theo
         // nhảy qua đơn hàng tiếp theo
         let index_del = parseInt(Object.keys(rowSelectionDonHangToPhanCong)[0]);
-        let id_donhang = dataDonHang[index_del]["Số đơn hàng"];
+        let id_donhang = dataDonHang[index_del]["SODH"];
         setDataDonHangDaPhanCong([
           ...dataDonHangDaPhanCong,
           dataDonHang[index_del],

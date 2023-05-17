@@ -36,7 +36,7 @@ const DonHang = ({ dataView, view }) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: dataView["Số đơn hàng"], nof: 30 }),
+        body: JSON.stringify({ id: dataView["SODH"], nof: 30 }),
       })
         .then((response) => {
           return response.json();
@@ -108,14 +108,14 @@ const DonHang = ({ dataView, view }) => {
     for (var obj in INFO_COLS_DONHANG) {
       let key = INFO_COLS_DONHANG[obj]["key"];
       var info = {
-        header: INFO_COLS_DONHANG[obj]["key"],
+        header: INFO_COLS_DONHANG[obj]["header"],
         size: INFO_COLS_DONHANG[obj]["width"],
         accessorKey: INFO_COLS_DONHANG[obj]["key"],
         enableEditing: INFO_COLS_DONHANG[obj]["enableEditing"],
         key: INFO_COLS_DONHANG[obj]["key"].toLowerCase(),
       };
 
-      if (key === "Màu đế") {
+      if (key === "TENMAUDE") {
         info["editSelectOptions"] = [
           "Màu đế - 1",
           "Màu đế - 2",
@@ -126,7 +126,7 @@ const DonHang = ({ dataView, view }) => {
         info["enableEditing"] = true;
       }
 
-      if (key === "Tên giày") info["Footer"] = () => <div>Tổng cộng</div>;
+      if (key === "TENGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
       if (COLS_HAVE_SUM_FOOTER.includes(key)) {
         let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
         info["Footer"] = () => <div>{sum_value}</div>;
@@ -144,8 +144,8 @@ const DonHang = ({ dataView, view }) => {
             <div className={styles.pair}>
               <label>Số đơn hàng</label>
               <input
-                name="Số đơn hàng"
-                value={formInfoDonHang["Số đơn hàng"]}
+                name="SODH"
+                value={formInfoDonHang["SODH"]}
                 onChange={(e) => setFormInfoDonHang(e)}
                 readOnly={view}
               />
@@ -155,8 +155,8 @@ const DonHang = ({ dataView, view }) => {
             <div className={styles.pair}>
               <label>Mã khách hàng</label>
               <input
-                name="Mã khách hàng"
-                value={formInfoDonHang["Mã khách hàng"]}
+                name="MAKH"
+                value={formInfoDonHang["MAKH"]}
                 onChange={(e) => setFormInfoDonHang(e)}
                 readOnly={view}
               />
@@ -182,8 +182,8 @@ const DonHang = ({ dataView, view }) => {
               <label>Ngày đơn hàng</label>
               <input
                 type="date"
-                name="Ngày đơn hàng"
-                value={formInfoDonHang["Ngày đơn hàng"]}
+                name="NGAYDH"
+                value={formInfoDonHang["NGAYDH"]}
                 onChange={(e) => setFormInfoDonHang(e)}
                 readOnly={view}
               />
@@ -192,8 +192,8 @@ const DonHang = ({ dataView, view }) => {
               <label>Ngày giao hàng</label>
               <input
                 type="date"
-                name="Ngày giao hàng"
-                value={formInfoDonHang["Ngày giao hàng"]}
+                name="NGAYGH"
+                value={formInfoDonHang["NGAYGH"]}
                 onChange={(e) => setFormInfoDonHang(e)}
                 readOnly={view}
               />
@@ -203,7 +203,7 @@ const DonHang = ({ dataView, view }) => {
             <div className={styles.pair}>
               <label className={styles.label_for_textatea}>Diễn dãi</label>
               <textarea
-                value={formInfoDonHang["Diễn dãi"]}
+                value={formInfoDonHang["DIENGIAIPHIEU"]}
                 onChange={(e) => setFormInfoDonHang(e)}
                 readOnly={view}
               />

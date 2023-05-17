@@ -6,18 +6,10 @@ import { Delete, Edit } from "@mui/icons-material";
 
 const TableDonHang = ({ columns, data, setDataTable, handleAddGiay, view }) => {
   const handleSaveCell = (cell, value) => {
-    console.log("cell, value: ", cell, value);
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
     var row_current = data[cell.row.index];
     // Tính lại số lượng
-    var list_size = [
-      "Size 5",
-      "Size 6",
-      "Size 7",
-      "Size 8",
-      "Size 9",
-      "Size 0",
-    ];
+    var list_size = ["SIZE5", "SIZE6", "SIZE7", "SIZE8", "SIZE9", "SIZE0"];
     if (list_size.includes(cell.column.id)) {
       row_current[cell.column.id] = parseInt(value);
 
@@ -25,9 +17,8 @@ const TableDonHang = ({ columns, data, setDataTable, handleAddGiay, view }) => {
       for (var i = 0; i < list_size.length; i++) {
         so_luong += row_current[list_size[i]];
       }
-      row_current["Số lượng"] = so_luong;
-      row_current["Thành tiền"] =
-        row_current["Số lượng"] * row_current["Giá bán"];
+      row_current["SOLUONG"] = so_luong;
+      row_current["THANHTIEN"] = row_current["SOLUONG"] * row_current["GIABAN"];
       data[cell.row.index] = row_current;
     } else {
       data[cell.row.index][cell.column.id] = value;
@@ -85,11 +76,10 @@ const TableDonHang = ({ columns, data, setDataTable, handleAddGiay, view }) => {
               // "flex-direction": "row",
             }}
           >
-            {row.original["Mã giày"] === "" && (
+            {row.original["MAGIAY"] === "" && (
               <Tooltip arrow title="Edit">
                 <IconButton
                   onClick={() => {
-                    console.log("row dang xem: ", row);
                     handleAddGiay();
                   }}
                 >
@@ -97,7 +87,7 @@ const TableDonHang = ({ columns, data, setDataTable, handleAddGiay, view }) => {
                 </IconButton>
               </Tooltip>
             )}
-            {row.original["Mã giày"] !== "" && (
+            {row.original["MAGIAY"] !== "" && (
               <Tooltip arrow title="Delete">
                 <IconButton color="error" onClick={() => handleDeleteRow(row)}>
                   <Delete />
