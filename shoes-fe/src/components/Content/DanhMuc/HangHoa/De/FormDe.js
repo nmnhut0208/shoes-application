@@ -5,12 +5,7 @@ import { useTableContext, actions_table } from "~table_context";
 
 const FormDe = () => {
   const [stateTable, dispatchTable] = useTableContext();
-  const [inputForm, setInputForm] = useState(() => {
-    var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
-      return obj.STT === stateTable.inforShowTable.record.STT;
-    });
-    return infos[0];
-  });
+  const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   console.log("record form: re-render");
 
   const handleChangeInformationForm = (e) => {
@@ -20,14 +15,44 @@ const FormDe = () => {
   };
 
   const handleSaveFrom = () => {
-    // saveDataBase()
-    dispatchTable(
-      actions_table.setInforTable(
-        stateTable.inforShowTable.infoTable.map((info) =>
-          info.STT === inputForm.STT ? inputForm : info
+    if (stateTable.inforShowTable.action_row === "edit") {
+      fetch("http://localhost:8000/de", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputForm),
+      })
+        .then((response) => {
+          console.log("response: ", response);
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+      dispatchTable(
+        actions_table.setInforTable(
+          stateTable.inforShowTable.infoTable.map((info) =>
+            info["MADE"] === inputForm["MADE"] ? inputForm : info
+          )
         )
-      )
-    );
+      );
+    } else if (stateTable.inforShowTable.action_row === "add") {
+      fetch("http://localhost:8000/de", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputForm),
+      })
+        .then((response) => {
+          console.log("response: ", response);
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+      dispatchTable(
+        actions_table.setInforTable([
+          ...stateTable.inforShowTable.infoTable,
+          inputForm,
+        ])
+      );
+    }
     dispatchTable(actions_table.setModeShowModal(false));
   };
 
@@ -38,36 +63,37 @@ const FormDe = () => {
           <div className={styles.group_first_row}>
             <label>Mã Đế</label>
             <input
-              value={inputForm["Mã Đế"]}
+              value={inputForm["MADE"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Mã Đế"
+              name="MADE"
               className={styles.item_size_middle}
             />
           </div>
           <div className={styles.group_first_row}>
             <label>Tên Đế</label>
             <input
-              value={inputForm["Tên Đế"]}
+              value={inputForm["TENDE"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Tên Đế"
+              name="TENDE"
               className={styles.item_size_big}
             />
           </div>
           <div className={styles.group_first_row}>
             <label>Đơn giá Đế</label>
             <input
-              value={inputForm["Đơn giá Đế"]}
+              value={inputForm["DONGIA"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Đơn giá Đế"
+              name="DONGIA"
+              type="number"
               className={styles.item_size_middle}
             />
           </div>
           <div className={styles.group_first_row}>
             <label>Ghi chú</label>
             <input
-              value={inputForm["Ghi chú"]}
+              value={inputForm["GHICHU"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Ghi chú"
+              name="GHICHU"
               className={styles.item_size_big}
             />
           </div>

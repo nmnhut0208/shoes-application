@@ -8,3 +8,4 @@ export const SET_MODE_SHOW_MODAL = "setModeShowModal";
 export const SET_TITLE_MODAL = "setTitleModal";
 
 export const SET_COMPONENT_FORM = "setComponentForm";
+export const SET_ACTION_FORM = "setActionForm";

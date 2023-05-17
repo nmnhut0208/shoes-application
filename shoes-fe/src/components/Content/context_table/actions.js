@@ -7,6 +7,7 @@ import {
   SET_MODE_SHOW_MODAL,
   SET_TITLE_MODAL,
   SET_COMPONENT_FORM,
+  SET_ACTION_FORM,
 } from "./constants";
 
 export const setInforColumnTable = (payload) => {
@@ -38,6 +39,7 @@ export const setModeShowTable = (payload) => {
 };
 
 export const setInforRecordTable = (payload) => {
+  console.log("payload: ", payload);
   return {
     type: SET_INFOR_RECORD_TABLE,
     payload,
@@ -65,3 +67,9 @@ export const setComponentForm = (payload) => {
   };
 };
 
+export const setActionForm = (payload) => {
+  return {
+    type: SET_ACTION_FORM,
+    payload,
+  };
+};

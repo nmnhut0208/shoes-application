@@ -9,20 +9,20 @@ import {
 } from "~table_context";
 
 const list_key = [
-  { key: "STT", width: "7rem" },
-  { key: "Mã kỳ", width: "21rem" },
-  { key: "Tên kỳ", width: "21rem" },
-  { key: "Từ ngày", width: "21rem" },
-  { key: "Đến ngày", width: "21rem" },
+  // { key: "STT", width: "7rem" },
+  { header: "Mã kỳ", key: "MAKY", width: "21rem" },
+  { header: "Tên kỳ", key: "TENKY", width: "21rem" },
+  { header: "Từ ngày", key: "TUNGAY", width: "21rem" },
+  { header: "Đến ngày", key: "DENNGAY", width: "21rem" },
 ];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    header: list_key[obj]["key"],
+    header: list_key[obj]["header"],
     width: list_key[obj]["width"],
     accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"].toLowerCase(),
+    key: list_key[obj]["key"],
   };
   infoColumns.push(info);
 }
@@ -48,7 +48,7 @@ const KyTinhLuong = () => {
     dispatchTable(actions_table.setTitleModal("Kỳ tính lương - F0021"));
     dispatchTable(actions_table.setTitleTable("Kỳ tính lương - F0020"));
     dispatchTable(actions_table.setComponentForm(FormKyTinhLuong));
-    fetch("http://localhost:8000/items_ky_tinh_luong")
+    fetch("http://localhost:8000/kytinhluong")
       .then((response) => {
         return response.json();
       })

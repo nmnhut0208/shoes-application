@@ -9,20 +9,20 @@ import {
 } from "~table_context";
 
 const list_key = [
-  { key: "STT", width: "7rem" },
-  { key: "Mã nhân viên", width: "21rem" },
-  { key: "Tên nhân viên", width: "21rem" },
-  { key: "Loại nhân viên", width: "21rem" },
-  { key: "Ghi chú", width: "21rem" },
+  // { key: "STT", width: "7rem" },
+  { header: "Mã nhân viên", key: "MANVIEN", width: "21rem" },
+  { header: "Tên nhân viên", key: "TENNVIEN", width: "21rem" },
+  { header: "Loại nhân viên", key: "LOAINVIEN", width: "21rem" },
+  { header: "Ghi chú", key: "GHICHU", width: "21rem" },
 ];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    header: list_key[obj]["key"],
+    header: list_key[obj]["header"],
     width: list_key[obj]["width"],
     accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"].toLowerCase(),
+    key: list_key[obj]["key"],
   };
   infoColumns.push(info);
 }
@@ -48,7 +48,7 @@ const NhanVien = () => {
     dispatchTable(actions_table.setTitleModal("Nhân viên - F0023"));
     dispatchTable(actions_table.setTitleTable("Nhân viên - F0022"));
     dispatchTable(actions_table.setComponentForm(FormNhanVien));
-    fetch("http://localhost:8000/items_nhan_vien")
+    fetch("http://localhost:8000/nhanvien")
       .then((response) => {
         return response.json();
       })

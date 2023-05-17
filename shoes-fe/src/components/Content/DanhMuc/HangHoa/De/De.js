@@ -9,20 +9,20 @@ import {
 } from "~table_context";
 
 const list_key = [
-  { key: "STT", width: "7rem" },
-  { key: "Mã Đế", width: "21rem" },
-  { key: "Tên Đế", width: "21rem" },
-  { key: "Đơn giá Đế", width: "21rem" },
-  { key: "Ghi chú", width: "21rem" },
+  // { key: "STT", width: "7rem" },
+  { header: "Mã Đế", key: "MADE", width: "21rem" },
+  { header: "Tên Đế", key: "TENDE", width: "21rem" },
+  { header: "Đơn giá Đế", key: "DONGIA", width: "21rem" },
+  { header: "Ghi chú", key: "GHICHU", width: "21rem" },
 ];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    header: list_key[obj]["key"],
+    header: list_key[obj]["header"],
     width: list_key[obj]["width"],
     accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"].toLowerCase(),
+    key: list_key[obj]["key"],
   };
   infoColumns.push(info);
 }
@@ -48,7 +48,7 @@ const De = () => {
     dispatchTable(actions_table.setTitleModal("Đế - F0025"));
     dispatchTable(actions_table.setTitleTable("Đế - F0024"));
     dispatchTable(actions_table.setComponentForm(FormDe));
-    fetch("http://localhost:8000/items_de")
+    fetch("http://localhost:8000/de")
       .then((response) => {
         return response.json();
       })

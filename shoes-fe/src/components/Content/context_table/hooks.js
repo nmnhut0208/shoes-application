@@ -14,4 +14,5 @@ export const cleanupContextTable = (dispatch) => {
   dispatch(actions_table.setModeShowTable(false));
   dispatch(actions_table.setTitleModal(""));
   dispatch(actions_table.setComponentForm(<></>));
+  dispatch(actions_table.setActionForm(""));
 };
