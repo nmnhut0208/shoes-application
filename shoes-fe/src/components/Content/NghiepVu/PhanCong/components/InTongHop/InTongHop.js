@@ -3,7 +3,8 @@ import { useReactToPrint } from "react-to-print";
 import MaterialReactTable from "material-react-table";
 
 import styles from "./InTongHop.module.scss";
-import { INFO_COLS_THO, processingInfoColumnTable } from "./ConstantVariable";
+import { INFO_COLS_THO } from "./ConstantVariable";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 
 const Table = ({ columns, data }) => {
   return (
@@ -35,12 +36,12 @@ const InTongHop = ({ data }) => {
     let ma_giay_checked = [];
     let info_print = [];
     for (let i = 0; i < data.length; i++) {
-      let ma_giay = data[i]["Mã giày"];
+      let ma_giay = data[i]["MAGIAY"];
       if (ma_giay_checked.includes(ma_giay)) {
         i++;
       } else {
-        const info = { "Mã giày": ma_giay, "Tên giày": data[i]["Tên giày"] };
-        info["Thợ"] = data.filter((_data) => _data["Mã giày"] === ma_giay);
+        const info = { MAGIAY: ma_giay, TENGIAY: data[i]["TENGIAY"] };
+        info["THO"] = data.filter((_data) => _data["MAGIAY"] === ma_giay);
         ma_giay_checked.push(ma_giay);
         info_print.push(info);
       }
@@ -56,22 +57,22 @@ const InTongHop = ({ data }) => {
       // style={{ width: "100%", height: window.innerHeight }}
       className={styles.print_page}
     >
-      <h1 className={styles.print_header}>Số phiếu: {data["Số phiếu"]}</h1>
+      <h1 className={styles.print_header}>Số phiếu: {data["SOPHIEU"]}</h1>
       {dataPrint.length > 0 &&
         dataPrint.map((info, index) => (
           <div className={styles.print_object}>
             <div className={styles.info_giay}>
               <table style={{ width: "100%" }}>
                 <tr className={styles.info_row_giay}>
-                  <th>{info["Tên giày"]}</th>
+                  <th>{info["TENGIAY"]}</th>
                   <th>
                     <img src="https://img.muji.net/img/item/4550344414620_1260.jpg" />
                   </th>
-                  <th>{info["Mã giày"]}</th>
+                  <th>{info["MAGIAY"]}</th>
                 </tr>
               </table>
             </div>
-            <Table data={info["Thợ"]} columns={columns} />
+            <Table data={info["THO"]} columns={columns} />
           </div>
         ))}
     </div>

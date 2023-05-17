@@ -1,27 +1,20 @@
 import { rem_to_px } from "~config/ui";
 
 export const INFO_COLS_THO = [
-  { key: "STT", width: 5 * rem_to_px },
-  { key: "Mã nhân viên", width: 10 * rem_to_px },
-  { key: "Tên nhân viên", width: 16 * rem_to_px },
-  { key: "Tổng số lượng", width: 15 * rem_to_px },
-  { key: "Thành tiền", width: 15 * rem_to_px },
+  { header: "Mã nhân viên", key: "MANVIEN", width: 10 * rem_to_px },
+  { header: "Tên nhân viên", key: "TENNVIEN", width: 16 * rem_to_px },
+  { header: "Tổng số lượng", key: "SOLUONG", width: 15 * rem_to_px },
+  { header: "Thành tiền", key: "THANHTIEN", width: 15 * rem_to_px },
 ];
 
 export const INFO_COLS_DONHANG = [
-  { key: "STT", width: 5 * rem_to_px },
-  { key: "Mã giày", width: 16 * rem_to_px },
-  { key: "Tên giày", width: 22 * rem_to_px },
-  { key: "Số đơn hàng", width: 15 * rem_to_px },
-  { key: "Size 5", width: 7 * rem_to_px },
-  { key: "Size 6", width: 7 * rem_to_px },
-  { key: "Size 7", width: 7 * rem_to_px },
-  { key: "Size 8", width: 7 * rem_to_px },
-  { key: "Size 9", width: 7 * rem_to_px },
-  { key: "Size 0", width: 7 * rem_to_px },
-  //   { key: "Màu đế", width: 10 * rem_to_px },
-  //   { key: "Màu gót", width: 10 * rem_to_px },
-  //   { key: "Màu sườn", width: 10 * rem_to_px },
-  //   { key: "Màu cá", width: 10 * rem_to_px },
-  //   { key: "Màu quai", width: 10 * rem_to_px },
+  { header: "Mã giày", key: "MAGIAY", width: 16 * rem_to_px },
+  { header: "Tên giày", key: "TENGIAY", width: 22 * rem_to_px },
+  { header: "Số đơn hàng", key: "SODH", width: 15 * rem_to_px },
+  { header: "Size 5", key: "SIZE5", width: 7 * rem_to_px },
+  { header: "Size 6", key: "SIZE6", width: 7 * rem_to_px },
+  { header: "Size 7", key: "SIZE7", width: 7 * rem_to_px },
+  { header: "Size 8", key: "SIZE8", width: 7 * rem_to_px },
+  { header: "Size 9", key: "SIZE9", width: 7 * rem_to_px },
+  { header: "Size 0", key: "SIZE0", width: 7 * rem_to_px },
 ];
