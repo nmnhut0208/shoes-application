@@ -7,6 +7,7 @@ import {
   SET_MODE_SHOW_MODAL,
   SET_TITLE_MODAL,
   SET_COMPONENT_FORM,
+  SET_ACTION_FORM,
 } from "./constants";
 
 const initState = {
@@ -16,6 +17,7 @@ const initState = {
     infoTable: [],
     showTable: false,
     record: {},
+    action_row: "",
   },
   infoShowModal: { visible: false, title: "" },
   infoShowForm: { component_form: null },
@@ -65,6 +67,12 @@ function reducer(state, action) {
       const info = state["infoShowForm"];
       info["component_form"] = action.payload;
       return { ...state, infoShowForm: info };
+    }
+
+    case SET_ACTION_FORM: {
+      const info = state["inforShowTable"];
+      info["action_row"] = action.payload;
+      return { ...state, inforShowTable: info };
     }
     default:
       // throw new Error("Action is not supported")

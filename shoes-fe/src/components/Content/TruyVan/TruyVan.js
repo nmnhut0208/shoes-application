@@ -1,6 +1,8 @@
 import { useTaskContext } from "~task";
 import { DonHang } from "./DonHang";
 import { PhanCong } from "./PhanCong";
+import GiaoHang from "./GiaoHang";
+import ThuChi from "./ThuChi";
 
 const TruyVan = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -11,12 +13,12 @@ const TruyVan = () => {
       return <DonHang />;
     case "Phân công":
       return <PhanCong />;
-    // case "Chi tiền":
-    //   return <ChiTien />;
-    // case "Giao hàng":
-    //   return <GiaoHang />;
+    case "Giao hàng":
+      return <GiaoHang />;
+    case "Thu chi":
+      return <ThuChi />;
     default:
-      alert("Chua xu ly ngoai DonHang");
+      alert("Chua xu ly ngoai TruyVan");
   }
 };
 

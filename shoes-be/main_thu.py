@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from fastapi import Body, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import random 
+import random
 
 
 app = FastAPI()
@@ -374,7 +374,7 @@ def read_item(donhang: InfoDonHang):
                 continue
             if key == "MAGIAY":
                 _data[key] = "{}-giay{} - {}".format(id_donhang,
-                                                 key, random.randint(1, 3))
+                                                     key, random.randint(1, 3))
                 continue
             if key == "SOLUONG":
                 _nums = 0
@@ -385,13 +385,12 @@ def read_item(donhang: InfoDonHang):
             if key == "GIABAN":
                 _data[key] = random.randint(100, 200)
                 continue
-            
+
             if key == "THANHTIEN":
                 _data[key] = _data["SOLUONG"] * _data["GIABAN"]
                 continue
 
             _data[key] = "{} - {}".format(key, i+1)
-
 
             if "MAU" in key:
                 _data[key] = "{}-{}".format(key, random.randint(1, 3))

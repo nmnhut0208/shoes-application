@@ -5,13 +5,9 @@ import { useTableContext, actions_table } from "~table_context";
 
 const FormKhoHang = () => {
   const [stateTable, dispatchTable] = useTableContext();
-  const [inputForm, setInputForm] = useState(() => {
-    var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
-      return obj.STT === stateTable.inforShowTable.record.STT;
-    });
-    return infos[0];
-  });
+  const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   console.log("record form: re-render");
+  // console.log("inputForm: ", inputForm);
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -21,13 +17,46 @@ const FormKhoHang = () => {
 
   const handleSaveFrom = () => {
     // saveDataBase()
-    dispatchTable(
-      actions_table.setInforTable(
-        stateTable.inforShowTable.infoTable.map((info) =>
-          info.STT === inputForm.STT ? inputForm : info
+    if (stateTable.inforShowTable.action_row === "edit") {
+      fetch("http://localhost:8000/khohang", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputForm),
+      })
+        .then((response) => {
+          console.log("response: ", response);
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+
+      dispatchTable(
+        actions_table.setInforTable(
+          stateTable.inforShowTable.infoTable.map((info) =>
+            info["MAKHO"] === inputForm["MAKHO"] ? inputForm : info
+          )
         )
-      )
-    );
+      );
+    } else if (stateTable.inforShowTable.action_row === "add") {
+      fetch("http://localhost:8000/khohang", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputForm),
+      })
+        .then((response) => {
+          console.log("response: ", response);
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+
+      dispatchTable(
+        actions_table.setInforTable([
+          ...stateTable.inforShowTable.infoTable,
+          inputForm,
+        ])
+      );
+    }
     dispatchTable(actions_table.setModeShowModal(false));
   };
 
@@ -38,27 +67,27 @@ const FormKhoHang = () => {
           <div className={styles.group_first_row}>
             <label>Mã kho hàng</label>
             <input
-              value={inputForm["Mã kho hàng"]}
+              value={inputForm["MAKHO"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Mã kho hàng"
+              name="MAKHO"
               className={styles.item_size_middle}
             />
           </div>
           <div className={styles.group_first_row}>
             <label>Tên kho hàng</label>
             <input
-              value={inputForm["Tên kho hàng"]}
+              value={inputForm["TENKHO"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Tên kho hàng"
+              name="TENKHO"
               className={styles.item_size_big}
             />
           </div>
           <div className={styles.group_first_row}>
             <label>Ghi chú</label>
             <input
-              value={inputForm["Ghi chú"]}
+              value={inputForm["GHICHU"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Ghi chú"
+              name="GHICHU"
               className={styles.item_size_big}
             />
           </div>

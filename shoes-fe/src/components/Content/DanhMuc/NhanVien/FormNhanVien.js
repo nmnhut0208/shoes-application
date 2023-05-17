@@ -5,12 +5,7 @@ import { useTableContext, actions_table } from "~table_context";
 
 const FormNhanVien = () => {
   const [stateTable, dispatchTable] = useTableContext();
-  const [inputForm, setInputForm] = useState(() => {
-    var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
-      return obj.STT === stateTable.inforShowTable.record.STT;
-    });
-    return infos[0];
-  });
+  const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   console.log("record form: re-render");
 
   const handleChangeInformationForm = (e) => {
@@ -20,14 +15,44 @@ const FormNhanVien = () => {
   };
 
   const handleSaveFrom = () => {
-    // saveDataBase()
-    dispatchTable(
-      actions_table.setInforTable(
-        stateTable.inforShowTable.infoTable.map((info) =>
-          info.STT === inputForm.STT ? inputForm : info
+    if (stateTable.inforShowTable.action_row === "edit") {
+      fetch("http://localhost:8000/nhanvien", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputForm),
+      })
+        .then((response) => {
+          console.log("response: ", response);
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+      dispatchTable(
+        actions_table.setInforTable(
+          stateTable.inforShowTable.infoTable.map((info) =>
+            info["MANVIEN"] === inputForm["MANVIEN"] ? inputForm : info
+          )
         )
-      )
-    );
+      );
+    } else if (stateTable.inforShowTable.action_row === "add") {
+      fetch("http://localhost:8000/nhanvien", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputForm),
+      })
+        .then((response) => {
+          console.log("response: ", response);
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+      dispatchTable(
+        actions_table.setInforTable([
+          ...stateTable.inforShowTable.infoTable,
+          inputForm,
+        ])
+      );
+    }
     dispatchTable(actions_table.setModeShowModal(false));
   };
 
@@ -38,27 +63,27 @@ const FormNhanVien = () => {
           <div className={styles.group_first_row}>
             <label>Mã nhân viên</label>
             <input
-              value={inputForm["Mã nhân viên"]}
+              value={inputForm["MANVIEN"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Mã nhân viên"
+              name="MANVIEN"
               className={styles.item_size_small}
             />
           </div>
           <div className={styles.group_first_row}>
             <label>Tên nhân viên</label>
             <input
-              value={inputForm["Tên nhân viên"]}
+              value={inputForm["TENNVIEN"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Tên nhân viên"
+              name="TENNVIEN"
               className={styles.item_size_big}
             />
           </div>
           <div className={styles.group_first_row}>
             <label>Loại nhân viên</label>
             <input
-              value={inputForm["Loại nhân viên"]}
+              value={inputForm["LOAINVIEN"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Loại nhân viên"
+              name="LOAINVIEN"
               className={styles.item_size_middle}
             />
           </div>
@@ -67,9 +92,9 @@ const FormNhanVien = () => {
           <div className={styles.group_second_row}>
             <label>Ghi chú</label>
             <textarea
-              value={inputForm["Ghi chú"]}
+              value={inputForm["GHICHU"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Ghi chú"
+              name="GHICHU"
               className={styles.item_size_big}
             />
           </div>

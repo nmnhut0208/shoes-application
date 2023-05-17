@@ -5,6 +5,8 @@ const Modal = ({ children }) => {
   const [stateTable, dispatchTable] = useTableContext();
   const infoShowModal = stateTable["infoShowModal"];
 
+  console.log("tvgiaohang: ");
+
   if (!infoShowModal.visible) {
     return null;
   }

@@ -9,19 +9,21 @@ import {
 } from "~table_context";
 
 const list_key = [
-  { key: "STT", width: "7rem" },
-  { key: "Mã Cá", width: "21rem" },
-  { key: "Tên Cá", width: "21rem" },
-  { key: "Ghi chú", width: "21rem" },
+  // { key: "STT", width: "7rem" },
+  { header: "Mã Cá", key: "MACA", width: "21rem" },
+  { header: "Tên Cá", key: "TENCA", width: "21rem" },
+  { header: "Mã Mũi", key: "MAMUI", width: "21rem" },
+  { header: "Tên Mũi", key: "TENMUI", width: "21rem" },
+  { header: "Ghi chú", key: "GHICHU", width: "21rem" },
 ];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    header: list_key[obj]["key"],
+    header: list_key[obj]["header"],
     width: list_key[obj]["width"],
     accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"].toLowerCase(),
+    key: list_key[obj]["key"],
   };
   infoColumns.push(info);
 }
@@ -47,7 +49,7 @@ const Ca = () => {
     dispatchTable(actions_table.setTitleModal("Cá - F0023"));
     dispatchTable(actions_table.setTitleTable("Cá - F0022"));
     dispatchTable(actions_table.setComponentForm(FormCa));
-    fetch("http://localhost:8000/items_ca")
+    fetch("http://localhost:8000/ca")
       .then((response) => {
         return response.json();
       })

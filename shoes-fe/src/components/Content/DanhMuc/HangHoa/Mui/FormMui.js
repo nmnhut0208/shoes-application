@@ -5,12 +5,7 @@ import { useTableContext, actions_table } from "~table_context";
 
 const FormMui = () => {
   const [stateTable, dispatchTable] = useTableContext();
-  const [inputForm, setInputForm] = useState(() => {
-    var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
-      return obj.STT === stateTable.inforShowTable.record.STT;
-    });
-    return infos[0];
-  });
+  const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   console.log("record form: re-render");
 
   const handleChangeInformationForm = (e) => {
@@ -20,14 +15,45 @@ const FormMui = () => {
   };
 
   const handleSaveFrom = () => {
-    // saveDataBase()
-    dispatchTable(
-      actions_table.setInforTable(
-        stateTable.inforShowTable.infoTable.map((info) =>
-          info.STT === inputForm.STT ? inputForm : info
+    if (stateTable.inforShowTable.action_row === "edit") {
+      fetch("http://localhost:8000/mui", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputForm),
+      })
+        .then((response) => {
+          console.log("response: ", response);
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+      dispatchTable(
+        actions_table.setInforTable(
+          stateTable.inforShowTable.infoTable.map((info) =>
+            info["MAMUI"] === inputForm["MAMUI"] ? inputForm : info
+          )
         )
-      )
-    );
+      );
+    } else if (stateTable.inforShowTable.action_row === "add") {
+      fetch("http://localhost:8000/mui", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputForm),
+      })
+        .then((response) => {
+          console.log("response: ", response);
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+      dispatchTable(
+        actions_table.setInforTable([
+          ...stateTable.inforShowTable.infoTable,
+          inputForm,
+        ])
+      );
+    }
+    // saveDataBase()
     dispatchTable(actions_table.setModeShowModal(false));
   };
 
@@ -38,27 +64,27 @@ const FormMui = () => {
           <div className={styles.group_first_row}>
             <label>Mã Mũi</label>
             <input
-              value={inputForm["Mã Mũi"]}
+              value={inputForm["MAMUI"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Mã Mũi"
+              name="MAMUI"
               className={styles.item_size_middle}
             />
           </div>
           <div className={styles.group_first_row}>
             <label>Tên Mũi</label>
             <input
-              value={inputForm["Tên Mũi"]}
+              value={inputForm["TENMUI"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Tên Mũi"
+              name="TENMUI"
               className={styles.item_size_big}
             />
           </div>
           <div className={styles.group_first_row}>
             <label>Ghi chú</label>
             <input
-              value={inputForm["Ghi chú"]}
+              value={inputForm["GHICHU"]}
               onChange={(e) => handleChangeInformationForm(e)}
-              name="Ghi chú"
+              name="GHICHU"
               className={styles.item_size_big}
             />
           </div>
