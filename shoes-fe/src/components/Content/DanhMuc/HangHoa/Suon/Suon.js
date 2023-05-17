@@ -1,4 +1,3 @@
-import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
 import FormSuon from "./FormSuon";
@@ -7,25 +6,25 @@ import {
   actions_table,
   cleanupContextTable,
 } from "~table_context";
+import { rem_to_px } from "~config/ui";
 
 const list_key = [
-  "STT",
-  "Mã sườn",
-  "Tên sườn",
-  "Mã gót",
-  "Tên gót",
-  "Mã mũi",
-  "Tên mũi",
-  "Ghi chú",
+  { header: "Mã sườn", key: "MASUON", width: 21 * rem_to_px },
+  { header: "Tên sườn", key: "TENSUON", width: 10 * rem_to_px },
+  { header: "Mã gót", key: "MAGOT", width: 40 * rem_to_px },
+  { header: "Tên gót", key: "TENGOT", width: 10 * rem_to_px },
+  { header: "Mã mũi", key: "MAMUI", width: 20 * rem_to_px },
+  { header: "Tên mũi", key: "TENMUI", width: 10 * rem_to_px },
+  { header: "Ghi chú", key: "GHICHU", width: 20 * rem_to_px },
 ];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    header: list_key[obj],
-    width: 100,
-    accessorKey: list_key[obj],
-    key: list_key[obj].toLowerCase(),
+    header: list_key[obj]["header"],
+    size: list_key[obj]["width"],
+    accessorKey: list_key[obj]["key"],
+    key: list_key[obj]["key"],
   };
   infoColumns.push(info);
 }

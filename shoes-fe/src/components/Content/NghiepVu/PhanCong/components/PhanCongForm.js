@@ -13,11 +13,36 @@ import {
 import styles from "../PhanCong.module.scss";
 
 const listSubInforGiay = [
-  { key: "Mã giày", width: 15 * rem_to_px, enableEditing: false },
-  { key: "Tên giày", width: 30 * rem_to_px, enableEditing: false },
-  { key: "Màu sườn", width: 12 * rem_to_px, enableEditing: false },
-  { key: "Màu cá", width: 12 * rem_to_px, enableEditing: false },
-  { key: "Màu quai", width: 12 * rem_to_px, enableEditing: true },
+  {
+    header: "Mã giày",
+    key: "MAGIAY",
+    width: 15 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Tên giày",
+    key: "TENGIAY",
+    width: 30 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu sườn",
+    key: "TENMAUSUON",
+    width: 12 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu cá",
+    key: "TENMAUCA",
+    width: 12 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu quai",
+    key: "TENMAUQUAI",
+    width: 12 * rem_to_px,
+    enableEditing: true,
+  },
 ];
 
 const columnsSubInfoGiay = processingInfoColumnTable(listSubInforGiay);
@@ -78,8 +103,8 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
       <label>Mã giày</label>
       <div>
         <input
-          name="Mã giày"
-          value={form["Mã giày"]}
+          name="MAGIAY"
+          value={form["MAGIAY"]}
           onChange={(e) => handleChangeForm(e)}
           onClick={handlePopoverClick}
         />
@@ -104,27 +129,27 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
         </Popover>
       </div>
 
-      <span>{form["Tên giày"]}</span>
+      <span>{form["TENGIAY"]}</span>
       <div className={styles.phancong_remain}>
         <div className={styles.pair}>
           <label>Màu sườn</label>
-          <input name="Màu sườn" value={form["Màu sườn"]} />
+          <input name="TENMAUSUON" value={form["TENMAUSUON"]} />
         </div>
         <div className={styles.group_input_row}>
           <div className={styles.pair}>
             <label>Màu cá</label>
-            <input name="Màu cá" value={form["Màu cá"]} />
+            <input name="TENMAUCA" value={form["TENMAUCA"]} />
           </div>
           <div className={styles.pair}>
             <label>Màu quai</label>
-            <input name="Màu quai" value={form["Màu quai"]} />
+            <input name="TENMAUQUAI" value={form["TENMAUQUAI"]} />
           </div>
         </div>
       </div>
       <label>Thợ đế</label>
       <select
-        name="Thợ đế"
-        value={form["Thợ đế"]}
+        name="THODE"
+        value={form["THODE"]}
         onChange={(e) => handleChangeForm(e)}
       >
         <option value="thu">De Thu</option>
@@ -133,13 +158,13 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
         <option value="nhien">De Nhien</option>
       </select>
 
-      <span>{form["Thợ đế"]}</span>
+      <span>{form["THODE"]}</span>
       <div className={styles.phancong_remain}>
         <div className={styles.pair_tho_quai}>
           <label>Thợ quai</label>
           <select
-            name="Thợ quai"
-            value={form["Thợ quai"]}
+            name="THOQUAI"
+            value={form["THOQUAI"]}
             onChange={(e) => handleChangeForm(e)}
           >
             <option value="Cong">Quai Cong</option>
@@ -147,79 +172,73 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             <option value="Hoang">Quai Hoang</option>
             <option value="Ly">Quang Ly</option>
           </select>
-          {/* <input
-            name="Thợ quai"
-            value={form["Thợ quai"]}
-            onChange={(e) => handleChangeForm(e)}
-          /> */}
-          {/* select box */}
         </div>
-        <span className={styles.span_thoquai}>{form["Thợ quai"]}</span>
+        <span className={styles.span_thoquai}>{form["THOQUAI"]}</span>
       </div>
       <div className={styles.content_size}>
         <div className={styles.pair_info}>
           <label>Size 0</label>
           <input
-            name="Size 0"
+            name="SIZE0"
             type="number"
             min="0"
-            readOnly={form["Size 0"] !== "" && parseInt(form["Size 0"]) == 0}
-            value={form["Size 0"]}
+            readOnly={form["SIZE0"] !== "" && parseInt(form["SIZE0"]) == 0}
+            value={form["SIZE0"]}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
         <div className={styles.pair_info}>
           <label>Size 5</label>
           <input
-            name="Size 5"
-            value={form["Size 5"]}
+            name="SIZE5"
+            value={form["SIZE5"]}
             type="number"
             min="0"
-            readOnly={form["Size 5"] !== "" && parseInt(form["Size 5"]) == 0}
+            readOnly={form["SIZE5"] !== "" && parseInt(form["SIZE5"]) == 0}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
         <div className={styles.pair_info}>
           <label>Size 6</label>
           <input
-            name="Size 6"
-            value={form["Size 6"]}
+            name="SIZE6"
+            value={form["SIZE6"]}
             type="number"
             min="0"
-            readOnly={form["Size 6"] !== "" && parseInt(form["Size 6"]) == 0}
+            readOnly={form["SIZE6"] !== "" && parseInt(form["SIZE6"]) == 0}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
         <div className={styles.pair_info}>
           <label>Size 7</label>
           <input
-            name="Size 7"
-            value={form["Size 7"]}
+            name="SIZE7"
+            value={form["SIZE7"]}
             type="number"
             min="0"
-            readOnly={form["Size 7"] !== "" && parseInt(form["Size 7"]) == 0}
+            readOnly={form["SIZE7"] !== "" && parseInt(form["SIZE7"]) == 0}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
         <div className={styles.pair_info}>
           <label>Size 8</label>
           <input
-            name="Size 8"
-            value={form["Size 8"]}
+            name="SIZE8"
+            value={form["SIZE8"]}
             type="number"
             min="0"
-            readOnly={form["Size 8"] !== "" && parseInt(form["Size 8"]) == 0}
+            readOnly={form["SIZE8"] !== "" && parseInt(form["SIZE8"]) == 0}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
         <div className={styles.pair_info}>
           <label>Size 9</label>
           <input
-            name="Size 9"
-            value={form["Size 9"]}
+            name="SIZE9"
+            value={form["SIZE9"]}
             type="number"
             min="0"
-            readOnly={form["Size 9"] !== "" && parseInt(form["Size 9"]) == 0}
+            readOnly={form["SIZE9"] !== "" && parseInt(form["SIZE9"]) == 0}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
@@ -227,8 +246,8 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
       <label>Diễn giải</label>
       <input
         className={styles.input_diengiai}
-        name="Diễn giải"
-        value={form["Diễn giải"]}
+        name="DIENGIAIDONG"
+        value={form["DIENGIAIDONG"]}
         onChange={(e) => handleChangeForm(e)}
       />
     </div>

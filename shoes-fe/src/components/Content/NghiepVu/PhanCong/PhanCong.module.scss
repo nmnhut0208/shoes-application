@@ -92,4 +92,15 @@
       font-size: 1.7rem;
     }
   }
+
+  .button_group_end_page {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    button {
+      margin-right: 1rem;
+      font-size: 1.7rem;
+      min-width: 5rem;
+    }
+  }
 }

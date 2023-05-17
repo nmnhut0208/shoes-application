@@ -1,22 +1,11 @@
 import { useState } from "react";
-import clsx from "clsx";
 import styles from "./FormKhachHang.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 
 const FormKhachHang = () => {
   // TODO: Sau này sửa STT thành tên duy nhất.
   const [stateTable, dispatchTable] = useTableContext();
-  console.log(
-    "stateTable.inforShowTable.record:, ",
-    stateTable.inforShowTable.record
-  );
-  const [inputForm, setInputForm] = useState(() => {
-    var infos = stateTable.inforShowTable.infoTable.filter((obj) => {
-      return obj.STT === stateTable.inforShowTable.record.STT;
-    });
-    return infos[0];
-  });
-  console.log("record form: re-render");
+  const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -29,7 +18,7 @@ const FormKhachHang = () => {
     dispatchTable(
       actions_table.setInforTable(
         stateTable.inforShowTable.infoTable.map((info) =>
-          info.STT === inputForm.STT ? inputForm : info
+          info.MAKH === inputForm.MAKH ? inputForm : info
         )
       )
     );
@@ -41,8 +30,8 @@ const FormKhachHang = () => {
       <div className={styles.item}>
         <label>Mã khách hàng</label>
         <input
-          name="Mã khách hàng"
-          value={inputForm["Mã khách hàng"]}
+          name="MAKH"
+          value={inputForm["MAKH"]}
           onChange={(e) => handleChangeInformationForm(e)}
         />
       </div>
@@ -50,8 +39,8 @@ const FormKhachHang = () => {
       <div className={styles.item}>
         <label>Tên khách hàng</label>
         <input
-          name="Tên khách hàng"
-          value={inputForm["Tên khách hàng"]}
+          name="TENKH"
+          value={inputForm["TENKH"]}
           onChange={(e) => handleChangeInformationForm(e)}
         />
       </div>
@@ -59,8 +48,8 @@ const FormKhachHang = () => {
       <div className={styles.item}>
         <label>Địa chỉ</label>
         <input
-          name="Địa chỉ"
-          value={inputForm["Địa chỉ"]}
+          name="DIACHI"
+          value={inputForm["DIACHI"]}
           onChange={(e) => handleChangeInformationForm(e)}
         />
       </div>
@@ -68,8 +57,8 @@ const FormKhachHang = () => {
       <div className={styles.item}>
         <label>Điện thoại</label>
         <input
-          name="Điện thoại"
-          value={inputForm["Điện thoại"]}
+          name="TEL"
+          value={inputForm["TEL"]}
           onChange={(e) => handleChangeInformationForm(e)}
         />
       </div>
@@ -77,8 +66,8 @@ const FormKhachHang = () => {
       <div className={styles.item}>
         <label>Fax</label>
         <input
-          name="Fax"
-          value={inputForm["Fax"]}
+          name="FAX"
+          value={inputForm["FAX"]}
           onChange={(e) => handleChangeInformationForm(e)}
         />
       </div>
@@ -86,8 +75,8 @@ const FormKhachHang = () => {
       <div className={styles.item}>
         <label>Email</label>
         <input
-          name="Email"
-          value={inputForm["Email"]}
+          name="EMAIL"
+          value={inputForm["EMAIL"]}
           onChange={(e) => handleChangeInformationForm(e)}
         />
       </div>
@@ -95,8 +84,8 @@ const FormKhachHang = () => {
       <div className={styles.item}>
         <label>Giá ưu tiên</label>
         <input
-          name="Giá ưu tiên"
-          value={inputForm["Giá ưu tiên"]}
+          name="DONGIA"
+          value={inputForm["DONGIA"]}
           onChange={(e) => handleChangeInformationForm(e)}
         />
       </div>
@@ -104,8 +93,8 @@ const FormKhachHang = () => {
       <div className={styles.item}>
         <label>Ghi chú</label>
         <input
-          name="Ghi chú"
-          value={inputForm["Ghi chú"]}
+          name="GHICHU"
+          value={inputForm["GHICHU"]}
           onChange={(e) => handleChangeInformationForm(e)}
         />
       </div>

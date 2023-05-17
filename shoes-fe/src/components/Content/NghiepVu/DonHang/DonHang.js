@@ -11,14 +11,46 @@ import FormMau from "./FormMau";
 import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import styles from "./DonHang.module.scss";
 
-const DonHang = () => {
-  // const [dataTable, setDataTable] = useState([]);
+const DonHang = ({ dataView, view }) => {
+  // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
+  // nên đành để thành thêm 1 dòng trống sau dataTable
   const [dataTable, setDataTable] = useState(() => {
     return renderDataEmpty(INFO_COLS_DONHANG, 1);
   });
 
-  // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
-  // nên đành để thành thêm 1 dòng trống sau dataTable
+  // lúc đầu render form với ID Đơn hàng tự gen
+  // ngày tháng hiện tại
+
+  // TODO: còn thiếu 1 logic
+  // Khi user nhập số đơn hàng mà đủ format
+  // query thông tin => show => để user có thể chỉnh sửa khi lỡ nhập đơn hàng sai
+  // hay nên để chức năng sửa lúc truy vấn luôn ta @@
+  // thì khỏi làm thêm việc này
+
+  useEffect(() => {
+    if (view) {
+      console.log("dataView: ", dataView);
+      setFormInfoDonHang(dataView);
+      fetch("http://localhost:8000/items_donhang_with_id", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: dataView["SODH"], nof: 30 }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          setDataTable(info);
+          console.log(dataTable);
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+    }
+  }, [dataView]);
 
   const [stateTable, dispatchTable] = useTableContext();
   const [infoFormWillShow, setInfoFormWillShow] = useState({
@@ -26,7 +58,12 @@ const DonHang = () => {
     mau: false,
     dmGiaykh: false,
   });
-
+  const [formInfoDonHang, setFormInfoDonHang] = useState({});
+  const handleChangeForm = (e) => {
+    const data = { ...formInfoDonHang };
+    data[e.target.name] = e.target.value;
+    setFormInfoDonHang(data);
+  };
   const handleThemGiay = () => {
     setInfoFormWillShow({
       giay: true,
@@ -72,21 +109,14 @@ const DonHang = () => {
     for (var obj in INFO_COLS_DONHANG) {
       let key = INFO_COLS_DONHANG[obj]["key"];
       var info = {
-        header: INFO_COLS_DONHANG[obj]["key"],
+        header: INFO_COLS_DONHANG[obj]["header"],
         size: INFO_COLS_DONHANG[obj]["width"],
         accessorKey: INFO_COLS_DONHANG[obj]["key"],
         enableEditing: INFO_COLS_DONHANG[obj]["enableEditing"],
         key: INFO_COLS_DONHANG[obj]["key"].toLowerCase(),
       };
 
-      // if (key === "Mã giày") {
-      //   info["Cell"] = ({ cell }) => (
-      //     <button onClick={handleClickMaGiay}>{cell.getValue()}</button>
-      //     // <button onClick={handleClickMaGiay}></button>
-      //   );
-      // }
-      // thử thêm select box vô 1 cell
-      if (key === "Màu đế") {
+      if (key === "TENMAUDE") {
         info["editSelectOptions"] = [
           "Màu đế - 1",
           "Màu đế - 2",
@@ -97,7 +127,7 @@ const DonHang = () => {
         info["enableEditing"] = true;
       }
 
-      if (key === "Tên giày") info["Footer"] = () => <div>Tổng cộng</div>;
+      if (key === "TENGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
       if (COLS_HAVE_SUM_FOOTER.includes(key)) {
         let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
         info["Footer"] = () => <div>{sum_value}</div>;
@@ -107,21 +137,6 @@ const DonHang = () => {
     return infoColumnsInit;
   }, [dataTable]);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/items_donhang")
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((info) => {
-  //       info = [...info, ...renderDataEmpty(INFO_COLS_DONHANG, 1)];
-  //       setDataTable(info);
-  //       console.log(dataTable);
-  //     })
-  //     .catch((err) => {
-  //       console.log(":error: ", err);
-  //     });
-  // }, []);
-
   return (
     <>
       <div className={styles.form}>
@@ -129,20 +144,33 @@ const DonHang = () => {
           <div className={styles.item_column}>
             <div className={styles.pair}>
               <label>Số đơn hàng</label>
-              <input name="Số đơn hàng" />
+              <input
+                name="SODH"
+                value={formInfoDonHang["SODH"]}
+                onChange={(e) => setFormInfoDonHang(e)}
+                readOnly={view}
+              />
             </div>
           </div>
           <div className={styles.item_column}>
             <div className={styles.pair}>
               <label>Mã khách hàng</label>
-              <input name="Mã khách hàng" />
+              <input
+                name="MAKH"
+                value={formInfoDonHang["MAKH"]}
+                onChange={(e) => setFormInfoDonHang(e)}
+                readOnly={view}
+              />
               <span>Tên khách hàng</span>
             </div>
           </div>
           <input
             type="checkbox"
             name="Giá lẻ"
-            value="true"
+            // value="true"
+            value={formInfoDonHang["Giá lẻ"]}
+            onChange={(e) => setFormInfoDonHang(e)}
+            readOnly={view}
             className={styles.checkbox}
           />
           <span for="Giá lẻ" className={styles.span_for_checkbox}>
@@ -153,17 +181,33 @@ const DonHang = () => {
           <div className={styles.item_column}>
             <div className={styles.pair}>
               <label>Ngày đơn hàng</label>
-              <input type="date" name="Ngày đơn hàng" />
+              <input
+                type="date"
+                name="NGAYDH"
+                value={formInfoDonHang["NGAYDH"]}
+                onChange={(e) => setFormInfoDonHang(e)}
+                readOnly={view}
+              />
             </div>
             <div className={styles.pair}>
               <label>Ngày giao hàng</label>
-              <input type="date" name="Ngày giao hàng" />
+              <input
+                type="date"
+                name="NGAYGH"
+                value={formInfoDonHang["NGAYGH"]}
+                onChange={(e) => setFormInfoDonHang(e)}
+                readOnly={view}
+              />
             </div>
           </div>
           <div className={styles.item_column}>
             <div className={styles.pair}>
               <label className={styles.label_for_textatea}>Diễn dãi</label>
-              <textarea />
+              <textarea
+                value={formInfoDonHang["DIENGIAIPHIEU"]}
+                onChange={(e) => setFormInfoDonHang(e)}
+                readOnly={view}
+              />
             </div>
           </div>
         </div>
@@ -174,6 +218,7 @@ const DonHang = () => {
           data={dataTable}
           setDataTable={setDataTable}
           handleAddGiay={handleClickMaGiay}
+          view={view}
         />
       }
       <div className={styles.form}>
@@ -181,8 +226,8 @@ const DonHang = () => {
         <div className={styles.group_button}>
           <button onClick={handleThemGiay}>Thêm giày</button>
           <button onClick={handleThemMau}>Thêm màu</button>
-          <button onClick={handleNhapTiep}>Nhập tiếp</button>
-          <button>Lưu</button>
+          {!view && <button onClick={handleNhapTiep}>Nhập tiếp</button>}
+          {!view && <button>Lưu</button>}
           <button>In</button>
           <button>Đóng</button>
         </div>

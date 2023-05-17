@@ -39,13 +39,13 @@ const DanhMucGiayKhachHang = ({
       if (!isNaN(key)) {
         const info = {
           ...dataTable[key],
-          "Size 0": 0,
-          "Size 5": 0,
-          "Size 6": 0,
-          "Size 7": 0,
-          "Size 8": 0,
-          "Size 9": 0,
-          "Số lượng": 0,
+          SIZE0: 0,
+          SIZE5: 0,
+          SIZE6: 0,
+          SIZE7: 0,
+          SIZE8: 0,
+          SIZE9: 0,
+          SOLUONG: 0,
         };
         columns_selected.push(info);
       }
@@ -76,7 +76,7 @@ const DanhMucGiayKhachHang = ({
         muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
         // group Mã giày
         enableGrouping
-        initialState={{ grouping: ["Mã giày"], expanded: true }}
+        initialState={{ grouping: ["MAGIAY"], expanded: true }}
       />
       <div className={styles.group_button}>
         <button onClick={handleSubmit}>Đồng ý</button>

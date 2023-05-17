@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import clsx from "clsx";
 import styles from "./FormMau.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 
@@ -9,7 +8,6 @@ const FormMauBasic = ({ initForm, setDataForm }) => {
   useEffect(() => {
     setForm(initForm);
   }, [initForm]);
-  console.log("record form: re-render");
 
   const handleChangeInformationForm = (e) => {
     const data = { ...form };
@@ -24,8 +22,8 @@ const FormMauBasic = ({ initForm, setDataForm }) => {
         <div className={styles.item}>
           <label>Mã màu</label>
           <input
-            name="Mã màu"
-            value={form["Mã màu"]}
+            name="MAMAU"
+            value={form["MAMAU"]}
             onChange={(e) => handleChangeInformationForm(e)}
           />
         </div>
@@ -33,8 +31,8 @@ const FormMauBasic = ({ initForm, setDataForm }) => {
         <div className={styles.item}>
           <label>Tên màu</label>
           <input
-            name="Tên màu"
-            value={form["Tên màu"]}
+            name="TENMAU"
+            value={form["TENMAU"]}
             onChange={(e) => handleChangeInformationForm(e)}
           />
         </div>
@@ -42,8 +40,8 @@ const FormMauBasic = ({ initForm, setDataForm }) => {
         <div className={styles.item}>
           <label>Ghi chú</label>
           <input
-            name="Ghi chú"
-            value={form["Ghi chú"]}
+            name="GHICHU"
+            value={form["GHICHU"]}
             onChange={(e) => handleChangeInformationForm(e)}
           />
         </div>

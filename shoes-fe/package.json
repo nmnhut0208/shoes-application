@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "material-react-table": "^1.10.0",
-    "moment": "^2.29.4"
+    "moment": "^2.29.4",
+    "react-to-print": "^2.14.12"
   }
 }

@@ -1,0 +1,29 @@
+@import "~common_scss/form.module.scss";
+
+.print_page {
+  margin: 1rem 1rem 1rem 1rem;
+
+  .print_object {
+    margin-top: 2rem;
+
+    .info_giay {
+      @extend .font-setting;
+      .info_row_giay {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      th {
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+      img {
+        height: 15rem;
+        width: 15rem;
+        object-fit: cover;
+      }
+      border: 0.01rem solid rgba(0, 0, 0, 0.1);
+      border-bottom: none;
+    }
+  }
+}

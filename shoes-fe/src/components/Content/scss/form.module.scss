@@ -65,6 +65,28 @@
     @extend .font-setting;
   }
 
+  .label_choose_image {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    background-color: #e2dfdf;
+    color: #333333;
+    @extend .font-setting;
+    padding: var(--padding-setting);
+    text-align: center;
+    border: 0.1 rem solid rgba(0, 0, 0, 1);
+  }
+  .label_choose_image:after {
+    content: "";
+  }
+  .label_choose_image:hover {
+    background-image: linear-gradient(to bottom, #e2dfdf, #caccce);
+  }
+
+  .label_choose_image:focus {
+    padding: 0 0.56em 0 0.68em;
+  }
+
   button {
     padding: var(--padding-setting);
   }
@@ -85,6 +107,7 @@
 
   img {
     display: block;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     height: var(--height-image);
