@@ -4,20 +4,28 @@ import FormGiayBasic from "./FormGiayBasic";
 import styles from "./FormGiayBasic.module.scss";
 
 const FormGiay = () => {
-  // TODO: Sau này sửa STT thành tên duy nhất.
   const [stateTable, dispatchTable] = useTableContext();
   const [dataForm, setDataForm] = useState(stateTable.inforShowTable.record);
 
   const handleSaveFrom = () => {
-    // saveDataBase()
-    dispatchTable(
-      actions_table.setInforTable(
-        stateTable.inforShowTable.infoTable.map((info) =>
-          info.MAGIAY === dataForm.MAGIAY ? dataForm : info
+    if (stateTable.inforShowTable.action_row === "edit") {
+      dispatchTable(
+        actions_table.setInforTable(
+          stateTable.inforShowTable.infoTable.map((info) =>
+            info.MAGIAY === dataForm.MAGIAY ? dataForm : info
+          )
         )
-      )
-    );
-
+      );
+      // saveDataBase()
+    } else if (stateTable.inforShowTable.action_row === "add") {
+      dispatchTable(
+        actions_table.setInforTable([
+          ...stateTable.inforShowTable.infoTable,
+          dataForm,
+        ])
+      );
+      // saveDataBase()
+    }
     dispatchTable(actions_table.setModeShowModal(false));
   };
 

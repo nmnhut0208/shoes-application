@@ -14,14 +14,25 @@ const FormGot = () => {
   };
 
   const handleSaveFrom = () => {
-    // saveDataBase()
-    dispatchTable(
-      actions_table.setInforTable(
-        stateTable.inforShowTable.infoTable.map((info) =>
-          info.MAGOT === inputForm.MAGOT ? inputForm : info
+    if (stateTable.inforShowTable.action_row === "edit") {
+      // saveDataBase()
+      dispatchTable(
+        actions_table.setInforTable(
+          stateTable.inforShowTable.infoTable.map((info) =>
+            info.MAGOT === inputForm.MAGOT ? inputForm : info
+          )
         )
-      )
-    );
+      );
+    } else if (stateTable.inforShowTable.action_row === "add") {
+      dispatchTable(
+        actions_table.setInforTable([
+          ...stateTable.inforShowTable.infoTable,
+          inputForm,
+        ])
+      );
+      // saveDataBase()
+    }
+
     dispatchTable(actions_table.setModeShowModal(false));
   };
 

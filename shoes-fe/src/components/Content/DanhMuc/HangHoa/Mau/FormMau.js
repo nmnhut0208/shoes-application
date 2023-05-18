@@ -10,14 +10,24 @@ const FormMau = () => {
   const [dataForm, setDataForm] = useState(stateTable.inforShowTable.record);
 
   const handleSaveFrom = () => {
-    // saveDataBase()
-    dispatchTable(
-      actions_table.setInforTable(
-        stateTable.inforShowTable.infoTable.map((info) =>
-          info.MAMAU === dataForm.MAMAU ? dataForm : info
+    if (stateTable.inforShowTable.action_row === "edit") {
+      // saveDataBase()
+      dispatchTable(
+        actions_table.setInforTable(
+          stateTable.inforShowTable.infoTable.map((info) =>
+            info.MAMAU === dataForm.MAMAU ? dataForm : info
+          )
         )
-      )
-    );
+      );
+    } else if (stateTable.inforShowTable.action_row === "add") {
+      dispatchTable(
+        actions_table.setInforTable([
+          ...stateTable.inforShowTable.infoTable,
+          dataForm,
+        ])
+      );
+      // saveDataBase()
+    }
     dispatchTable(actions_table.setModeShowModal(false));
   };
 
