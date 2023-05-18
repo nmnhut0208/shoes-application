@@ -9,12 +9,12 @@ import {
 import { rem_to_px } from "~config/ui";
 
 const list_key = [
-  { header: "Mã sườn", key: "MASUON", width: 21 * rem_to_px },
-  { header: "Tên sườn", key: "TENSUON", width: 10 * rem_to_px },
-  { header: "Mã gót", key: "MAGOT", width: 40 * rem_to_px },
-  { header: "Tên gót", key: "TENGOT", width: 10 * rem_to_px },
-  { header: "Mã mũi", key: "MAMUI", width: 20 * rem_to_px },
-  { header: "Tên mũi", key: "TENMUI", width: 10 * rem_to_px },
+  { header: "Mã sườn", key: "MASUON", width: 10 * rem_to_px },
+  { header: "Tên sườn", key: "TENSUON", width: 15 * rem_to_px },
+  { header: "Mã gót", key: "MAGOT", width: 10 * rem_to_px },
+  { header: "Tên gót", key: "TENGOT", width: 15 * rem_to_px },
+  { header: "Mã mũi", key: "MAMUI", width: 10 * rem_to_px },
+  { header: "Tên mũi", key: "TENMUI", width: 15 * rem_to_px },
   { header: "Ghi chú", key: "GHICHU", width: 20 * rem_to_px },
 ];
 
@@ -37,15 +37,14 @@ const Suon = () => {
     dispatchTable(actions_table.setTitleModal("Sườn - F0022"));
     dispatchTable(actions_table.setTitleTable("Sườn - F0020"));
     dispatchTable(actions_table.setComponentForm(FormSuon));
-    fetch("http://localhost:8000/items_suon")
+    fetch("http://localhost:8000/suon")
       .then((response) => {
-        console.log("response: ", response);
+        console.log(response);
         return response.json();
       })
       .then((info) => {
         dispatchTable(actions_table.setInforColumnTable(infoColumns));
         dispatchTable(actions_table.setInforTable(info));
-        // if neu co thong tin moi show ne
         dispatchTable(actions_table.setModeShowTable(true));
         setRenderUI(true);
       })

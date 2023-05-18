@@ -14,8 +14,9 @@ const FormSuon = () => {
   };
 
   const handleSaveFrom = () => {
+    let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
-      // saveDataBase()
+      method = "PUT";
       dispatchTable(
         actions_table.setInforTable(
           stateTable.inforShowTable.infoTable.map((info) =>
@@ -24,15 +25,25 @@ const FormSuon = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
+      method = "POST";
       dispatchTable(
         actions_table.setInforTable([
           ...stateTable.inforShowTable.infoTable,
           inputForm,
         ])
       );
-      // saveDataBase()
     }
-
+    fetch("http://localhost:8000/suon", {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inputForm),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
     dispatchTable(actions_table.setModeShowModal(false));
   };
 

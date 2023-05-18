@@ -3,7 +3,6 @@ import MaterialReactTable from "material-react-table";
 import { TableTitle } from "material-react-table";
 import { useTableContext, actions_table } from "~table_context";
 import { useTaskContext } from "~task";
-// import "./table_ant.css";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -25,78 +24,49 @@ const TableContent = () => {
     return emptyData;
   }, []);
 
-  console.log("emptyData: ", emptyData);
-
   const handleDeleteRow = (row) => {
-    console.log("case: ", stateTask.inforCurrentTask.infoDetail);
+    let url = "";
     switch (stateTask.inforCurrentTask.infoDetail) {
       case "Kho hàng":
-        fetch("http://localhost:8000/khohang", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(row),
-        })
-          .then((res) => console.log("response: ", res))
-          .catch((err) => console.log("error: ", err));
+        url = "http://localhost:8000/khohang";
         break;
       case "Mũi":
-        fetch("http://localhost:8000/mui", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(row),
-        })
-          .then((res) => console.log("response: ", res))
-          .catch((err) => console.log("error: ", err));
+        url = "http://localhost:8000/mui";
         break;
       case "Đế":
-        fetch("http://localhost:8000/de", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(row),
-        })
-          .then((res) => console.log("response: ", res))
-          .catch((err) => console.log("error: ", err));
+        url = "http://localhost:8000/de";
         break;
       case "Cá":
-        fetch("http://localhost:8000/ca", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(row),
-        })
-          .then((res) => console.log("response: ", res))
-          .catch((err) => console.log("error: ", err));
+        url = "http://localhost:8000/ca";
         break;
       case "Nhân viên":
-        fetch("http://localhost:8000/nhanvien", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(row),
-        })
-          .then((res) => console.log("response: ", res))
-          .catch((err) => console.log("error: ", err));
+        url = "http://localhost:8000/nhanvien";
         break;
       case "Kỳ tính lương":
-        fetch("http://localhost:8000/kytinhluong", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(row),
-        })
-          .then((res) => console.log("response: ", res))
-          .catch((err) => console.log("error: ", err));
+        url = "http://localhost:8000/kytinhluong";
+        break;
+      case "Màu":
+        url = "http://localhost:8000/mau";
+        break;
+      case "Sườn":
+        url = "http://localhost:8000/suon";
+        break;
+      case "Gót":
+        url = "http://localhost:8000/got";
+        break;
+      case "Quai":
+        url = "http://localhost:8000/quai";
         break;
     }
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(row),
+    })
+      .then((res) => console.log("response: ", res))
+      .catch((err) => console.log("error: ", err));
     const newData = inforShowTable.infoTable.filter((item) => item != row);
     dispatchTable(actions_table.setInforTable(newData));
   };
@@ -116,8 +86,6 @@ const TableContent = () => {
             // columnResizeMode="onChange" //default
             enableRowNumbers
             enableEditing
-            // onEditingRowSave={handleSaveRowEdits}
-            // onEditingRowCancel={handleCancelRowEdits}
             renderRowActions={({ row, table }) => (
               <Box
                 sx={{
@@ -127,7 +95,6 @@ const TableContent = () => {
               >
                 <Tooltip arrow placement="right" title="Add">
                   <IconButton
-                    style={{ width: "30px" }}
                     onClick={() => {
                       dispatchTable(
                         actions_table.setInforRecordTable(emptyData)
@@ -141,7 +108,6 @@ const TableContent = () => {
                 </Tooltip>
                 <Tooltip arrow placement="right" title="Edit">
                   <IconButton
-                    style={{ width: "30px" }}
                     onClick={() => {
                       console.log("row: ", row.original);
                       dispatchTable(
@@ -156,7 +122,6 @@ const TableContent = () => {
                 </Tooltip>
                 <Tooltip arrow placement="right" title="Delete">
                   <IconButton
-                    style={{ width: "30px" }}
                     color="error"
                     onClick={() => handleDeleteRow(row.original)}
                   >
