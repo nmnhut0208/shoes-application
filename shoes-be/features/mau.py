@@ -23,7 +23,6 @@ def read() -> List[ITEM_MAU]:
 @router.post("/mau")
 def add(data: ITEM_MAU) -> RESPONSE:
     data = dict(data)
-    # print(data)
     col = ", ".join(data.keys())
     val = ", ".join([f"'{value}'" for value in data.values()])
     return mau.add(col, val)
