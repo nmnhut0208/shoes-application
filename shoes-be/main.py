@@ -13,6 +13,7 @@ from features.nhanvien import router as router_nhanvien
 from features.kytinhluong import router as router_kytinhluong
 from features.mau import router as router_mau
 from features.suon import router as router_suon
+from features.got import router as router_got
 
 app = FastAPI()
 
@@ -49,3 +50,6 @@ app.include_router(
 
 app.include_router(
     router_suon, tags=["Sườn"])
+
+app.include_router(
+    router_got, tags=["Gót"])

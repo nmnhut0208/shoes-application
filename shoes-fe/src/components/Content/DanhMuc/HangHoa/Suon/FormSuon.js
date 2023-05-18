@@ -61,9 +61,7 @@ const FormSuon = () => {
           .replace(/^.+,/, "");
         let image = "data:image/png;base64,".concat(base64String);
         setImageBase64(image);
-        const data = { ...inputForm };
-        data["HANH"] = image;
-        setInputForm(data);
+        setInputForm({ ...inputForm, HANH: image });
       };
       reader.readAsDataURL(e.target.files[0]);
       setImageURL("");
