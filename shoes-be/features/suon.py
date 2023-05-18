@@ -24,13 +24,21 @@ def read() -> List[RESPONSE_SUON]:
                 on DMGOT.MAGOT = DMSUON.MAGOT \
             left join(select MAMUI, TENMUI FROM DMMUI) AS DMMUI \
                 on DMMUI.MAMUI = DMSUON.MAMUI"
+    
+    sql = "SELECT MASUON, TENSUON, DMGOT.MAGOT, TENGOT, \
+                DMMUI.MAMUI, TENMUI, GHICHU, HANH \
+            FROM DMSUON \
+            left join(select MAGOT, TENGOT FROM DMGOT) AS DMGOT \
+                on DMGOT.MAGOT = DMSUON.MAGOT \
+            left join(select MAMUI, TENMUI FROM DMMUI) AS DMMUI \
+                on DMMUI.MAMUI = DMSUON.MAMUI"
     return suon.read_custom(sql)
 
 
 @router.post("/suon")
 def add(data: ITEM_SUON) -> RESPONSE:
     data = dict(data)
-    # print(data)
+    print(data)
     col = ", ".join(data.keys())
     val = ", ".join([f"'{value}'" for value in data.values()])
     return suon.add(col, val)
@@ -38,10 +46,7 @@ def add(data: ITEM_SUON) -> RESPONSE:
 
 @router.put("/suon")
 def update(data: ITEM_SUON) -> RESPONSE:
-    data = dict(data)
-    print("data: ", data)
-    # print("data hinh anh: ", type(data["HANH"]))
-    
+    data = dict(data)    
     val = ", ".join([f"{key} = '{value}'" for key, value in data.items()])
     condition = f"MASUON = '{data['MASUON']}'"
     return suon.update(val, condition)
