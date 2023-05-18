@@ -25,13 +25,6 @@ def read() -> List[RESPONSE_SUON]:
             left join(select MAMUI, TENMUI FROM DMMUI) AS DMMUI \
                 on DMMUI.MAMUI = DMSUON.MAMUI"
     
-    sql = "SELECT MASUON, TENSUON, DMGOT.MAGOT, TENGOT, \
-                DMMUI.MAMUI, TENMUI, GHICHU, HANH \
-            FROM DMSUON \
-            left join(select MAGOT, TENGOT FROM DMGOT) AS DMGOT \
-                on DMGOT.MAGOT = DMSUON.MAGOT \
-            left join(select MAMUI, TENMUI FROM DMMUI) AS DMMUI \
-                on DMMUI.MAMUI = DMSUON.MAMUI"
     return suon.read_custom(sql)
 
 
