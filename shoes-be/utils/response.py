@@ -50,6 +50,13 @@ class RESPONSE_SUON(BaseModel):
     TENMUI: str
     GHICHU: str
 
+class RESPONSE_GIAOHANG(BaseModel):
+    SODH: str
+    NGAYDH: str
+    NGAYGH: str
+    DIENGIAIPHIEU: str
+    SOLUONGCONLAI: str
+
 
 class RESPONSE(BaseModel):
     status: str
