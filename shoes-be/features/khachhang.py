@@ -31,7 +31,6 @@ kh = KHACHHANG()
 
 @router.get("/khachhang")
 def read() -> List[ITEM_KHACHHANG]:
-    print("ITEM_KHACHHANG")
     sql = "SELECT MAKH, TENKH, COALESCE(DONGIA, 0) as DONGIA, \
                 COALESCE(DIACHI, '') AS DIACHI, \
                 COALESCE(TEL, '') AS TEL, \

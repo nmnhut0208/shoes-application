@@ -41,7 +41,7 @@ const Giay = () => {
     dispatchTable(actions_table.setTitleModal("Giay - F0025"));
     dispatchTable(actions_table.setTitleTable("Giày - F0024"));
     dispatchTable(actions_table.setComponentForm(FormGiay));
-    fetch("http://localhost:8000/items")
+    fetch("http://localhost:8000/giay")
       .then((response) => {
         return response.json();
       })

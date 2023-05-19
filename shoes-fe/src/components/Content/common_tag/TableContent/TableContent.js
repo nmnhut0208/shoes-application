@@ -45,6 +45,9 @@ const TableContent = () => {
       case "Kỳ tính lương":
         url = "http://localhost:8000/kytinhluong";
         break;
+      case "Giày":
+        url = "http://localhost:8000/giay";
+        break;
       case "Màu":
         url = "http://localhost:8000/mau";
         break;
