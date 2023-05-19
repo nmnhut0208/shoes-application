@@ -18,7 +18,7 @@ suon = SUON()
 def read() -> List[RESPONSE_SUON]:
     sql = "SELECT MASUON, TENSUON, DMGOT.MAGOT, TENGOT, \
                 DMMUI.MAMUI, TENMUI, COALESCE(GHICHU, '') AS GHICHU, \
-                COALESCE(HANH, '') AS HANH \
+                COALESCE(HINHANH, '') AS HINHANH \
             FROM DMSUON \
             left join(select MAGOT, TENGOT FROM DMGOT) AS DMGOT \
                 on DMGOT.MAGOT = DMSUON.MAGOT \

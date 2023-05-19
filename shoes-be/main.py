@@ -14,6 +14,8 @@ from features.kytinhluong import router as router_kytinhluong
 from features.mau import router as router_mau
 from features.suon import router as router_suon
 from features.got import router as router_got
+from features.quai import router as router_quai
+
 
 app = FastAPI()
 
@@ -53,3 +55,6 @@ app.include_router(
 
 app.include_router(
     router_got, tags=["Gót"])
+
+app.include_router(
+    router_quai, tags=["Quai"])

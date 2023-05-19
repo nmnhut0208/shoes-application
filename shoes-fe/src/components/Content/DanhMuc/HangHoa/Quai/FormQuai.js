@@ -6,6 +6,10 @@ import { useTableContext, actions_table } from "~table_context";
 const FormQuai = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
+  const [image_url, setImageURL] = useState("");
+  const [image_base64, setImageBase64] = useState(
+    stateTable.inforShowTable.record["HINHANH"]
+  );
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -14,8 +18,9 @@ const FormQuai = () => {
   };
 
   const handleSaveFrom = () => {
+    let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
-      // saveDataBase()
+      method = "PUT";
       dispatchTable(
         actions_table.setInforTable(
           stateTable.inforShowTable.infoTable.map((info) =>
@@ -24,20 +29,44 @@ const FormQuai = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
+      method = "POST";
       dispatchTable(
         actions_table.setInforTable([
           ...stateTable.inforShowTable.infoTable,
           inputForm,
         ])
       );
-      // saveDataBase()
     }
-
+    console.log("inputForm: ", inputForm);
+    fetch("http://localhost:8000/quai", {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inputForm),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
     dispatchTable(actions_table.setModeShowModal(false));
   };
 
-  var image_url =
-    "https://img.freepik.com/free-vector/cats-doodle-pattern-background_53876-100663.jpg?w=900&t=st=1680945739~exp=1680946339~hmac=0a6288d0cf4d9b1a566b96eeaad8db3beb69fa0729f4ffecfcc866bbfecaf4e2";
+  const changeImage = (e) => {
+    if (e.target.value !== "") {
+      var reader = new FileReader();
+      reader.onload = function () {
+        let base64String = reader.result
+          .replace("data:", "")
+          .replace(/^.+,/, "");
+        let image = "data:image/png;base64,".concat(base64String);
+        setImageBase64(image);
+        setInputForm({ ...inputForm, HINHANH: image });
+      };
+      reader.readAsDataURL(e.target.files[0]);
+      setImageURL("");
+    }
+  };
 
   return (
     <div className={styles.form}>
@@ -46,6 +75,7 @@ const FormQuai = () => {
           <div className={styles.item}>
             <label>Mã quai</label>
             <input
+              readOnly={stateTable.inforShowTable.action_row === "edit"}
               name="MAQUAI"
               value={inputForm["MAQUAI"]}
               onChange={(e) => handleChangeInformationForm(e)}
@@ -64,6 +94,7 @@ const FormQuai = () => {
           <div className={styles.item}>
             <label>Đơn giá quai</label>
             <input
+              type="number"
               name="DONGIA"
               value={inputForm["DONGIA"]}
               onChange={(e) => handleChangeInformationForm(e)}
@@ -81,8 +112,19 @@ const FormQuai = () => {
         </div>
 
         <div className={styles.image_container}>
-          <button>Chọn hình ảnh</button>
-          <img src={image_url} />
+          <label className={styles.label_choose_image} for="img">
+            Chọn hình ảnh
+          </label>
+          <input
+            style={{ display: "none" }}
+            type="file"
+            id="img"
+            name="img"
+            accept="image/*"
+            value={image_url}
+            onChange={(e) => changeImage(e)}
+          />
+          <img src={image_base64} />
         </div>
       </div>
 

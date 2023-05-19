@@ -53,5 +53,5 @@ class ITEM_SUON(BaseModel):
     TENSUON: str
     MAGOT: str
     MAMUI: str
-    HANH: Optional[str] = ""
+    HINHANH: Optional[str] = ""
     GHICHU: Optional[str] = ""

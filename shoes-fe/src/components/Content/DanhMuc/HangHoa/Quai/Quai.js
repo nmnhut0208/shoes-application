@@ -1,4 +1,3 @@
-import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
 import FormQuai from "./FormQuai";
@@ -10,9 +9,9 @@ import {
 import { rem_to_px } from "~config/ui";
 
 const list_key = [
-  { header: "Mã quai", key: "MAQUAI", width: 21 * rem_to_px },
-  { header: "Tên quai", key: "TENQUAI", width: 10 * rem_to_px },
-  { header: "Đơn giá lương", key: "DONGIA", width: 40 * rem_to_px },
+  { header: "Mã quai", key: "MAQUAI", width: 10 * rem_to_px },
+  { header: "Tên quai", key: "TENQUAI", width: 20 * rem_to_px },
+  { header: "Đơn giá lương", key: "DONGIA", width: 5 * rem_to_px },
   { header: "Ghi chú", key: "GHICHU", width: 20 * rem_to_px },
 ];
 
@@ -35,7 +34,7 @@ const Quai = () => {
     dispatchTable(actions_table.setTitleModal("Quai - F0019"));
     dispatchTable(actions_table.setTitleTable("Quai - F0018"));
     dispatchTable(actions_table.setComponentForm(FormQuai));
-    fetch("http://localhost:8000/items_quai")
+    fetch("http://localhost:8000/quai")
       .then((response) => {
         console.log("response: ", response);
         return response.json();

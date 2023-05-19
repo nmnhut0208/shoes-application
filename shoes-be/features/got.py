@@ -10,7 +10,7 @@ from typing import Optional
 class ITEM_GOT(BaseModel):
     MAGOT: str
     TENGOT: str
-    HANH: Optional[str] = ""
+    HINHANH: Optional[str] = ""
     GHICHU: Optional[str] = ""
 
 router = APIRouter()

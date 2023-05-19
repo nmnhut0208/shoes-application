@@ -3,12 +3,11 @@ import styles from "./FormGot.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 
 const FormGot = () => {
-  // TODO: Sau này sửa STT thành tên duy nhất.
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   const [image_url, setImageURL] = useState("");
   const [image_base64, setImageBase64] = useState(
-    stateTable.inforShowTable.record["HANH"]
+    stateTable.inforShowTable.record["HINHANH"]
   );
 
   const handleChangeInformationForm = (e) => {
@@ -62,7 +61,7 @@ const FormGot = () => {
           .replace(/^.+,/, "");
         let image = "data:image/png;base64,".concat(base64String);
         setImageBase64(image);
-        setInputForm({ ...inputForm, HANH: image });
+        setInputForm({ ...inputForm, HINHANH: image });
       };
       reader.readAsDataURL(e.target.files[0]);
       setImageURL("");
@@ -77,6 +76,7 @@ const FormGot = () => {
             <label>Mã gót</label>
             <input
               name="MAGOT"
+              readOnly={stateTable.inforShowTable.action_row === "edit"}
               value={inputForm["MAGOT"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
