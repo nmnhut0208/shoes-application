@@ -1,4 +1,3 @@
-import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
 import FormKhachHang from "./FormKhachHang";
@@ -7,15 +6,16 @@ import {
   actions_table,
   cleanupContextTable,
 } from "~table_context";
+import { rem_to_px } from "~config/ui";
 
 const list_key = [
-  { header: "Mã khách hàng", key: "MAKH", width: "15rem" },
-  { header: "Tên khách hàng", key: "TENKH", width: "20rem" },
-  { header: "Địa chỉ", key: "DIACHI", width: "30rem" },
-  { header: "Điện thoại", key: "TEL", width: "10rem" },
-  { header: "Fax", key: "FAX", width: "10rem" },
-  { header: "Email", key: "EMAIL", width: "10rem" },
-  { header: "Ghi chú", key: "GHICHU", width: "16rem" },
+  { header: "Mã khách hàng", key: "MAKH", width: 10 * rem_to_px },
+  { header: "Tên khách hàng", key: "TENKH", width: 20 * rem_to_px },
+  { header: "Địa chỉ", key: "DIACHI", width: 20 * rem_to_px },
+  { header: "Điện thoại", key: "TEL", width: 10 * rem_to_px },
+  { header: "Fax", key: "FAX", width: 10 * rem_to_px },
+  { header: "Email", key: "EMAIL", width: 10 * rem_to_px },
+  { header: "Ghi chú", key: "GHICHU", width: 10 * rem_to_px },
 ];
 
 const infoColumns = [];
@@ -37,7 +37,7 @@ const KhachHang = () => {
     dispatchTable(actions_table.setTitleTable("Khách hàng - F0004"));
     dispatchTable(actions_table.setTitleModal("Khách hàng - F0005"));
     dispatchTable(actions_table.setComponentForm(FormKhachHang));
-    fetch("http://localhost:8000/items_khachhang")
+    fetch("http://localhost:8000/khachhang")
       .then((response) => {
         return response.json();
       })

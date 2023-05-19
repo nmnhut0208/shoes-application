@@ -1,5 +1,6 @@
 from typing import List, Union
 from pydantic import BaseModel
+from typing import Optional
 
 
 class ITEM_KHOHANG(BaseModel):
@@ -39,3 +40,18 @@ class ITEM_KYTINHLUONG(BaseModel):
     TENKY: str
     TUNGAY: str
     DENNGAY: str
+
+
+class ITEM_MAU(BaseModel):
+    MAMAU: str
+    TENMAU: str
+    GHICHU: str
+
+
+class ITEM_SUON(BaseModel):
+    MASUON: str
+    TENSUON: str
+    MAGOT: str
+    MAMUI: str
+    HINHANH: Optional[str] = ""
+    GHICHU: Optional[str] = ""

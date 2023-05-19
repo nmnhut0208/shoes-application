@@ -1,15 +1,49 @@
 import { useEffect, useState, useMemo } from "react";
 
-import { INFO_COLS_DONHANG, COLS_HAVE_SUM_FOOTER } from "./ConstantVariable";
+import {
+  INFO_COLS_DONHANG,
+  COLS_HAVE_SUM_FOOTER,
+  COL_KHACHHANG,
+} from "./ConstantVariable";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
-import { renderDataEmpty } from "~utils/processing_data_table";
+import {
+  renderDataEmpty,
+  processingInfoColumnTable,
+} from "~utils/processing_data_table";
 
 import TableDonHang from "./TableDonHang";
 import FormGiay from "./FormGiay";
 import FormMau from "./FormMau";
 import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import styles from "./DonHang.module.scss";
+import MaterialReactTable from "material-react-table";
+import { Popover } from "antd";
+
+let columns_kh = processingInfoColumnTable(COL_KHACHHANG);
+const TableMaKH = ({ data, rowSelection, setRowSelection }) => {
+  console.log("re-render sub table when hover", data);
+  return (
+    <div style={{ height: "auto" }}>
+      <MaterialReactTable
+        enableTopToolbar={false}
+        columns={columns_kh}
+        data={data}
+        // components
+        enableColumnActions={false}
+        enableSorting={false}
+        // enable phân trang
+        enablePagination={false}
+        enableBottomToolbar={true}
+        // row selection
+        enableMultiRowSelection={false}
+        enableRowSelection
+        onRowSelectionChange={setRowSelection}
+        state={{ rowSelection }}
+      />
+    </div>
+  );
+};
 
 const DonHang = ({ dataView, view }) => {
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
@@ -17,6 +51,33 @@ const DonHang = ({ dataView, view }) => {
   const [dataTable, setDataTable] = useState(() => {
     return renderDataEmpty(INFO_COLS_DONHANG, 1);
   });
+
+  const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
+  const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
+
+  useEffect(() => {
+    let keys = Object.keys(rowSelectionMaKH);
+    if (keys.length > 0) {
+      setFormInfoDonHang({
+        ...formInfoDonHang,
+        MAKH: dataTableKhachHang[keys[0]]["MAKH"],
+        TENKH: dataTableKhachHang[keys[0]]["TENKH"],
+      });
+    }
+  }, [rowSelectionMaKH]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/khachhang")
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        setDataTableKhachHang(info);
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+  }, []);
 
   // lúc đầu render form với ID Đơn hàng tự gen
   // ngày tháng hiện tại
@@ -155,13 +216,24 @@ const DonHang = ({ dataView, view }) => {
           <div className={styles.item_column}>
             <div className={styles.pair}>
               <label>Mã khách hàng</label>
-              <input
-                name="MAKH"
-                value={formInfoDonHang["MAKH"]}
-                onChange={(e) => setFormInfoDonHang(e)}
-                readOnly={view}
-              />
-              <span>Tên khách hàng</span>
+              <Popover
+                placement="bottomLeft"
+                content={
+                  <TableMaKH
+                    data={dataTableKhachHang}
+                    rowSelection={rowSelectionMaKH}
+                    setRowSelection={setRowSelectionMaKH}
+                  />
+                }
+              >
+                <input
+                  name="MAKH"
+                  value={formInfoDonHang["MAKH"]}
+                  onChange={(e) => setFormInfoDonHang(e)}
+                  readOnly={view}
+                />
+              </Popover>
+              <input readOnly={true} value={formInfoDonHang["TENKH"]} />
             </div>
           </div>
           <input

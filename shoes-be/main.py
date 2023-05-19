@@ -11,6 +11,14 @@ from features.de import router as router_de
 from features.ca import router as router_ca
 from features.nhanvien import router as router_nhanvien
 from features.kytinhluong import router as router_kytinhluong
+from features.giay import router as router_giay
+from features.mau import router as router_mau
+from features.suon import router as router_suon
+from features.got import router as router_got
+from features.quai import router as router_quai
+from features.khachhang import router as router_khachhang
+
+
 
 app = FastAPI()
 
@@ -41,3 +49,21 @@ app.include_router(
 
 app.include_router(
     router_kytinhluong, tags=["Kỳ Tính Lương"])
+
+app.include_router(
+    router_giay, tags=["Giày"])
+
+app.include_router(
+    router_mau, tags=["Màu"])
+
+app.include_router(
+    router_suon, tags=["Sườn"])
+
+app.include_router(
+    router_got, tags=["Gót"])
+
+app.include_router(
+    router_quai, tags=["Quai"])
+
+app.include_router(
+    router_khachhang, tags=["Khách hàng"])

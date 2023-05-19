@@ -9,8 +9,8 @@ import {
 import { rem_to_px } from "~config/ui";
 
 const list_key = [
-  { header: "Mã gót", key: "MAGOT", width: 40 * rem_to_px },
-  { header: "Tên gót", key: "TENGOT", width: 10 * rem_to_px },
+  { header: "Mã gót", key: "MAGOT", width: 10 * rem_to_px },
+  { header: "Tên gót", key: "TENGOT", width: 20 * rem_to_px },
   { header: "Ghi chú", key: "GHICHU", width: 20 * rem_to_px },
 ];
 
@@ -32,7 +32,7 @@ const Got = () => {
     dispatchTable(actions_table.setTitleModal("Gót - F0014"));
     dispatchTable(actions_table.setTitleTable("Gót - F0013"));
     dispatchTable(actions_table.setComponentForm(FormGot));
-    fetch("http://localhost:8000/items_got")
+    fetch("http://localhost:8000/got")
       .then((response) => {
         return response.json();
       })
