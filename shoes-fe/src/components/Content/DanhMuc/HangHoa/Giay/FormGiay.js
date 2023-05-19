@@ -8,7 +8,9 @@ const FormGiay = () => {
   const [dataForm, setDataForm] = useState(stateTable.inforShowTable.record);
 
   const handleSaveFrom = () => {
+    let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
+      method = "PUT";
       dispatchTable(
         actions_table.setInforTable(
           stateTable.inforShowTable.infoTable.map((info) =>
@@ -16,16 +18,27 @@ const FormGiay = () => {
           )
         )
       );
-      // saveDataBase()
     } else if (stateTable.inforShowTable.action_row === "add") {
+      method = "POST";
       dispatchTable(
         actions_table.setInforTable([
           ...stateTable.inforShowTable.infoTable,
           dataForm,
         ])
       );
-      // saveDataBase()
     }
+    console.log("dataForm: ", dataForm);
+    fetch("http://localhost:8000/giay", {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dataForm),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
     dispatchTable(actions_table.setModeShowModal(false));
   };
 
@@ -40,7 +53,11 @@ const FormGiay = () => {
 
   return (
     <>
-      <FormGiayBasic initForm={dataForm} setDataForm={setDataForm} />
+      <FormGiayBasic
+        initForm={dataForm}
+        setDataForm={setDataForm}
+        mode={stateTable.inforShowTable.action_row}
+      />
 
       <div className={styles.group_button}>
         <div>

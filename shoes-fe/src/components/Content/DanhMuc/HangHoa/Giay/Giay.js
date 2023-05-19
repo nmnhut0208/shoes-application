@@ -48,7 +48,6 @@ const Giay = () => {
       .then((info) => {
         dispatchTable(actions_table.setInforColumnTable(infoColumns));
         dispatchTable(actions_table.setInforTable(info));
-        // if neu co thong tin moi show ne
         dispatchTable(actions_table.setModeShowTable(true));
         setRenderUI(true);
       })

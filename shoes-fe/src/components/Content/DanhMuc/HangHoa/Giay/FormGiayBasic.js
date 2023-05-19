@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 import styles from "./FormGiayBasic.module.scss";
 
-const FormGiayBasic = ({ initForm, setDataForm }) => {
+const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
   const [form, setForm] = useState(() => initForm);
-  useEffect(() => {
-    setForm(initForm);
-  }, [initForm]);
-
   const [image_base64, setImageBase64] = useState("");
   const [image_url, setImageURL] = useState("");
+  useEffect(() => {
+    setForm(initForm);
+    setImageBase64(initForm["HINHANH"]);
+  }, [initForm]);
 
   const handleChangeInformationForm = (e) => {
     const data = { ...form };
@@ -25,8 +25,9 @@ const FormGiayBasic = ({ initForm, setDataForm }) => {
         let base64String = reader.result
           .replace("data:", "")
           .replace(/^.+,/, "");
-        setImageBase64("data:image/png;base64,".concat(base64String));
-        // TODO: update form to save image to database
+        let image = "data:image/png;base64,".concat(base64String);
+        setImageBase64(image);
+        setDataForm({ ...form, HINHANH: image });
       };
       reader.readAsDataURL(e.target.files[0]);
       setImageURL("");
@@ -41,6 +42,7 @@ const FormGiayBasic = ({ initForm, setDataForm }) => {
             <div className={styles.group_first__left_row}>
               <label>Mã giày</label>
               <input
+                readOnly={mode === "edit"}
                 value={form["MAGIAY"]}
                 onChange={(e) => handleChangeInformationForm(e)}
                 name="MAGIAY"
