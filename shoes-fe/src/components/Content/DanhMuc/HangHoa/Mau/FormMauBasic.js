@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "./FormMau.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 
-const FormMauBasic = ({ initForm, setDataForm }) => {
-  // TODO: Sau này sửa STT thành tên duy nhất.
+const FormMauBasic = ({ initForm, setDataForm, mode }) => {
   const [form, setForm] = useState(() => initForm);
   useEffect(() => {
     setForm(initForm);
@@ -22,6 +21,7 @@ const FormMauBasic = ({ initForm, setDataForm }) => {
         <div className={styles.item}>
           <label>Mã màu</label>
           <input
+            readOnly={mode === "edit"}
             name="MAMAU"
             value={form["MAMAU"]}
             onChange={(e) => handleChangeInformationForm(e)}

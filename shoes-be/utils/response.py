@@ -41,6 +41,15 @@ class RESPONSE_KYTINHLUONG(BaseModel):
     DENNGAY: str
 
 
+class RESPONSE_SUON(BaseModel):
+    MASUON: str
+    TENSUON: str
+    MAGOT: str
+    TENGOT: str
+    MAMUI: str
+    TENMUI: str
+    GHICHU: str
+
 class RESPONSE_GIAOHANG(BaseModel):
     SODH: str
     NGAYDH: str

@@ -33,7 +33,7 @@ const Mau = () => {
     dispatchTable(actions_table.setTitleModal("Màu sắc - F0010"));
     dispatchTable(actions_table.setTitleTable("Màu sắc - F0009"));
     dispatchTable(actions_table.setComponentForm(FormMau));
-    fetch("http://localhost:8000/items_mau")
+    fetch("http://localhost:8000/mau")
       .then((response) => {
         console.log("response: ", response);
         return response.json();

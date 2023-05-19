@@ -30,3 +30,11 @@ table {
 .css-180500e {
   position: relative !important;
 }
+
+/* .MuiTableCell-sizeMedium {
+  overflow: visible !important;
+}
+
+.MuiTableCell-root {
+  min-width: max(calc(var(--col-mrt_row_actions-size) * 3px), 40px) !important;
+} */

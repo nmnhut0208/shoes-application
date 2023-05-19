@@ -3,7 +3,6 @@ import styles from "./FormKhachHang.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 
 const FormKhachHang = () => {
-  // TODO: Sau này sửa STT thành tên duy nhất.
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
 
@@ -14,14 +13,37 @@ const FormKhachHang = () => {
   };
 
   const handleSaveFrom = () => {
-    // saveDataBase()
-    dispatchTable(
-      actions_table.setInforTable(
-        stateTable.inforShowTable.infoTable.map((info) =>
-          info.MAKH === inputForm.MAKH ? inputForm : info
+    let method = "";
+    if (stateTable.inforShowTable.action_row === "edit") {
+      method = "PUT";
+      dispatchTable(
+        actions_table.setInforTable(
+          stateTable.inforShowTable.infoTable.map((info) =>
+            info.MAKH === inputForm.MAKH ? inputForm : info
+          )
         )
-      )
-    );
+      );
+    } else if (stateTable.inforShowTable.action_row === "add") {
+      method = "POST";
+      dispatchTable(
+        actions_table.setInforTable([
+          ...stateTable.inforShowTable.infoTable,
+          inputForm,
+        ])
+      );
+    }
+    console.log("inputForm: ", inputForm);
+    fetch("http://localhost:8000/khachhang", {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inputForm),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
     dispatchTable(actions_table.setModeShowModal(false));
   };
 
@@ -30,6 +52,7 @@ const FormKhachHang = () => {
       <div className={styles.item}>
         <label>Mã khách hàng</label>
         <input
+          readOnly={stateTable.inforShowTable.action_row === "edit"}
           name="MAKH"
           value={inputForm["MAKH"]}
           onChange={(e) => handleChangeInformationForm(e)}
