@@ -32,6 +32,8 @@ def read() -> List[ITEM_QUAI]:
                 COALESCE(GHICHU, '') AS GHICHU, \
                 COALESCE(HINHANH, '') AS HINHANH  \
             FROM DMQUAI "
+    # sql = "SELECT * \
+    #         FROM DMQUAI "
     return quai.read_custom(sql)
 
 

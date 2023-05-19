@@ -57,6 +57,9 @@ const TableContent = () => {
       case "Quai":
         url = "http://localhost:8000/quai";
         break;
+      case "Khách hàng":
+        url = "http://localhost:8000/khachhang";
+        break;
     }
     fetch(url, {
       method: "DELETE",
