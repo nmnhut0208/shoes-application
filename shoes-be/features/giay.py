@@ -63,6 +63,22 @@ class RESPONSE_GIAY(BaseModel):
     HINHANH: Optional[str] = None
 
 
+class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
+    SORTID: str
+    MAGIAY: str
+    TENGIAY: str
+    MAUDE: str
+    MAUGOT: str
+    MAUSUON: str
+    MAUCA: str
+    MAUQUAI: str
+    MAKH: str
+    DONGIA: int
+    DONGIAQUAI: int
+    TENCA: str
+    TENKH: str
+
+
 router = APIRouter()
 
 
@@ -90,6 +106,18 @@ def read() -> List[RESPONSE_GIAY]:
             LEFT JOIN(SELECT MAQUAI, TENQUAI FROM DMQUAI) AS DMQUAI ON DMGIAY.MAQUAI = DMQUAI.MAQUAI \
             LEFT JOIN(SELECT MAMAU, TENMAU FROM DMMAU) AS DMMAU ON DMGIAY.MAMAU = DMMAU.MAMAU \
             LEFT JOIN(SELECT MAKH, TENKH FROM DMKHACHHANG) AS DMKHACHHANG ON DMGIAY.MAKH = DMKHACHHANG.MAKH"
+    return giay.read_custom(sql)
+
+
+@router.get("/giay/{MAKH}")
+def read(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
+    sql = """SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,MAUDE,MAUGOT, 
+			MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH, 
+			V_GIAY.DONGIA, V_GIAY.DONGIAQUAI, V_GIAY.TENCA, V_GIAY.TENKH
+            FROM DONHANG 
+            LEFT JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay
+            WHERE DONHANG.MAKH='{}'
+            """.format(MAKH)
     return giay.read_custom(sql)
 
 

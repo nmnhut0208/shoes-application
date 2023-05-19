@@ -1,49 +1,17 @@
 import { useEffect, useState, useMemo } from "react";
 
-import {
-  INFO_COLS_DONHANG,
-  COLS_HAVE_SUM_FOOTER,
-  COL_KHACHHANG,
-} from "./ConstantVariable";
+import { INFO_COLS_DONHANG, COLS_HAVE_SUM_FOOTER } from "./ConstantVariable";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
-import {
-  renderDataEmpty,
-  processingInfoColumnTable,
-} from "~utils/processing_data_table";
+import { renderDataEmpty } from "~utils/processing_data_table";
 
 import TableDonHang from "./TableDonHang";
 import FormGiay from "./FormGiay";
 import FormMau from "./FormMau";
 import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import styles from "./DonHang.module.scss";
-import MaterialReactTable from "material-react-table";
 import { Popover } from "antd";
-
-let columns_kh = processingInfoColumnTable(COL_KHACHHANG);
-const TableMaKH = ({ data, rowSelection, setRowSelection }) => {
-  console.log("re-render sub table when hover", data);
-  return (
-    <div style={{ height: "auto" }}>
-      <MaterialReactTable
-        enableTopToolbar={false}
-        columns={columns_kh}
-        data={data}
-        // components
-        enableColumnActions={false}
-        enableSorting={false}
-        // enable phân trang
-        enablePagination={false}
-        enableBottomToolbar={true}
-        // row selection
-        enableMultiRowSelection={false}
-        enableRowSelection
-        onRowSelectionChange={setRowSelection}
-        state={{ rowSelection }}
-      />
-    </div>
-  );
-};
+import TableMaKH from "./TableMaKH";
 
 const DonHang = ({ dataView, view }) => {
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
@@ -114,12 +82,13 @@ const DonHang = ({ dataView, view }) => {
   }, [dataView]);
 
   const [stateTable, dispatchTable] = useTableContext();
+  const [formInfoDonHang, setFormInfoDonHang] = useState({});
   const [infoFormWillShow, setInfoFormWillShow] = useState({
     giay: false,
     mau: false,
     dmGiaykh: false,
   });
-  const [formInfoDonHang, setFormInfoDonHang] = useState({});
+
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
@@ -317,6 +286,7 @@ const DonHang = ({ dataView, view }) => {
       {infoFormWillShow["dmGiaykh"] && (
         <Modal>
           <DanhMucGiayKhachHang
+            id_khachhang={formInfoDonHang["MAKH"]}
             dataOrigin={dataTable}
             setInfoSelection={setDataTable}
           />

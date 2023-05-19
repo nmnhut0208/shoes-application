@@ -101,31 +101,31 @@ export const COL_GIAY_KHACHHANG = [
   },
   {
     header: "Màu đế",
-    key: "TENMAUDE",
+    key: "MAUDE",
     width: 12 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Màu gót",
-    key: "TENMAUGOT",
+    key: "MAUGOT",
     width: 12 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Màu sườn",
-    key: "TENMAUSUON",
+    key: "MAUSUON",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Màu cá",
-    key: "TENMAUCA",
+    key: "MAUCA",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Màu quai",
-    key: "TENMAUQUAI",
+    key: "MAUQUAI",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
@@ -133,21 +133,6 @@ export const COL_GIAY_KHACHHANG = [
     header: "Giá bán",
     key: "DONGIA",
     width: 24 * rem_to_px,
-    enableEditing: false,
-  },
-];
-
-export const COL_KHACHHANG = [
-  {
-    header: "Mã khách hàng",
-    key: "MAKH",
-    width: 21 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Tên khách hàng",
-    key: "TENKH",
-    width: 40 * rem_to_px,
     enableEditing: false,
   },
 ];

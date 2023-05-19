@@ -20,17 +20,19 @@ const DanhMucGiayKhachHang = ({
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/items_danhmuc_giay_khachhang")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        setDataTable(info);
-        console.log(dataTable);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
+    if (id_khachhang !== "") {
+      fetch("http://localhost:8000/giay/" + id_khachhang)
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          console.log(info);
+          setDataTable(info);
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+    }
   }, []);
 
   const handleSubmit = () => {
