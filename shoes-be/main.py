@@ -11,6 +11,7 @@ from features.de import router as router_de
 from features.ca import router as router_ca
 from features.nhanvien import router as router_nhanvien
 from features.kytinhluong import router as router_kytinhluong
+from features.giaohang import router as router_giaohang
 
 app = FastAPI()
 
@@ -41,3 +42,6 @@ app.include_router(
 
 app.include_router(
     router_kytinhluong, tags=["Kỳ Tính Lương"])
+
+app.include_router(
+    router_giaohang, tags=["Giao Hàng"])
