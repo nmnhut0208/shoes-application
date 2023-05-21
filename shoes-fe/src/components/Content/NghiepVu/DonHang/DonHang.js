@@ -43,8 +43,8 @@ const DonHang = ({ dataView, view }) => {
         let listMau = info.map(function (ob) {
           return { label: ob.TENMAU, value: ob.MAMAU };
         });
-        console.log("listMau: ", listMau);
-        setDataMau(listMau);
+        let listMauDefault = [{ null: "" }, { "": "" }];
+        setDataMau([...listMauDefault, ...listMau]);
       })
       .catch((err) => {
         console.log(":error: ", err);
@@ -181,11 +181,14 @@ const DonHang = ({ dataView, view }) => {
 
         //you can access a cell in many callback column definition options like this
         info["Cell"] = ({ cell }) => {
-          console.log("Cell", cell);
+          let _key = cell.row.id + "-" + cell.column.id;
+          console.log("_key", _key);
           return (
             <>
+              {/* <label for={_key}>{cell.getValue()}</label> */}
               <select
-                value={cell.getValue()}
+                id={_key}
+                style={{ display: "none" }}
                 onChange={(e) => {
                   dataTable[cell.row.id][cell.column.id] = e.target.value;
                   setDataTable([...dataTable]);
@@ -196,8 +199,6 @@ const DonHang = ({ dataView, view }) => {
             </>
           );
         };
-        info["enableEditing"] = true;
-        info["editVariant"] = "select";
       }
 
       if (key === "TENGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
