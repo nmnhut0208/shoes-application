@@ -188,7 +188,6 @@ const DonHang = ({ dataView, view }) => {
               {/* <label for={_key}>{cell.getValue()}</label> */}
               <select
                 id={_key}
-                style={{ display: "none" }}
                 onChange={(e) => {
                   dataTable[cell.row.id][cell.column.id] = e.target.value;
                   setDataTable([...dataTable]);
