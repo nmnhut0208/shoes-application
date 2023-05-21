@@ -15,25 +15,25 @@ export const INFO_COLS_DONHANG = [
   },
   {
     header: "Màu đế",
-    key: "TENMAUDE",
+    key: "MAUDE",
     width: 12 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Màu sườn",
-    key: "TENMAUSUON",
+    key: "MAUSUON",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Màu cá",
-    key: "TENMAUCA",
+    key: "MAUCA",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Màu quai",
-    key: "TENMAUQUAI",
+    key: "MAUQUAI",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
@@ -85,6 +85,8 @@ export const COLS_HAVE_SUM_FOOTER = [
   "SOLUONG",
   "THANHTIEN",
 ];
+
+export const COLS_HAVE_SELECT_INPUT = ["MAUDE", "MAUSUON", "MAUCA", "MAUQUAI"];
 
 export const COL_GIAY_KHACHHANG = [
   {

@@ -1,6 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
 
-import { INFO_COLS_DONHANG, COLS_HAVE_SUM_FOOTER } from "./ConstantVariable";
+import {
+  INFO_COLS_DONHANG,
+  COLS_HAVE_SUM_FOOTER,
+  COLS_HAVE_SELECT_INPUT,
+} from "./ConstantVariable";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
 import { renderDataEmpty } from "~utils/processing_data_table";
@@ -12,6 +16,7 @@ import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import styles from "./DonHang.module.scss";
 import { Popover } from "antd";
 import TableMaKH from "./TableMaKH";
+import OptionMau from "./OptionMau";
 
 const DonHang = ({ dataView, view }) => {
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
@@ -20,8 +25,31 @@ const DonHang = ({ dataView, view }) => {
     return renderDataEmpty(INFO_COLS_DONHANG, 1);
   });
 
+  console.log("dataTable: ", dataTable);
+
   const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
   const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
+
+  const [dataMau, setDataMau] = useState([]);
+
+  useEffect(() => {
+    // thay đổi khi thêm màu
+    fetch("http://localhost:8000/mau")
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        console.log("info: ", info);
+        let listMau = info.map(function (ob) {
+          return { label: ob.TENMAU, value: ob.MAMAU };
+        });
+        console.log("listMau: ", listMau);
+        setDataMau(listMau);
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+  }, []);
 
   useEffect(() => {
     let keys = Object.keys(rowSelectionMaKH);
@@ -146,15 +174,30 @@ const DonHang = ({ dataView, view }) => {
         key: INFO_COLS_DONHANG[obj]["key"].toLowerCase(),
       };
 
-      if (key === "TENMAUDE") {
-        info["editSelectOptions"] = [
-          "Màu đế - 1",
-          "Màu đế - 2",
-          "Màu đế - 3",
-          "Màu đế - 4",
-        ];
-        info["editVariant"] = "select";
+      if (COLS_HAVE_SELECT_INPUT.includes(key)) {
+        // info["editSelectOptions"] = dataMau;
+        // info["editVariant"] = "select";
+        // info["enableEditing"] = true;
+
+        //you can access a cell in many callback column definition options like this
+        info["Cell"] = ({ cell }) => {
+          console.log("Cell", cell);
+          return (
+            <>
+              <select
+                value={cell.getValue()}
+                onChange={(e) => {
+                  dataTable[cell.row.id][cell.column.id] = e.target.value;
+                  setDataTable([...dataTable]);
+                }}
+              >
+                <OptionMau dataMau={dataMau} />
+              </select>
+            </>
+          );
+        };
         info["enableEditing"] = true;
+        info["editVariant"] = "select";
       }
 
       if (key === "TENGIAY") info["Footer"] = () => <div>Tổng cộng</div>;

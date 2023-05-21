@@ -21,7 +21,6 @@ const DanhMucGiayKhachHang = ({
 
   useEffect(() => {
     if (id_khachhang !== "") {
-      // fetch("http://localhost:8000/giay/" + id_khachhang)
       fetch("http://localhost:8000/donhang/khachhang/" + id_khachhang + "/giay")
         .then((response) => {
           return response.json();
