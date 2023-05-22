@@ -43,7 +43,10 @@ const DonHang = ({ dataView, view }) => {
         let listMau = info.map(function (ob) {
           return { label: ob.TENMAU, value: ob.MAMAU };
         });
-        let listMauDefault = [{ null: "" }, { "": "" }];
+        let listMauDefault = [
+          { lable: "", value: null },
+          { label: "", value: "" },
+        ];
         setDataMau([...listMauDefault, ...listMau]);
       })
       .catch((err) => {
@@ -182,19 +185,30 @@ const DonHang = ({ dataView, view }) => {
         //you can access a cell in many callback column definition options like this
         info["Cell"] = ({ cell }) => {
           let _key = cell.row.id + "-" + cell.column.id;
-          console.log("_key", _key);
+          // console.log("_key", _key);
+          // return (
+          //   <>
+          //     <select
+          //       id={_key}
+          //       onChange={(e) => {
+          //         dataTable[cell.row.id][cell.column.id] = e.target.value;
+          //         setDataTable([...dataTable]);
+          //       }}
+          //     >
+          //       <OptionMau dataMau={dataMau} />
+          //     </select>
+          //   </>
+          // );
           return (
             <>
-              {/* <label for={_key}>{cell.getValue()}</label> */}
-              <select
-                id={_key}
-                onChange={(e) => {
-                  dataTable[cell.row.id][cell.column.id] = e.target.value;
+              <OptionMau
+                init={cell.getValue()}
+                dataMau={dataMau}
+                handleChange={(value) => {
+                  dataTable[cell.row.id][cell.column.id] = value;
                   setDataTable([...dataTable]);
                 }}
-              >
-                <OptionMau dataMau={dataMau} />
-              </select>
+              />
             </>
           );
         };
