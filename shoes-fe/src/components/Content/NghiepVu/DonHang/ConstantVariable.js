@@ -20,6 +20,12 @@ export const INFO_COLS_DONHANG = [
     enableEditing: true,
   },
   {
+    header: "Màu gót",
+    key: "MAUGOT",
+    width: 12 * rem_to_px,
+    enableEditing: true,
+  },
+  {
     header: "Màu sườn",
     key: "MAUSUON",
     width: 12 * rem_to_px,
@@ -86,55 +92,10 @@ export const COLS_HAVE_SUM_FOOTER = [
   "THANHTIEN",
 ];
 
-export const COLS_HAVE_SELECT_INPUT = ["MAUDE", "MAUSUON", "MAUCA", "MAUQUAI"];
-
-export const COL_GIAY_KHACHHANG = [
-  {
-    header: "Mã giày",
-    key: "MAGIAY",
-    width: 21 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Tên giày",
-    key: "TENGIAY",
-    width: 40 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Màu đế",
-    key: "MAUDE",
-    width: 12 * rem_to_px,
-    enableEditing: true,
-  },
-  {
-    header: "Màu gót",
-    key: "MAUGOT",
-    width: 12 * rem_to_px,
-    enableEditing: true,
-  },
-  {
-    header: "Màu sườn",
-    key: "MAUSUON",
-    width: 12 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Màu cá",
-    key: "MAUCA",
-    width: 12 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Màu quai",
-    key: "MAUQUAI",
-    width: 12 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Giá bán",
-    key: "DONGIA",
-    width: 24 * rem_to_px,
-    enableEditing: false,
-  },
+export const COLS_HAVE_SELECT_INPUT = [
+  "MAUDE",
+  "MAUGOT",
+  "MAUSUON",
+  "MAUCA",
+  "MAUQUAI",
 ];

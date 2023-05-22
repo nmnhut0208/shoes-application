@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import MaterialReactTable from "material-react-table";
 
 import { useTableContext, actions_table } from "~table_context";
-import { COL_GIAY_KHACHHANG } from "../ConstantVariable";
+import { COL_GIAY_KHACHHANG } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import styles from "./DanhMucGiayKhachHang.module.scss";
 

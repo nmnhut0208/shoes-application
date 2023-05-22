@@ -41,7 +41,12 @@ const OptionMau = ({ dataMau, handleChange, id_row, id_column, dataTable }) => {
   };
 
   return (
-    <div style={{ display: "inline-block", width: "100%", color: "red" }}>
+    <div
+      style={{
+        display: "inline-block",
+        width: "100%",
+      }}
+    >
       <List
         component="nav"
         aria-label="Device settings"
