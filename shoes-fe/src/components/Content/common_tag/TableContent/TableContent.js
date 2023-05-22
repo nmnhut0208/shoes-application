@@ -92,11 +92,27 @@ const TableContent = () => {
             // columnResizeMode="onChange" //default
             enableRowNumbers
             enableEditing
+            displayColumnDefOptions={{
+              "mrt-row-actions": {
+                size: 130, //set custom width
+                muiTableHeadCellProps: {
+                  align: "center", //change head cell props
+                },
+                enableResizing: true,
+              },
+              "mrt-row-numbers": {
+                size: 40,
+                enableColumnOrdering: true, //turn on some features that are usually off
+                enableResizing: true,
+              },
+            }}
             renderRowActions={({ row, table }) => (
               <Box
                 sx={{
                   display: "flex",
-                  gap: "1rem",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  gap: "2px",
                 }}
               >
                 <Tooltip arrow placement="right" title="Add">
