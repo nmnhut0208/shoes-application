@@ -202,7 +202,10 @@ const DonHang = ({ dataView, view }) => {
           return (
             <>
               <OptionMau
-                init={cell.getValue()}
+                init={dataTable[cell.row.id][cell.column.id]}
+                id_row={cell.row.id}
+                id_column={cell.column.id}
+                dataTable={dataTable}
                 dataMau={dataMau}
                 handleChange={(value) => {
                   dataTable[cell.row.id][cell.column.id] = value;

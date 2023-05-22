@@ -13,13 +13,13 @@ const MenuItemMau = ({ dataMau, handleMenuItemClick, selectedIndex }) => {
           //   selected={index === selectedIndex}
           onClick={(event) => handleMenuItemClick(event, index)}
         >
-          <ListItemText>
+          {/* <ListItemText>
             {option.value} - {option.label}
-          </ListItemText>
-          {/* <label>{option.label}</label> */}
-          {/* <Typography variant="body2" color="text.secondary">
+          </ListItemText> */}
+          <ListItemText>{option.value}</ListItemText>
+          <Typography variant="body2" color="text.secondary">
             {option.label}
-          </Typography> */}
+          </Typography>
         </MenuItem>
       ))}
     </>

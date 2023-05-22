@@ -20,9 +20,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItemMau from "./MenuItemMau";
 
-const OptionMau = ({ init, dataMau, handleChange }) => {
-  console.log("init: ", init);
-  const [valueShow, setValueShow] = useState(init);
+const OptionMau = ({ dataMau, handleChange, id_row, id_column, dataTable }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   // const [selectedIndex, setSelectedIndex] = useState(1);
   const open = Boolean(anchorEl);
@@ -34,7 +32,6 @@ const OptionMau = ({ init, dataMau, handleChange }) => {
     // setSelectedIndex(index);
     setAnchorEl(null);
     handleChange(dataMau[index]["value"]);
-    setValueShow(dataMau[index]["value"]);
     console.log("hello thu", index);
     console.log(dataMau[index]);
   };
@@ -44,7 +41,7 @@ const OptionMau = ({ init, dataMau, handleChange }) => {
   };
 
   return (
-    <div>
+    <div style={{ display: "inline-block", width: "100%", color: "red" }}>
       <List
         component="nav"
         aria-label="Device settings"
@@ -59,8 +56,7 @@ const OptionMau = ({ init, dataMau, handleChange }) => {
           onClick={handleClickListItem}
         >
           <ListItemText
-            style={{ display: "inline-block", width: "100%", color: "red" }}
-            primary={valueShow}
+            primary={dataTable[id_row][id_column]}
             // secondary={dataMau[selectedIndex]}
           />
         </ListItem>
