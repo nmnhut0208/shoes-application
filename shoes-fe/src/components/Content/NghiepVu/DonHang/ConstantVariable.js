@@ -15,25 +15,31 @@ export const INFO_COLS_DONHANG = [
   },
   {
     header: "Màu đế",
-    key: "TENMAUDE",
+    key: "MAUDE",
+    width: 12 * rem_to_px,
+    enableEditing: true,
+  },
+  {
+    header: "Màu gót",
+    key: "MAUGOT",
     width: 12 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Màu sườn",
-    key: "TENMAUSUON",
+    key: "MAUSUON",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Màu cá",
-    key: "TENMAUCA",
+    key: "MAUCA",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Màu quai",
-    key: "TENMAUQUAI",
+    key: "MAUQUAI",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
@@ -86,68 +92,10 @@ export const COLS_HAVE_SUM_FOOTER = [
   "THANHTIEN",
 ];
 
-export const COL_GIAY_KHACHHANG = [
-  {
-    header: "Mã giày",
-    key: "MAGIAY",
-    width: 21 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Tên giày",
-    key: "TENGIAY",
-    width: 40 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Màu đế",
-    key: "TENMAUDE",
-    width: 12 * rem_to_px,
-    enableEditing: true,
-  },
-  {
-    header: "Màu gót",
-    key: "TENMAUGOT",
-    width: 12 * rem_to_px,
-    enableEditing: true,
-  },
-  {
-    header: "Màu sườn",
-    key: "TENMAUSUON",
-    width: 12 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Màu cá",
-    key: "TENMAUCA",
-    width: 12 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Màu quai",
-    key: "TENMAUQUAI",
-    width: 12 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Giá bán",
-    key: "DONGIA",
-    width: 24 * rem_to_px,
-    enableEditing: false,
-  },
-];
-
-export const COL_KHACHHANG = [
-  {
-    header: "Mã khách hàng",
-    key: "MAKH",
-    width: 21 * rem_to_px,
-    enableEditing: false,
-  },
-  {
-    header: "Tên khách hàng",
-    key: "TENKH",
-    width: 40 * rem_to_px,
-    enableEditing: false,
-  },
+export const COLS_HAVE_SELECT_INPUT = [
+  "MAUDE",
+  "MAUGOT",
+  "MAUSUON",
+  "MAUCA",
+  "MAUQUAI",
 ];

@@ -3,47 +3,20 @@ import { useEffect, useState, useMemo } from "react";
 import {
   INFO_COLS_DONHANG,
   COLS_HAVE_SUM_FOOTER,
-  COL_KHACHHANG,
+  COLS_HAVE_SELECT_INPUT,
 } from "./ConstantVariable";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
-import {
-  renderDataEmpty,
-  processingInfoColumnTable,
-} from "~utils/processing_data_table";
+import { renderDataEmpty } from "~utils/processing_data_table";
 
 import TableDonHang from "./TableDonHang";
 import FormGiay from "./FormGiay";
 import FormMau from "./FormMau";
 import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import styles from "./DonHang.module.scss";
-import MaterialReactTable from "material-react-table";
 import { Popover } from "antd";
-
-let columns_kh = processingInfoColumnTable(COL_KHACHHANG);
-const TableMaKH = ({ data, rowSelection, setRowSelection }) => {
-  console.log("re-render sub table when hover", data);
-  return (
-    <div style={{ height: "auto" }}>
-      <MaterialReactTable
-        enableTopToolbar={false}
-        columns={columns_kh}
-        data={data}
-        // components
-        enableColumnActions={false}
-        enableSorting={false}
-        // enable phân trang
-        enablePagination={false}
-        enableBottomToolbar={true}
-        // row selection
-        enableMultiRowSelection={false}
-        enableRowSelection
-        onRowSelectionChange={setRowSelection}
-        state={{ rowSelection }}
-      />
-    </div>
-  );
-};
+import TableMaKH from "./TableMaKH";
+import OptionMau from "./OptionMau";
 
 const DonHang = ({ dataView, view }) => {
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
@@ -52,8 +25,34 @@ const DonHang = ({ dataView, view }) => {
     return renderDataEmpty(INFO_COLS_DONHANG, 1);
   });
 
+  console.log("dataTable: ", dataTable);
+
   const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
   const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
+
+  const [dataMau, setDataMau] = useState([]);
+
+  useEffect(() => {
+    // thay đổi khi thêm màu
+    fetch("http://localhost:8000/mau")
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        console.log("info: ", info);
+        let listMau = info.map(function (ob) {
+          return { label: ob.TENMAU, value: ob.MAMAU };
+        });
+        let listMauDefault = [
+          { lable: "", value: null },
+          { label: "", value: "" },
+        ];
+        setDataMau([...listMauDefault, ...listMau]);
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+  }, []);
 
   useEffect(() => {
     let keys = Object.keys(rowSelectionMaKH);
@@ -114,12 +113,13 @@ const DonHang = ({ dataView, view }) => {
   }, [dataView]);
 
   const [stateTable, dispatchTable] = useTableContext();
+  const [formInfoDonHang, setFormInfoDonHang] = useState({});
   const [infoFormWillShow, setInfoFormWillShow] = useState({
     giay: false,
     mau: false,
     dmGiaykh: false,
   });
-  const [formInfoDonHang, setFormInfoDonHang] = useState({});
+
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
@@ -177,15 +177,44 @@ const DonHang = ({ dataView, view }) => {
         key: INFO_COLS_DONHANG[obj]["key"].toLowerCase(),
       };
 
-      if (key === "TENMAUDE") {
-        info["editSelectOptions"] = [
-          "Màu đế - 1",
-          "Màu đế - 2",
-          "Màu đế - 3",
-          "Màu đế - 4",
-        ];
-        info["editVariant"] = "select";
-        info["enableEditing"] = true;
+      if (COLS_HAVE_SELECT_INPUT.includes(key)) {
+        // info["editSelectOptions"] = dataMau;
+        // info["editVariant"] = "select";
+        // info["enableEditing"] = true;
+
+        //you can access a cell in many callback column definition options like this
+        info["Cell"] = ({ cell }) => {
+          let _key = cell.row.id + "-" + cell.column.id;
+          // console.log("_key", _key);
+          // return (
+          //   <>
+          //     <select
+          //       id={_key}
+          //       onChange={(e) => {
+          //         dataTable[cell.row.id][cell.column.id] = e.target.value;
+          //         setDataTable([...dataTable]);
+          //       }}
+          //     >
+          //       <OptionMau dataMau={dataMau} />
+          //     </select>
+          //   </>
+          // );
+          return (
+            <>
+              <OptionMau
+                init={dataTable[cell.row.id][cell.column.id]}
+                id_row={cell.row.id}
+                id_column={cell.column.id}
+                dataTable={dataTable}
+                dataMau={dataMau}
+                handleChange={(value) => {
+                  dataTable[cell.row.id][cell.column.id] = value;
+                  setDataTable([...dataTable]);
+                }}
+              />
+            </>
+          );
+        };
       }
 
       if (key === "TENGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
@@ -317,6 +346,7 @@ const DonHang = ({ dataView, view }) => {
       {infoFormWillShow["dmGiaykh"] && (
         <Modal>
           <DanhMucGiayKhachHang
+            id_khachhang={formInfoDonHang["MAKH"]}
             dataOrigin={dataTable}
             setInfoSelection={setDataTable}
           />

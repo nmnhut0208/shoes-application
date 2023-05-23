@@ -1,11 +1,13 @@
 import pyodbc
 import pandas as pd
 
-conn = pyodbc.connect(driver="SQL Server", 
-                    #   server="MINH\SQLEXPRESS",
-                      server="DESKTOP-GT3LP7K\SQLEXPRESS",
+conn = pyodbc.connect(driver='{ODBC Driver 17 for SQL Server}',
+                      server="MINH\SQLEXPRESS",
+                        # server="DESKTOP-GT3LP7K\SQLEXPRESS",
                       database="PT",
-                      trusted_connection="yes")
+                      trusted_connection="yes",
+                      mars_connection="yes")
+
 cursor = conn.cursor()
 
 

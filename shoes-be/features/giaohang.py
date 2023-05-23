@@ -14,13 +14,14 @@ class GIAOHANG(BaseClass):
 GH = GIAOHANG()
 
 
-@router.get("/giaohang")
-def read() -> RESPONSE_GIAOHANG:
+@router.post("/giaohang")
+def read(data: dict) -> RESPONSE_GIAOHANG:
     # return KH.read()
     # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
-    sql = "SELECT SODH, NGAYDH, NGAYGH, DIENGIAIPHIEU, SUM(SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9) as SOLUONGCONLAI \
+    makh = data["MAKH"]
+    sql = f"SELECT SODH, NGAYDH, NGAYGH, DIENGIAIPHIEU, SUM(SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9) as SOLUONGCONLAI \
     FROM DONHANG \
-    where MAKH = 'THU' \
+    where MAKH = '{makh}' \
     GROUP BY SODH, MAKH, NGAYDH, NGAYGH, DIENGIAIPHIEU"
     return GH.read_custom(sql)
 
