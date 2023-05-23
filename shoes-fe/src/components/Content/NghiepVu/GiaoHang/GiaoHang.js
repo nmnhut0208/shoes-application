@@ -1,6 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
 import SubTable from "./SubTable";
 import styles from "./GiaoHang.module.scss";
+import { Popover } from "antd";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
+import MaterialReactTable from "material-react-table";
+import { rem_to_px } from "~config/ui";
 // import { Header } from "antd/es/layout/layout";
 
 const list_key = [
@@ -52,15 +56,92 @@ const COLS_HAVE_SUM_FOOTER = [
   "THANHTIEN",
 ];
 
+const COL_KHACHHANG = [
+  {
+    header: "Mã khách hàng",
+    key: "MAKH",
+    width: 21 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Tên khách hàng",
+    key: "TENKH",
+    width: 40 * rem_to_px,
+    enableEditing: false,
+  },
+];
+
+let columns_kh = processingInfoColumnTable(COL_KHACHHANG);
+const TableMaKH = ({ data, rowSelection, setRowSelection }) => {
+  console.log("re-render sub table when hover", data);
+  return (
+    <div style={{ height: "auto" }}>
+      <MaterialReactTable
+        enableTopToolbar={false}
+        columns={columns_kh}
+        data={data}
+        // components
+        enableColumnActions={false}
+        enableSorting={false}
+        // enable phân trang
+        enablePagination={false}
+        enableBottomToolbar={true}
+        // row selection
+        enableMultiRowSelection={false}
+        enableRowSelection
+        onRowSelectionChange={setRowSelection}
+        state={{ rowSelection }}
+      />
+    </div>
+  );
+};
+
 const GiaoHang = () => {
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
-  const test_makh = "THU";
+  // const test_makh = "THU";
+  const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
+  const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
+  const [infoKH, setInfoKH] = useState({});
 
   console.log("GiaoHang");
 
   useEffect(() => {
+    let keys = Object.keys(rowSelectionMaKH);
+    if (keys.length > 0) {
+      // setFormInfoDonHang({
+      //   ...formInfoDonHang,
+      //   MAKH: dataTableKhachHang[keys[0]]["MAKH"],
+      //   TENKH: dataTableKhachHang[keys[0]]["TENKH"],
+      // });
+      const info = {
+        MAKH: dataTableKhachHang[keys[0]]["MAKH"],
+        TENKH: dataTableKhachHang[keys[0]]["TENKH"],
+      };
+      setInfoKH(info);
+    }
+  }, [rowSelectionMaKH]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/khachhang")
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        console.log("info khach hang: ", info);
+        setDataTableKhachHang(info);
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log("info kh: ", infoKH["MAKH"]);
+    if (infoKH["MAKH"] == undefined) {
+      return;
+    }
     const keys = Object.keys(rowSelection);
     // console.log("keys row: ", dataTable[keys[0]]);
     let data = [];
@@ -77,13 +158,13 @@ const GiaoHang = () => {
     }
     const send_data = {
       sodh: data,
-      makh: test_makh,
+      makh: infoKH["MAKH"],
     };
     if (data.length === 0) {
       setDataTableSub([]);
       return;
     }
-    fetch("http://localhost:8000/giaohang/" + test_makh, {
+    fetch("http://localhost:8000/giaohang/" + infoKH["MAKH"], {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -128,7 +209,16 @@ const GiaoHang = () => {
   }, [dataTableSub]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/giaohang")
+    if (infoKH["MAKH"] == undefined) {
+      return;
+    }
+    fetch("http://localhost:8000/giaohang", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(infoKH),
+    })
       .then((response) => {
         return response.json();
       })
@@ -138,7 +228,7 @@ const GiaoHang = () => {
       .catch((err) => {
         console.log(":error: ", err);
       });
-  }, []);
+  }, [infoKH]);
 
   return (
     <div className={styles.container}>
@@ -147,8 +237,28 @@ const GiaoHang = () => {
           <label className={styles.title}>Đơn hàng</label>
           <div className={styles.left_row}>
             <label>Khách hàng</label>
-            <input type="text" className={styles.small} value={test_makh} />
-            <input type="text" className={styles.medium} />
+            {/* <input type="text" className={styles.small} value={test_makh} /> */}
+            <Popover
+              placement="bottomLeft"
+              content={
+                <TableMaKH
+                  data={dataTableKhachHang}
+                  rowSelection={rowSelectionMaKH}
+                  setRowSelection={setRowSelectionMaKH}
+                />
+              }
+            >
+              <input
+                name="MAKH"
+                value={infoKH["MAKH"]}
+                // onChange={(e) => setFormInfoDonHang(e)}
+              />
+            </Popover>
+            <input
+              type="text"
+              className={styles.medium}
+              value={infoKH["TENKH"]}
+            />
           </div>
         </div>
         <div className={styles.right}>

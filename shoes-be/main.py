@@ -18,6 +18,7 @@ from features.got import router as router_got
 from features.quai import router as router_quai
 from features.khachhang import router as router_khachhang
 from features.giaohang import router as router_giaohang
+from features.chamcong import router as router_chamcong
 
 app = FastAPI()
 
@@ -69,3 +70,6 @@ app.include_router(
 
 app.include_router(
     router_giaohang, tags=["Giao Hàng"])
+
+app.include_router(
+    router_chamcong, tags=["Chấm Công"])

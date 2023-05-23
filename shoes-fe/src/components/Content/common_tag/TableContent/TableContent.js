@@ -85,6 +85,10 @@ const TableContent = () => {
           <MaterialReactTable
             columns={inforShowTable.infoColumnTable}
             data={inforShowTable.infoTable}
+            displayColumnDefOptions={{
+              "mrt-row-actions": { size: 120 },
+              "mrt-row-numbers": { size: 60 },
+            }}
             components
             autoResetPageIndex={false}
             // resize width of each column
@@ -96,7 +100,9 @@ const TableContent = () => {
               <Box
                 sx={{
                   display: "flex",
-                  gap: "1rem",
+                  // gap: "2px",
+                  // flexWrap: "wrap",
+                  justifyContent: "center",
                 }}
               >
                 <Tooltip arrow placement="right" title="Add">

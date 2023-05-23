@@ -6,6 +6,7 @@ const SubTable = ({
   columns,
   data,
   rowSelection,
+  flag_rowSelection,
   setRowSelection,
   maxHeight,
 }) => {
@@ -19,7 +20,8 @@ const SubTable = ({
       enableColumnActions={false}
       enableSorting={false}
       enableSelectAll={false}
-      enableRowSelection
+      enableMultiRowSelection={false}
+      enableRowSelection={flag_rowSelection}
       //   getRowId={(row) => row.userId}
       onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
       state={{ rowSelection }}

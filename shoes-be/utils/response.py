@@ -50,12 +50,19 @@ class RESPONSE_SUON(BaseModel):
     TENMUI: str
     GHICHU: str
 
+
 class RESPONSE_GIAOHANG(BaseModel):
     SODH: str
     NGAYDH: str
     NGAYGH: str
     DIENGIAIPHIEU: str
     SOLUONGCONLAI: str
+
+
+class RESPONSE_CHAMCONG(BaseModel):
+    phieupc: str
+    NgayPhieu: str
+    DienGiai: str
 
 
 class RESPONSE(BaseModel):
