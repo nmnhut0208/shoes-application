@@ -5,6 +5,7 @@ from utils.response import *
 
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime
 
 
 class ITEM_DONHANG(BaseModel):
@@ -78,7 +79,28 @@ def read(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
             LEFT JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay
             WHERE DONHANG.MAKH='{}'
             """.format(MAKH)
-    return donhang.read_custom(sql)
+    
+    start = datetime.now()
+    result = donhang.read_custom(sql)
+    print("khachhang: ", datetime.now()-start)
+    return result
 
 
+@router.get("/donhang/khachhangnhanh/{MAKH}/giay")
+def read_quickly(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
+    sql = """SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+                    MAUDE,MAUGOT, 
+                    MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH, 
+                    V_GIAY.DONGIA, V_GIAY.DONGIAQUAI, 
+                    V_GIAY.TENCA, V_GIAY.TENKH
+            FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT, 
+		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH 
+                from DONHANG WHERE DONHANG.MAKH='{}') AS DONHANG
+            LEFT JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay
+            """.format(MAKH)
+    
+    start = datetime.now()
+    result = donhang.read_custom(sql)
+    print("khachhangnhanh: ", datetime.now()-start)
+    return result
 
