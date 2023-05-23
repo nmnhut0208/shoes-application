@@ -101,7 +101,7 @@ const TableContent = () => {
                 enableResizing: true,
               },
               "mrt-row-numbers": {
-                size: 40,
+                size: 60,
                 enableColumnOrdering: true, //turn on some features that are usually off
                 enableResizing: true,
               },
@@ -110,9 +110,7 @@ const TableContent = () => {
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "row",
                   justifyContent: "center",
-                  gap: "2px",
                 }}
               >
                 <Tooltip arrow placement="right" title="Add">

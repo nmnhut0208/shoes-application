@@ -10,11 +10,11 @@ import {
 
 const list_key = [
   // { key: "STT", width: "7rem" },
-  { header: "Mã Cá", key: "MACA", width: "21rem" },
-  { header: "Tên Cá", key: "TENCA", width: "21rem" },
-  { header: "Mã Mũi", key: "MAMUI", width: "21rem" },
-  { header: "Tên Mũi", key: "TENMUI", width: "21rem" },
-  { header: "Ghi chú", key: "GHICHU", width: "21rem" },
+  { header: "Mã Cá", key: "MACA", width: "100px" },
+  { header: "Tên Cá", key: "TENCA", width: "100px" },
+  { header: "Mã Mũi", key: "MAMUI", width: "100px" },
+  { header: "Tên Mũi", key: "TENMUI", width: "100px" },
+  { header: "Ghi chú", key: "GHICHU", width: "100px" },
 ];
 
 const infoColumns = [];

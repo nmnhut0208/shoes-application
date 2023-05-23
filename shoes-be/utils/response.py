@@ -52,12 +52,19 @@ class RESPONSE_SUON(BaseModel):
     GHICHU: Optional[str] = None
     HINHANH: Optional[str] = None
 
+
 class RESPONSE_GIAOHANG(BaseModel):
     SODH: str
     NGAYDH: str
     NGAYGH: str
     DIENGIAIPHIEU: str
     SOLUONGCONLAI: str
+
+
+class RESPONSE_CHAMCONG(BaseModel):
+    phieupc: str
+    NgayPhieu: str
+    DienGiai: str
 
 
 class RESPONSE(BaseModel):
