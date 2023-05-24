@@ -45,7 +45,7 @@ export const COL_GIAY_KHACHHANG = [
   },
   {
     header: "Giá bán",
-    key: "DONGIA",
+    key: "GIABAN",
     width: 15 * rem_to_px,
     enableEditing: false,
   },

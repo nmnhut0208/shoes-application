@@ -8,6 +8,7 @@ const TableDonHang = ({ columns, data, setDataTable, handleAddGiay, view }) => {
   const handleSaveCell = (cell, value) => {
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
     var row_current = data[cell.row.index];
+    // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
     // Tính lại số lượng
     var list_size = ["SIZE5", "SIZE6", "SIZE7", "SIZE8", "SIZE9", "SIZE0"];
     if (list_size.includes(cell.column.id)) {
