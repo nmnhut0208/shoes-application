@@ -9,7 +9,7 @@ from datetime import datetime
 
 
 class ITEM_DONHANG(BaseModel):
-    MADONG: str
+    # MADONG: str
     MADH: str
     SODH: str
     MAKH: str
@@ -26,10 +26,11 @@ class ITEM_DONHANG(BaseModel):
     GIABAN: int
     THANHTIEN: int
     DIENGIAIDONG: str
-    # NGUOITAO: str
-    # NGAYTAO: str
-    # NGUOISUA: str
-    # NGAYSUA: str
+    # TODO: edit type of datetime 
+    NGUOITAO: str
+    NGAYTAO: str
+    NGUOISUA: str
+    NGAYSUA: str
     MAUDE: str
     MAUGOT: str
     MAUSUON: str
@@ -40,6 +41,10 @@ class ITEM_DONHANG(BaseModel):
     INHIEU: Optional[str] = None
     TRANGTRI: Optional[str] = None
     GHICHU: Optional[str] = None
+
+
+class LIST_ITEM_DONHANG(BaseModel):
+    items: List[ITEM_DONHANG]
 
 
 class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
@@ -103,4 +108,38 @@ def read_quickly(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     result = donhang.read_custom(sql)
     print("khachhangnhanh: ", datetime.now()-start)
     return result
+
+
+# @router.post("/donhang")
+# def add(data: LIST_ITEM_DONHANG) -> RESPONSE:
+#     print("data: ", data)
+#     data_0 = dict(data[0])
+#     col = []
+#     vals = []
+#     for k, v in data_0.items():
+#         col.append(k)
+
+#     for i in range(len(data)):
+#         _v = []
+#         _data = dict(data[i])
+#         for v in _data.values():
+#             if v is not None:
+#                 _v.append(f"'{v}'")
+#             else:
+#                 _v.append("'NULL'")
+
+#         vals.append("({})".format(",".join(v)))
+
+#     col = " ,".join(col)
+#     vals = " ,".join(vals)
+#     return donhang.add(col, vals)
+
+class ITEM_TEST(BaseModel):
+    ID: str
+
+@router.post("/donhanghaha")
+def test(data: List[ITEM_TEST]):
+    print(data)
+    return "10"
+
 

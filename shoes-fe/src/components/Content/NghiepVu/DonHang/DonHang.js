@@ -31,6 +31,19 @@ const DonHang = ({ dataView, view }) => {
   const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
 
   const [dataMau, setDataMau] = useState([]);
+  const [isSavedData, setIsSavedData] = useState(false);
+  // TODO: note lại trạng thái của page, đã save thông tin page hiện tại chưa
+  // nếu save rồi thì thay đổi trạng thái hiện tại thành show
+  // xem lại thử logic này cần ko
+  const [stateTable, dispatchTable] = useTableContext();
+  // TODO: nguoi tao lay theo user
+  const [formInfoDonHang, setFormInfoDonHang] = useState({ NGUOITAO: "thu" });
+  const [infoFormWillShow, setInfoFormWillShow] = useState({
+    giay: false,
+    mau: false,
+    dmGiaykh: false,
+  });
+  console.log("formInfoDonHang: ", formInfoDonHang);
 
   useEffect(() => {
     // thay đổi khi thêm màu
@@ -112,15 +125,6 @@ const DonHang = ({ dataView, view }) => {
     }
   }, [dataView]);
 
-  const [stateTable, dispatchTable] = useTableContext();
-  const [formInfoDonHang, setFormInfoDonHang] = useState({});
-  const [infoFormWillShow, setInfoFormWillShow] = useState({
-    giay: false,
-    mau: false,
-    dmGiaykh: false,
-  });
-  console.log("formInfoDonHang: ", formInfoDonHang);
-
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
@@ -167,13 +171,27 @@ const DonHang = ({ dataView, view }) => {
     if (dataDatHang.length == 0) {
       alert("Bạn chưa đặt hàng hoặc chưa chọn số lượng mỗi loại giày cần đặt!");
       return;
+    } else {
+      // send API to save database
+      // insert list
+      // update lại flag nào để để biết mã đơn hàng này đã được lưu
+      // để lỡ chú lưu rồi lại lưu tiếp
+      // SODH: đã lưu => true
+      // check lại trước khi lưu
+      console.log("dataDatHang haha: ", dataDatHang);
+      console.log("JSON.stringify(dataDatHang): ", JSON.stringify(dataDatHang));
+      fetch("http://localhost:8000/donhang", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: { data: JSON.stringify(dataDatHang) },
+      })
+        .then((response) => {
+          console.log("response: ", response);
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
     }
-    // send API to save database
-    // insert list
-    // update lại flag nào để để biết mã đơn hàng này đã được lưu
-    // để lỡ chú lưu rồi lại lưu tiếp
-    // SODH: đã lưu => true
-    // check lại trước khi lưu
   };
 
   const handleClickMaGiay = () => {
@@ -202,27 +220,8 @@ const DonHang = ({ dataView, view }) => {
       };
 
       if (COLS_HAVE_SELECT_INPUT.includes(key)) {
-        // info["editSelectOptions"] = dataMau;
-        // info["editVariant"] = "select";
-        // info["enableEditing"] = true;
-
         //you can access a cell in many callback column definition options like this
         info["Cell"] = ({ cell }) => {
-          let _key = cell.row.id + "-" + cell.column.id;
-          // console.log("_key", _key);
-          // return (
-          //   <>
-          //     <select
-          //       id={_key}
-          //       onChange={(e) => {
-          //         dataTable[cell.row.id][cell.column.id] = e.target.value;
-          //         setDataTable([...dataTable]);
-          //       }}
-          //     >
-          //       <OptionMau dataMau={dataMau} />
-          //     </select>
-          //   </>
-          // );
           return (
             <>
               <OptionMau
