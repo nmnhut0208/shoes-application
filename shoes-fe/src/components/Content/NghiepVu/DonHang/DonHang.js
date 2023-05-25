@@ -37,7 +37,13 @@ const DonHang = ({ dataView, view }) => {
   // xem lại thử logic này cần ko
   const [stateTable, dispatchTable] = useTableContext();
   // TODO: nguoi tao lay theo user
-  const [formInfoDonHang, setFormInfoDonHang] = useState({ NGUOITAO: "thu" });
+  const [formInfoDonHang, setFormInfoDonHang] = useState({
+    // TODO: edit information edit pages
+    NGUOITAO: "thu",
+    DIENGIAIPHIEU: "",
+    NGAYDH: "",
+    NGAYGH: "",
+  });
   const [infoFormWillShow, setInfoFormWillShow] = useState({
     giay: false,
     mau: false,
@@ -183,7 +189,7 @@ const DonHang = ({ dataView, view }) => {
       fetch("http://localhost:8000/donhang", {
         method: "post",
         headers: { "Content-Type": "application/json" },
-        body: { data: JSON.stringify(dataDatHang) },
+        body: JSON.stringify(dataDatHang),
       })
         .then((response) => {
           console.log("response: ", response);

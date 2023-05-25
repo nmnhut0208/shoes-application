@@ -86,4 +86,4 @@ const OptionMau = ({ dataMau, handleChange, id_row, id_column, dataTable }) => {
   );
 };
 
-export default OptionMau;
+export default memo(OptionMau);

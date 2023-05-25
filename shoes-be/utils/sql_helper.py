@@ -22,11 +22,21 @@ def read_sql_custom(sql: str) -> pd.DataFrame:
     return df
 
 
+def execute_custom(sql: str) -> pd.DataFrame:
+    cursor.execute(sql)
+    conn.commit()
+
+
 def insert_sql(tbn: str, col: str, val: str) -> None:
     sql = f"INSERT INTO {tbn} ({col}) VALUES ({val})"
     cursor.execute(sql)
     conn.commit()
 
+
+def insert_many_records_sql(tbn: str, col: str, val: str) -> None:
+    sql = f"INSERT INTO {tbn} ({col}) VALUES {val}"
+    cursor.execute(sql)
+    conn.commit()
 
 def update_sql(tbn: str, val: str, condition: str) -> None:
     sql = f"UPDATE {tbn} SET {val} WHERE {condition}"
