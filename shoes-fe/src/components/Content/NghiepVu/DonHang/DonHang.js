@@ -288,7 +288,8 @@ const DonHang = ({ dataView, view }) => {
                   name="MAKH"
                   value={formInfoDonHang["MAKH"]}
                   onChange={(e) => handleChangeForm(e)}
-                  readOnly={view}
+                  readOnly={true}
+                  // readOnly={view}
                 />
               </Popover>
               <input readOnly={true} value={formInfoDonHang["TENKH"]} />
@@ -334,6 +335,7 @@ const DonHang = ({ dataView, view }) => {
             <div className={styles.pair}>
               <label className={styles.label_for_textatea}>Diễn dãi</label>
               <textarea
+                name="DIENGIAIPHIEU"
                 value={formInfoDonHang["DIENGIAIPHIEU"]}
                 onChange={(e) => handleChangeForm(e)}
                 readOnly={view}
