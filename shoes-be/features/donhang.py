@@ -130,7 +130,8 @@ def save_info_primary_key(key, year, value):
 
 
 @router.get("/donhang/SODH")
-def find_info_SODH(today):
+def find_info_SODH():
+    today = datetime.now()
     year = today.year
     month = str(today.month).zfill(2)
     sql = f"""select *
@@ -148,7 +149,7 @@ def find_info_SODH(today):
     
     number_string = str(lastnumber).zfill(4)
     SODH = f"DH-{number_string}-{month}/{year}"
-    return SODH
+    return {"SODH": SODH}
 
 
 # @router.post("/donhang")

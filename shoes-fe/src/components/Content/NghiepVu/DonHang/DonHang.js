@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import moment from "moment";
 
 import {
   INFO_COLS_DONHANG,
@@ -36,14 +37,15 @@ const DonHang = ({ dataView, view }) => {
   // nếu save rồi thì thay đổi trạng thái hiện tại thành show
   // xem lại thử logic này cần ko
   const [stateTable, dispatchTable] = useTableContext();
-  // TODO: nguoi tao lay theo user
   const [formInfoDonHang, setFormInfoDonHang] = useState({
     // TODO: edit information edit pages
+    SODH: "",
     NGUOITAO: "thu",
     DIENGIAIPHIEU: "",
     NGAYDH: "",
     NGAYGH: "",
   });
+
   const [infoFormWillShow, setInfoFormWillShow] = useState({
     giay: false,
     mau: false,
@@ -84,6 +86,28 @@ const DonHang = ({ dataView, view }) => {
     }
   }, [rowSelectionMaKH]);
 
+  const updateFormDonHang = () => {
+    fetch("http://localhost:8000/donhang/SODH")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(":data: ", data);
+        let today = moment().format("DD-MM-YYYY");
+        console.log("today: ", today);
+        let sodh = data["SODH"];
+        setFormInfoDonHang({
+          ...formInfoDonHang,
+          SODH: sodh,
+          NGAYDH: moment().format("DD-MM-YYYY"),
+          NGAYGH: moment().add(5, "d").format("DD-MM-YYYY"),
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     fetch("http://localhost:8000/khachhang")
       .then((response) => {
@@ -95,6 +119,7 @@ const DonHang = ({ dataView, view }) => {
       .catch((err) => {
         console.log(":error: ", err);
       });
+    updateFormDonHang();
   }, []);
 
   // lúc đầu render form với ID Đơn hàng tự gen
@@ -105,6 +130,10 @@ const DonHang = ({ dataView, view }) => {
   // query thông tin => show => để user có thể chỉnh sửa khi lỡ nhập đơn hàng sai
   // hay nên để chức năng sửa lúc truy vấn luôn ta @@
   // thì khỏi làm thêm việc này
+
+  const convertDate = (date) => {
+    return moment(date, "DD-MM-YYYY").format("YYYY-MM-DD");
+  };
 
   useEffect(() => {
     if (view) {
@@ -162,6 +191,7 @@ const DonHang = ({ dataView, view }) => {
     // Render lại số đơn hàng
     // Reset lại hết những thông tin hiện có
     // để chú nhận đơn hàng mới
+    updateFormDonHang();
     setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
   };
 
@@ -267,7 +297,7 @@ const DonHang = ({ dataView, view }) => {
                 name="SODH"
                 value={formInfoDonHang["SODH"]}
                 onChange={(e) => handleChangeForm(e)}
-                readOnly={view}
+                readOnly={true}
               />
             </div>
           </div>
@@ -315,7 +345,7 @@ const DonHang = ({ dataView, view }) => {
               <input
                 type="date"
                 name="NGAYDH"
-                value={formInfoDonHang["NGAYDH"]}
+                value={convertDate(formInfoDonHang["NGAYDH"])}
                 onChange={(e) => handleChangeForm(e)}
                 readOnly={view}
               />
@@ -325,7 +355,7 @@ const DonHang = ({ dataView, view }) => {
               <input
                 type="date"
                 name="NGAYGH"
-                value={formInfoDonHang["NGAYGH"]}
+                value={convertDate(formInfoDonHang["NGAYGH"])}
                 onChange={(e) => handleChangeForm(e)}
                 readOnly={view}
               />
