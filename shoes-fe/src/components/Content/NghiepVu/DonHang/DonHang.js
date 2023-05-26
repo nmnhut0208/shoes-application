@@ -87,7 +87,7 @@ const DonHang = ({ dataView, view }) => {
   }, [rowSelectionMaKH]);
 
   const updateFormDonHang = () => {
-    fetch("http://localhost:8000/donhang/SODH")
+    fetch("http://localhost:8000/hethong/donhang/SODH")
       .then((response) => {
         return response.json();
       })

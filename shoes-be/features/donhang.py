@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from features.hethong import find_info_primary_key, save_info_primary_key
 
 from pydantic import BaseModel
 from typing import Optional
@@ -105,51 +106,52 @@ def read_quickly(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     return result
 
 
-def find_info_primary_key(key, today):
-    year = today.year
-    sql = f"""select *
-            from V1T4444
-            Where TABLENAME='DONHANG'
-            and KEYSTRING = '{key}{year}'"""
-    data = donhang.read_custom(sql)
-    lastnumber = 1
-    if len(data) == 0:
-        sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-                        VALUES ('DONHANG', '{key}{year}', {lastnumber})"""
-        donhang.execute_custom(sql_insert)
-    else:
-        lastnumber = data[0]['LASTKEY']
-    return lastnumber
+# def find_info_primary_key(key, today):
+#     year = today.year
+#     sql = f"""select *
+#             from V1T4444
+#             Where TABLENAME='DONHANG'
+#             and KEYSTRING = '{key}{year}'"""
+#     data = donhang.read_custom(sql)
+#     lastnumber = 1
+#     if len(data) == 0:
+#         sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
+#                         VALUES ('DONHANG', '{key}{year}', {lastnumber})"""
+#         donhang.execute_custom(sql_insert)
+#     else:
+#         lastnumber = data[0]['LASTKEY']
+#     return lastnumber
 
-def save_info_primary_key(key, year, value):
-    sql_insert = f"""UPDATE V1T4444 
-                    SET LASTKEY = {value}
-                    WHERE TABLENAME = 'DONHANG'
-                    AND KEYSTRING = '{key}{year}'"""
-    donhang.execute_custom(sql_insert)
+# def save_info_primary_key(key, year, value):
+#     sql_insert = f"""UPDATE V1T4444 
+#                     SET LASTKEY = {value}
+#                     WHERE TABLENAME = 'DONHANG'
+#                     AND KEYSTRING = '{key}{year}'"""
+#     donhang.execute_custom(sql_insert)
 
 
-@router.get("/donhang/SODH")
-def find_info_SODH():
-    today = datetime.now()
-    year = today.year
-    month = str(today.month).zfill(2)
-    sql = f"""select *
-            from V1T4444
-            Where TABLENAME='DONHANG'
-            and KEYSTRING = 'DH--{month}/{year}'"""
-    data = donhang.read_custom(sql)
-    lastnumber = 1
-    if len(data) == 0:
-        sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-                    VALUES ('DONHANG', 'DH--{month}/{year}', {lastnumber})"""
-        donhang.execute_custom(sql_insert)
-    else:
-        lastnumber = data[0]['LASTKEY']
+# @router.get("/donhang/SODH")
+# def find_info_SODH():
+#     today = datetime.now()
+#     year = str(today.year)[1:]
+#     print("year: ", year)
+#     month = str(today.month).zfill(2)
+#     sql = f"""select *
+#             from V1T4444
+#             Where TABLENAME='DONHANG'
+#             and KEYSTRING = 'DH--{month}/{year}'"""
+#     data = donhang.read_custom(sql)
+#     lastnumber = 1
+#     if len(data) == 0:
+#         sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
+#                     VALUES ('DONHANG', 'DH--{month}/{year}', {lastnumber})"""
+#         donhang.execute_custom(sql_insert)
+#     else:
+#         lastnumber = data[0]['LASTKEY']
     
-    number_string = str(lastnumber).zfill(4)
-    SODH = f"DH-{number_string}-{month}/{year}"
-    return {"SODH": SODH}
+#     number_string = str(lastnumber).zfill(4)
+#     SODH = f"DH-{number_string}-{month}/{year}"
+#     return {"SODH": SODH}
 
 
 # @router.post("/donhang")
@@ -227,12 +229,6 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
     save_info_primary_key("MD", year, MADONG)
     return 1
 
-# class ITEM_TEST(BaseModel):
-#     ID: int
 
-# @router.post("/donhanghaha")
-# def test(data: List[ITEM_TEST]):
-#     print(dict(data[0]))
-#     return "10"
 
 
