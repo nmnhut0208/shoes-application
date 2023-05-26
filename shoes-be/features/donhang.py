@@ -2,7 +2,8 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
-from features.hethong import find_info_primary_key, save_info_primary_key
+from features.hethong import (find_info_primary_key_DONHANG, 
+                              save_info_primary_key_DONHANG)
 
 from pydantic import BaseModel
 from typing import Optional
@@ -106,60 +107,12 @@ def read_quickly(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     return result
 
 
-# def find_info_primary_key(key, today):
-#     year = today.year
-#     sql = f"""select *
-#             from V1T4444
-#             Where TABLENAME='DONHANG'
-#             and KEYSTRING = '{key}{year}'"""
-#     data = donhang.read_custom(sql)
-#     lastnumber = 1
-#     if len(data) == 0:
-#         sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-#                         VALUES ('DONHANG', '{key}{year}', {lastnumber})"""
-#         donhang.execute_custom(sql_insert)
-#     else:
-#         lastnumber = data[0]['LASTKEY']
-#     return lastnumber
-
-# def save_info_primary_key(key, year, value):
-#     sql_insert = f"""UPDATE V1T4444 
-#                     SET LASTKEY = {value}
-#                     WHERE TABLENAME = 'DONHANG'
-#                     AND KEYSTRING = '{key}{year}'"""
-#     donhang.execute_custom(sql_insert)
-
-
-# @router.get("/donhang/SODH")
-# def find_info_SODH():
-#     today = datetime.now()
-#     year = str(today.year)[1:]
-#     print("year: ", year)
-#     month = str(today.month).zfill(2)
-#     sql = f"""select *
-#             from V1T4444
-#             Where TABLENAME='DONHANG'
-#             and KEYSTRING = 'DH--{month}/{year}'"""
-#     data = donhang.read_custom(sql)
-#     lastnumber = 1
-#     if len(data) == 0:
-#         sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-#                     VALUES ('DONHANG', 'DH--{month}/{year}', {lastnumber})"""
-#         donhang.execute_custom(sql_insert)
-#     else:
-#         lastnumber = data[0]['LASTKEY']
-    
-#     number_string = str(lastnumber).zfill(4)
-#     SODH = f"DH-{number_string}-{month}/{year}"
-#     return {"SODH": SODH}
-
-
 # @router.post("/donhang")
 # def add(data: ITEM_DONHANG) -> RESPONSE:
 #     today = datetime.now()
 #     year = today.year
-#     MADONG = find_info_primary_key("MD", today) + 1
-#     DH = find_info_primary_key("DH", today) + 1
+#     MADONG = find_info_primary_key_DONHANG("MD", today) + 1
+#     DH = find_info_primary_key_DONHANG("DH", today) + 1
 #     MADH = f"DH{year}{str(DH).zfill(12)}"
 #     data = dict(data)
 #     data["NGAYTAO"] = today.strftime("%Y-%m-%d %H:%M:%S")
@@ -182,20 +135,16 @@ def read_quickly(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
 def add(data: List[ITEM_DONHANG]) -> RESPONSE:
     print("ITEM_DONHANG: ", ITEM_DONHANG)
     print("data: ", data)
-    data_0 = dict(data[0])
     col = []
     vals = []
 
     # find common information
     today = datetime.now()
     year = today.year
-    MADONG = find_info_primary_key("MD", today)
-    DH = find_info_primary_key("DH", today) + 1
+    MADONG = find_info_primary_key_DONHANG("MD", today)
+    DH = find_info_primary_key_DONHANG("DH", today) + 1
     MADH = f"DH{year}{str(DH).zfill(12)}"
     day_created = today.strftime("%Y-%m-%d %H:%M:%S")
-
-    # for k, v in data_0.items():
-    #     col.append(k)
 
     for i in range(len(data)):
         _v = []
@@ -225,8 +174,8 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
     vals = " ,".join(vals)
     print("vals: ", vals)
     # lưu lại thông tin mã dòng và mã đơn hàng 
-    save_info_primary_key("DH", year, DH)
-    save_info_primary_key("MD", year, MADONG)
+    save_info_primary_key_DONHANG("DH", year, DH)
+    save_info_primary_key_DONHANG("MD", year, MADONG)
     return 1
 
 

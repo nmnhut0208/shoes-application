@@ -6,7 +6,8 @@ conn = pyodbc.connect(driver='{ODBC Driver 17 for SQL Server}',
                       server="DESKTOP-GT3LP7K\SQLEXPRESS",
                       database="PT",
                       trusted_connection="yes",
-                      mars_connection="yes")
+                      mars_connection="yes"
+                      )
 
 cursor = conn.cursor()
 
@@ -29,6 +30,7 @@ def execute_custom(sql: str) -> pd.DataFrame:
 
 def insert_sql(tbn: str, col: str, val: str) -> None:
     sql = f"INSERT INTO {tbn} ({col}) VALUES ({val})"
+    print("sql: ", sql)
     cursor.execute(sql)
     conn.commit()
 

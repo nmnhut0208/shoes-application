@@ -21,7 +21,7 @@ class ITEM_HETHONG(BaseModel):
 hethong = HETHONG()
 
 
-def find_info_primary_key(key, today):
+def find_info_primary_key_DONHANG(key, today):
     year = today.year
     sql = f"""select *
             from V1T4444
@@ -38,7 +38,7 @@ def find_info_primary_key(key, today):
     return lastnumber
 
 
-def save_info_primary_key(key, year, value):
+def save_info_primary_key_DONHANG(key, year, value):
     sql_insert = f"""UPDATE V1T4444 
                     SET LASTKEY = {value}
                     WHERE TABLENAME = 'DONHANG'
@@ -63,17 +63,16 @@ def find_info_SODH():
                     VALUES ('DONHANG', 'DH--{month}/{year}', {lastnumber})"""
         hethong.execute_custom(sql_insert)
     else:
-        lastnumber = data[0]['LASTKEY']
+        lastnumber = data[0]['LASTKEY'] + 1
 
     number_string = str(lastnumber).zfill(4)
     SODH = f"DH-{number_string}-{month}/{year}"
-    return {"SODH": SODH}
+    return {"SODH": SODH, "LastestDH": lastnumber}
 
 
 @router.put("/hethong/donhang/SODH")
-def update_info_SODH(data: ITEM_HETHONG):
-    print("sodh: ", data)
-    sodh = data.LASTNUMBER + 1
+def update_info_SODH(data: ITEM_HETHONG) -> RESPONSE:
+    sodh = data.LASTNUMBER
     today = datetime.now()
     month = str(today.month).zfill(2)
     year = str(today.year)[2:]
@@ -81,6 +80,5 @@ def update_info_SODH(data: ITEM_HETHONG):
                      SET LASTKEY = {sodh}
                      WHERE TABLENAME = 'DONHANG'
                      AND KEYSTRING = 'DH--{month}/{year}'"""
-    hethong.execute_custom(sql_insert)
-    return {"status": 200}
+    return hethong.execute_custom(sql_insert)
 

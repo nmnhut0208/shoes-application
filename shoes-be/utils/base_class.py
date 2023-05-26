@@ -15,6 +15,7 @@ class BaseClass:
     
     def execute_custom(self, sql: str):
         execute_custom(sql)
+        return {"status": "success"}
         
 
     def add(self, col: str, val: str):

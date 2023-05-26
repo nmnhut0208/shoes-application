@@ -19,6 +19,59 @@ import { Popover } from "antd";
 import TableMaKH from "./TableMaKH";
 import OptionMau from "./OptionMau";
 
+const updateSODH = (sodh) => {
+  console.log("save so don hang");
+  fetch("http://localhost:8000/hethong/donhang/SODH", {
+    method: "put",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ LASTNUMBER: sodh }),
+  }).catch((error) => {
+    console.log("error: ", error);
+  });
+};
+
+const saveDonDatHang = (dataDatHang) => {
+  console.log("send data:", JSON.stringify(dataDatHang));
+  console.log("save don hang");
+  fetch("http://localhost:8000/donhang", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dataDatHang),
+  })
+    .then((response) => {
+      console.log("response: ", response);
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+const updateFormDonHang = (
+  formInfoDonHang,
+  setFormInfoDonHang,
+  setLastestDH
+) => {
+  fetch("http://localhost:8000/hethong/donhang/SODH")
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(":data: ", data);
+      console.log("today: ", moment().format("YYYY-MM-DD HH:mm:ss"));
+      let sodh = data["SODH"];
+      setFormInfoDonHang({
+        ...formInfoDonHang,
+        SODH: sodh,
+        NGAYDH: moment().format("YYYY-MM-DD HH:mm:ss"),
+        NGAYGH: moment().add(5, "d").format("YYYY-MM-DD HH:mm:ss"),
+      });
+      setLastestDH(data["LastestDH"]);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const DonHang = ({ dataView, view }) => {
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
   // nên đành để thành thêm 1 dòng trống sau dataTable
@@ -45,6 +98,7 @@ const DonHang = ({ dataView, view }) => {
     NGAYDH: "",
     NGAYGH: "",
   });
+  const [lastestDH, setLastestDH] = useState(0);
 
   const [infoFormWillShow, setInfoFormWillShow] = useState({
     giay: false,
@@ -86,28 +140,6 @@ const DonHang = ({ dataView, view }) => {
     }
   }, [rowSelectionMaKH]);
 
-  const updateFormDonHang = () => {
-    fetch("http://localhost:8000/hethong/donhang/SODH")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        console.log(":data: ", data);
-        let today = moment().format("DD-MM-YYYY");
-        console.log("today: ", today);
-        let sodh = data["SODH"];
-        setFormInfoDonHang({
-          ...formInfoDonHang,
-          SODH: sodh,
-          NGAYDH: moment().format("DD-MM-YYYY"),
-          NGAYGH: moment().add(5, "d").format("DD-MM-YYYY"),
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   useEffect(() => {
     fetch("http://localhost:8000/khachhang")
       .then((response) => {
@@ -119,7 +151,7 @@ const DonHang = ({ dataView, view }) => {
       .catch((err) => {
         console.log(":error: ", err);
       });
-    updateFormDonHang();
+    updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
   }, []);
 
   // lúc đầu render form với ID Đơn hàng tự gen
@@ -132,7 +164,7 @@ const DonHang = ({ dataView, view }) => {
   // thì khỏi làm thêm việc này
 
   const convertDate = (date) => {
-    return moment(date, "DD-MM-YYYY").format("YYYY-MM-DD");
+    return moment(date, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD");
   };
 
   useEffect(() => {
@@ -165,6 +197,18 @@ const DonHang = ({ dataView, view }) => {
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
   };
+
+  const handleChangeFormForTypeDate = (e) => {
+    let date = e.target.value;
+    console.log("date ne: ", date);
+    const data = { ...formInfoDonHang };
+    data[e.target.name] = moment(e.target.value, "YYYY-MM-DD").format(
+      "YYYY-MM-DD HH:mm:ss"
+    );
+    console.log("data[e.target.name] ne: ", data[e.target.name]);
+    setFormInfoDonHang(data);
+  };
+
   const handleThemGiay = () => {
     setInfoFormWillShow({
       giay: true,
@@ -191,7 +235,7 @@ const DonHang = ({ dataView, view }) => {
     // Render lại số đơn hàng
     // Reset lại hết những thông tin hiện có
     // để chú nhận đơn hàng mới
-    updateFormDonHang();
+    updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
     setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
   };
 
@@ -214,19 +258,10 @@ const DonHang = ({ dataView, view }) => {
       // để lỡ chú lưu rồi lại lưu tiếp
       // SODH: đã lưu => true
       // check lại trước khi lưu
-      console.log("dataDatHang haha: ", dataDatHang);
-      console.log("JSON.stringify(dataDatHang): ", JSON.stringify(dataDatHang));
-      fetch("http://localhost:8000/donhang", {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataDatHang),
-      })
-        .then((response) => {
-          console.log("response: ", response);
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
+      saveDonDatHang(dataDatHang);
+      console.log("dataDatHang: ", dataDatHang);
+      console.log("lastestDH: ", lastestDH);
+      updateSODH(lastestDH);
     }
   };
 
@@ -346,7 +381,7 @@ const DonHang = ({ dataView, view }) => {
                 type="date"
                 name="NGAYDH"
                 value={convertDate(formInfoDonHang["NGAYDH"])}
-                onChange={(e) => handleChangeForm(e)}
+                onChange={(e) => handleChangeFormForTypeDate(e)}
                 readOnly={view}
               />
             </div>
@@ -356,7 +391,7 @@ const DonHang = ({ dataView, view }) => {
                 type="date"
                 name="NGAYGH"
                 value={convertDate(formInfoDonHang["NGAYGH"])}
-                onChange={(e) => handleChangeForm(e)}
+                onChange={(e) => handleChangeFormForTypeDate(e)}
                 readOnly={view}
               />
             </div>
