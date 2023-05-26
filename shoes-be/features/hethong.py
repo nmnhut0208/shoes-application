@@ -26,12 +26,12 @@ def find_info_primary_key_DONHANG(key, today):
     sql = f"""select *
             from V1T4444
             Where TABLENAME='DONHANG'
-            and KEYSTRING = '{key}{year}'"""
+            and KEYSTRING = '{key}{year}';"""
     data = hethong.read_custom(sql)
     lastnumber = 1
     if len(data) == 0:
         sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-                        VALUES ('DONHANG', '{key}{year}', {lastnumber})"""
+                        VALUES ('DONHANG', '{key}{year}', {lastnumber});"""
         hethong.execute_custom(sql_insert)
     else:
         lastnumber = data[0]['LASTKEY']
@@ -42,7 +42,7 @@ def save_info_primary_key_DONHANG(key, year, value):
     sql_insert = f"""UPDATE V1T4444 
                     SET LASTKEY = {value}
                     WHERE TABLENAME = 'DONHANG'
-                    AND KEYSTRING = '{key}{year}'"""
+                    AND KEYSTRING = '{key}{year}';"""
     hethong.execute_custom(sql_insert)
 
 
@@ -55,12 +55,12 @@ def find_info_SODH():
     sql = f"""select *
             from V1T4444
             Where TABLENAME='DONHANG'
-            and KEYSTRING = 'DH--{month}/{year}'"""
+            and KEYSTRING = 'DH--{month}/{year}';"""
     data = hethong.read_custom(sql)
     lastnumber = 1
     if len(data) == 0:
         sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-                    VALUES ('DONHANG', 'DH--{month}/{year}', {lastnumber})"""
+                    VALUES ('DONHANG', 'DH--{month}/{year}', {lastnumber});"""
         hethong.execute_custom(sql_insert)
     else:
         lastnumber = data[0]['LASTKEY'] + 1

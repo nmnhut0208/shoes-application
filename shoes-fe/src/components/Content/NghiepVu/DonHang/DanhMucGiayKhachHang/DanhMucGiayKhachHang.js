@@ -47,7 +47,7 @@ const DanhMucGiayKhachHang = ({
       if (!isNaN(key)) {
         const info = {
           ...dataTable[key],
-          ...formInfoDonHang,
+          // ...formInfoDonHang,
           SIZE0: 0,
           SIZE5: 0,
           SIZE6: 0,

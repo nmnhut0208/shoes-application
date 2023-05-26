@@ -30,8 +30,10 @@ const updateSODH = (sodh) => {
   });
 };
 
-const saveDonDatHang = (dataDatHang) => {
-  console.log("send data:", JSON.stringify(dataDatHang));
+const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
+  for (let i = 0; i < dataDatHang.length; i++) {
+    dataDatHang[i] = { ...dataDatHang[i], ...formInfoDonHang };
+  }
   console.log("save don hang");
   fetch("http://localhost:8000/donhang", {
     method: "post",
@@ -258,7 +260,7 @@ const DonHang = ({ dataView, view }) => {
       // để lỡ chú lưu rồi lại lưu tiếp
       // SODH: đã lưu => true
       // check lại trước khi lưu
-      saveDonDatHang(dataDatHang);
+      saveDonDatHang(formInfoDonHang, dataDatHang);
       console.log("dataDatHang: ", dataDatHang);
       console.log("lastestDH: ", lastestDH);
       updateSODH(lastestDH);
