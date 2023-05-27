@@ -1,5 +1,4 @@
 import { memo } from "react";
-
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import MaterialReactTable from "material-react-table";
 import { COL_KHACHHANG } from "./ConstantVariable";
