@@ -10,14 +10,16 @@ import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
 import { renderDataEmpty } from "~utils/processing_data_table";
 
-import TableDonHang from "./TableDonHang";
-import FormGiay from "./FormGiay";
-import FormMau from "./FormMau";
-import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
+import {
+  TableDonHang,
+  FormGiay,
+  FormMau,
+  DanhMucGiayKhachHang,
+  TableMaKH,
+  OptionMau,
+} from "./components";
 import styles from "./DonHang.module.scss";
 import { Popover } from "antd";
-import TableMaKH from "./TableMaKH";
-import OptionMau from "./OptionMau";
 
 const updateSODH = (sodh) => {
   console.log("save so don hang");
@@ -201,13 +203,10 @@ const DonHang = ({ dataView, view }) => {
   };
 
   const handleChangeFormForTypeDate = (e) => {
-    let date = e.target.value;
-    console.log("date ne: ", date);
     const data = { ...formInfoDonHang };
     data[e.target.name] = moment(e.target.value, "YYYY-MM-DD").format(
       "YYYY-MM-DD HH:mm:ss"
     );
-    console.log("data[e.target.name] ne: ", data[e.target.name]);
     setFormInfoDonHang(data);
   };
 
@@ -232,11 +231,7 @@ const DonHang = ({ dataView, view }) => {
   };
 
   const handleNhapTiep = () => {
-    // alert thông báo người dùng lưu thông tin đơn hàng hiện tại
-    // trước khi re-render empty page
-    // Render lại số đơn hàng
-    // Reset lại hết những thông tin hiện có
-    // để chú nhận đơn hàng mới
+    alert("Lưu thông tin trước khi save bạn nhé!");
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
     setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
   };
@@ -262,7 +257,6 @@ const DonHang = ({ dataView, view }) => {
       // check lại trước khi lưu
       saveDonDatHang(formInfoDonHang, dataDatHang);
       console.log("dataDatHang: ", dataDatHang);
-      console.log("lastestDH: ", lastestDH);
       updateSODH(lastestDH);
     }
   };
@@ -444,7 +438,7 @@ const DonHang = ({ dataView, view }) => {
       {infoFormWillShow["dmGiaykh"] && (
         <Modal>
           <DanhMucGiayKhachHang
-            formInfoDonHang={formInfoDonHang}
+            MAKH={formInfoDonHang["MAKH"]}
             dataOrigin={dataTable}
             setInfoSelection={setDataTable}
           />

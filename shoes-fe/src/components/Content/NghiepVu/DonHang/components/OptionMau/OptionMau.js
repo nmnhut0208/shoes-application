@@ -1,18 +1,4 @@
 import { memo } from "react";
-// const OptionMau = ({ dataMau }) => {
-//   return (
-//     <>
-//       {dataMau.map((data) => (
-//         <option value={data.value}>
-//           {data.value} - {data.label}
-//         </option>
-//       ))}
-//     </>
-//   );
-// };
-
-// export default memo(OptionMau);
-
 import { useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";

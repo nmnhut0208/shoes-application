@@ -6,12 +6,7 @@ import { COL_GIAY_KHACHHANG } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import styles from "./DanhMucGiayKhachHang.module.scss";
 
-const DanhMucGiayKhachHang = ({
-  formInfoDonHang,
-  dataOrigin,
-  setInfoSelection,
-}) => {
-  console.log("info ben nay khi truyen qua: ", formInfoDonHang);
+const DanhMucGiayKhachHang = ({ MAKH, dataOrigin, setInfoSelection }) => {
   const [rowSelection, setRowSelection] = useState({});
   const [stateTable, dispatchTable] = useTableContext();
   const [dataTable, setDataTable] = useState([]);
@@ -21,13 +16,8 @@ const DanhMucGiayKhachHang = ({
   }, []);
 
   useEffect(() => {
-    console.log("info ben nay: ", formInfoDonHang);
-    if (formInfoDonHang["MAKH"] !== "") {
-      fetch(
-        "http://localhost:8000/donhang/khachhang/" +
-          formInfoDonHang["MAKH"] +
-          "/giay"
-      )
+    if (MAKH !== "") {
+      fetch("http://localhost:8000/donhang/khachhang/" + MAKH + "/giay")
         .then((response) => {
           return response.json();
         })
@@ -47,7 +37,6 @@ const DanhMucGiayKhachHang = ({
       if (!isNaN(key)) {
         const info = {
           ...dataTable[key],
-          // ...formInfoDonHang,
           SIZE0: 0,
           SIZE5: 0,
           SIZE6: 0,
