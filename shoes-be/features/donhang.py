@@ -11,8 +11,6 @@ from datetime import datetime
 
 
 class ITEM_DONHANG(BaseModel):
-    # MADONG: str
-    # MADH: str
     SODH: str
     MAKH: str
     NGAYDH: Optional[str] = None

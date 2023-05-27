@@ -1,4 +1,4 @@
-export { default as TableDonHang } from "./TableDonHang/TableDonHang";
+export { default as TableDonHang } from "./TableDonHang";
 export { default as DanhMucGiayKhachHang } from "./DanhMucGiayKhachHang";
 export { default as FormGiay } from "./FormGiay";
 export { default as FormMau } from "./FormMau";

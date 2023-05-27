@@ -55,7 +55,6 @@ const DonHang = ({ dataView, view }) => {
     mau: false,
     dmGiaykh: false,
   });
-  console.log("formInfoDonHang: ", formInfoDonHang);
 
   useEffect(() => {
     updateDanhSachMau(setDataMau);
@@ -83,7 +82,6 @@ const DonHang = ({ dataView, view }) => {
 
   useEffect(() => {
     if (view) {
-      console.log("dataView: ", dataView);
       setFormInfoDonHang(dataView);
       fetch("http://localhost:8000/items_donhang_with_id", {
         method: "POST",
@@ -154,27 +152,15 @@ const DonHang = ({ dataView, view }) => {
 
   const handleSaveDonHang = () => {
     if (isSavedData) return;
-    console.log("Co thong tin thay doi, save lai database");
-    // lọc những loại giày được đặt, số lượng > 0
-    // save database
 
     let dataDatHang = dataTable.slice(0, dataTable.length - 1);
     // remove the last empty line
-    console.log("dataDatHang: ", dataDatHang);
     dataDatHang = dataDatHang.filter((data) => data["SOLUONG"] > 0);
-    console.log("dataDatHang: ", dataDatHang);
     if (dataDatHang.length == 0) {
       alert("Bạn chưa đặt hàng hoặc chưa chọn số lượng mỗi loại giày cần đặt!");
       return;
     } else {
-      // send API to save database
-      // insert list
-      // update lại flag nào để để biết mã đơn hàng này đã được lưu
-      // để lỡ chú lưu rồi lại lưu tiếp
-      // SODH: đã lưu => true
-      // check lại trước khi lưu
       saveDonDatHang(formInfoDonHang, dataDatHang);
-      console.log("dataDatHang: ", dataDatHang);
       updateSODH(lastestDH);
       setIsSavedData(true);
     }
@@ -195,7 +181,7 @@ const DonHang = ({ dataView, view }) => {
   const infoColumns = useMemo(() => {
     setIsSavedData(false);
     return updateColumnsInformations(dataMau, dataTable, setDataTable);
-  }, [dataTable]);
+  }, [dataTable, dataMau]);
 
   return (
     <>
@@ -230,7 +216,6 @@ const DonHang = ({ dataView, view }) => {
                   value={formInfoDonHang["MAKH"]}
                   onChange={(e) => handleChangeForm(e)}
                   readOnly={true}
-                  // readOnly={view}
                 />
               </Popover>
               <input readOnly={true} value={formInfoDonHang["TENKH"]} />
@@ -312,7 +297,7 @@ const DonHang = ({ dataView, view }) => {
       )}
       {infoFormWillShow["mau"] && (
         <Modal>
-          <FormMau />
+          <FormMau dataMau={dataMau} setDataMau={setDataMau} />
         </Modal>
       )}
       {infoFormWillShow["dmGiaykh"] && (
