@@ -111,9 +111,13 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
     # cho trường hợp chú chỉ chỉnh sửa đơn hàng thôi, chứ ko add mới
     # Không thể biết được bao nhiêu giày được add mới 
     # nên đành xóa dữ liệu cũ, add lại dữ liệu mới thôi
-    sql_delete = f"""delete DONHANG
-                    where SODH = '{data[0].SODH}'"""
-    donhang.execute_custom(sql_delete)
+
+    #TODO: bỏ comment ra 
+    # sql_delete = f"""delete DONHANG
+    #                 where SODH = '{data[0].SODH}'"""
+    # donhang.execute_custom(sql_delete)
+
+
     # find common information
     today = datetime.now()
     year = today.year
