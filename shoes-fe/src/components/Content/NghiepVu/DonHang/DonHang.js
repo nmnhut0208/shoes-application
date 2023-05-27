@@ -1,11 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import moment from "moment";
 
-import {
-  INFO_COLS_DONHANG,
-  COLS_HAVE_SUM_FOOTER,
-  COLS_HAVE_SELECT_INPUT,
-} from "./ConstantVariable";
+import { INFO_COLS_DONHANG } from "./ConstantVariable";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
 import { renderDataEmpty } from "~utils/processing_data_table";
@@ -16,65 +12,17 @@ import {
   FormMau,
   DanhMucGiayKhachHang,
   TableMaKH,
-  OptionMau,
 } from "./components";
 import styles from "./DonHang.module.scss";
 import { Popover } from "antd";
-
-const updateSODH = (sodh) => {
-  console.log("save so don hang");
-  fetch("http://localhost:8000/hethong/donhang/SODH", {
-    method: "put",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ LASTNUMBER: sodh }),
-  }).catch((error) => {
-    console.log("error: ", error);
-  });
-};
-
-const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
-  for (let i = 0; i < dataDatHang.length; i++) {
-    dataDatHang[i] = { ...dataDatHang[i], ...formInfoDonHang };
-  }
-  console.log("save don hang");
-  fetch("http://localhost:8000/donhang", {
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(dataDatHang),
-  })
-    .then((response) => {
-      console.log("response: ", response);
-    })
-    .catch((error) => {
-      console.log("error: ", error);
-    });
-};
-
-const updateFormDonHang = (
-  formInfoDonHang,
-  setFormInfoDonHang,
-  setLastestDH
-) => {
-  fetch("http://localhost:8000/hethong/donhang/SODH")
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      console.log(":data: ", data);
-      console.log("today: ", moment().format("YYYY-MM-DD HH:mm:ss"));
-      let sodh = data["SODH"];
-      setFormInfoDonHang({
-        ...formInfoDonHang,
-        SODH: sodh,
-        NGAYDH: moment().format("YYYY-MM-DD HH:mm:ss"),
-        NGAYGH: moment().add(5, "d").format("YYYY-MM-DD HH:mm:ss"),
-      });
-      setLastestDH(data["LastestDH"]);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+import {
+  updateSODH,
+  updateDanhSachKhachHang,
+  updateDanhSachMau,
+  saveDonDatHang,
+  updateFormDonHang,
+  updateColumnsInformations,
+} from "./helper";
 
 const DonHang = ({ dataView, view }) => {
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
@@ -82,8 +30,6 @@ const DonHang = ({ dataView, view }) => {
   const [dataTable, setDataTable] = useState(() => {
     return renderDataEmpty(INFO_COLS_DONHANG, 1);
   });
-
-  console.log("dataTable: ", dataTable);
 
   const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
   const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
@@ -112,26 +58,8 @@ const DonHang = ({ dataView, view }) => {
   console.log("formInfoDonHang: ", formInfoDonHang);
 
   useEffect(() => {
-    // thay đổi khi thêm màu
-    fetch("http://localhost:8000/mau")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        console.log("info: ", info);
-        let listMau = info.map(function (ob) {
-          return { label: ob.TENMAU, value: ob.MAMAU };
-        });
-        let listMauDefault = [
-          { lable: "", value: null },
-          { label: "", value: "" },
-        ];
-        setDataMau([...listMauDefault, ...listMau]);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
-  }, []);
+    updateDanhSachMau(setDataMau);
+  }, []); // them dieu kieu check mau thay doi
 
   useEffect(() => {
     let keys = Object.keys(rowSelectionMaKH);
@@ -145,27 +73,9 @@ const DonHang = ({ dataView, view }) => {
   }, [rowSelectionMaKH]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/khachhang")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        setDataTableKhachHang(info);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
+    updateDanhSachKhachHang(setDataTableKhachHang);
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
   }, []);
-
-  // lúc đầu render form với ID Đơn hàng tự gen
-  // ngày tháng hiện tại
-
-  // TODO: còn thiếu 1 logic
-  // Khi user nhập số đơn hàng mà đủ format
-  // query thông tin => show => để user có thể chỉnh sửa khi lỡ nhập đơn hàng sai
-  // hay nên để chức năng sửa lúc truy vấn luôn ta @@
-  // thì khỏi làm thêm việc này
 
   const convertDate = (date) => {
     return moment(date, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD");
@@ -200,6 +110,7 @@ const DonHang = ({ dataView, view }) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
+    setIsSavedData(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
@@ -208,6 +119,7 @@ const DonHang = ({ dataView, view }) => {
       "YYYY-MM-DD HH:mm:ss"
     );
     setFormInfoDonHang(data);
+    setIsSavedData(false);
   };
 
   const handleThemGiay = () => {
@@ -231,12 +143,18 @@ const DonHang = ({ dataView, view }) => {
   };
 
   const handleNhapTiep = () => {
-    alert("Lưu thông tin trước khi save bạn nhé!");
+    if (!isSavedData) {
+      alert("Lưu thông tin trước khi reset page!");
+      return;
+    }
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
     setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
+    setIsSavedData(false);
   };
 
   const handleSaveDonHang = () => {
+    if (isSavedData) return;
+    console.log("Co thong tin thay doi, save lai database");
     // lọc những loại giày được đặt, số lượng > 0
     // save database
 
@@ -258,6 +176,7 @@ const DonHang = ({ dataView, view }) => {
       saveDonDatHang(formInfoDonHang, dataDatHang);
       console.log("dataDatHang: ", dataDatHang);
       updateSODH(lastestDH);
+      setIsSavedData(true);
     }
   };
 
@@ -274,47 +193,8 @@ const DonHang = ({ dataView, view }) => {
   };
 
   const infoColumns = useMemo(() => {
-    const infoColumnsInit = [];
-
-    for (var obj in INFO_COLS_DONHANG) {
-      let key = INFO_COLS_DONHANG[obj]["key"];
-      var info = {
-        header: INFO_COLS_DONHANG[obj]["header"],
-        size: INFO_COLS_DONHANG[obj]["width"],
-        accessorKey: INFO_COLS_DONHANG[obj]["key"],
-        enableEditing: INFO_COLS_DONHANG[obj]["enableEditing"],
-        key: INFO_COLS_DONHANG[obj]["key"].toLowerCase(),
-      };
-
-      if (COLS_HAVE_SELECT_INPUT.includes(key)) {
-        //you can access a cell in many callback column definition options like this
-        info["Cell"] = ({ cell }) => {
-          return (
-            <>
-              <OptionMau
-                init={dataTable[cell.row.id][cell.column.id]}
-                id_row={cell.row.id}
-                id_column={cell.column.id}
-                dataTable={dataTable}
-                dataMau={dataMau}
-                handleChange={(value) => {
-                  dataTable[cell.row.id][cell.column.id] = value;
-                  setDataTable([...dataTable]);
-                }}
-              />
-            </>
-          );
-        };
-      }
-
-      if (key === "TENGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
-      if (COLS_HAVE_SUM_FOOTER.includes(key)) {
-        let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
-        info["Footer"] = () => <div>{sum_value}</div>;
-      }
-      infoColumnsInit.push(info);
-    }
-    return infoColumnsInit;
+    setIsSavedData(false);
+    return updateColumnsInformations(dataMau, dataTable, setDataTable);
   }, [dataTable]);
 
   return (
