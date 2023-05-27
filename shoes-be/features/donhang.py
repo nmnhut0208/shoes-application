@@ -105,37 +105,15 @@ def read_quickly(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     return result
 
 
-# @router.post("/donhang")
-# def add(data: ITEM_DONHANG) -> RESPONSE:
-#     today = datetime.now()
-#     year = today.year
-#     MADONG = find_info_primary_key_DONHANG("MD", today) + 1
-#     DH = find_info_primary_key_DONHANG("DH", today) + 1
-#     MADH = f"DH{year}{str(DH).zfill(12)}"
-#     data = dict(data)
-#     data["NGAYTAO"] = today.strftime("%Y-%m-%d %H:%M:%S")
-#     data["NGAYSUA"] = today.strftime("%Y-%m-%d %H:%M:%S")
-#     data["MADH"] = MADH
-#     data["MADONG"] = f"MD{year}{str(MADONG).zfill(12)}"
-#     col = []
-#     val = []
-#     for k, v in data.items():
-#         if v is not None:
-#             col.append(k)
-#             val.append(f"'{v}'")
-#     col = " ,".join(col)
-#     val = " ,".join(val)
-#     #  update lại mã dòng, mã đơn hàng, số đơn hàng 
-#     return donhang.add(col, val)
-
-
 @router.post("/donhang")
 def add(data: List[ITEM_DONHANG]) -> RESPONSE:
-    print("ITEM_DONHANG: ", ITEM_DONHANG)
-    print("data: ", data)
-    col = []
-    vals = []
-
+    # delete SODH cu, insert SDH moi
+    # cho trường hợp chú chỉ chỉnh sửa đơn hàng thôi, chứ ko add mới
+    # Không thể biết được bao nhiêu giày được add mới 
+    # nên đành xóa dữ liệu cũ, add lại dữ liệu mới thôi
+    sql_delete = f"""delete DONHANG
+                    where SODH = '{data[0].SODH}'"""
+    donhang.execute_custom(sql_delete)
     # find common information
     today = datetime.now()
     year = today.year
@@ -166,11 +144,7 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
         # phòng trường hợp những record khác nhau có số lượng
         # cột insert khác nhau nên phải insert từng dòng như thế này 
         donhang.add(_c, _v) 
-        # vals.append(f"({_v})")
 
-    col = " ,".join(col)
-    vals = " ,".join(vals)
-    print("vals: ", vals)
     # lưu lại thông tin mã dòng và mã đơn hàng 
     save_info_primary_key_DONHANG("DH", year, DH)
     save_info_primary_key_DONHANG("MD", year, MADONG)
