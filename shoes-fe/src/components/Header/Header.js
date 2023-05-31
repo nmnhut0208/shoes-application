@@ -11,6 +11,8 @@ import {
   getListCa,
   getListQuai,
   getListMau,
+  getListGot,
+  getListMui,
   getListKhachHang,
 } from "./helper";
 
@@ -22,6 +24,8 @@ const Header = () => {
     getListCa(dispatchItem);
     getListQuai(dispatchItem);
     getListMau(dispatchItem);
+    getListGot(dispatchItem);
+    getListMui(dispatchItem);
     getListKhachHang(dispatchItem);
   }, []);
   console.log("stateItem: ", stateItem);

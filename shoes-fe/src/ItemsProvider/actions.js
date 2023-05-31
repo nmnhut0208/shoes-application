@@ -4,6 +4,8 @@ import {
   SET_INFO_CA,
   SET_INFO_QUAI,
   SET_INFO_MAU,
+  SET_INFO_GOT,
+  SET_INFO_MUI,
   SET_INFO_KHACHHANG,
 } from "./constants";
 
@@ -24,6 +26,20 @@ export const setInfoSuon = (payload) => {
 export const setInfoCa = (payload) => {
   return {
     type: SET_INFO_CA,
+    payload,
+  };
+};
+
+export const setInfoGot = (payload) => {
+  return {
+    type: SET_INFO_GOT,
+    payload,
+  };
+};
+
+export const setInfoMui = (payload) => {
+  return {
+    type: SET_INFO_MUI,
     payload,
   };
 };

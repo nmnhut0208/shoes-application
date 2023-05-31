@@ -1,7 +1,13 @@
 import { Space } from "antd";
 import { useState } from "react";
 
-const Selection = ({ defaultValue, data, changeData, size_input }) => {
+const Selection = ({
+  defaultValue,
+  data,
+  changeData,
+  size_input,
+  size_span,
+}) => {
   const [name, setName] = useState(defaultValue["label"]);
   return (
     <Space size="small">
@@ -21,7 +27,7 @@ const Selection = ({ defaultValue, data, changeData, size_input }) => {
         ))}
       </select>
 
-      <input readOnly={true} value={name} />
+      <input readOnly={true} value={name} style={{ width: size_span }} />
     </Space>
   );
 };

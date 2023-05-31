@@ -106,6 +106,48 @@ export const getListMau = (dispatchItem) => {
     });
 };
 
+export const getListGot = (dispatchItem) => {
+  fetch("http://localhost:8000/got")
+    .then((response) => {
+      return response.json();
+    })
+    .then((info) => {
+      let listOptional = info.map(function (ob) {
+        return { label: ob.TENGOT, value: ob.MAGOT };
+      });
+      dispatchItem(
+        actions_items_context.setInfoGot([
+          { label: "", value: "" },
+          ...listOptional,
+        ])
+      );
+    })
+    .catch((err) => {
+      console.log(":error: ", err);
+    });
+};
+
+export const getListMui = (dispatchItem) => {
+  fetch("http://localhost:8000/mui")
+    .then((response) => {
+      return response.json();
+    })
+    .then((info) => {
+      let listOptional = info.map(function (ob) {
+        return { label: ob.TENMUI, value: ob.MAMUI };
+      });
+      dispatchItem(
+        actions_items_context.setInfoMui([
+          { label: "", value: "" },
+          ...listOptional,
+        ])
+      );
+    })
+    .catch((err) => {
+      console.log(":error: ", err);
+    });
+};
+
 export const getListKhachHang = (dispatchItem) => {
   fetch("http://localhost:8000/khachhang")
     .then((response) => {

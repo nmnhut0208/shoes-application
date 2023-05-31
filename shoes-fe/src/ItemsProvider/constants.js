@@ -3,4 +3,6 @@ export const SET_INFO_SUON = "setInfoSuon";
 export const SET_INFO_CA = "setInfoCa";
 export const SET_INFO_QUAI = "setInfoQuai";
 export const SET_INFO_MAU = "setInfoMau";
+export const SET_INFO_GOT = "setInfoGot";
+export const SET_INFO_MUI = "setInfoMui";
 export const SET_INFO_KHACHHANG = "setInfoKhachHang";

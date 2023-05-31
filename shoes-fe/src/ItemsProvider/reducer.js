@@ -4,6 +4,8 @@ import {
   SET_INFO_CA,
   SET_INFO_QUAI,
   SET_INFO_MAU,
+  SET_INFO_GOT,
+  SET_INFO_MUI,
   SET_INFO_KHACHHANG,
 } from "./constants";
 
@@ -12,7 +14,9 @@ const initState = {
   infoItemSuon: [],
   infoItemCa: [],
   infoItemQuai: [],
+  infoItemGot: [],
   infoItemMau: [],
+  infoItemMui: [],
   infoItemKhachHang: [],
 };
 
@@ -32,12 +36,20 @@ function reducer(state, action) {
       info["infoItemCa"] = action.payload;
       break;
     }
+    case SET_INFO_GOT: {
+      info["infoItemGot"] = action.payload;
+      break;
+    }
     case SET_INFO_QUAI: {
       info["infoItemQuai"] = action.payload;
       break;
     }
     case SET_INFO_MAU: {
       info["infoItemMau"] = action.payload;
+      break;
+    }
+    case SET_INFO_MUI: {
+      info["infoItemMui"] = action.payload;
       break;
     }
     case SET_INFO_KHACHHANG: {
