@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import clsx from "clsx";
 import styles from "./FormGiayBasic.module.scss";
+import {
+  ItemKhachHang,
+  ItemDe,
+  ItemSuon,
+  ItemCa,
+  ItemQuai,
+  ItemMau,
+} from "~items";
 
 const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
   const [form, setForm] = useState(() => initForm);
@@ -33,7 +41,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
       setImageURL("");
     }
   };
-
+  console.log("form: ", form);
   return (
     <div className={styles.form}>
       <div class={styles.form}>
@@ -72,45 +80,59 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
 
             <div className={styles.group_first__left_row}>
               <label>Khách hàng</label>
-              <input
+              {/* <input
                 name="MAKH"
                 value={form["MAKH"]}
                 onChange={(e) => handleChangeInformationForm(e)}
                 className={styles.item_size_small}
+              /> */}
+              <ItemKhachHang
+                changeData={(data) => {
+                  setDataForm({ ...form, MAKH: data["MAKH"] });
+                }}
               />
             </div>
 
             <div className={styles.group_first__left_row}>
               <label>Mã đế</label>
-              <input
-                name="MADE"
-                value={form["MADE"]}
-                onChange={(e) => handleChangeInformationForm(e)}
-                className={styles.item_size_small}
+              <ItemDe
+                initValue={{ value: form["MADE"], label: form["TENDE"] }}
+                changeData={(dict_data) => {
+                  setDataForm({
+                    ...form,
+                    MADE: dict_data["value"],
+                    TENDE: dict_data["label"],
+                  });
+                }}
               />
-              <span>{form["TENDE"]}</span>
             </div>
 
             <div className={styles.group_first__left_row}>
               <label>Mã sườn</label>
-              <input
-                name="MASUON"
-                value={form["MASUON"]}
-                onChange={(e) => handleChangeInformationForm(e)}
-                className={styles.item_size_small}
+              <ItemSuon
+                initValue={{ value: form["MASUON"], label: form["TENSUON"] }}
+                changeData={(dict_data) => {
+                  setDataForm({
+                    ...form,
+                    MASUON: dict_data["value"],
+                    TENSUON: dict_data["label"],
+                  });
+                }}
               />
-              <span>{form["TENSUON"]}</span>
             </div>
 
             <div className={styles.group_first__left_row}>
               <label>Mã cá</label>
-              <input
-                name="MACA"
-                value={form["MACA"]}
-                onChange={(e) => handleChangeInformationForm(e)}
-                className={styles.item_size_small}
+              <ItemCa
+                initValue={{ value: form["MACA"], label: form["TENCA"] }}
+                changeData={(dict_data) => {
+                  setDataForm({
+                    ...form,
+                    MACA: dict_data["value"],
+                    TENCA: dict_data["label"],
+                  });
+                }}
               />
-              <span>{form["TENCA"]}</span>
             </div>
           </div>
 
@@ -138,13 +160,16 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__left}>
               <label>Mã quai</label>
-              <input
-                name="MAQUAI"
-                value={form["MAQUAI"]}
-                onChange={(e) => handleChangeInformationForm(e)}
-                className={styles.item_size_small}
+              <ItemQuai
+                initValue={{ value: form["MAQUAI"], label: form["TENQUAI"] }}
+                changeData={(dict_data) => {
+                  setDataForm({
+                    ...form,
+                    MAQUAI: dict_data["value"],
+                    TENQUAI: dict_data["label"],
+                  });
+                }}
               />
-              <span>{form["TENQUAI"]}</span>
             </div>
 
             <div className={styles.group_second_row__right}>
@@ -171,13 +196,16 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
           <div className={styles.group_second_row}>
             <div className={styles.group_second_row__left}>
               <label>Màu</label>
-              <input
-                name="MAMAU"
-                value={form["MAMAU"]}
-                onChange={(e) => handleChangeInformationForm(e)}
-                className={styles.item_size_small}
+              <ItemMau
+                initValue={{ value: form["MAMAU"], label: form["TENMAU"] }}
+                changeData={(dict_data) => {
+                  setDataForm({
+                    ...form,
+                    MAMAU: dict_data["value"],
+                    TENMAU: dict_data["label"],
+                  });
+                }}
               />
-              <span> {form["TENMAU"]} </span>
             </div>
 
             <div className={styles.group_second_row__right}>
