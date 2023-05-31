@@ -1,11 +1,12 @@
 import { Space } from "antd";
 import { useState } from "react";
 
-const Selection = ({ defaultValue, data, changeData }) => {
+const Selection = ({ defaultValue, data, changeData, size_input }) => {
   const [name, setName] = useState(defaultValue["label"]);
   return (
     <Space size="small">
       <select
+        style={{ width: size_input }}
         onChange={(e) => {
           let _data = data.filter((_data) => _data["value"] === e.target.value);
           setName(_data[0]["label"]);

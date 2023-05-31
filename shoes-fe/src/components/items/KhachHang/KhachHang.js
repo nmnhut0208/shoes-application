@@ -2,7 +2,7 @@ import { Popover } from "antd";
 import { useState, memo } from "react";
 import ListKhachHang from "./ListKhachHang";
 
-const KhachHang = ({ initValue, changeData }) => {
+const KhachHang = ({ initValue, changeData, size }) => {
   const [data, setData] = useState(initValue);
   return (
     <>
@@ -17,7 +17,12 @@ const KhachHang = ({ initValue, changeData }) => {
           />
         }
       >
-        <input name="MAKH" value={data} readOnly={true} />
+        <input
+          name="MAKH"
+          value={data}
+          readOnly={true}
+          style={{ width: size }}
+        />
       </Popover>
       {/* <input readOnly={true} value={formInfoDonHang["TENKH"]} /> */}
     </>

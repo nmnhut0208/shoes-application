@@ -80,16 +80,11 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
 
             <div className={styles.group_first__left_row}>
               <label>Khách hàng</label>
-              {/* <input
-                name="MAKH"
-                value={form["MAKH"]}
-                onChange={(e) => handleChangeInformationForm(e)}
-                className={styles.item_size_small}
-              /> */}
               <ItemKhachHang
                 changeData={(data) => {
                   setDataForm({ ...form, MAKH: data["MAKH"] });
                 }}
+                size={"15rem"}
               />
             </div>
 
@@ -104,6 +99,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
                     TENDE: dict_data["label"],
                   });
                 }}
+                size_input={"14rem"}
               />
             </div>
 
@@ -118,6 +114,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
                     TENSUON: dict_data["label"],
                   });
                 }}
+                size_input={"14rem"}
               />
             </div>
 
@@ -132,6 +129,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
                     TENCA: dict_data["label"],
                   });
                 }}
+                size_input={"14rem"}
               />
             </div>
           </div>
@@ -169,6 +167,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
                     TENQUAI: dict_data["label"],
                   });
                 }}
+                size_input={"14rem"}
               />
             </div>
 
@@ -205,6 +204,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
                     TENMAU: dict_data["label"],
                   });
                 }}
+                size_input={"14rem"}
               />
             </div>
 

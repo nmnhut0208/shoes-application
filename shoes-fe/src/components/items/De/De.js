@@ -2,7 +2,7 @@ import { useState, memo, useEffect } from "react";
 import Selection from "../Selection";
 import { useItemsContext } from "~items_context";
 
-const De = ({ initValue, changeData }) => {
+const De = ({ initValue, changeData, size_input }) => {
   const [data, setData] = useState([{ value: "", label: "" }]);
   const [stateItem, dispatchItem] = useItemsContext();
   useEffect(() => {
@@ -18,6 +18,7 @@ const De = ({ initValue, changeData }) => {
         }}
         data={data}
         changeData={changeData}
+        size_input={size_input}
       />
     </>
   );
