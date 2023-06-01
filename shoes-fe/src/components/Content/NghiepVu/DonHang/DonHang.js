@@ -11,18 +11,16 @@ import {
   FormGiay,
   FormMau,
   DanhMucGiayKhachHang,
-  TableMaKH,
 } from "./components";
 import styles from "./DonHang.module.scss";
-import { Popover } from "antd";
 import {
   updateSODH,
-  updateDanhSachKhachHang,
   updateDanhSachMau,
   saveDonDatHang,
   updateFormDonHang,
   updateColumnsInformations,
 } from "./helper";
+import { ItemKhachHang } from "~items";
 
 const DonHang = ({ dataView, view }) => {
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
@@ -30,9 +28,6 @@ const DonHang = ({ dataView, view }) => {
   const [dataTable, setDataTable] = useState(() => {
     return renderDataEmpty(INFO_COLS_DONHANG, 1);
   });
-
-  const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
-  const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
 
   const [dataMau, setDataMau] = useState([]);
   const [isSavedData, setIsSavedData] = useState(false);
@@ -61,18 +56,6 @@ const DonHang = ({ dataView, view }) => {
   }, []); // them dieu kieu check mau thay doi
 
   useEffect(() => {
-    let keys = Object.keys(rowSelectionMaKH);
-    if (keys.length > 0) {
-      setFormInfoDonHang({
-        ...formInfoDonHang,
-        MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-        TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-      });
-    }
-  }, [rowSelectionMaKH]);
-
-  useEffect(() => {
-    updateDanhSachKhachHang(setDataTableKhachHang);
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
   }, []);
 
@@ -201,24 +184,18 @@ const DonHang = ({ dataView, view }) => {
           <div className={styles.item_column}>
             <div className={styles.pair}>
               <label>Mã khách hàng</label>
-              <Popover
-                placement="bottomLeft"
-                content={
-                  <TableMaKH
-                    data={dataTableKhachHang}
-                    rowSelection={rowSelectionMaKH}
-                    setRowSelection={setRowSelectionMaKH}
-                  />
-                }
-              >
-                <input
-                  name="MAKH"
-                  value={formInfoDonHang["MAKH"]}
-                  onChange={(e) => handleChangeForm(e)}
-                  readOnly={true}
-                />
-              </Popover>
-              <input readOnly={true} value={formInfoDonHang["TENKH"]} />
+              <ItemKhachHang
+                initValue={{
+                  MAKH: formInfoDonHang["MAKH"],
+                  TENKH: formInfoDonHang["TENKH"],
+                }}
+                changeData={(data) => {
+                  setFormInfoDonHang({ ...formInfoDonHang, ...data });
+                }}
+                size_input={"15rem"}
+                size_span={"29.7rem"}
+                have_span={true}
+              />
             </div>
           </div>
           <input

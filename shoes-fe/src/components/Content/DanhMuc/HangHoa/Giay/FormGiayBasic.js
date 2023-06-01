@@ -114,11 +114,11 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <label>Khách hàng</label>
               <ItemKhachHang
                 readOnly={readOnly}
-                initValue={form["MAKH"]}
+                initValue={{ MAKH: form["MAKH"] }}
                 changeData={(data) => {
                   handleChangeInformationForm(data);
                 }}
-                size={"15rem"}
+                size_input={"15rem"}
               />
             </div>
 

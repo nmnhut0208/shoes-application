@@ -60,19 +60,6 @@ export const updateSODH = (sodh) => {
   });
 };
 
-export const updateDanhSachKhachHang = (setDataTableKhachHang) => {
-  fetch("http://localhost:8000/khachhang")
-    .then((response) => {
-      return response.json();
-    })
-    .then((info) => {
-      setDataTableKhachHang(info);
-    })
-    .catch((err) => {
-      console.log(":error: ", err);
-    });
-};
-
 export const updateDanhSachMau = (setDataMau) => {
   fetch("http://localhost:8000/mau")
     .then((response) => {
