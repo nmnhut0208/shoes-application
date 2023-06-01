@@ -14,6 +14,9 @@ let list_info_generator_MAGIAY = ["MAKH", "SortID", "MASUON"];
 
 const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
   const [form, setForm] = useState(() => initForm);
+  const [readOnly, setReadOnly] = useState(() => {
+    return mode === "edit";
+  });
   console.log("form: ", form);
   const [image_base64, setImageBase64] = useState("");
   const [image_url, setImageURL] = useState("");
@@ -29,14 +32,18 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
       let MAKH = data["MAKH"];
       let MASUON = data["MASUON"];
       let SortID = data["SortID"];
-      let part_number = "0000" + SortID.replace(/[^0-9]/g, "");
-      part_number = part_number.slice(
-        part_number.length - 4,
-        part_number.length
-      );
-      let part_character = SortID.replace(/[^a-zA-Z]/g, "");
-      if (part_character.length === 0) {
-        part_character = "A";
+      let part_number = "";
+      let part_character = "";
+      if (SortID && SortID.length > 0) {
+        part_number = "0000" + SortID.replace(/[^0-9]/g, "");
+        part_number = part_number.slice(
+          part_number.length - 4,
+          part_number.length
+        );
+        part_character = SortID.replace(/[^a-zA-Z]/g, "");
+        if (part_character.length === 0) {
+          part_character = "A";
+        }
       }
       let MAGIAY = part_character + part_number + "-" + MAKH + "-" + MASUON;
       data["MAGIAY"] = MAGIAY;
@@ -69,7 +76,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
             <div className={styles.group_first__left_row}>
               <label>Mã giày</label>
               <input
-                readOnly={mode === "edit"}
+                readOnly={readOnly}
                 value={form["MAGIAY"]}
                 onChange={(e) =>
                   handleChangeInformationForm({ MAGIAY: e.target.value })
@@ -83,6 +90,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <label>Mã tham chiếu</label>
               <input
                 name="SortID"
+                readOnly={readOnly}
                 value={form["SortID"]}
                 onChange={(e) =>
                   handleChangeInformationForm({ SortID: e.target.value })
@@ -106,6 +114,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
             <div className={styles.group_first__left_row}>
               <label>Khách hàng</label>
               <ItemKhachHang
+                readOnly={readOnly}
                 initValue={form["MAKH"]}
                 changeData={(data) => {
                   handleChangeInformationForm(data);
@@ -131,6 +140,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
             <div className={styles.group_first__left_row}>
               <label>Mã sườn</label>
               <ItemSuon
+                readOnly={readOnly}
                 initValue={{ value: form["MASUON"], label: form["TENSUON"] }}
                 changeData={(dict_data) => {
                   handleChangeInformationForm({
