@@ -72,13 +72,20 @@ donhang = DONHANG()
 @router.get("/donhang/khachhang/{MAKH}/giay")
 def read(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     sql = """SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
-            MAUDE,MAUGOT, 
-			MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH, 
-			V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, V_GIAY.TENCA, V_GIAY.TENKH
-            FROM DONHANG 
-            LEFT JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay
-            WHERE DONHANG.MAKH='{}'
-            """.format(MAKH)
+                    coalesce(MAUDE, '') as MAUDE, 
+                    coalesce(MAUGOT, '') AS MAUGOT, 
+                    coalesce(MAUSUON, '') AS MAUSUON,
+                    coalesce(MAUCA, '') AS MAUCA,
+                    coalesce(MAUQUAI, '') AS MAUQUAI ,
+                    coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH, 
+                    V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
+                    V_GIAY.TENCA, V_GIAY.TENKH
+            FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT, 
+		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH 
+                from DONHANG WHERE DONHANG.MAKH='{}') AS DONHANG
+            FULL OUTER JOIN (select * from V_GIAY where V_GIAY.MAKH='{}') 
+            As V_GIAY on V_GIAY.magiay=DONHANG.magiay
+            """.format(MAKH, MAKH)
     
     start = datetime.now()
     result = donhang.read_custom(sql)
@@ -86,23 +93,23 @@ def read(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     return result
 
 
-@router.get("/donhang/khachhangnhanh/{MAKH}/giay")
-def read_quickly(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
-    sql = """SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
-                    MAUDE,MAUGOT, 
-                    MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH, 
-                    V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
-                    V_GIAY.TENCA, V_GIAY.TENKH
-            FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT, 
-		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH 
-                from DONHANG WHERE DONHANG.MAKH='{}') AS DONHANG
-            LEFT JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay
-            """.format(MAKH)
+# @router.get("/donhang/khachhangnhanh/{MAKH}/giay")
+# def read_quickly(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
+#     sql = """SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+#                     MAUDE,MAUGOT, 
+#                     MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH, 
+#                     V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
+#                     V_GIAY.TENCA, V_GIAY.TENKH
+#             FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT, 
+# 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH 
+#                 from DONHANG WHERE DONHANG.MAKH='{}') AS DONHANG
+#             LEFT JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay
+#             """.format(MAKH)
     
-    start = datetime.now()
-    result = donhang.read_custom(sql)
-    print("khachhangnhanh: ", datetime.now()-start)
-    return result
+#     start = datetime.now()
+#     result = donhang.read_custom(sql)
+#     print("khachhangnhanh: ", datetime.now()-start)
+#     return result
 
 
 @router.post("/donhang")

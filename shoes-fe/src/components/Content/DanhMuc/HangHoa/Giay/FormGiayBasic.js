@@ -45,8 +45,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
           part_character = "A";
         }
       }
-      let MAGIAY = part_character + part_number + "-" + MAKH + "-" + MASUON;
-      data["MAGIAY"] = MAGIAY;
+      data["MAGIAY"] = part_character + part_number + "-" + MAKH + "-" + MASUON;
     }
     setForm(data);
     setDataForm(data);
