@@ -10,8 +10,11 @@ import {
   ItemMau,
 } from "~items";
 
+let list_info_generator_MAGIAY = ["MAKH", "SortID", "MASUON"];
+
 const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
   const [form, setForm] = useState(() => initForm);
+  console.log("form: ", form);
   const [image_base64, setImageBase64] = useState("");
   const [image_url, setImageURL] = useState("");
   useEffect(() => {
@@ -19,9 +22,25 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
     setImageBase64(initForm["HINHANH"]);
   }, [initForm]);
 
-  const handleChangeInformationForm = (e) => {
-    const data = { ...form };
-    data[e.target.name] = e.target.value;
+  const handleChangeInformationForm = (dict_data) => {
+    const data = { ...form, ...dict_data };
+    let name = Object.keys(dict_data)[0];
+    if (list_info_generator_MAGIAY.includes(name)) {
+      let MAKH = data["MAKH"];
+      let MASUON = data["MASUON"];
+      let SortID = data["SortID"];
+      let part_number = "0000" + SortID.replace(/[^0-9]/g, "");
+      part_number = part_number.slice(
+        part_number.length - 4,
+        part_number.length
+      );
+      let part_character = SortID.replace(/[^a-zA-Z]/g, "");
+      if (part_character.length === 0) {
+        part_character = "A";
+      }
+      let MAGIAY = part_character + part_number + "-" + MAKH + "-" + MASUON;
+      data["MAGIAY"] = MAGIAY;
+    }
     setForm(data);
     setDataForm(data);
   };
@@ -52,7 +71,9 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <input
                 readOnly={mode === "edit"}
                 value={form["MAGIAY"]}
-                onChange={(e) => handleChangeInformationForm(e)}
+                onChange={(e) =>
+                  handleChangeInformationForm({ MAGIAY: e.target.value })
+                }
                 name="MAGIAY"
                 className={styles.item_size_middle}
               />
@@ -63,7 +84,9 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <input
                 name="SortID"
                 value={form["SortID"]}
-                onChange={(e) => handleChangeInformationForm(e)}
+                onChange={(e) =>
+                  handleChangeInformationForm({ SortID: e.target.value })
+                }
                 className={styles.item_size_middle}
               />
             </div>
@@ -73,7 +96,9 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <input
                 name="TENGIAY"
                 value={form["TENGIAY"]}
-                onChange={(e) => handleChangeInformationForm(e)}
+                onChange={(e) =>
+                  handleChangeInformationForm({ TENGIAY: e.target.value })
+                }
                 className={styles.item_size_big}
               />
             </div>
@@ -81,8 +106,9 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
             <div className={styles.group_first__left_row}>
               <label>Khách hàng</label>
               <ItemKhachHang
+                initValue={form["MAKH"]}
                 changeData={(data) => {
-                  setDataForm({ ...form, MAKH: data["MAKH"] });
+                  handleChangeInformationForm(data);
                 }}
                 size={"15rem"}
               />
@@ -93,8 +119,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <ItemDe
                 initValue={{ value: form["MADE"], label: form["TENDE"] }}
                 changeData={(dict_data) => {
-                  setDataForm({
-                    ...form,
+                  handleChangeInformationForm({
                     MADE: dict_data["value"],
                     TENDE: dict_data["label"],
                   });
@@ -108,8 +133,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <ItemSuon
                 initValue={{ value: form["MASUON"], label: form["TENSUON"] }}
                 changeData={(dict_data) => {
-                  setDataForm({
-                    ...form,
+                  handleChangeInformationForm({
                     MASUON: dict_data["value"],
                     TENSUON: dict_data["label"],
                   });
@@ -123,8 +147,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <ItemCa
                 initValue={{ value: form["MACA"], label: form["TENCA"] }}
                 changeData={(dict_data) => {
-                  setDataForm({
-                    ...form,
+                  handleChangeInformationForm({
                     MACA: dict_data["value"],
                     TENCA: dict_data["label"],
                   });
@@ -149,7 +172,6 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
                 onChange={(e) => changeImage(e)}
               />
               <img src={image_base64} />
-              {/* TODO: chinh lai thanh database ne */}
             </div>
           </div>
         </div>
@@ -161,8 +183,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <ItemQuai
                 initValue={{ value: form["MAQUAI"], label: form["TENQUAI"] }}
                 changeData={(dict_data) => {
-                  setDataForm({
-                    ...form,
+                  handleChangeInformationForm({
                     MAQUAI: dict_data["value"],
                     TENQUAI: dict_data["label"],
                   });
@@ -175,9 +196,13 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <div className={styles.group_second_row__right_pair}>
                 <label>Giá trang trí</label>
                 <input
+                  type="number"
+                  min={0}
                   name="GIATRANGTRI"
                   value={form["GIATRANGTRI"]}
-                  onChange={(e) => handleChangeInformationForm(e)}
+                  onChange={(e) =>
+                    handleChangeInformationForm({ GIATRANGTRI: e.target.value })
+                  }
                 />
               </div>
 
@@ -185,8 +210,12 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
                 <label className={styles.label_custom}>Giá tân trang</label>
                 <input
                   name="GIATANTRANG"
+                  type="number"
+                  min={0}
                   value={form["GIATANTRANG"]}
-                  onChange={(e) => handleChangeInformationForm(e)}
+                  onChange={(e) =>
+                    handleChangeInformationForm({ GIATANTRANG: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -198,8 +227,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <ItemMau
                 initValue={{ value: form["MAMAU"], label: form["TENMAU"] }}
                 changeData={(dict_data) => {
-                  setDataForm({
-                    ...form,
+                  handleChangeInformationForm({
                     MAMAU: dict_data["value"],
                     TENMAU: dict_data["label"],
                   });
@@ -213,8 +241,12 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
                 <label>Giá sườn</label>
                 <input
                   name="GIASUON"
+                  type="number"
+                  min={0}
                   value={form["GIASUON"]}
-                  onChange={(e) => handleChangeInformationForm(e)}
+                  onChange={(e) =>
+                    handleChangeInformationForm({ GIASUON: e.target.value })
+                  }
                 />
               </div>
 
@@ -222,8 +254,12 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
                 <label className={styles.label_custom}>Nhân công</label>
                 <input
                   name="GIANHANCONG"
+                  type="number"
+                  min={0}
                   value={form["GIANHANCONG"]}
-                  onChange={(e) => handleChangeInformationForm(e)}
+                  onChange={(e) =>
+                    handleChangeInformationForm({ GIANHANCONG: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -233,9 +269,13 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
             <div className={styles.group_second_row__left}>
               <label>Đơn giá</label>
               <input
+                type="number"
+                min={0}
                 name="DONGIA"
                 value={form["DONGIA"]}
-                onChange={(e) => handleChangeInformationForm(e)}
+                onChange={(e) =>
+                  handleChangeInformationForm({ DONGIA: e.target.value })
+                }
                 className={styles.item_size_middle}
               />
             </div>
@@ -244,16 +284,24 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
                 <label>Giá gót</label>
                 <input
                   name="GIAGOT"
+                  type="number"
+                  min={0}
                   value={form["GIAGOT"]}
-                  onChange={(e) => handleChangeInformationForm(e)}
+                  onChange={(e) =>
+                    handleChangeInformationForm({ GIAGOT: e.target.value })
+                  }
                 />
               </div>
               <div className={styles.group_second_row__right_pair}>
                 <label className={styles.label_custom}>Giá keo</label>
                 <input
                   name="GIAKEO"
+                  type="number"
+                  min={0}
                   value={form["GIAKEO"]}
-                  onChange={(e) => handleChangeInformationForm(e)}
+                  onChange={(e) =>
+                    handleChangeInformationForm({ GIAKEO: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -265,7 +313,9 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <input
                 name="GHICHU"
                 value={form["GHICHU"]}
-                onChange={(e) => handleChangeInformationForm(e)}
+                onChange={(e) =>
+                  handleChangeInformationForm({ GHICHU: e.target.value })
+                }
                 className={styles.item_size_big}
               />
             </div>
@@ -280,8 +330,12 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
                 <label>Giá vốn</label>
                 <input
                   name="GIAVON"
+                  type="number"
+                  min={0}
                   value={form["GIAVON"]}
-                  onChange={(e) => handleChangeInformationForm(e)}
+                  onChange={(e) =>
+                    handleChangeInformationForm({ GIAVON: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -295,7 +349,9 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <textarea
                 name="TRANGTRIDE"
                 value={form["TRANGTRIDE"]}
-                onChange={(e) => handleChangeInformationForm(e)}
+                onChange={(e) =>
+                  handleChangeInformationForm({ TRANGTRIDE: e.target.value })
+                }
               />
             </div>
 
@@ -304,7 +360,9 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <textarea
                 name="TRANGTRIQUAI"
                 value={form["TRANGTRIQUAI"]}
-                onChange={(e) => handleChangeInformationForm(e)}
+                onChange={(e) =>
+                  handleChangeInformationForm({ TRANGTRIQUAI: e.target.value })
+                }
               />
             </div>
           </div>
@@ -315,7 +373,9 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <textarea
                 name="GHICHUDE"
                 value={form["GHICHUDE"]}
-                onChange={(e) => handleChangeInformationForm(e)}
+                onChange={(e) =>
+                  handleChangeInformationForm({ GHICHUDE: e.target.value })
+                }
               />
             </div>
 
@@ -324,7 +384,9 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <textarea
                 name="GHICHUQUAI"
                 value={form["GHICHUQUAI"]}
-                onChange={(e) => handleChangeInformationForm(e)}
+                onChange={(e) =>
+                  handleChangeInformationForm({ GHICHUQUAI: e.target.value })
+                }
               />
             </div>
           </div>
