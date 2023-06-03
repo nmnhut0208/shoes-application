@@ -1,7 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from utils.sql_helper import *
 
 router = APIRouter()
 
@@ -15,7 +16,8 @@ KH = KHOHANG()
 
 
 @router.get("/khohang")
-def read() -> RESPONSE_KHOHANG:
+@user_access
+def read(request: Request) -> RESPONSE_KHOHANG:
     return KH.read()
 
 

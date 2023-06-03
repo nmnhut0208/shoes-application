@@ -5,21 +5,21 @@ import SubTable from "./SubTable";
 import styles from "./GiaoHang.module.scss";
 
 const list_key = [
-  { key: "Số phiếu" },
-  { key: "Ngày phiếu" },
-  { key: "Số đơn hàng" },
-  { key: "Khách hàng" },
-  { key: "Tên khách hàng" },
-  { key: "Diễn giải" },
+  { header: "Số phiếu", key: "SOPHIEU" },
+  { header: "Ngày phiếu", key: "NGAYPHIEU" },
+  { header: "Số đơn hàng", key: "SODH" },
+  { header: "Khách hàng", key: "MAKH" },
+  { header: "Tên khách hàng", key: "TENKH" },
+  { header: "Diễn giải", key: "DIENGIAIPHIEU" },
 ];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    header: list_key[obj]["key"],
+    header: list_key[obj]["header"],
     width: list_key[obj]["width"],
     accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"].toLowerCase(),
+    key: list_key[obj]["key"],
   };
   infoColumns.push(info);
 }
@@ -27,12 +27,13 @@ for (var obj in list_key) {
 const GiaoHang = () => {
   const [dataTable, setDataTable] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [sendData, setSendData] = useState({});
   //   const [rowSelection, setRowSelection] = useState({});
 
   console.log("GiaoHang");
 
   useEffect(() => {
-    fetch("http://localhost:8000/items_tv_giao_hang")
+    fetch("http://localhost:8000/tv_giaohang")
       .then((response) => {
         return response.json();
       })
@@ -51,13 +52,14 @@ const GiaoHang = () => {
         columns={infoColumns}
         data={dataTable}
         setShowForm={setShowForm}
+        setSendData={setSendData}
         // rowSelection={rowSelection}
         // setRowSelection={setRowSelection}
         maxHeight={"65rem"}
       />
       {showForm && (
         <Modal>
-          <FormGiaoHang />
+          <FormGiaoHang infoKH={sendData} />
         </Modal>
       )}
     </>

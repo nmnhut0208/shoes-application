@@ -1,15 +1,20 @@
 import pyodbc
-import pymssql
 import pandas as pd
+from functools import wraps
+from fastapi import Request, HTTPException
 
-conn = pyodbc.connect(driver='{ODBC Driver 17 for SQL Server}',
-                      server="MINH\SQLEXPRESS",
-                      #   server="DESKTOP-GT3LP7K\SQLEXPRESS",
-                      database="PT",
-                      trusted_connection="yes",
-                      mars_connection="yes")
+conn = pyodbc.connect(
+    driver="{ODBC Driver 17 for SQL Server}",
+    server="MINH\SQLEXPRESS",
+    #   server="DESKTOP-GT3LP7K\SQLEXPRESS",
+    database="PT",
+    trusted_connection="yes",
+    mars_connection="yes",
+)
 
 cursor = conn.cursor()
+
+authenticate_User = ["nhutnm123456", "thuntk123456"]
 
 
 def read_sql(tbn: str) -> pd.DataFrame:
@@ -20,6 +25,12 @@ def read_sql(tbn: str) -> pd.DataFrame:
 
 def read_sql_custom(sql: str) -> pd.DataFrame:
     df = pd.read_sql(sql, conn)
+    # cursor.execute(sql)
+    # columns = [column[0] for column in cursor.description]
+    # results = []
+    # for row in cursor.fetchall():
+    #     results.append(dict(zip(columns, row)))
+    # return results
     return df
 
 
@@ -39,3 +50,15 @@ def delete_sql(tbn: str, condition: str) -> None:
     sql = f"DELETE FROM {tbn} WHERE {condition}"
     cursor.execute(sql)
     conn.commit()
+
+
+def user_access(f):
+    @wraps(f)
+    def decorator(request: Request, *args, **kwargs):
+        print(request.headers)
+        if request.headers.get("x-access-tokens", None) not in authenticate_User:
+            # return {"status": "error", "message": "User not found"}
+            raise HTTPException(status_code=401, detail="Invalid client secret")
+        return f(request=request, *args, **kwargs)
+
+    return decorator

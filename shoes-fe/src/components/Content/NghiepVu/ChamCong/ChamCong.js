@@ -160,6 +160,9 @@ const ChamCong = () => {
         TENKY: dataTableKY[keys[0]]["TENKY"],
       };
       setInfoKY(info);
+      setDataTable([]);
+      setDataTableSub([]);
+      setRowSelection({});
     }
   }, [rowSelectionMaKY]);
 
@@ -190,6 +193,9 @@ const ChamCong = () => {
         TENNVIEN: dataTableNhanVien[keys[0]]["TENNVIEN"],
       };
       setInfoNVIEN(info);
+      setDataTable([]);
+      setDataTableSub([]);
+      setRowSelection({});
     }
   }, [rowSelectionMaNVIEN]);
 

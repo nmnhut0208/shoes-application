@@ -5,33 +5,33 @@ import { Modal } from "~common_tag";
 import FormChiTien from "./FormChiTien";
 
 const list_key = [
-  { key: "Số phiếu" },
-  { key: "Ngày phiếu" },
-  { key: "Khách hàng" },
-  { key: "Tên khách hàng" },
-  { key: "Số tiền" },
-  { key: "Diễn giải" },
+  { header: "Số phiếu", key: "SOPHIEU" },
+  { header: "Ngày phiếu", key: "NGAYPHIEU" },
+  { header: "Khách hàng", key: "MAKH" },
+  { header: "Tên khách hàng", key: "TENKH" },
+  { header: "Số tiền", key: "SODUCUOI" },
+  { header: "Diễn giải", key: "DIENGIAIPHIEU" },
 ];
 
 const infoColumns = [];
 for (var obj in list_key) {
   const info = {
-    header: list_key[obj]["key"],
+    header: list_key[obj]["header"],
     width: list_key[obj]["width"],
     accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"].toLowerCase(),
+    key: list_key[obj]["key"],
   };
   infoColumns.push(info);
 }
 
 const url_data = {
-  option1: "",
-  option2: "",
-  option3: "http://localhost:8000/items_tv_thu",
+  option1: "http://localhost:8000/tv_thuchi",
+  option2: "http://localhost:8000/tv_thu",
+  option3: "http://localhost:8000/tv_chi",
 };
 
 const TableThuChi = ({ option }) => {
-  const [stateTable, dispatchTable] = useTableContext();
+  // const [stateTable, dispatchTable] = useTableContext();
   const [dataTable, setDataTable] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
@@ -62,7 +62,7 @@ const TableThuChi = ({ option }) => {
       .catch((err) => {
         console.log(":error: ", err);
       });
-  }, []);
+  }, [option]);
 
   return (
     <>

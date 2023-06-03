@@ -26,13 +26,20 @@ def read(data: dict) -> RESPONSE_CHAMCONG:
 
 @router.get("/chamcong/nhanvien")
 def read_nhanvien():
-    sql = f"SELECT MANVIEN, TENNVIEN FROM DMNHANVIEN"
+    # params = ("MANVIEN", "TENNVIEN", "DMNHANVIEN")
+    col1 = "MANVIEN"
+    col2 = "TENNVIEN"
+    tbn = "DMNHANVIEN"
+    sql = f"SELECT {col1}, {col2} FROM {tbn}"
     return CC.read_custom(sql)
 
 
 @router.get("/chamcong/ky")
 def read_ky():
-    sql = f"SELECT MAKY, TENKY FROM DMKYTINHLUONG"
+    col1 = "MAKY"
+    col2 = "TENKY"
+    tbn = "DMKYTINHLUONG"
+    sql = f"SELECT {col1}, {col2} FROM {tbn}"
     return CC.read_custom(sql)
 
 

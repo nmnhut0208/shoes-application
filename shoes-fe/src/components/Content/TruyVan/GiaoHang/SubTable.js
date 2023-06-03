@@ -9,6 +9,7 @@ const SubTable = ({
   columns,
   data,
   setShowForm,
+  setSendData,
   //   rowSelection,
   //   setRowSelection,
   maxHeight,
@@ -43,7 +44,9 @@ const SubTable = ({
             <IconButton
               onClick={() => {
                 setShowForm(true);
+                setSendData(row.original);
                 dispatchTable(actions_table.setModeShowModal(true));
+                // console.log("row: ", row.original);
                 // dispatchTable(actions_table.setInforRecordTable(emptyData));
                 // dispatchTable(actions_table.setActionForm("add"));
                 // dispatchTable(actions_table.setModeShowModal(true));

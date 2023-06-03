@@ -47,7 +47,13 @@ const KhoHang = () => {
     dispatchTable(actions_table.setTitleModal("Kho hàng - F0025"));
     dispatchTable(actions_table.setTitleTable("Kho hàng - F0024"));
     dispatchTable(actions_table.setComponentForm(FormKhoHang));
-    fetch("http://localhost:8000/khohang")
+    fetch("http://localhost:8000/khohang", {
+      // x-access-tokens
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-tokens": "nhutnm123456",
+      },
+    })
       .then((response) => {
         return response.json();
       })

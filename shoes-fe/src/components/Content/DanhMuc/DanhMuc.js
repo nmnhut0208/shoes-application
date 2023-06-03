@@ -3,15 +3,23 @@ import { Giay, KhoHang, Mau, Mui, Suon, De, Got, Ca, Quai } from "./HangHoa";
 import NhanVien from "./NhanVien";
 import KyTinhLuong from "./KyTinhLuong";
 import KhachHang from "./KhachHang";
+import { useUserContext } from "~user";
 
 const DanhMuc = () => {
   const [stateTask, dispatchTask] = useTaskContext();
+  const [stateUser, dispatchUser] = useUserContext();
   const inforCurrentTask = stateTask.inforCurrentTask;
+  const userAccess = stateUser.userPoolAccess;
   switch (inforCurrentTask.infoDetail) {
     case "Giày":
       return <Giay />;
     case "Kho hàng":
-      return <KhoHang />;
+      if (
+        userAccess.some((obj) => (obj.MAFORM === "F0007") & (obj.XEM === 2))
+      ) {
+        return <KhoHang />;
+      }
+      return <div>Không có quyền truy cập</div>;
     case "Màu":
       return <Mau />;
     case "Mũi":

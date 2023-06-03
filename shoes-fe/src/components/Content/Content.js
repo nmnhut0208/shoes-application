@@ -1,4 +1,5 @@
 import { useTaskContext } from "~task";
+import HeThong from "./HeThong";
 import DanhMuc from "./DanhMuc";
 import NghiepVu from "./NghiepVu";
 import TruyVan from "./TruyVan/";
@@ -10,6 +11,8 @@ const Content = () => {
   switch (inforCurrentTask.infoContent) {
     case "Header":
       return <></>;
+    case "Hệ thống":
+      return <HeThong />;
     case "Danh mục":
       return <DanhMuc />;
     case "Nghiệp vụ":

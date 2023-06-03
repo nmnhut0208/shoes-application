@@ -5,6 +5,7 @@ module.exports = {
     alias: {
       "~GlobalStyle": path.resolve(__dirname, "src/GlobalCSS"),
       "~task": path.resolve(__dirname, "src/Task"),
+      "~user": path.resolve(__dirname, "src/User"),
       "~table_context": path.resolve(
         __dirname,
         "src/components/Content/context_table"
