@@ -20,28 +20,28 @@ class ITEM_HETHONG(BaseModel):
 
 hethong = HETHONG()
 
-
-def find_info_primary_key_DONHANG(key, today):
+# =================================================================
+def find_info_primary_key(table, key, today):
     year = today.year
     sql = f"""select *
             from V1T4444
-            Where TABLENAME='DONHANG'
+            Where TABLENAME='{table}'
             and KEYSTRING = '{key}{year}'"""
     data = hethong.read_custom(sql)
     lastnumber = 1
     if len(data) == 0:
         sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-                        VALUES ('DONHANG', '{key}{year}', {lastnumber})"""
+                        VALUES ('{table}', '{key}{year}', {lastnumber})"""
         hethong.execute_custom(sql_insert)
     else:
         lastnumber = data[0]['LASTKEY']
     return lastnumber
 
 
-def save_info_primary_key_DONHANG(key, year, value):
+def save_info_primary_key(table, key, year, value):
     sql_insert = f"""UPDATE V1T4444 
                     SET LASTKEY = {value}
-                    WHERE TABLENAME = 'DONHANG'
+                    WHERE TABLENAME = '{table}'
                     AND KEYSTRING = '{key}{year}'"""
     hethong.execute_custom(sql_insert)
 
@@ -82,3 +82,26 @@ def update_info_SODH(data: ITEM_HETHONG) -> RESPONSE:
                      AND KEYSTRING = 'DH--{month}/{year}'"""
     return hethong.execute_custom(sql_insert)
 
+
+@router.get("/hethong/phancong/SOPC")
+def find_info_SOPC():
+    today = datetime.now()
+    year = str(today.year)[2:]
+    print("year: ", year)
+    month = str(today.month).zfill(2)
+    sql = f"""select *
+            from V1T4444
+            Where TABLENAME='PHANCONG'
+            and KEYSTRING = 'PC--{month}/{year}'"""
+    data = hethong.read_custom(sql)
+    lastnumber = 1
+    if len(data) == 0:
+        sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
+                    VALUES ('PHANCONG', 'PC--{month}/{year}', {lastnumber})"""
+        hethong.execute_custom(sql_insert)
+    else:
+        lastnumber = data[0]['LASTKEY'] + 1
+
+    number_string = str(lastnumber).zfill(4)
+    SOPC = f"PC-{number_string}-{month}/{year}"
+    return {"SOPC": SOPC, "LastestPC": lastnumber}

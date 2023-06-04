@@ -79,21 +79,15 @@ const PhanCong = ({ dataView, view }) => {
       }
 
       let idDonHang = dataDonHang[index]["SODH"];
-      let soluong = dataDonHang[index]["SOLUONG"];
       if (typeof idDonHang !== "undefined") {
         // call API voi idDonHang để lấy chi tiết đơn hàng
         // các mã giày và số lượng mà khách đã chọn
         // update lại selection box cho mã giày
         // mỗi lựa chọn sẽ là thông tin khác nhau của form
         // nhớ xử lý vụ size nữa nè
-        fetch("http://localhost:8000/items_donhang_with_id", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id: idDonHang, nof: soluong }),
-        })
+        fetch(
+          "http://localhost:8000/donhang?SODH=" + encodeURIComponent(idDonHang)
+        )
           .then((response) => {
             return response.json();
           })
@@ -158,7 +152,7 @@ const PhanCong = ({ dataView, view }) => {
   useEffect(() => {
     // case 1: Nghiệp Vụ Phân Công
     if (!view) {
-      fetch("http://localhost:8000/items_donhang_page_phan_cong")
+      fetch("http://localhost:8000/phancong/donhangchuaphancong")
         .then((response) => {
           return response.json();
         })

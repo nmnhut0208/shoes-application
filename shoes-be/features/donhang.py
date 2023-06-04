@@ -1,9 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
-from features.hethong import (find_info_primary_key_DONHANG, 
-                              save_info_primary_key_DONHANG)
+from features.hethong import (find_info_primary_key, 
+                              save_info_primary_key)
 
 from pydantic import BaseModel
 from typing import Optional
@@ -56,6 +56,15 @@ class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
     DONGIAQUAI: Optional[int] = None
     TENCA: Optional[str] = None
     TENKH: str
+    # =============
+    SIZE5: Optional[int] = None
+    SIZE6: Optional[int] = None
+    SIZE7: Optional[int] = None
+    SIZE9: Optional[int] = None
+    SIZE8: Optional[int] = None
+    SIZE0: Optional[int] = None
+    SOLUONG: Optional[int] = None
+
 
 
 router = APIRouter()
@@ -69,7 +78,46 @@ class DONHANG(BaseClass):
 donhang = DONHANG()
 
 
+@router.get("/donhang/{SODH}")
+def read(SODH: str) -> List[ITEM_DONHANG]:
+    print("SODH: ", SODH)
+    sql = f"""select *
+             from DONHANG
+             where DONHANG.SODH = '{SODH}'
+          """
+
+    result = donhang.read_custom(sql)
+    return result
+
+
+@router.get("/donhang")
+def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
+    print("SODH: ", SODH)
+    sql = f"""SELECT V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+                coalesce(MAUDE, '') as MAUDE, 
+                coalesce(MAUGOT, '') AS MAUGOT, 
+                coalesce(MAUSUON, '') AS MAUSUON,
+                coalesce(MAUCA, '') AS MAUCA,
+                coalesce(MAUQUAI, '') AS MAUQUAI ,
+                coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH, 
+                V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
+                V_GIAY.TENCA, V_GIAY.TENKH,
+                SIZE5,SIZE6,SIZE7,
+                SIZE9,SIZE8,SIZE0,
+                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG
+            FROM (select MAGIAY,MAUDE,MAUGOT, 
+		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
+                SIZE9,SIZE8,SIZE0
+            from DONHANG WHERE DONHANG.SODH='{SODH}') AS DONHANG
+            left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay
+            
+          """
+    result = donhang.read_custom(sql)
+    return result
+
+
 @router.get("/donhang/khachhang/{MAKH}/giay")
+# lấy tất cả các loại giày của khách hàng MAKH
 def read(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     sql = """SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                     coalesce(MAUDE, '') as MAUDE, 
@@ -127,8 +175,8 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
     # find common information
     today = datetime.now()
     year = today.year
-    MADONG = find_info_primary_key_DONHANG("MD", today)
-    DH = find_info_primary_key_DONHANG("DH", today) + 1
+    MADONG = find_info_primary_key("MD", today)
+    DH = find_info_primary_key("DH", today) + 1
     MADH = f"DH{year}{str(DH).zfill(12)}"
     day_created = today.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -156,8 +204,8 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
         donhang.add(_c, _v) 
 
     # lưu lại thông tin mã dòng và mã đơn hàng 
-    save_info_primary_key_DONHANG("DH", year, DH)
-    save_info_primary_key_DONHANG("MD", year, MADONG)
+    save_info_primary_key("DH", year, DH)
+    save_info_primary_key("MD", year, MADONG)
     return 1
 
 

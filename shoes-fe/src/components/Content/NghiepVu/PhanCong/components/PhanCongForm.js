@@ -27,19 +27,19 @@ const listSubInforGiay = [
   },
   {
     header: "Màu sườn",
-    key: "TENMAUSUON",
+    key: "MAUSUON",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Màu cá",
-    key: "TENMAUCA",
+    key: "MAUCA",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Màu quai",
-    key: "TENMAUQUAI",
+    key: "MAUQUAI",
     width: 12 * rem_to_px,
     enableEditing: true,
   },
@@ -133,16 +133,16 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
       <div className={styles.phancong_remain}>
         <div className={styles.pair}>
           <label>Màu sườn</label>
-          <input name="TENMAUSUON" value={form["TENMAUSUON"]} />
+          <input name="MAUSUON" value={form["MAUSUON"]} />
         </div>
         <div className={styles.group_input_row}>
           <div className={styles.pair}>
             <label>Màu cá</label>
-            <input name="TENMAUCA" value={form["TENMAUCA"]} />
+            <input name="MAUCA" value={form["MAUCA"]} />
           </div>
           <div className={styles.pair}>
             <label>Màu quai</label>
-            <input name="TENMAUQUAI" value={form["TENMAUQUAI"]} />
+            <input name="MAUQUAI" value={form["MAUQUAI"]} />
           </div>
         </div>
       </div>
