@@ -8,12 +8,13 @@ const Selection = ({
   changeData,
   size_input,
   size_span,
+  className,
 }) => {
   console.log("readOnly: ", readOnly);
   const [name, setName] = useState(defaultValue["label"]);
 
   return (
-    <Space size="small">
+    <Space size="small" className={className}>
       <select
         style={{ width: size_input }}
         onChange={(e) => {

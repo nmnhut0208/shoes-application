@@ -12,6 +12,8 @@ import {
 } from "~utils/processing_data_table";
 import styles from "../PhanCong.module.scss";
 
+import { ItemThoDe, ItemThoQuai } from "~items";
+
 const listSubInforGiay = [
   {
     header: "Mã giày",
@@ -72,6 +74,31 @@ const DetailInfoGiay = ({ data, rowSelection, setRowSelection }) => {
 
 const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
   const [rowSelection, setRowSelection] = useState({});
+  const [listThoDe, setListThoDe] = useState([]);
+  const [listThoQuai, setListThoQuai] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/nhanvien/get-thode")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setListThoDe(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    fetch("http://localhost:8000/nhanvien/get-thoquai")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setListThoQuai(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const handleChangeForm = (e) => {
     const data = { ...form };
@@ -146,34 +173,39 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           </div>
         </div>
       </div>
-      <label>Thợ đế</label>
-      <select
-        name="THODE"
-        value={form["THODE"]}
-        onChange={(e) => handleChangeForm(e)}
-      >
-        <option value="thu">De Thu</option>
-        <option value="ngoc">De Ngon</option>
-        <option value="an">De An</option>
-        <option value="nhien">De Nhien</option>
-      </select>
 
-      <span>{form["THODE"]}</span>
+      <label>Thợ đế</label>
+      <ItemThoDe
+        className={styles.info_thode}
+        initValue={{ value: form["THODE"], label: form["TENTHODE"] }}
+        changeData={(dict_data) => {
+          setChiTietPhanCong({
+            ...form,
+            THODE: dict_data["value"],
+            TENTHODE: dict_data["label"],
+          });
+        }}
+        size_input={"19.5rem"}
+        size_span={"47rem"}
+      />
+
       <div className={styles.phancong_remain}>
-        <div className={styles.pair_tho_quai}>
+        <div className={styles.info_thoquai}>
           <label>Thợ quai</label>
-          <select
-            name="THOQUAI"
-            value={form["THOQUAI"]}
-            onChange={(e) => handleChangeForm(e)}
-          >
-            <option value="Cong">Quai Cong</option>
-            <option value="Lan">Quai Lan</option>
-            <option value="Hoang">Quai Hoang</option>
-            <option value="Ly">Quang Ly</option>
-          </select>
+          <ItemThoQuai
+            //
+            initValue={{ value: form["THOQUAI"], label: form["TENTHOQUAI"] }}
+            changeData={(dict_data) => {
+              setChiTietPhanCong({
+                ...form,
+                THOQUAI: dict_data["value"],
+                TENTHOQUAI: dict_data["label"],
+              });
+            }}
+            size_input={"19.5rem"}
+            size_span={"47rem"}
+          />
         </div>
-        <span className={styles.span_thoquai}>{form["THOQUAI"]}</span>
       </div>
       <div className={styles.content_size}>
         <div className={styles.pair_info}>

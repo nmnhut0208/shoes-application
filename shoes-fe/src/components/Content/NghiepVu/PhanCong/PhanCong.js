@@ -18,6 +18,7 @@ import {
   XemPhanCong,
   InTongHop,
 } from "./components";
+import { updateInfoPhieuPhanCong } from "./helper";
 import DonHang from "../DonHang/";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
@@ -46,6 +47,8 @@ const PhanCong = ({ dataView, view }) => {
   });
 
   const [infoPhieu, setInfoPhieu] = useState({});
+  console.log("infoPhieu: ", infoPhieu);
+  const [lastestSOPHIEU, setLastestSOPHIEU] = useState(0);
   const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState([]);
   const [rowSelectionDonHangToPhanCong, setRowSelectionDonHangToPhanCong] =
     useState({});
@@ -104,11 +107,11 @@ const PhanCong = ({ dataView, view }) => {
                 (data) =>
                   info[index]["SODH"] === data["SODH"] &&
                   info[index]["MAGIAY"] === data["MAGIAY"] &&
-                  info[index]["TENMAUDE"] === data["TENMAUDE"] &&
-                  info[index]["TENMAUGOT"] === data["TENMAUGOT"] &&
-                  info[index]["TENMAUSUON"] === data["TENMAUSUON"] &&
-                  info[index]["TENMAUCA"] === data["TENMAUCA"] &&
-                  info[index]["TENMAUQUAI"] === data["TENMAUQUAI"]
+                  info[index]["MAUDE"] === data["MAUDE"] &&
+                  info[index]["MAUGOT"] === data["MAUGOT"] &&
+                  info[index]["MAUSUON"] === data["MAUSUON"] &&
+                  info[index]["MAUCA"] === data["MAUCA"] &&
+                  info[index]["MAUQUAI"] === data["MAUQUAI"]
               );
               if (col >= 0) {
                 // Cập nhật lại info
@@ -137,7 +140,11 @@ const PhanCong = ({ dataView, view }) => {
 
             setListGiayWillPhanCong(list_data_will_phancong);
             if (list_data_will_phancong.length > 0) {
-              setFormPhanCong(list_data_will_phancong[0]);
+              setFormPhanCong({
+                ...list_data_will_phancong[0],
+                THODE: "",
+                THOQUAI: "",
+              });
             } else {
               resetForm();
             }
@@ -152,6 +159,7 @@ const PhanCong = ({ dataView, view }) => {
   useEffect(() => {
     // case 1: Nghiệp Vụ Phân Công
     if (!view) {
+      updateInfoPhieuPhanCong(infoPhieu, setInfoPhieu, setLastestSOPHIEU);
       fetch("http://localhost:8000/phancong/donhangchuaphancong")
         .then((response) => {
           return response.json();
@@ -203,6 +211,11 @@ const PhanCong = ({ dataView, view }) => {
 
   const handleClickAdd = () => {
     if (formPhanCong["MAGIAY"] === "") return;
+    console.log("formPhanCong: ", formPhanCong);
+    if (formPhanCong["THODE"] === "" || formPhanCong["THOQUAI"] === "") {
+      alert("Chọn thợ đế và thợ quai để phân công");
+      return;
+    }
     let remain = { ...formPhanCong };
     const record = { ...formPhanCong };
 
@@ -211,9 +224,9 @@ const PhanCong = ({ dataView, view }) => {
     let index = listGiayWillPhanCong.findIndex(
       (item) =>
         item["MAGIAY"] === formPhanCong["MAGIAY"] &&
-        item["TENMAUQUAI"] === formPhanCong["TENMAUQUAI"] &&
-        item["TENMAUSUON"] === formPhanCong["TENMAUSUON"] &&
-        item["TENMAUCA"] === formPhanCong["TENMAUCA"]
+        item["MAUQUAI"] === formPhanCong["MAUQUAI"] &&
+        item["MAUSUON"] === formPhanCong["MAUSUON"] &&
+        item["MAUCA"] === formPhanCong["MAUCA"]
     );
     let is_remain = false;
 
@@ -238,7 +251,7 @@ const PhanCong = ({ dataView, view }) => {
 
       if (listGiayWillPhanCong.length > 0) {
         setListGiayWillPhanCong([...listGiayWillPhanCong]);
-        setFormPhanCong(listGiayWillPhanCong[0]);
+        setFormPhanCong({ ...listGiayWillPhanCong[0], THODE: "", THOQUAI: "" });
       } else {
         // Khi phân công xong thì nhảy qua thằng tiếp theo
         // nhảy qua đơn hàng tiếp theo

@@ -21,6 +21,7 @@ import {
   updateColumnsInformations,
 } from "./helper";
 import { ItemKhachHang } from "~items";
+import { convertDate } from "~utils/processing_date";
 
 const DonHang = ({ dataView, view }) => {
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
@@ -59,9 +60,9 @@ const DonHang = ({ dataView, view }) => {
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
   }, []);
 
-  const convertDate = (date) => {
-    return moment(date, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD");
-  };
+  // const convertDate = (date) => {
+  //   return moment(date, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD");
+  // };
 
   useEffect(() => {
     if (view) {

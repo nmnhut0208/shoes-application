@@ -14,6 +14,8 @@ import {
   getListGot,
   getListMui,
   getListKhachHang,
+  getListThoDe,
+  getListThoQuai,
 } from "./helper";
 
 const Header = () => {
@@ -27,6 +29,8 @@ const Header = () => {
     getListGot(dispatchItem);
     getListMui(dispatchItem);
     getListKhachHang(dispatchItem);
+    getListThoDe(dispatchItem);
+    getListThoQuai(dispatchItem);
   }, []);
   console.log("stateItem: ", stateItem);
   return (

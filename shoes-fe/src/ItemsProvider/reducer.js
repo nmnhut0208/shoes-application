@@ -7,6 +7,8 @@ import {
   SET_INFO_GOT,
   SET_INFO_MUI,
   SET_INFO_KHACHHANG,
+  SET_INFO_THODE,
+  SET_INFO_THOQUAI,
 } from "./constants";
 
 const initState = {
@@ -18,6 +20,8 @@ const initState = {
   infoItemMau: [],
   infoItemMui: [],
   infoItemKhachHang: [],
+  infoItemThoDe: [],
+  infoItemThoQuai: [],
 };
 
 function reducer(state, action) {
@@ -54,6 +58,16 @@ function reducer(state, action) {
     }
     case SET_INFO_KHACHHANG: {
       info["infoItemKhachHang"] = action.payload;
+      break;
+    }
+
+    case SET_INFO_THODE: {
+      info["infoItemThoDe"] = action.payload;
+      break;
+    }
+
+    case SET_INFO_THOQUAI: {
+      info["infoItemThoQuai"] = action.payload;
       break;
     }
 

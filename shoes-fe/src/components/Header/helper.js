@@ -160,3 +160,45 @@ export const getListKhachHang = (dispatchItem) => {
       console.log(":error: ", err);
     });
 };
+
+export const getListThoDe = (dispatchItem) => {
+  fetch("http://localhost:8000/nhanvien/get-thode")
+    .then((response) => {
+      return response.json();
+    })
+    .then((info) => {
+      let listOptional = info.map(function (ob) {
+        return { label: ob.TENNVIEN, value: ob.MANVIEN };
+      });
+      dispatchItem(
+        actions_items_context.setInfoThoDe([
+          { label: "", value: "" },
+          ...listOptional,
+        ])
+      );
+    })
+    .catch((err) => {
+      console.log(":error: ", err);
+    });
+};
+
+export const getListThoQuai = (dispatchItem) => {
+  fetch("http://localhost:8000/nhanvien/get-thoquai")
+    .then((response) => {
+      return response.json();
+    })
+    .then((info) => {
+      let listOptional = info.map(function (ob) {
+        return { label: ob.TENNVIEN, value: ob.MANVIEN };
+      });
+      dispatchItem(
+        actions_items_context.setInfoThoQuai([
+          { label: "", value: "" },
+          ...listOptional,
+        ])
+      );
+    })
+    .catch((err) => {
+      console.log(":error: ", err);
+    });
+};

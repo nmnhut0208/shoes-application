@@ -109,8 +109,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
                 SIZE9,SIZE8,SIZE0
             from DONHANG WHERE DONHANG.SODH='{SODH}') AS DONHANG
-            left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay
-            
+            left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  
           """
     result = donhang.read_custom(sql)
     return result

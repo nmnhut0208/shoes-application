@@ -21,6 +21,21 @@ def read() -> RESPONSE_NHANVIEN:
     return NV.read_custom(sql)
 
 
+@router.get("/nhanvien/get-thode")
+def read() -> RESPONSE_NHANVIEN:
+    sql = """SELECT MANVIEN, TENNVIEN, LOAINVIEN, GHICHU FROM DMNHANVIEN
+             where LOAINVIEN = 'TD'"""
+    return NV.read_custom(sql)
+
+
+@router.get("/nhanvien/get-thoquai")
+def read() -> RESPONSE_NHANVIEN:
+    sql = """SELECT MANVIEN, TENNVIEN, LOAINVIEN, GHICHU FROM DMNHANVIEN
+             where LOAINVIEN = 'TQ'"""
+    return NV.read_custom(sql)
+
+
+
 @router.post("/nhanvien")
 def add(data: ITEM_NHANVIEN) -> RESPONSE:
     data = dict(data)
