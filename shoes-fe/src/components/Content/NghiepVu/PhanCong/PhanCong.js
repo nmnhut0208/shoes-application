@@ -143,7 +143,10 @@ const PhanCong = ({ dataView, view }) => {
               setFormPhanCong({
                 ...list_data_will_phancong[0],
                 THODE: "",
+                TENTHODE: "",
                 THOQUAI: "",
+                TENTHOQUAI: "",
+                // SODH: idDonHang,
               });
             } else {
               resetForm();
@@ -211,7 +214,6 @@ const PhanCong = ({ dataView, view }) => {
 
   const handleClickAdd = () => {
     if (formPhanCong["MAGIAY"] === "") return;
-    console.log("formPhanCong: ", formPhanCong);
     if (formPhanCong["THODE"] === "" || formPhanCong["THOQUAI"] === "") {
       alert("Chọn thợ đế và thợ quai để phân công");
       return;
@@ -242,7 +244,13 @@ const PhanCong = ({ dataView, view }) => {
     if (nof_giay_phan_cong > 0)
       setDataChiTietPhanCong([...dataChiTietPhanCong, record]);
     if (is_remain) {
-      setFormPhanCong(remain);
+      setFormPhanCong({
+        ...remain,
+        THODE: "",
+        TENTHODE: "",
+        THOQUAI: "",
+        TENTHOQUAI: "",
+      });
       listGiayWillPhanCong[index] = remain;
       setListGiayWillPhanCong([...listGiayWillPhanCong]);
     } else {
@@ -251,7 +259,13 @@ const PhanCong = ({ dataView, view }) => {
 
       if (listGiayWillPhanCong.length > 0) {
         setListGiayWillPhanCong([...listGiayWillPhanCong]);
-        setFormPhanCong({ ...listGiayWillPhanCong[0], THODE: "", THOQUAI: "" });
+        setFormPhanCong({
+          ...listGiayWillPhanCong[0],
+          THODE: "",
+          TENTHODE: "",
+          THOQUAI: "",
+          TENTHOQUAI: "",
+        });
       } else {
         // Khi phân công xong thì nhảy qua thằng tiếp theo
         // nhảy qua đơn hàng tiếp theo

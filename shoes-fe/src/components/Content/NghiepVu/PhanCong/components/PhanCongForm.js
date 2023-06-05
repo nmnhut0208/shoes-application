@@ -74,32 +74,6 @@ const DetailInfoGiay = ({ data, rowSelection, setRowSelection }) => {
 
 const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
   const [rowSelection, setRowSelection] = useState({});
-  const [listThoDe, setListThoDe] = useState([]);
-  const [listThoQuai, setListThoQuai] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/nhanvien/get-thode")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setListThoDe(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    fetch("http://localhost:8000/nhanvien/get-thoquai")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setListThoQuai(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   const handleChangeForm = (e) => {
     const data = { ...form };
     data[e.target.name] = e.target.value;

@@ -43,6 +43,7 @@ class ITEM_DONHANG(BaseModel):
     GHICHU: Optional[str] = None
 
 class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
+    SODH: Optional[str] = None
     SORTID: str
     MAGIAY: str
     TENGIAY: str
@@ -93,7 +94,7 @@ def read(SODH: str) -> List[ITEM_DONHANG]:
 @router.get("/donhang")
 def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     print("SODH: ", SODH)
-    sql = f"""SELECT V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+    sql = f"""SELECT SODH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                 coalesce(MAUDE, '') as MAUDE, 
                 coalesce(MAUGOT, '') AS MAUGOT, 
                 coalesce(MAUSUON, '') AS MAUSUON,
@@ -105,7 +106,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
                 SIZE5,SIZE6,SIZE7,
                 SIZE9,SIZE8,SIZE0,
                 (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG
-            FROM (select MAGIAY,MAUDE,MAUGOT, 
+            FROM (select SODH, MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
                 SIZE9,SIZE8,SIZE0
             from DONHANG WHERE DONHANG.SODH='{SODH}') AS DONHANG
