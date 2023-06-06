@@ -22,8 +22,10 @@ from features.donhang import router as router_donhang
 from features.chamcong import router as router_chamcong
 from features.hethong import router as router_hethong
 from features.phancong import router as router_phancong
-
-
+from features.tv_giaohang import router as router_tv_giaohang
+from features.tv_thuchi import router as router_tv_thuchi
+from features.login import router as router_login
+from features.phanquyen import router as router_phanquyen
 
 app = FastAPI()
 
@@ -87,3 +89,15 @@ app.include_router(
 
 app.include_router(
     router_hethong, tags=["Thông Tin Hệ Thống"])
+
+app.include_router(
+    router_tv_giaohang, tags=["TV Giao Hàng"])
+
+app.include_router(
+    router_tv_thuchi, tags=["TV Thu Chi"])
+
+app.include_router(
+    router_login, tags=["Login"])
+
+app.include_router(
+    router_phanquyen, tags=["Phân Quyền"])

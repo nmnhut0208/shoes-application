@@ -7,12 +7,15 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useMemo } from "react";
+import { useUserContext } from "~user";
 
 const TableContent = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateTask, dispatchTask] = useTaskContext();
+  const [stateUser, dispatchUser] = useUserContext();
   const inforShowTable = stateTable["inforShowTable"];
   const ComponentForm = stateTable["infoShowForm"]["component_form"];
+  const maForm = stateTable["inforShowTable"]["title"].split(" - ")[1];
 
   console.log("resize: ", inforShowTable.infoColumnTable);
 
@@ -63,6 +66,9 @@ const TableContent = () => {
       case "Khách hàng":
         url = "http://localhost:8000/khachhang";
         break;
+      case "Phân quyền":
+        url = "http://localhost:8000/phanquyen";
+        break;
     }
     fetch(url, {
       method: "DELETE",
@@ -111,40 +117,59 @@ const TableContent = () => {
                 sx={{
                   display: "flex",
                   justifyContent: "center",
-                }}
-              >
+                }}>
                 <Tooltip arrow placement="right" title="Add">
                   <IconButton
                     onClick={() => {
-                      dispatchTable(
-                        actions_table.setInforRecordTable(emptyData)
-                      );
-                      dispatchTable(actions_table.setActionForm("add"));
-                      dispatchTable(actions_table.setModeShowModal(true));
-                    }}
-                  >
+                      if (
+                        stateUser.userPoolAccess.some(
+                          (obj) => obj.MAFORM === maForm && obj.THEM === 1
+                        )
+                      ) {
+                        dispatchTable(
+                          actions_table.setInforRecordTable(emptyData)
+                        );
+                        dispatchTable(actions_table.setActionForm("add"));
+                        dispatchTable(actions_table.setModeShowModal(true));
+                      } else {
+                        alert("Bạn không có quyền thêm kho hàng");
+                      }
+                    }}>
                     <AddCircleIcon />
                   </IconButton>
                 </Tooltip>
                 <Tooltip arrow placement="right" title="Edit">
                   <IconButton
                     onClick={() => {
-                      console.log("row: ", row.original);
-                      dispatchTable(
-                        actions_table.setInforRecordTable(row.original)
-                      );
-                      dispatchTable(actions_table.setActionForm("edit"));
-                      dispatchTable(actions_table.setModeShowModal(true));
-                    }}
-                  >
+                      if (
+                        stateUser.userPoolAccess.some(
+                          (obj) => obj.MAFORM === maForm && obj.SUA === 1
+                        )
+                      ) {
+                        dispatchTable(
+                          actions_table.setInforRecordTable(row.original)
+                        );
+                        dispatchTable(actions_table.setActionForm("edit"));
+                        dispatchTable(actions_table.setModeShowModal(true));
+                      } else {
+                        alert("Bạn không có quyền sửa kho hàng");
+                      }
+                    }}>
                     <Edit />
                   </IconButton>
                 </Tooltip>
                 <Tooltip arrow placement="right" title="Delete">
                   <IconButton
                     color="error"
-                    onClick={() => handleDeleteRow(row.original)}
-                  >
+                    onClick={() => {
+                      if (
+                        stateUser.userPoolAccess.some(
+                          (obj) => obj.MAFORM === maForm && obj.XOA === 1
+                        )
+                      ) {
+                        handleDeleteRow(row.original);
+                      }
+                    }}>
                     <Delete />
                   </IconButton>
                 </Tooltip>

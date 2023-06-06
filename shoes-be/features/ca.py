@@ -33,7 +33,7 @@ def add(data: ITEM_CA) -> RESPONSE:
 @router.put("/ca")
 def update(data: ITEM_CA) -> RESPONSE:
     data = dict(data)
-    val = ", ".join([f"{key} = '{value}'" for key, value in data.items()])
+    val = ", ".join([f"{key} = '{value}'" for key, value in data.items() if value != None])
     condition = f"MACA = '{data['MACA']}'"
     return C.update(val, condition)
 

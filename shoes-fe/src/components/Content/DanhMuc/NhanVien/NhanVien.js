@@ -45,8 +45,8 @@ const NhanVien = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Nhân viên - F0023"));
-    dispatchTable(actions_table.setTitleTable("Nhân viên - F0022"));
+    dispatchTable(actions_table.setTitleModal("Nhân viên - F0002"));
+    dispatchTable(actions_table.setTitleTable("Nhân viên - F0002"));
     dispatchTable(actions_table.setComponentForm(FormNhanVien));
     fetch("http://localhost:8000/nhanvien")
       .then((response) => {

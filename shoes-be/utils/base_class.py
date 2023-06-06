@@ -7,6 +7,7 @@ class BaseClass:
 
     def read(self):
         df = read_sql(self.table_name)
+        print(df)
         return df.to_dict(orient="records")
 
     def read_custom(self, sql: str):
@@ -16,7 +17,6 @@ class BaseClass:
     def execute_custom(self, sql: str):
         execute_custom(sql)
         return {"status": "success"}
-        
 
     def add(self, col: str, val: str):
         insert_sql(self.table_name, col, val)

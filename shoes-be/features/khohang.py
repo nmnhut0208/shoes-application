@@ -1,7 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from utils.sql_helper import *
 
 router = APIRouter()
 
@@ -15,7 +16,8 @@ KH = KHOHANG()
 
 
 @router.get("/khohang")
-def read() -> RESPONSE_KHOHANG:
+# @user_access
+def read(request: Request) -> RESPONSE_KHOHANG:
     return KH.read()
 
 
@@ -30,7 +32,7 @@ def add(data: ITEM_KHOHANG) -> RESPONSE:
 @router.put("/khohang")
 def update(data: ITEM_KHOHANG) -> RESPONSE:
     data = dict(data)
-    val = ", ".join([f"{key} = '{value}'" for key, value in data.items()])
+    val = ", ".join([f"{key} = '{value}'"  for key, value in data.items() if value != None])
     condition = f"MAKHO = '{data['MAKHO']}'"
     return KH.update(val, condition)
 
@@ -38,5 +40,6 @@ def update(data: ITEM_KHOHANG) -> RESPONSE:
 @router.delete("/khohang")
 def delete(data: ITEM_KHOHANG) -> RESPONSE:
     data = dict(data)
+    print(data)
     condition = f"MAKHO = '{data['MAKHO']}'"
     return KH.delete(condition)

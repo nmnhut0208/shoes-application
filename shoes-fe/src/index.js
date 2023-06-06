@@ -3,13 +3,16 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { TaskProvider } from "~task";
+import { UserProvider } from "~user";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-  <TaskProvider>
-    <App />
-  </TaskProvider>
+  <UserProvider>
+    <TaskProvider>
+      <App />
+    </TaskProvider>
+  </UserProvider>
   // </React.StrictMode>
 );
 

@@ -45,8 +45,8 @@ const KyTinhLuong = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Kỳ tính lương - F0021"));
-    dispatchTable(actions_table.setTitleTable("Kỳ tính lương - F0020"));
+    dispatchTable(actions_table.setTitleModal("Kỳ tính lương - F0040"));
+    dispatchTable(actions_table.setTitleTable("Kỳ tính lương - F0040"));
     dispatchTable(actions_table.setComponentForm(FormKyTinhLuong));
     fetch("http://localhost:8000/kytinhluong")
       .then((response) => {

@@ -26,7 +26,7 @@ for (var obj in list_key) {
   infoColumns.push(info);
 }
 
-console.log(infoColumns);
+// console.log(infoColumns);
 
 // infoColumns.push({
 //   title: "Action",
@@ -44,8 +44,8 @@ const KhoHang = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Kho hàng - F0025"));
-    dispatchTable(actions_table.setTitleTable("Kho hàng - F0024"));
+    dispatchTable(actions_table.setTitleModal("Kho hàng - F0007"));
+    dispatchTable(actions_table.setTitleTable("Kho hàng - F0007"));
     dispatchTable(actions_table.setComponentForm(FormKhoHang));
     fetch("http://localhost:8000/khohang")
       .then((response) => {

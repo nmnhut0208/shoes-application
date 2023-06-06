@@ -44,8 +44,8 @@ const Mui = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Mũi - F0023"));
-    dispatchTable(actions_table.setTitleTable("Mũi - F0022"));
+    dispatchTable(actions_table.setTitleModal("Mũi - F0011"));
+    dispatchTable(actions_table.setTitleTable("Mũi - F0011"));
     dispatchTable(actions_table.setComponentForm(FormMui));
     fetch("http://localhost:8000/mui")
       .then((response) => {

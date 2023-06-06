@@ -48,7 +48,7 @@ def add(data: ITEM_NHANVIEN) -> RESPONSE:
 @router.put("/nhanvien")
 def update(data: ITEM_NHANVIEN) -> RESPONSE:
     data = dict(data)
-    val = ", ".join([f"{key} = '{value}'" for key, value in data.items()])
+    val = ", ".join([f"{key} = '{value}'" for key, value in data.items() if value != None])
     condition = f"MANVIEN = '{data['MANVIEN']}'"
     return NV.update(val, condition)
 

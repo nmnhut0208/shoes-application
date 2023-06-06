@@ -4,8 +4,8 @@ import styles from "./ThuChi.module.scss";
 import { Table } from "@mui/material";
 
 const tables = {
-  option1: <h1>Option1</h1>,
-  option2: <h1>Option2</h1>,
+  option1: <TableThuChi option={"option1"} />,
+  option2: <TableThuChi option={"option2"} />,
   option3: <TableThuChi option={"option3"} />,
 };
 
