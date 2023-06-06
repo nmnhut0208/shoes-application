@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Query
+from typing_extensions import Annotated
+
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
@@ -147,25 +149,6 @@ def read(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     return result
 
 
-# @router.get("/donhang/khachhangnhanh/{MAKH}/giay")
-# def read_quickly(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
-#     sql = """SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
-#                     MAUDE,MAUGOT, 
-#                     MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH, 
-#                     V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
-#                     V_GIAY.TENCA, V_GIAY.TENKH
-#             FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT, 
-# 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH 
-#                 from DONHANG WHERE DONHANG.MAKH='{}') AS DONHANG
-#             LEFT JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay
-#             """.format(MAKH)
-    
-#     start = datetime.now()
-#     result = donhang.read_custom(sql)
-#     print("khachhangnhanh: ", datetime.now()-start)
-#     return result
-
-
 @router.post("/donhang")
 def add(data: List[ITEM_DONHANG]) -> RESPONSE:
     # delete SODH cu, insert SDH moi
@@ -181,8 +164,8 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
     # find common information
     today = datetime.now()
     year = today.year
-    MADONG = find_info_primary_key("MD", today)
-    DH = find_info_primary_key("DH", today) + 1
+    MADONG = find_info_primary_key("DONHANG", "MD", today)
+    DH = find_info_primary_key("DONHANG","DH", today) + 1
     MADH = f"DH{year}{str(DH).zfill(12)}"
     day_created = today.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -210,9 +193,20 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
         donhang.add(_c, _v) 
 
     # lưu lại thông tin mã dòng và mã đơn hàng 
-    save_info_primary_key("DH", year, DH)
-    save_info_primary_key("MD", year, MADONG)
+    save_info_primary_key("DONHANG", "DH", year, DH)
+    save_info_primary_key("DONHANG", "MD", year, MADONG)
     return 1
+
+
+@router.get("/donhang/update_status_daphancong/")
+def update_status_daphancong(SODH: list = Query([])) -> RESPONSE:
+    print("SoDH: ", SODH)
+    # update status of the SODHs
+    sql = """UPDATE donhang SET DAPHANCONG = 1 
+            WHERE SODH IN ({});
+            """.format(",".join(SODH))
+    return 1 
+
 
 
 

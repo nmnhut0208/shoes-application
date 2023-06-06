@@ -10,6 +10,7 @@ from datetime import datetime
 
 
 class ITEM_PHANCONG(BaseModel):
+    SOPHIEU: str
     NGAYPHIEU: str 
     DIENGIAIPHIEU: Optional[str] = None
     SODH: str
@@ -89,21 +90,21 @@ def read(SOPC: str) -> List[RESPONSE_PHANCONG]:
 
 @router.post("/phancong")
 def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
-    # delete SODH cu, insert SDH moi
+    # delete SOPHIEU cu, insert SDH moi
     # cho trường hợp chú chỉ chỉnh sửa đơn hàng thôi, chứ ko add mới
     # Không thể biết được bao nhiêu giày được add mới
     # nên đành xóa dữ liệu cũ, add lại dữ liệu mới thôi
 
-    sql_delete = f"""delete DONHANG
-                    where SODH = '{data[0].SODH}'"""
+    sql_delete = f"""delete PHANCONG
+                    where SOPHIEU = '{data[0].SOPHIEU}'"""
     phancong.execute_custom(sql_delete)
 
     # find common information
     today = datetime.now()
     year = today.year
-    MADONG = find_info_primary_key("MD", today)
-    DH = find_info_primary_key("DH", today) + 1
-    MADH = f"DH{year}{str(DH).zfill(12)}"
+    MADONG = find_info_primary_key("PHANCONG","MD", today)
+    PHIEU = find_info_primary_key("PHANCONG", "PHIEU", today) + 1
+    MAPHIEU = f"PC{year}{str(PHIEU).zfill(12)}"
     day_created = today.strftime("%Y-%m-%d %H:%M:%S")
 
     for i in range(len(data)):
@@ -113,7 +114,7 @@ def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
         MADONG += 1
         _data["NGAYTAO"] = day_created
         _data["NGAYSUA"] = day_created
-        _data["MADH"] = MADH
+        _data["MAPHIEU"] = MAPHIEU
         _data["MADONG"] = f"MD{year}{str(MADONG).zfill(12)}"
         for k, v in _data.items():
             if v is not None:
@@ -130,6 +131,8 @@ def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
         phancong.add(_c, _v)
 
     # lưu lại thông tin mã dòng và mã đơn hàng
-    save_info_primary_key("DH", year, DH)
-    save_info_primary_key("MD", year, MADONG)
+    save_info_primary_key("PHANCONG","PC", year, PHIEU)
+    save_info_primary_key("PHANCONG","MD", year, MADONG)
     return 1
+
+
