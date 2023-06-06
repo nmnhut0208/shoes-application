@@ -105,3 +105,16 @@ def find_info_SOPC():
     number_string = str(lastnumber).zfill(4)
     SOPC = f"PC-{number_string}-{month}/{year}"
     return {"SOPC": SOPC, "LastestPC": lastnumber}
+
+
+@router.put("/hethong/phancong/SOPC")
+def update_info_SOPC(data: ITEM_HETHONG) -> RESPONSE:
+    SOPC = data.LASTNUMBER
+    today = datetime.now()
+    month = str(today.month).zfill(2)
+    year = str(today.year)[2:]
+    sql_insert = f"""UPDATE V1T4444 
+                     SET LASTKEY = {SOPC}
+                     WHERE TABLENAME = 'DONHANG'
+                     AND KEYSTRING = 'PC--{month}/{year}'"""
+    return hethong.execute_custom(sql_insert)

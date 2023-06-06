@@ -23,6 +23,7 @@ import {
   processing_button_add,
   updateMaGiayWillPhanCong,
   processing_button_delete,
+  updateSOPHIEU,
 } from "./helper";
 import DonHang from "../DonHang/";
 import { Modal } from "~common_tag";
@@ -41,6 +42,7 @@ const PhanCong = ({ dataView, view }) => {
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
+  const [havedSaveData, setHavedSaveData] = useState(false);
   // lưu những đơn hàng đã phân công xong
   // để sửa lý logic khi người dùng chỉnh sửa phân công
 
@@ -180,8 +182,36 @@ const PhanCong = ({ dataView, view }) => {
     );
   };
   const handleClickSave = () => {
-    // update mode đã phân công cho các đơn hàng trong listDonHangDonePhanCong
-    // save thông tin chi tiết từng phân công ở dataChiTietPhanCong
+    if (havedSaveData) return;
+    let dataSave = dataChiTietPhanCong;
+    for (let i = 0; i < dataSave.length; i++) {
+      dataSave[i] = { ...dataSave[i], ...infoPhieu };
+    }
+    fetch("http://localhost:8000/phancong", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dataSave),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
+
+    fetch(
+      "http://localhost:8000/donhang/update_status_daphancong/?SODH=" +
+        listDonHangDonePhanCong.join("&SODH=")
+    )
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
+
+    updateSOPHIEU(lastestSOPHIEU);
+    setHavedSaveData(true);
   };
 
   const handleClickChiTietDonHang = () => {
