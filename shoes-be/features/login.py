@@ -34,3 +34,11 @@ def read(data: dict) -> RESPONSE_ACCESS:
     user = data["username"]
     sql = f"SELECT MAFORM, TENFORM, THEM, SUA, XOA, XEM, \"IN\" FROM PHANQUYEN where MANVIEN='{user}'"
     return LG.read_custom(sql)
+
+
+@router.put("/changepassword")
+def update(data: dict) -> RESPONSE:
+    data = dict(data)
+    val = f"MATKHAU = '{data['newpassword']}'"
+    condition = f"MANVIEN = '{data['username']}'"
+    return LG.update(val, condition)

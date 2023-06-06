@@ -46,7 +46,7 @@ const Ca = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Cá - F0023"));
+    dispatchTable(actions_table.setTitleModal("Cá - F0022"));
     dispatchTable(actions_table.setTitleTable("Cá - F0022"));
     dispatchTable(actions_table.setComponentForm(FormCa));
     fetch("http://localhost:8000/ca")

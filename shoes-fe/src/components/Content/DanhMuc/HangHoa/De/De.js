@@ -45,8 +45,8 @@ const De = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Đế - F0025"));
-    dispatchTable(actions_table.setTitleTable("Đế - F0024"));
+    dispatchTable(actions_table.setTitleModal("Đế - F0015"));
+    dispatchTable(actions_table.setTitleTable("Đế - F0015"));
     dispatchTable(actions_table.setComponentForm(FormDe));
     fetch("http://localhost:8000/de")
       .then((response) => {

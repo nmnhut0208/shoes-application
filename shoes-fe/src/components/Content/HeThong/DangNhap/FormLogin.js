@@ -1,21 +1,15 @@
 import { useState } from "react";
 import { Form, Input, Button } from "antd";
-import {
-  useTableContext,
-  actions_table,
-  cleanupContextTable,
-} from "~table_context";
 import { useUserContext, actions } from "~user";
 import { useTaskContext, resetHeader } from "~task";
 
 function FormLogin() {
-  const [stateTable, dispatchTable] = useTableContext();
   const [stateTask, dispatchTask] = useTaskContext();
   const [stateUser, dispatchUser] = useUserContext();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
-  console.log("FormLogin: re-render", stateUser);
+  // console.log("FormLogin: re-render", stateUser);
 
   function handleOk() {
     setLoading(true);
@@ -53,6 +47,7 @@ function FormLogin() {
                   console.log("data", data);
                   dispatchUser(actions.setPoolUserAccess(data));
                   setLoading(false);
+                  dispatchUser(actions.setIsLogin(false));
                 })
                 .catch((error) => {
                   console.log("error", error);

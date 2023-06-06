@@ -1,7 +1,6 @@
-import { Space } from "antd";
-import { useEffect, useState } from "react";
+import FormPhanQuyen from "./FormPhanQuyen";
+import { useState, useEffect } from "react";
 import { TableContent } from "~common_tag";
-import FormKyTinhLuong from "./FormKyTinhLuong";
 import {
   useTableContext,
   actions_table,
@@ -10,10 +9,14 @@ import {
 
 const list_key = [
   // { key: "STT", width: "7rem" },
-  { header: "Mã kỳ", key: "MAKY", width: "21rem" },
-  { header: "Tên kỳ", key: "TENKY", width: "21rem" },
-  { header: "Từ ngày", key: "TUNGAY", width: "21rem" },
-  { header: "Đến ngày", key: "DENNGAY", width: "21rem" },
+  { header: "Mã Nhân Viên", key: "MANVIEN", width: "21rem" },
+  { header: "Mã Form", key: "MAFORM", width: "21rem" },
+  { header: "Tên Form", key: "TENFORM", width: "21rem" },
+  { header: "Thêm", key: "THEM", width: "10rem" },
+  { header: "Sửa", key: "SUA", width: "10rem" },
+  { header: "Xóa", key: "XOA", width: "10rem" },
+  { header: "Xem", key: "XEM", width: "10rem" },
+  { header: "In", key: "IN", width: "10rem" },
 ];
 
 const infoColumns = [];
@@ -27,38 +30,30 @@ for (var obj in list_key) {
   infoColumns.push(info);
 }
 
-console.log(infoColumns);
-
-// infoColumns.push({
-//   title: "Action",
-//   key: "action",
-//   render: (_, record) => (
-//     <Space size="middle">
-//       <a>Invite {record.name}</a>
-//       <a>Delete</a>
-//     </Space>
-//   ),
-// });
-
-const KyTinhLuong = () => {
+const PhanQuyen = () => {
   const [renderUI, setRenderUI] = useState(false);
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Kỳ tính lương - F0040"));
-    dispatchTable(actions_table.setTitleTable("Kỳ tính lương - F0040"));
-    dispatchTable(actions_table.setComponentForm(FormKyTinhLuong));
-    fetch("http://localhost:8000/kytinhluong")
+    dispatchTable(actions_table.setTitleModal("Phân Quyền - F0044"));
+    dispatchTable(actions_table.setTitleTable("Phân Quyền - F0044"));
+    dispatchTable(actions_table.setComponentForm(FormPhanQuyen));
+    fetch("http://localhost:8000/phanquyen")
       .then((response) => {
         return response.json();
       })
       .then((info) => {
+        console.log("info: ", info);
         dispatchTable(actions_table.setInforColumnTable(infoColumns));
         dispatchTable(actions_table.setInforTable(info));
         // if neu co thong tin moi show ne
         dispatchTable(actions_table.setModeShowTable(true));
         setRenderUI(true);
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
       });
+
     return () => {
       cleanupContextTable(dispatchTable);
     };
@@ -67,4 +62,4 @@ const KyTinhLuong = () => {
   return <>{renderUI && <TableContent />}</>;
 };
 
-export default KyTinhLuong;
+export default PhanQuyen;

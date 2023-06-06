@@ -91,6 +91,15 @@ class RESPONSE_ACCESS(BaseModel):
     XEM: int
     IN: int
 
+class RESPONSE_PHANQUYEN(BaseModel):
+    MANVIEN: str
+    MAFORM: str
+    TENFORM: str
+    THEM: int
+    SUA: int
+    XOA: int
+    XEM: int
+    IN: int
 
 class RESPONSE(BaseModel):
     status: str

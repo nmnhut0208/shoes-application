@@ -16,7 +16,7 @@ KH = KHOHANG()
 
 
 @router.get("/khohang")
-@user_access
+# @user_access
 def read(request: Request) -> RESPONSE_KHOHANG:
     return KH.read()
 
@@ -32,7 +32,7 @@ def add(data: ITEM_KHOHANG) -> RESPONSE:
 @router.put("/khohang")
 def update(data: ITEM_KHOHANG) -> RESPONSE:
     data = dict(data)
-    val = ", ".join([f"{key} = '{value}'" for key, value in data.items()])
+    val = ", ".join([f"{key} = '{value}'"  for key, value in data.items() if value != None])
     condition = f"MAKHO = '{data['MAKHO']}'"
     return KH.update(val, condition)
 
@@ -40,5 +40,6 @@ def update(data: ITEM_KHOHANG) -> RESPONSE:
 @router.delete("/khohang")
 def delete(data: ITEM_KHOHANG) -> RESPONSE:
     data = dict(data)
+    print(data)
     condition = f"MAKHO = '{data['MAKHO']}'"
-    return KH.delete(condition)
+    # return KH.delete(condition)

@@ -30,7 +30,7 @@ def add(data: ITEM_MUI) -> RESPONSE:
 @router.put("/mui")
 def update(data: ITEM_MUI) -> RESPONSE:
     data = dict(data)
-    val = ", ".join([f"{key} = '{value}'" for key, value in data.items()])
+    val = ", ".join([f"{key} = '{value}'" for key, value in data.items() if value != None])
     condition = f"MAMUI = '{data['MAMUI']}'"
     return M.update(val, condition)
 

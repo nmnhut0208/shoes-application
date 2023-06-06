@@ -6,13 +6,13 @@ from typing import Optional
 class ITEM_KHOHANG(BaseModel):
     MAKHO: str
     TENKHO: str
-    GHICHU: str
+    GHICHU: str = None
 
 
 class ITEM_MUI(BaseModel):
     MAMUI: str
     TENMUI: str
-    GHICHU: str
+    GHICHU: str = None
 
 
 class ITEM_DE(BaseModel):
@@ -25,14 +25,14 @@ class ITEM_DE(BaseModel):
 class ITEM_CA(BaseModel):
     MACA: str
     TENCA: str
-    GHICHU: str
+    GHICHU: str = None
 
 
 class ITEM_NHANVIEN(BaseModel):
     MANVIEN: str
     TENNVIEN: str
     LOAINVIEN: str
-    GHICHU: str
+    GHICHU: str = None
 
 
 class ITEM_KYTINHLUONG(BaseModel):
@@ -55,3 +55,13 @@ class ITEM_SUON(BaseModel):
     MAMUI: str
     HINHANH: Optional[str] = ""
     GHICHU: Optional[str] = ""
+
+class ITEM_PHANQUYEN(BaseModel):
+    MANVIEN: str
+    MAFORM: str
+    TENFORM: str
+    THEM: int
+    SUA: int
+    XOA: int
+    XEM: int
+    IN: int

@@ -1,0 +1,31 @@
+@import "~common_scss/form.module.scss";
+
+.form_group {
+  height: var(--height-region);
+  width: 100%;
+  @extend .flex-column;
+  .from_group_row {
+    margin-bottom: var(--margin-bottom-config);
+  }
+}
+
+.form_group_first {
+  margin-bottom: 0.5rem;
+}
+
+.form_button {
+  @extend .flex_row_flex-end;
+  margin-bottom: var(--margin-bottom-config);
+  button:not(:first-child) {
+    margin-left: 0.5rem;
+    margin-top: 1rem;
+  }
+}
+
+.item_size_small {
+  width: 10rem;
+}
+
+.item_size_big {
+  width: 30rem;
+}
