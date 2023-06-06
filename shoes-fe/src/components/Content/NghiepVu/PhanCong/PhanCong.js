@@ -146,7 +146,6 @@ const PhanCong = ({ dataView, view }) => {
                 TENTHODE: "",
                 THOQUAI: "",
                 TENTHOQUAI: "",
-                // SODH: idDonHang,
               });
             } else {
               resetForm();

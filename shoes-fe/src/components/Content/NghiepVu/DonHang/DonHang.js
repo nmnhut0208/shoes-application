@@ -44,6 +44,7 @@ const DonHang = ({ dataView, view }) => {
     NGAYDH: "",
     NGAYGH: "",
   });
+  console.log("formInfoDonHang: ", formInfoDonHang);
   const [lastestDH, setLastestDH] = useState(0);
 
   const [infoFormWillShow, setInfoFormWillShow] = useState({
@@ -56,25 +57,18 @@ const DonHang = ({ dataView, view }) => {
     updateDanhSachMau(setDataMau);
   }, []); // them dieu kieu check mau thay doi
 
-  useEffect(() => {
-    updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
-  }, []);
-
-  // const convertDate = (date) => {
-  //   return moment(date, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD");
-  // };
+  // useEffect(() => {
+  //   updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
+  // }, []);
 
   useEffect(() => {
     if (view) {
+      console.log("dataView: ", dataView);
       setFormInfoDonHang(dataView);
-      fetch("http://localhost:8000/items_donhang_with_id", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: dataView["SODH"], nof: 30 }),
-      })
+      fetch(
+        "http://localhost:8000/donhang?SODH=" +
+          encodeURIComponent(dataView["SODH"])
+      )
         .then((response) => {
           return response.json();
         })
@@ -85,6 +79,8 @@ const DonHang = ({ dataView, view }) => {
         .catch((err) => {
           console.log(":error: ", err);
         });
+    } else {
+      updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
     }
   }, [dataView]);
 

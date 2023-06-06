@@ -1,5 +1,5 @@
 import { Popover, Space } from "antd";
-import { useState, memo } from "react";
+import { useState, memo, useEffect } from "react";
 import ListKhachHang from "./ListKhachHang";
 
 const KhachHang = ({
@@ -12,6 +12,10 @@ const KhachHang = ({
 }) => {
   const [data, setData] = useState(initValue["MAKH"]);
   const [data_span, setDataSpan] = useState(initValue["TENKH"]);
+  useEffect(() => {
+    setData(initValue["MAKH"]);
+    setDataSpan(initValue["TENKH"]);
+  }, [initValue]);
   return (
     <Space>
       {!readOnly && (

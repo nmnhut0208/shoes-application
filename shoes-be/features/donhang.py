@@ -65,6 +65,9 @@ class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
     SIZE8: Optional[int] = None
     SIZE0: Optional[int] = None
     SOLUONG: Optional[int] = None
+    THANHTIEN: Optional[int] = None
+    NGAYDH: Optional[str] = None
+    NGAYGH: Optional[str] = None
 
 
 
@@ -105,10 +108,13 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
                 V_GIAY.TENCA, V_GIAY.TENKH,
                 SIZE5,SIZE6,SIZE7,
                 SIZE9,SIZE8,SIZE0,
-                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG
+                DONHANG.MAKH,
+                SOLUONG,NGAYDH, NGAYGH,
+                V_GIAY.DONGIA * SOLUONG AS THANHTIEN
             FROM (select SODH, MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
-                SIZE9,SIZE8,SIZE0
+                SIZE9,SIZE8,SIZE0, NGAYDH, NGAYGH,
+                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG
             from DONHANG WHERE DONHANG.SODH='{SODH}') AS DONHANG
             left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  
           """
