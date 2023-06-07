@@ -95,6 +95,9 @@ def read() -> List[RESPONSE_GIAY]:
 
 @router.post("/giay")
 def add(data: ITEM_GIAY) -> RESPONSE:
+    sql_delete = f"""delete DMGIAY
+                    where MAGIAY = '{data.MAGIAY}'"""
+    giay.execute_custom(sql_delete)
     data = dict(data)
     col = []
     val = []

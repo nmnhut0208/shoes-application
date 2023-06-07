@@ -8,7 +8,17 @@ const FormGiay = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   const handleSaveFrom = () => {
-    // saveDataBase()
+    fetch("http://localhost:8000/giay", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dataForm),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
     dispatchTable(actions_table.setModeShowModal(false));
   };
 

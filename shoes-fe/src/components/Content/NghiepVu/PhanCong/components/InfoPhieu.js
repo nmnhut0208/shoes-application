@@ -1,12 +1,24 @@
 import { memo } from "react";
 import clsx from "clsx";
+import moment from "moment";
+
 import styles from "../PhanCong.module.scss";
+import { convertDate } from "~utils/processing_date";
 
 const InfoPhieu = ({ infoPhieu, setInfoPhieu }) => {
   const handleChangeInfoPhieu = (e) => {
     const data = { ...infoPhieu };
     data[e.target.name] = e.target.value;
     setInfoPhieu(data);
+  };
+
+  const handleChangeFormForTypeDate = (e) => {
+    const data = { ...infoPhieu };
+    data[e.target.name] = moment(e.target.value, "YYYY-MM-DD").format(
+      "YYYY-MM-DD HH:mm:ss"
+    );
+    setInfoPhieu(data);
+    // setIsSavedData(false);
   };
 
   return (
@@ -24,8 +36,10 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu }) => {
         <input
           type="date"
           name="NGAYPHIEU"
-          value={infoPhieu["NGAYPHIEU"]}
-          onChange={(e) => handleChangeInfoPhieu(e)}
+          // value={infoPhieu["NGAYPHIEU"]}
+          value={convertDate(infoPhieu["NGAYPHIEU"])}
+          onChange={(e) => handleChangeFormForTypeDate(e)}
+          // onChange={(e) => handleChangeInfoPhieu(e)}
         />
       </div>
       <div className={styles.pair}>
@@ -36,10 +50,10 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu }) => {
           value={infoPhieu["MAKY"]}
           onChange={(e) => handleChangeInfoPhieu(e)}
         >
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="mercedes">Mercedes</option>
-          <option value="audi">Audi</option>
+          <option value="01">Volvo</option>
+          <option value="02">Saab</option>
+          <option value="03">Mercedes</option>
+          <option value="04">Audi</option>
         </select>
       </div>
       <div className={styles.pair}>

@@ -3,6 +3,8 @@ import clsx from "clsx";
 import styles from "./FormSuon.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 
+import { ItemGot, ItemMui } from "~items";
+
 const FormSuon = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
@@ -92,22 +94,40 @@ const FormSuon = () => {
 
           <div className={styles.item}>
             <label>Mã gót</label>
-            <input
-              name="MAGOT"
-              value={inputForm["MAGOT"]}
-              onChange={(e) => handleChangeInformationForm(e)}
+            <ItemGot
+              initValue={{
+                value: inputForm["MAGOT"],
+                label: inputForm["TENGOT"],
+              }}
+              changeData={(dict_data) => {
+                setInputForm({
+                  ...inputForm,
+                  MAGOT: dict_data["value"],
+                  TENGOT: dict_data["label"],
+                });
+              }}
+              size_input={"10rem"}
+              size_span={"19.2rem"}
             />
-            <span>Tên gót</span>
           </div>
 
           <div className={styles.item}>
             <label>Mã mũi</label>
-            <input
-              name="MAMUI"
-              value={inputForm["MAMUI"]}
-              onChange={(e) => handleChangeInformationForm(e)}
+            <ItemMui
+              initValue={{
+                value: inputForm["MAMUI"],
+                label: inputForm["TENMUI"],
+              }}
+              changeData={(dict_data) => {
+                setInputForm({
+                  ...inputForm,
+                  MAMUI: dict_data["value"],
+                  TENMUI: dict_data["label"],
+                });
+              }}
+              size_input={"10rem"}
+              size_span={"19.2rem"}
             />
-            <span>Tên mũi</span>
           </div>
 
           <div className={styles.item}>

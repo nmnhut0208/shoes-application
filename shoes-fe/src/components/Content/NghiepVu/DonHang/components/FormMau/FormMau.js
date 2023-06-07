@@ -3,12 +3,26 @@ import styles from "./FormMau.module.scss";
 import { FormMauBasic } from "~hang_hoa";
 import { useTableContext, actions_table } from "~table_context";
 
-const FormMau = () => {
+const FormMau = ({ dataMau, setDataMau }) => {
   const [dataForm, setDataForm] = useState({});
   const [stateTable, dispatchTable] = useTableContext();
 
   const handleSaveFrom = () => {
-    // saveDataBase()
+    fetch("http://localhost:8000/mau", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dataForm),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
+    setDataMau([
+      ...dataMau,
+      { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
+    ]);
     dispatchTable(actions_table.setModeShowModal(false));
   };
 

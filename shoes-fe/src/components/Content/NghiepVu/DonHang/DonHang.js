@@ -1,49 +1,27 @@
 import { useEffect, useState, useMemo } from "react";
+import moment from "moment";
 
-import {
-  INFO_COLS_DONHANG,
-  COLS_HAVE_SUM_FOOTER,
-  COL_KHACHHANG,
-} from "./ConstantVariable";
+import { INFO_COLS_DONHANG } from "./ConstantVariable";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
+import { renderDataEmpty } from "~utils/processing_data_table";
+
 import {
-  renderDataEmpty,
-  processingInfoColumnTable,
-} from "~utils/processing_data_table";
-
-import TableDonHang from "./TableDonHang";
-import FormGiay from "./FormGiay";
-import FormMau from "./FormMau";
-import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
+  TableDonHang,
+  FormGiay,
+  FormMau,
+  DanhMucGiayKhachHang,
+} from "./components";
 import styles from "./DonHang.module.scss";
-import MaterialReactTable from "material-react-table";
-import { Popover } from "antd";
-
-let columns_kh = processingInfoColumnTable(COL_KHACHHANG);
-const TableMaKH = ({ data, rowSelection, setRowSelection }) => {
-  console.log("re-render sub table when hover", data);
-  return (
-    <div style={{ height: "auto" }}>
-      <MaterialReactTable
-        enableTopToolbar={false}
-        columns={columns_kh}
-        data={data}
-        // components
-        enableColumnActions={false}
-        enableSorting={false}
-        // enable phân trang
-        enablePagination={false}
-        enableBottomToolbar={true}
-        // row selection
-        enableMultiRowSelection={false}
-        enableRowSelection
-        onRowSelectionChange={setRowSelection}
-        state={{ rowSelection }}
-      />
-    </div>
-  );
-};
+import {
+  updateSODH,
+  updateDanhSachMau,
+  saveDonDatHang,
+  updateFormDonHang,
+  updateColumnsInformations,
+} from "./helper";
+import { ItemKhachHang } from "~items";
+import { convertDate } from "~utils/processing_date";
 
 const DonHang = ({ dataView, view }) => {
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
@@ -52,54 +30,45 @@ const DonHang = ({ dataView, view }) => {
     return renderDataEmpty(INFO_COLS_DONHANG, 1);
   });
 
-  const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
-  const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
+  const [dataMau, setDataMau] = useState([]);
+  const [isSavedData, setIsSavedData] = useState(false);
+  // TODO: note lại trạng thái của page, đã save thông tin page hiện tại chưa
+  // nếu save rồi thì thay đổi trạng thái hiện tại thành show
+  // xem lại thử logic này cần ko
+  const [stateTable, dispatchTable] = useTableContext();
+  const [formInfoDonHang, setFormInfoDonHang] = useState({
+    // TODO: edit information edit pages
+    SODH: "",
+    NGUOITAO: "thu",
+    DIENGIAIPHIEU: "",
+    NGAYDH: "",
+    NGAYGH: "",
+  });
+  console.log("formInfoDonHang: ", formInfoDonHang);
+  const [lastestDH, setLastestDH] = useState(0);
+
+  const [infoFormWillShow, setInfoFormWillShow] = useState({
+    giay: false,
+    mau: false,
+    dmGiaykh: false,
+  });
 
   useEffect(() => {
-    let keys = Object.keys(rowSelectionMaKH);
-    if (keys.length > 0) {
-      setFormInfoDonHang({
-        ...formInfoDonHang,
-        MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-        TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-      });
-    }
-  }, [rowSelectionMaKH]);
+    updateDanhSachMau(setDataMau);
+  }, []); // them dieu kieu check mau thay doi
 
-  useEffect(() => {
-    fetch("http://localhost:8000/khachhang")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        setDataTableKhachHang(info);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
-  }, []);
-
-  // lúc đầu render form với ID Đơn hàng tự gen
-  // ngày tháng hiện tại
-
-  // TODO: còn thiếu 1 logic
-  // Khi user nhập số đơn hàng mà đủ format
-  // query thông tin => show => để user có thể chỉnh sửa khi lỡ nhập đơn hàng sai
-  // hay nên để chức năng sửa lúc truy vấn luôn ta @@
-  // thì khỏi làm thêm việc này
+  // useEffect(() => {
+  //   updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
+  // }, []);
 
   useEffect(() => {
     if (view) {
       console.log("dataView: ", dataView);
       setFormInfoDonHang(dataView);
-      fetch("http://localhost:8000/items_donhang_with_id", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: dataView["SODH"], nof: 30 }),
-      })
+      fetch(
+        "http://localhost:8000/donhang?SODH=" +
+          encodeURIComponent(dataView["SODH"])
+      )
         .then((response) => {
           return response.json();
         })
@@ -110,21 +79,27 @@ const DonHang = ({ dataView, view }) => {
         .catch((err) => {
           console.log(":error: ", err);
         });
+    } else {
+      updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
     }
   }, [dataView]);
 
-  const [stateTable, dispatchTable] = useTableContext();
-  const [infoFormWillShow, setInfoFormWillShow] = useState({
-    giay: false,
-    mau: false,
-    dmGiaykh: false,
-  });
-  const [formInfoDonHang, setFormInfoDonHang] = useState({});
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
+    setIsSavedData(false);
   };
+
+  const handleChangeFormForTypeDate = (e) => {
+    const data = { ...formInfoDonHang };
+    data[e.target.name] = moment(e.target.value, "YYYY-MM-DD").format(
+      "YYYY-MM-DD HH:mm:ss"
+    );
+    setFormInfoDonHang(data);
+    setIsSavedData(false);
+  };
+
   const handleThemGiay = () => {
     setInfoFormWillShow({
       giay: true,
@@ -146,10 +121,29 @@ const DonHang = ({ dataView, view }) => {
   };
 
   const handleNhapTiep = () => {
-    // Render lại số đơn hàng
-    // Reset lại hết những thông tin hiện có
-    // để chú nhận đơn hàng mới
+    if (!isSavedData) {
+      alert("Lưu thông tin trước khi reset page!");
+      return;
+    }
+    updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
     setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
+    setIsSavedData(false);
+  };
+
+  const handleSaveDonHang = () => {
+    if (isSavedData) return;
+
+    let dataDatHang = dataTable.slice(0, dataTable.length - 1);
+    // remove the last empty line
+    dataDatHang = dataDatHang.filter((data) => data["SOLUONG"] > 0);
+    if (dataDatHang.length == 0) {
+      alert("Bạn chưa đặt hàng hoặc chưa chọn số lượng mỗi loại giày cần đặt!");
+      return;
+    } else {
+      saveDonDatHang(formInfoDonHang, dataDatHang);
+      updateSODH(lastestDH);
+      setIsSavedData(true);
+    }
   };
 
   const handleClickMaGiay = () => {
@@ -165,38 +159,9 @@ const DonHang = ({ dataView, view }) => {
   };
 
   const infoColumns = useMemo(() => {
-    const infoColumnsInit = [];
-
-    for (var obj in INFO_COLS_DONHANG) {
-      let key = INFO_COLS_DONHANG[obj]["key"];
-      var info = {
-        header: INFO_COLS_DONHANG[obj]["header"],
-        size: INFO_COLS_DONHANG[obj]["width"],
-        accessorKey: INFO_COLS_DONHANG[obj]["key"],
-        enableEditing: INFO_COLS_DONHANG[obj]["enableEditing"],
-        key: INFO_COLS_DONHANG[obj]["key"].toLowerCase(),
-      };
-
-      if (key === "TENMAUDE") {
-        info["editSelectOptions"] = [
-          "Màu đế - 1",
-          "Màu đế - 2",
-          "Màu đế - 3",
-          "Màu đế - 4",
-        ];
-        info["editVariant"] = "select";
-        info["enableEditing"] = true;
-      }
-
-      if (key === "TENGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
-      if (COLS_HAVE_SUM_FOOTER.includes(key)) {
-        let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
-        info["Footer"] = () => <div>{sum_value}</div>;
-      }
-      infoColumnsInit.push(info);
-    }
-    return infoColumnsInit;
-  }, [dataTable]);
+    setIsSavedData(false);
+    return updateColumnsInformations(dataMau, dataTable, setDataTable);
+  }, [dataTable, dataMau]);
 
   return (
     <>
@@ -208,32 +173,26 @@ const DonHang = ({ dataView, view }) => {
               <input
                 name="SODH"
                 value={formInfoDonHang["SODH"]}
-                onChange={(e) => setFormInfoDonHang(e)}
-                readOnly={view}
+                onChange={(e) => handleChangeForm(e)}
+                readOnly={true}
               />
             </div>
           </div>
           <div className={styles.item_column}>
             <div className={styles.pair}>
               <label>Mã khách hàng</label>
-              <Popover
-                placement="bottomLeft"
-                content={
-                  <TableMaKH
-                    data={dataTableKhachHang}
-                    rowSelection={rowSelectionMaKH}
-                    setRowSelection={setRowSelectionMaKH}
-                  />
-                }
-              >
-                <input
-                  name="MAKH"
-                  value={formInfoDonHang["MAKH"]}
-                  onChange={(e) => setFormInfoDonHang(e)}
-                  readOnly={view}
-                />
-              </Popover>
-              <input readOnly={true} value={formInfoDonHang["TENKH"]} />
+              <ItemKhachHang
+                initValue={{
+                  MAKH: formInfoDonHang["MAKH"],
+                  TENKH: formInfoDonHang["TENKH"],
+                }}
+                changeData={(data) => {
+                  setFormInfoDonHang({ ...formInfoDonHang, ...data });
+                }}
+                size_input={"15rem"}
+                size_span={"29.7rem"}
+                have_span={true}
+              />
             </div>
           </div>
           <input
@@ -241,7 +200,7 @@ const DonHang = ({ dataView, view }) => {
             name="Giá lẻ"
             // value="true"
             value={formInfoDonHang["Giá lẻ"]}
-            onChange={(e) => setFormInfoDonHang(e)}
+            onChange={(e) => handleChangeForm(e)}
             readOnly={view}
             className={styles.checkbox}
           />
@@ -256,8 +215,8 @@ const DonHang = ({ dataView, view }) => {
               <input
                 type="date"
                 name="NGAYDH"
-                value={formInfoDonHang["NGAYDH"]}
-                onChange={(e) => setFormInfoDonHang(e)}
+                value={convertDate(formInfoDonHang["NGAYDH"])}
+                onChange={(e) => handleChangeFormForTypeDate(e)}
                 readOnly={view}
               />
             </div>
@@ -266,8 +225,8 @@ const DonHang = ({ dataView, view }) => {
               <input
                 type="date"
                 name="NGAYGH"
-                value={formInfoDonHang["NGAYGH"]}
-                onChange={(e) => setFormInfoDonHang(e)}
+                value={convertDate(formInfoDonHang["NGAYGH"])}
+                onChange={(e) => handleChangeFormForTypeDate(e)}
                 readOnly={view}
               />
             </div>
@@ -276,8 +235,9 @@ const DonHang = ({ dataView, view }) => {
             <div className={styles.pair}>
               <label className={styles.label_for_textatea}>Diễn dãi</label>
               <textarea
+                name="DIENGIAIPHIEU"
                 value={formInfoDonHang["DIENGIAIPHIEU"]}
-                onChange={(e) => setFormInfoDonHang(e)}
+                onChange={(e) => handleChangeForm(e)}
                 readOnly={view}
               />
             </div>
@@ -299,7 +259,7 @@ const DonHang = ({ dataView, view }) => {
           <button onClick={handleThemGiay}>Thêm giày</button>
           <button onClick={handleThemMau}>Thêm màu</button>
           {!view && <button onClick={handleNhapTiep}>Nhập tiếp</button>}
-          {!view && <button>Lưu</button>}
+          {!view && <button onClick={handleSaveDonHang}>Lưu</button>}
           <button>In</button>
           <button>Đóng</button>
         </div>
@@ -311,12 +271,13 @@ const DonHang = ({ dataView, view }) => {
       )}
       {infoFormWillShow["mau"] && (
         <Modal>
-          <FormMau />
+          <FormMau dataMau={dataMau} setDataMau={setDataMau} />
         </Modal>
       )}
       {infoFormWillShow["dmGiaykh"] && (
         <Modal>
           <DanhMucGiayKhachHang
+            MAKH={formInfoDonHang["MAKH"]}
             dataOrigin={dataTable}
             setInfoSelection={setDataTable}
           />

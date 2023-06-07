@@ -12,6 +12,8 @@ import {
 } from "~utils/processing_data_table";
 import styles from "../PhanCong.module.scss";
 
+import { ItemThoDe, ItemThoQuai } from "~items";
+
 const listSubInforGiay = [
   {
     header: "Mã giày",
@@ -27,19 +29,19 @@ const listSubInforGiay = [
   },
   {
     header: "Màu sườn",
-    key: "TENMAUSUON",
+    key: "MAUSUON",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Màu cá",
-    key: "TENMAUCA",
+    key: "MAUCA",
     width: 12 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Màu quai",
-    key: "TENMAUQUAI",
+    key: "MAUQUAI",
     width: 12 * rem_to_px,
     enableEditing: true,
   },
@@ -72,7 +74,6 @@ const DetailInfoGiay = ({ data, rowSelection, setRowSelection }) => {
 
 const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
   const [rowSelection, setRowSelection] = useState({});
-
   const handleChangeForm = (e) => {
     const data = { ...form };
     data[e.target.name] = e.target.value;
@@ -133,47 +134,52 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
       <div className={styles.phancong_remain}>
         <div className={styles.pair}>
           <label>Màu sườn</label>
-          <input name="TENMAUSUON" value={form["TENMAUSUON"]} />
+          <input name="MAUSUON" value={form["MAUSUON"]} />
         </div>
         <div className={styles.group_input_row}>
           <div className={styles.pair}>
             <label>Màu cá</label>
-            <input name="TENMAUCA" value={form["TENMAUCA"]} />
+            <input name="MAUCA" value={form["MAUCA"]} />
           </div>
           <div className={styles.pair}>
             <label>Màu quai</label>
-            <input name="TENMAUQUAI" value={form["TENMAUQUAI"]} />
+            <input name="MAUQUAI" value={form["MAUQUAI"]} />
           </div>
         </div>
       </div>
-      <label>Thợ đế</label>
-      <select
-        name="THODE"
-        value={form["THODE"]}
-        onChange={(e) => handleChangeForm(e)}
-      >
-        <option value="thu">De Thu</option>
-        <option value="ngoc">De Ngon</option>
-        <option value="an">De An</option>
-        <option value="nhien">De Nhien</option>
-      </select>
 
-      <span>{form["THODE"]}</span>
+      <label>Thợ đế</label>
+      <ItemThoDe
+        className={styles.info_thode}
+        initValue={{ value: form["THODE"], label: form["TENTHODE"] }}
+        changeData={(dict_data) => {
+          setChiTietPhanCong({
+            ...form,
+            THODE: dict_data["value"],
+            TENTHODE: dict_data["label"],
+          });
+        }}
+        size_input={"19.5rem"}
+        size_span={"47rem"}
+      />
+
       <div className={styles.phancong_remain}>
-        <div className={styles.pair_tho_quai}>
+        <div className={styles.info_thoquai}>
           <label>Thợ quai</label>
-          <select
-            name="THOQUAI"
-            value={form["THOQUAI"]}
-            onChange={(e) => handleChangeForm(e)}
-          >
-            <option value="Cong">Quai Cong</option>
-            <option value="Lan">Quai Lan</option>
-            <option value="Hoang">Quai Hoang</option>
-            <option value="Ly">Quang Ly</option>
-          </select>
+          <ItemThoQuai
+            //
+            initValue={{ value: form["THOQUAI"], label: form["TENTHOQUAI"] }}
+            changeData={(dict_data) => {
+              setChiTietPhanCong({
+                ...form,
+                THOQUAI: dict_data["value"],
+                TENTHOQUAI: dict_data["label"],
+              });
+            }}
+            size_input={"19.5rem"}
+            size_span={"47rem"}
+          />
         </div>
-        <span className={styles.span_thoquai}>{form["THOQUAI"]}</span>
       </div>
       <div className={styles.content_size}>
         <div className={styles.pair_info}>

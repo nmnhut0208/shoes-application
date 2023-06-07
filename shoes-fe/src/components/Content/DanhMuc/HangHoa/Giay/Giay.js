@@ -38,7 +38,7 @@ const Giay = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Giay - F0025"));
+    dispatchTable(actions_table.setTitleModal("Giày - F0025"));
     dispatchTable(actions_table.setTitleTable("Giày - F0024"));
     dispatchTable(actions_table.setComponentForm(FormGiay));
     fetch("http://localhost:8000/giay")

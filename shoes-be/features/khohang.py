@@ -42,4 +42,4 @@ def delete(data: ITEM_KHOHANG) -> RESPONSE:
     data = dict(data)
     print(data)
     condition = f"MAKHO = '{data['MAKHO']}'"
-    # return KH.delete(condition)
+    return KH.delete(condition)

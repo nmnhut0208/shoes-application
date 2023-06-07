@@ -1,5 +1,6 @@
 from typing import List, Union
 from pydantic import BaseModel
+from typing import Optional
 
 
 class RESPONSE_KHOHANG(BaseModel):
@@ -43,11 +44,12 @@ class RESPONSE_KYTINHLUONG(BaseModel):
 class RESPONSE_SUON(BaseModel):
     MASUON: str
     TENSUON: str
-    MAGOT: str
-    TENGOT: str
-    MAMUI: str
-    TENMUI: str
-    GHICHU: str
+    MAGOT: Optional[str] = None
+    TENGOT: Optional[str] = None
+    MAMUI: Optional[str] = None
+    TENMUI: Optional[str] = None
+    GHICHU: Optional[str] = None
+    HINHANH: Optional[str] = None
 
 
 class RESPONSE_GIAOHANG(BaseModel):

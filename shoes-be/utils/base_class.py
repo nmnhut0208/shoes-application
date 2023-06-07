@@ -13,10 +13,17 @@ class BaseClass:
     def read_custom(self, sql: str):
         df = read_sql_custom(sql)
         return df.to_dict(orient="records")
-        # return read_sql_custom(sql)
+    
+    def execute_custom(self, sql: str):
+        execute_custom(sql)
+        return {"status": "success"}
 
     def add(self, col: str, val: str):
         insert_sql(self.table_name, col, val)
+        return {"status": "success"}
+    
+    def add_many(self, col: str, val: str):
+        insert_many_records_sql(self.table_name, col, val)
         return {"status": "success"}
 
     def update(self, val: str, condition: str):

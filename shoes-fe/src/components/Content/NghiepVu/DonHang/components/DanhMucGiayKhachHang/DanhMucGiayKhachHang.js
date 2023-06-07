@@ -2,15 +2,11 @@ import { useEffect, useState, useMemo } from "react";
 import MaterialReactTable from "material-react-table";
 
 import { useTableContext, actions_table } from "~table_context";
-import { COL_GIAY_KHACHHANG } from "../ConstantVariable";
+import { COL_GIAY_KHACHHANG } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import styles from "./DanhMucGiayKhachHang.module.scss";
 
-const DanhMucGiayKhachHang = ({
-  id_khachhang,
-  dataOrigin,
-  setInfoSelection,
-}) => {
+const DanhMucGiayKhachHang = ({ MAKH, dataOrigin, setInfoSelection }) => {
   const [rowSelection, setRowSelection] = useState({});
   const [stateTable, dispatchTable] = useTableContext();
   const [dataTable, setDataTable] = useState([]);
@@ -20,17 +16,19 @@ const DanhMucGiayKhachHang = ({
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/items_danhmuc_giay_khachhang")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        setDataTable(info);
-        console.log(dataTable);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
+    if (MAKH !== "") {
+      fetch("http://localhost:8000/donhang/khachhang/" + MAKH + "/giay")
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          console.log(info);
+          setDataTable(info);
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+    }
   }, []);
 
   const handleSubmit = () => {
@@ -46,6 +44,8 @@ const DanhMucGiayKhachHang = ({
           SIZE8: 0,
           SIZE9: 0,
           SOLUONG: 0,
+          THANHTIEN: 0,
+          DAPHANCONG: 0,
         };
         columns_selected.push(info);
       }

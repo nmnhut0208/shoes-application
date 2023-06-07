@@ -91,10 +91,6 @@ const TableContent = () => {
           <MaterialReactTable
             columns={inforShowTable.infoColumnTable}
             data={inforShowTable.infoTable}
-            displayColumnDefOptions={{
-              "mrt-row-actions": { size: 120 },
-              "mrt-row-numbers": { size: 60 },
-            }}
             components
             autoResetPageIndex={false}
             // resize width of each column
@@ -102,12 +98,24 @@ const TableContent = () => {
             // columnResizeMode="onChange" //default
             enableRowNumbers
             enableEditing
+            displayColumnDefOptions={{
+              "mrt-row-actions": {
+                size: 130, //set custom width
+                muiTableHeadCellProps: {
+                  align: "center", //change head cell props
+                },
+                enableResizing: true,
+              },
+              "mrt-row-numbers": {
+                size: 60,
+                enableColumnOrdering: true, //turn on some features that are usually off
+                enableResizing: true,
+              },
+            }}
             renderRowActions={({ row, table }) => (
               <Box
                 sx={{
                   display: "flex",
-                  // gap: "2px",
-                  // flexWrap: "wrap",
                   justifyContent: "center",
                 }}>
                 <Tooltip arrow placement="right" title="Add">

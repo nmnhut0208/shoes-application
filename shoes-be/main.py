@@ -18,7 +18,10 @@ from features.got import router as router_got
 from features.quai import router as router_quai
 from features.khachhang import router as router_khachhang
 from features.giaohang import router as router_giaohang
+from features.donhang import router as router_donhang
 from features.chamcong import router as router_chamcong
+from features.hethong import router as router_hethong
+from features.phancong import router as router_phancong
 from features.tv_giaohang import router as router_tv_giaohang
 from features.tv_thuchi import router as router_tv_thuchi
 from features.login import router as router_login
@@ -70,13 +73,22 @@ app.include_router(
     router_quai, tags=["Quai"])
 
 app.include_router(
-    router_khachhang, tags=["Khách hàng"])
+    router_khachhang, tags=["Khách Hàng"])
 
 app.include_router(
     router_giaohang, tags=["Giao Hàng"])
 
 app.include_router(
+    router_donhang, tags=["Đơn Hàng"])
+
+app.include_router(
     router_chamcong, tags=["Chấm Công"])
+
+app.include_router(
+    router_phancong, tags=["Thông Tin Phân Công"])
+
+app.include_router(
+    router_hethong, tags=["Thông Tin Hệ Thống"])
 
 app.include_router(
     router_tv_giaohang, tags=["TV Giao Hàng"])
