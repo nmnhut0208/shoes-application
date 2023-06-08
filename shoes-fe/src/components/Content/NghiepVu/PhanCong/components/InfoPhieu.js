@@ -5,11 +5,12 @@ import moment from "moment";
 import styles from "../PhanCong.module.scss";
 import { convertDate } from "~utils/processing_date";
 
-const InfoPhieu = ({ infoPhieu, setInfoPhieu }) => {
+const InfoPhieu = ({ infoPhieu, setInfoPhieu, setHavedSaveData }) => {
   const handleChangeInfoPhieu = (e) => {
     const data = { ...infoPhieu };
     data[e.target.name] = e.target.value;
     setInfoPhieu(data);
+    setHavedSaveData(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
@@ -18,7 +19,7 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu }) => {
       "YYYY-MM-DD HH:mm:ss"
     );
     setInfoPhieu(data);
-    // setIsSavedData(false);
+    setHavedSaveData(false);
   };
 
   return (

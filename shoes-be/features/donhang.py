@@ -205,6 +205,7 @@ def update_status_daphancong(SODH: list = Query([])) -> RESPONSE:
     sql = """UPDATE donhang SET DAPHANCONG = 1 
             WHERE SODH IN ({});
             """.format(",".join(SODH))
+    # donhang.execute_custom(sql)
     return 1 
 
 

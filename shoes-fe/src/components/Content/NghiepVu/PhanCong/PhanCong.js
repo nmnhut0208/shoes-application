@@ -77,6 +77,7 @@ const PhanCong = ({ dataView, view }) => {
       form_current[key] = "";
     }
     setFormPhanCong(form_current);
+    setHavedSaveData(false);
   };
 
   useEffect(() => {
@@ -162,6 +163,7 @@ const PhanCong = ({ dataView, view }) => {
       rowSelectionDonHangToPhanCong,
       setRowSelectionDonHangToPhanCong
     );
+    setHavedSaveData(false);
   };
   const handleClickDelete = () => {
     processing_button_delete(
@@ -180,13 +182,16 @@ const PhanCong = ({ dataView, view }) => {
       setFormPhanCong,
       resetForm
     );
+    setHavedSaveData(false);
   };
   const handleClickSave = () => {
+    console.log("havedSaveData: ", havedSaveData);
     if (havedSaveData) return;
     let dataSave = dataChiTietPhanCong;
     for (let i = 0; i < dataSave.length; i++) {
       dataSave[i] = { ...dataSave[i], ...infoPhieu };
     }
+    console.log("JSON.stringify(dataSave): ", JSON.stringify(dataSave));
     fetch("http://localhost:8000/phancong", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -261,7 +266,11 @@ const PhanCong = ({ dataView, view }) => {
   return (
     <div className={styles.container}>
       <h2>Phân công - F0037</h2>
-      <InfoPhieu infoPhieu={infoPhieu} setInfoPhieu={setInfoPhieu} />
+      <InfoPhieu
+        infoPhieu={infoPhieu}
+        setInfoPhieu={setInfoPhieu}
+        setHavedSaveData={setHavedSaveData}
+      />
       <TableDonHang
         columns={infoTableDonHang}
         data={dataDonHang}
@@ -303,7 +312,7 @@ const PhanCong = ({ dataView, view }) => {
         <div className={styles.right}>
           <button>In</button>
           <button onClick={handleClickXemPhanCong}>Xem phân công</button>
-          <button>Lưu</button>
+          <button onClick={handleClickSave}>Lưu</button>
           {/* button Lưu để lưu thông tin đã phân công */}
           {/* sau khi phân công xong sẽ lưu hết nguyên bảng chi tiết phân công lại */}
         </div>

@@ -267,7 +267,7 @@ export const processing_button_delete = (
 
 export const updateSOPHIEU = (sophieu) => {
   console.log("save so don hang");
-  fetch("http://localhost:8000/hethong/phancong/sophieu", {
+  fetch("http://localhost:8000/hethong/phancong/SOPC", {
     method: "put",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ LASTNUMBER: sophieu }),
