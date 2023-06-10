@@ -192,4 +192,55 @@ def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
     save_info_primary_key("PHANCONG","MD", year, MADONG)
     return 1
 
+@router.post("/phancong/add_phancong")
+def add(data: ITEM_PHANCONG) -> RESPONSE:
+    print("vo day", data)
+    # find common information
+    today = datetime.now()
+    year = today.year
+    MADONG = find_info_primary_key("PHANCONG","MD", today)
+    PHIEU = find_info_primary_key("PHANCONG", "PHIEU", today) + 1
+    MAPHIEU = f"PC{year}{str(PHIEU).zfill(12)}"
+    day_created = today.strftime("%Y-%m-%d %H:%M:%S")
+
+    _v = []
+    _c = []
+    _data = dict(data)
+    MADONG += 1
+    _data["NGAYTAO"] = day_created
+    _data["NGAYSUA"] = day_created
+    _data["MAPHIEU"] = MAPHIEU
+    _data["MADONG"] = f"MD{year}{str(MADONG).zfill(12)}"
+    for k, v in _data.items():
+        if v is not None:
+            _c.append(k)
+            if type(v) is str:
+                 _v.append(f"'{v}'")
+            else:
+                _v.append(f"{v}")
+
+    _c = ",".join(_c)
+    _v = ",".join(_v)
+    phancong.add(_c, _v)
+
+    # lưu lại thông tin mã dòng và mã đơn hàng
+    save_info_primary_key("PHANCONG","PC", year, PHIEU)
+    save_info_primary_key("PHANCONG","MD", year, MADONG)
+    return 1
+
+
+
+@router.delete("/phancong")
+def delete(data: ITEM_PHANCONG) -> RESPONSE:
+    data = dict(data)
+    print(data)
+    condition = []
+    for key, value in data.items():
+        if value is not None or key in ["NGAYPHIEU"]:
+            if type(value) is str:
+                condition.append(f"{key}='{value}'")
+            else:
+                condition.append(f"{key}={value}")
+    return phancong.delete(" and ".join(condition))
+
 

@@ -24,7 +24,6 @@ import {
   updateMaGiayWillPhanCong,
   processing_button_delete,
   updateSOPHIEU,
-  // update_status_phancongs_by_madong,
 } from "./helper";
 import DonHang from "../DonHang/";
 import { Modal } from "~common_tag";
@@ -65,13 +64,10 @@ const PhanCong = ({ dataView, view }) => {
 
   const [listDonHangDonePhanCong, setListDonHangDonePhanCong] = useState([]);
   const [dataDonHangDaPhanCong, setDataDonHangDaPhanCong] = useState([]);
-  // const [listMaDongDonHangDonePhanCong, setListMaDongDonHangDonePhanCong] =
-  //   useState([]);
 
   console.log("listDonHangDonePhanCong: ", listDonHangDonePhanCong);
   console.log("dataDonHangDaPhanCong: ", dataDonHangDaPhanCong);
   console.log("dataChiTietPhanCong:", dataChiTietPhanCong);
-  // console.log("listMaDongDonHangDonePhanCong: ", listMaDongDonHangDonePhanCong);
 
   const [rowSelectionChiTietPhanCong, setRowSelectionChiTietPhanCong] =
     useState({});
@@ -152,6 +148,7 @@ const PhanCong = ({ dataView, view }) => {
 
   const handleClickAdd = () => {
     processing_button_add(
+      infoPhieu,
       formPhanCong,
       setFormPhanCong,
       resetForm,
@@ -167,8 +164,6 @@ const PhanCong = ({ dataView, view }) => {
       setListDonHangDonePhanCong,
       rowSelectionDonHangToPhanCong,
       setRowSelectionDonHangToPhanCong
-      // listMaDongDonHangDonePhanCong,
-      // setListMaDongDonHangDonePhanCong
     );
     setHavedSaveData(false);
   };
@@ -187,9 +182,8 @@ const PhanCong = ({ dataView, view }) => {
       setListDonHangDonePhanCong,
       setListGiayWillPhanCong,
       setFormPhanCong,
+      infoPhieu,
       resetForm
-      // listMaDongDonHangDonePhanCong,
-      // setListMaDongDonHangDonePhanCong
     );
     setHavedSaveData(false);
   };
@@ -213,22 +207,7 @@ const PhanCong = ({ dataView, view }) => {
         console.log("error: ", error);
       });
 
-    // update_status_phancongs_by_madong(listMaDongDonHangDonePhanCong, 1);
-
-    // fetch(
-    //   "http://localhost:8000/donhang/update_status_phancong/?MADONG=" +
-    //     listMaDongDonHangDonePhanCong.join("&MADONG=") +
-    //     "&status=1"
-    // )
-    //   .then((response) => {
-    //     console.log("response: ", response);
-    //   })
-    //   .catch((error) => {
-    //     console.log("error: ", error);
-    //   });
-
     updateSOPHIEU(lastestSOPHIEU);
-    // setLastestSOPHIEU(lastestSOPHIEU + 1);
     setHavedSaveData(true);
   };
 

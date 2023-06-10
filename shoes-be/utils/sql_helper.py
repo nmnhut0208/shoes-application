@@ -66,6 +66,7 @@ def update_sql(tbn: str, val: str, condition: str) -> None:
 
 def delete_sql(tbn: str, condition: str) -> None:
     sql = f"DELETE FROM {tbn} WHERE {condition}"
+    print("sql: ", sql)
     execute_database(sql, action_type='delete')
     # cursor.execute(sql)
     # conn.commit()
