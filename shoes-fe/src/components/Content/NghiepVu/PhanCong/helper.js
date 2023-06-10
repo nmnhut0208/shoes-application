@@ -42,6 +42,8 @@ export const processing_button_add = (
   setListDonHangDonePhanCong,
   rowSelectionDonHangToPhanCong,
   setRowSelectionDonHangToPhanCong
+  // listMaDongDonHangDonePhanCong,
+  // setListMaDongDonHangDonePhanCong
 ) => {
   if (formPhanCong["MAGIAY"] === "") return;
   if (formPhanCong["THODE"] === "" || formPhanCong["THOQUAI"] === "") {
@@ -85,6 +87,10 @@ export const processing_button_add = (
     setListGiayWillPhanCong([...listGiayWillPhanCong]);
   } else {
     // xóa thằng đã phân công xong đi
+    // setListMaDongDonHangDonePhanCong([
+    //   ...listMaDongDonHangDonePhanCong,
+    //   remain["MADONG"],
+    // ]);
     listGiayWillPhanCong.splice(index, 1);
 
     if (listGiayWillPhanCong.length > 0) {
@@ -146,12 +152,14 @@ export const updateMaGiayWillPhanCong = (
       // mỗi lựa chọn sẽ là thông tin khác nhau của form
       // nhớ xử lý vụ size nữa nè
       fetch(
-        "http://localhost:8000/donhang?SODH=" + encodeURIComponent(idDonHang)
+        "http://localhost:8000/phancong/get_chitietdonhang_dephancong?SODH=" +
+          encodeURIComponent(idDonHang)
       )
         .then((response) => {
           return response.json();
         })
         .then((info) => {
+          console.log("chi tiet don hang can phan cong: ", info);
           // TODO: lọc những mã giày đã phân công
           // trừ số lượng nó đi
           // làm API giả khéo léo xíu để dễ test nè
@@ -231,15 +239,24 @@ export const processing_button_delete = (
   setListGiayWillPhanCong,
   setFormPhanCong,
   resetForm
+  // listMaDongDonHangDonePhanCong,
+  // setListMaDongDonHangDonePhanCong
 ) => {
   if (Object.keys(rowSelectionChiTietPhanCong).length == 0) return;
   let data_delete =
     dataChiTietPhanCong[parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])];
   let SoDH_del = data_delete["SODH"];
+  // update_status_phancongs_by_madong([SoDH_del], 0);
+  // let MADONG_del = data_delete["MADONG"];
   let index = parseInt(Object.keys(rowSelectionChiTietPhanCong)[0]);
   dataChiTietPhanCong.splice(index, 1);
   setDataChiTietPhanCong([...dataChiTietPhanCong]);
 
+  // let index_madong_del = listMaDongDonHangDonePhanCong.findIndex(
+  //   (value) => value === MADONG_del
+  // );
+  // listMaDongDonHangDonePhanCong.splice(index_madong_del, 1);
+  // setListMaDongDonHangDonePhanCong(listMaDongDonHangDonePhanCong);
   if (listDonHangDonePhanCong.includes(SoDH_del)) {
     let newListDonHangDonePhanCong = listDonHangDonePhanCong.filter(
       (value) => value !== SoDH_del
@@ -266,7 +283,7 @@ export const processing_button_delete = (
 };
 
 export const updateSOPHIEU = (sophieu) => {
-  console.log("save so don hang");
+  console.log("save so don hang: ", sophieu);
   fetch("http://localhost:8000/hethong/phancong/SOPC", {
     method: "put",
     headers: { "Content-Type": "application/json" },
@@ -275,3 +292,19 @@ export const updateSOPHIEU = (sophieu) => {
     console.log("error: ", error);
   });
 };
+
+// -----------------------------------------------------------------
+// export const update_status_phancongs_by_madong = (list_madong, value) => {
+//   fetch(
+//     "http://localhost:8000/donhang/update_status_phancong/?MADONG=" +
+//       list_madong.join("&MADONG=") +
+//       "&status=" +
+//       value
+//   )
+//     .then((response) => {
+//       console.log("response: ", response);
+//     })
+//     .catch((error) => {
+//       console.log("error: ", error);
+//     });
+// };

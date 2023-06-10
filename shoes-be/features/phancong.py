@@ -42,9 +42,35 @@ class RESPONSE_PHANCONG(BaseModel):
     DIENDAIPHIEU: Optional[str] = None
     SOLUONG: Optional[str] = None
 
+class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
+    SODH: Optional[str] = None
+    SORTID: str
+    MAGIAY: str
+    TENGIAY: str
+    MAUDE: Optional[str] = None
+    MAUGOT: Optional[str] = None
+    MAUSUON: Optional[str] = None
+    MAUCA: Optional[str] = None
+    MAUQUAI: Optional[str] = None
+    MAKH: str
+    DONGIA: int
+    DONGIAQUAI: Optional[int] = None
+    TENCA: Optional[str] = None
+    TENKH: str
+    # =============
+    MADONG: Optional[int] = None
+    SIZE5: Optional[int] = None
+    SIZE6: Optional[int] = None
+    SIZE7: Optional[int] = None
+    SIZE9: Optional[int] = None
+    SIZE8: Optional[int] = None
+    SIZE0: Optional[int] = None
+    SOLUONG: Optional[int] = None
+    THANHTIEN: Optional[int] = None
+    NGAYDH: Optional[str] = None
+    NGAYGH: Optional[str] = None
 
 router = APIRouter()
-
 
 class PHANCONG(BaseClass):
     def __init__(self):
@@ -56,16 +82,47 @@ phancong = PHANCONG()
 
 @router.get("/phancong/donhangchuaphancong")
 def read() -> List[RESPONSE_PHANCONG]:
-    sql = f"""select DONHANG.SODH, NGAYDH, DONHANG.MAKH, DMKHACHHANG.TENKH, 
-                DONHANG.DIENGIAIPHIEU, 
-                SUM(DONHANG.SIZE5 + DONHANG.SIZE6 + DONHANG.SIZE7 + DONHANG.SIZE8 
-                + DONHANG.SIZE9+DONHANG.SIZE0) AS SOLUONG
-                from DONHANG
-                left join DMKHACHHANG on DMKHACHHANG.MAKH = DONHANG.MAKH
-                where DAPHANCONG = 0
-                group by DONHANG.SODH, NGAYDH, DONHANG.MAKH, DMKHACHHANG.TENKH, 
-                DONHANG.DIENGIAIPHIEU
-            """
+    # sql = f"""select DONHANG.SODH, NGAYDH, DONHANG.MAKH, DMKHACHHANG.TENKH, 
+    #             DONHANG.DIENGIAIPHIEU, 
+    #             SUM(DONHANG.SIZE5 + DONHANG.SIZE6 + DONHANG.SIZE7 + DONHANG.SIZE8 
+    #             + DONHANG.SIZE9+DONHANG.SIZE0) AS SOLUONG
+    #             from DONHANG
+    #             left join DMKHACHHANG on DMKHACHHANG.MAKH = DONHANG.MAKH
+    #             where DAPHANCONG = 0
+    #             group by DONHANG.SODH, NGAYDH, DONHANG.MAKH, DMKHACHHANG.TENKH, 
+    #             DONHANG.DIENGIAIPHIEU
+    #         """
+    sql = """select madh as MADH, sodh as SODH, ngaydh as NGAYDH, 
+             makh as MAKH, diengiaiphieu as DIENDAIPHIEU, tenkh as TENKH,
+             SLDONHANG-SLPHANCONG as SOLUONG 
+             from V_DHPHANCONG
+             where SLDONHANG - SLPHANCONG > 0
+             """
+    result = phancong.read_custom(sql)
+    return result
+
+
+@router.get("/phancong/get_chitietdonhang_dephancong")
+def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
+    print("SODH: ", SODH)
+    sql = f"""select V_KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, 
+              madh as MADH, sodh as SODH,
+              ngaydh as NGAYDH, makh as MAKH, diengiaiphieu as DIENGIAIDONG, 
+              tenkh as TENKH, MAUDE, MAUGOT, MAUSUON, MAUCA, MAUQUAI, 
+              SIZE5-DaphancongSize5 as SIZE5, SIZE0-DaphancongSize0 as SIZE0,
+              SIZE6-DaphancongSize6 as SIZE6,SIZE7-DaphancongSize7 as SIZE7,
+              SIZE8-DaphancongSize8 as SIZE8,SIZE9-DaphancongSize9 as SIZE9,
+              SIZE0 as dhSize0, DaphancongSize0, SIZE5 as dhSize5, DaphancongSize5, 
+              SIZE6 as dhSize6, DaphancongSize6, SIZE7 as dhSize7, DaphancongSize7, 
+              SIZE8 as dhSize8, DaphancongSize8, SIZE9 as dhSize9, DaphancongSize9
+              from V_KIEMTRAPHANCONG
+              left join (select MAGIAY, TENGIAY from DMGIAY) 
+              as DMGIAY on DMGIAY.MAGIAY = V_KIEMTRAPHANCONG.magiay
+              where SODH = '{SODH}'
+              and SIZE5 + SIZE6+ SIZE7+SIZE8+SIZE9+SIZE0 > 
+              DaphancongSize5 +DaphancongSize6+DaphancongSize7+
+              DaphancongSize8+DaphancongSize9+DaphancongSize0
+          """
     result = phancong.read_custom(sql)
     return result
 

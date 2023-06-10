@@ -115,6 +115,6 @@ def update_info_SOPC(data: ITEM_HETHONG) -> RESPONSE:
     year = str(today.year)[2:]
     sql_insert = f"""UPDATE V1T4444 
                      SET LASTKEY = {SOPC}
-                     WHERE TABLENAME = 'DONHANG'
+                     WHERE TABLENAME = 'PHANCONG'
                      AND KEYSTRING = 'PC--{month}/{year}'"""
     return hethong.execute_custom(sql_insert)
