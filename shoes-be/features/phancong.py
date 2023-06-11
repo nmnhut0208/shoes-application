@@ -106,7 +106,7 @@ def read() -> List[RESPONSE_PHANCONG]:
 def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     print("SODH: ", SODH)
     sql = f"""select V_KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, 
-              madh as MADH, sodh as SODH,
+              HINHANH, madh as MADH, sodh as SODH,
               ngaydh as NGAYDH, makh as MAKH, diengiaiphieu as DIENGIAIDONG, 
               tenkh as TENKH, MAUDE, MAUGOT, MAUSUON, MAUCA, MAUQUAI, 
               SIZE5-DaphancongSize5 as SIZE5, SIZE0-DaphancongSize0 as SIZE0,
@@ -116,7 +116,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
               SIZE6 as dhSize6, DaphancongSize6, SIZE7 as dhSize7, DaphancongSize7, 
               SIZE8 as dhSize8, DaphancongSize8, SIZE9 as dhSize9, DaphancongSize9
               from V_KIEMTRAPHANCONG
-              left join (select MAGIAY, TENGIAY from DMGIAY) 
+              left join (select MAGIAY, TENGIAY, HINHANH from DMGIAY) 
               as DMGIAY on DMGIAY.MAGIAY = V_KIEMTRAPHANCONG.magiay
               where SODH = '{SODH}'
               and SIZE5 + SIZE6+ SIZE7+SIZE8+SIZE9+SIZE0 > 

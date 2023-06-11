@@ -40,7 +40,11 @@ const InTongHop = ({ data }) => {
       if (ma_giay_checked.includes(ma_giay)) {
         i++;
       } else {
-        const info = { MAGIAY: ma_giay, TENGIAY: data[i]["TENGIAY"] };
+        const info = {
+          MAGIAY: ma_giay,
+          TENGIAY: data[i]["TENGIAY"],
+          HINHANH: data[i]["HINHANH"],
+        };
         info["THO"] = data.filter((_data) => _data["MAGIAY"] === ma_giay);
         ma_giay_checked.push(ma_giay);
         info_print.push(info);
@@ -66,7 +70,7 @@ const InTongHop = ({ data }) => {
                 <tr className={styles.info_row_giay}>
                   <th>{info["TENGIAY"]}</th>
                   <th>
-                    <img src="https://img.muji.net/img/item/4550344414620_1260.jpg" />
+                    <img src={info["HINHANH"]} />
                   </th>
                   <th>{info["MAGIAY"]}</th>
                 </tr>
