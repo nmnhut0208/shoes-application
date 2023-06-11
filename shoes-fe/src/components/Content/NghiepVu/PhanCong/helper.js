@@ -57,6 +57,10 @@ export const processing_button_add = (
   }
   let remain = { ...formPhanCong };
   const record = { ...formPhanCong };
+  for (let key in Object.keys(record)) {
+    if (key.includes("SIZE")) record[key] = parseInt(record[key]);
+  }
+
   console.log(
     " JSON.stringify({ ...record, ...infoPhieu }): ",
     JSON.stringify({ ...record, ...infoPhieu })

@@ -97,34 +97,36 @@ def read(SODH: str) -> List[ITEM_DONHANG]:
     return result
 
 
-# @router.get("/donhang")
-# def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
-#     print("SODH: ", SODH)
-#     sql = f"""SELECT MADONG, SODH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
-#                 coalesce(MAUDE, '') as MAUDE, 
-#                 coalesce(MAUGOT, '') AS MAUGOT, 
-#                 coalesce(MAUSUON, '') AS MAUSUON,
-#                 coalesce(MAUCA, '') AS MAUCA,
-#                 coalesce(MAUQUAI, '') AS MAUQUAI ,
-#                 coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH, 
-#                 V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
-#                 V_GIAY.TENCA, V_GIAY.TENKH,
-#                 SIZE5,SIZE6,SIZE7,
-#                 SIZE9,SIZE8,SIZE0,
-#                 DONHANG.MAKH,
-#                 SOLUONG,NGAYDH, NGAYGH,
-#                 V_GIAY.DONGIA * SOLUONG AS THANHTIEN
-#             FROM (select MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
-# 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
-#                 SIZE9,SIZE8,SIZE0, NGAYDH, NGAYGH,
-#                 (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG
-#             from DONHANG 
-#             WHERE DONHANG.SODH='{SODH}'
-#             and DAPHANCONG=0 ) AS DONHANG
-#             left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  
-#           """
-#     result = donhang.read_custom(sql)
-#     return result
+@router.get("/donhang")
+def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
+    print("SODH: ", SODH)
+    sql = f"""SELECT MADONG, SODH, HINHANH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+                coalesce(MAUDE, '') as MAUDE, 
+                coalesce(MAUGOT, '') AS MAUGOT, 
+                coalesce(MAUSUON, '') AS MAUSUON,
+                coalesce(MAUCA, '') AS MAUCA,
+                coalesce(MAUQUAI, '') AS MAUQUAI ,
+                coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH, 
+                V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
+                V_GIAY.TENCA, V_GIAY.TENKH,
+                SIZE5,SIZE6,SIZE7,
+                SIZE9,SIZE8,SIZE0,
+                DONHANG.MAKH,
+                SOLUONG,NGAYDH, NGAYGH,
+                V_GIAY.DONGIA * SOLUONG AS THANHTIEN
+            FROM (select MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
+		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
+                SIZE9,SIZE8,SIZE0, NGAYDH, NGAYGH,
+                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG
+            from DONHANG 
+            WHERE DONHANG.SODH='{SODH}'
+            and DAPHANCONG=0 ) AS DONHANG
+            left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  
+            left JOIN (Select MAGIAY, HINHANH from DMGIAY) as DMGIAY
+            on DMGIAY.MAGIAY = DONHANG.MAGIAY
+          """
+    result = donhang.read_custom(sql)
+    return result
 
 
 @router.get("/donhang/khachhang/{MAKH}/giay")

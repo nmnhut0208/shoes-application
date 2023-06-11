@@ -64,7 +64,6 @@ const DonHang = ({ dataView, view }) => {
   useEffect(() => {
     if (view) {
       console.log("dataView: ", dataView);
-      setFormInfoDonHang(dataView);
       fetch(
         "http://localhost:8000/donhang?SODH=" +
           encodeURIComponent(dataView["SODH"])
@@ -74,6 +73,7 @@ const DonHang = ({ dataView, view }) => {
         })
         .then((info) => {
           setDataTable(info);
+          setFormInfoDonHang(info[0]);
           console.log(dataTable);
         })
         .catch((err) => {

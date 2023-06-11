@@ -106,7 +106,7 @@ def read() -> List[RESPONSE_PHANCONG]:
 def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     print("SODH: ", SODH)
     sql = f"""select V_KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, 
-              HINHANH, madh as MADH, sodh as SODH,
+              HINHANH, madh as MADH, sodh as SODH, 
               ngaydh as NGAYDH, makh as MAKH, diengiaiphieu as DIENGIAIDONG, 
               tenkh as TENKH, MAUDE, MAUGOT, MAUSUON, MAUCA, MAUQUAI, 
               SIZE5-DaphancongSize5 as SIZE5, SIZE0-DaphancongSize0 as SIZE0,

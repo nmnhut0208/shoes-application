@@ -336,7 +336,10 @@ const PhanCong = ({ dataView, view }) => {
 
       {infoFormWillShow["in_tonghop"] && (
         <Modal>
-          <InTongHop data={dataChiTietPhanCong} />
+          <InTongHop
+            sophieu={infoPhieu["SOPHIEU"]}
+            data={dataChiTietPhanCong}
+          />
         </Modal>
       )}
     </div>
