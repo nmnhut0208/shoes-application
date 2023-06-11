@@ -9,6 +9,7 @@ import {
   SET_INFO_KHACHHANG,
   SET_INFO_THODE,
   SET_INFO_THOQUAI,
+  SET_INFO_KYTINHLUONG,
 } from "./constants";
 
 export const setInfoDe = (payload) => {
@@ -77,6 +78,13 @@ export const setInfoThoDe = (payload) => {
 export const setInfoThoQuai = (payload) => {
   return {
     type: SET_INFO_THOQUAI,
+    payload,
+  };
+};
+
+export const setInfoKyTinhLuong = (payload) => {
+  return {
+    type: SET_INFO_KYTINHLUONG,
     payload,
   };
 };

@@ -15,6 +15,7 @@ export const updateInfoPhieuPhanCong = (
       let sophieu = data["SOPC"];
       setInfoPhieu({
         ...infoPhieu,
+        MAKY: "",
         DIENGIAIPHIEU: "",
         SOPHIEU: sophieu,
         NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
@@ -44,7 +45,12 @@ export const processing_button_add = (
   rowSelectionDonHangToPhanCong,
   setRowSelectionDonHangToPhanCong
 ) => {
+  if (infoPhieu["MAKY"] === "") {
+    alert("Chọn kỳ tính lương.");
+    return;
+  }
   if (formPhanCong["MAGIAY"] === "") return;
+
   if (formPhanCong["THODE"] === "" || formPhanCong["THOQUAI"] === "") {
     alert("Chọn thợ đế và thợ quai để phân công");
     return;
