@@ -269,40 +269,40 @@ export const processing_button_delete = (
     body: JSON.stringify(data_delete),
   })
     .then((response) => {
+      let SoDH_del = data_delete["SODH"];
+
+      let index = parseInt(Object.keys(rowSelectionChiTietPhanCong)[0]);
+      dataChiTietPhanCong.splice(index, 1);
+      setDataChiTietPhanCong([...dataChiTietPhanCong]);
+
+      if (listDonHangDonePhanCong.includes(SoDH_del)) {
+        let newListDonHangDonePhanCong = listDonHangDonePhanCong.filter(
+          (value) => value !== SoDH_del
+        );
+        let index_del = dataDonHangDaPhanCong.findIndex(
+          (data) => data["SODH"] === SoDH_del
+        );
+        let record_del = dataDonHangDaPhanCong[index_del];
+        dataDonHangDaPhanCong.splice(index_del, 1);
+        setDataDonHang([record_del, ...dataDonHang]);
+        setListDonHangDonePhanCong(newListDonHangDonePhanCong);
+        setDataDonHangDaPhanCong(dataDonHangDaPhanCong);
+        setRowSelectionDonHangToPhanCong({ 0: true });
+      } else {
+        updateMaGiayWillPhanCong(
+          dataDonHang,
+          rowSelectionDonHangToPhanCong,
+          dataChiTietPhanCong,
+          setListGiayWillPhanCong,
+          setFormPhanCong,
+          resetForm
+        );
+      }
       return response.json();
     })
     .catch((err) => {
       console.log(":error: ", err);
     });
-  let SoDH_del = data_delete["SODH"];
-
-  let index = parseInt(Object.keys(rowSelectionChiTietPhanCong)[0]);
-  dataChiTietPhanCong.splice(index, 1);
-  setDataChiTietPhanCong([...dataChiTietPhanCong]);
-
-  if (listDonHangDonePhanCong.includes(SoDH_del)) {
-    let newListDonHangDonePhanCong = listDonHangDonePhanCong.filter(
-      (value) => value !== SoDH_del
-    );
-    let index_del = dataDonHangDaPhanCong.findIndex(
-      (data) => data["SODH"] === SoDH_del
-    );
-    let record_del = dataDonHangDaPhanCong[index_del];
-    dataDonHangDaPhanCong.splice(index_del, 1);
-    setDataDonHang([record_del, ...dataDonHang]);
-    setListDonHangDonePhanCong(newListDonHangDonePhanCong);
-    setDataDonHangDaPhanCong(dataDonHangDaPhanCong);
-    setRowSelectionDonHangToPhanCong({ 0: true });
-  } else {
-    updateMaGiayWillPhanCong(
-      dataDonHang,
-      rowSelectionDonHangToPhanCong,
-      dataChiTietPhanCong,
-      setListGiayWillPhanCong,
-      setFormPhanCong,
-      resetForm
-    );
-  }
 };
 
 export const updateSOPHIEU = (sophieu) => {
