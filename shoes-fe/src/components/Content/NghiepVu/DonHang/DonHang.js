@@ -3,7 +3,6 @@ import moment from "moment";
 
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
 import Modal from "./Modal";
-import { useTableContext, actions_table } from "~table_context";
 import { renderDataEmpty } from "~utils/processing_data_table";
 
 import {
@@ -36,7 +35,6 @@ const DonHang = ({ dataView }) => {
   // TODO: note lại trạng thái của page, đã save thông tin page hiện tại chưa
   // nếu save rồi thì thay đổi trạng thái hiện tại thành show
   // xem lại thử logic này cần ko
-  const [stateTable, dispatchTable] = useTableContext();
   const [formInfoDonHang, setFormInfoDonHang] = useState({
     // TODO: edit information edit pages
     SODH: "",
@@ -266,12 +264,20 @@ const DonHang = ({ dataView }) => {
         </div>
       </div>
       {infoFormWillShow["giay"] && (
-        <Modal title="Giày - F0025" status={showModal}>
+        <Modal
+          title="Giày - F0025"
+          status={showModal}
+          setShowModal={setShowModal}
+        >
           <FormGiay setShowModal={setShowModal} />
         </Modal>
       )}
       {infoFormWillShow["mau"] && (
-        <Modal title="Màu sắc - F0010" status={showModal}>
+        <Modal
+          title="Màu sắc - F0010"
+          status={showModal}
+          setShowModal={setShowModal}
+        >
           <FormMau
             dataMau={dataMau}
             setDataMau={setDataMau}
@@ -280,11 +286,16 @@ const DonHang = ({ dataView }) => {
         </Modal>
       )}
       {infoFormWillShow["dmGiaykh"] && (
-        <Modal title="Danh mục giày của Khách hàng - F0049" status={showModal}>
+        <Modal
+          title="Danh mục giày của Khách hàng - F0049"
+          status={showModal}
+          setShowModal={setShowModal}
+        >
           <DanhMucGiayKhachHang
             MAKH={formInfoDonHang["MAKH"]}
             dataOrigin={dataTable}
             setInfoSelection={setDataTable}
+            setShowModal={setShowModal}
           />
         </Modal>
       )}

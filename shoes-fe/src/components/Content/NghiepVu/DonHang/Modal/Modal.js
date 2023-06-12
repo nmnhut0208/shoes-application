@@ -1,14 +1,8 @@
 import { useState, useEffect } from "react";
 import styles from "./Modal.module.scss";
 
-const Modal = ({ title, status, children }) => {
-  const [show, setShow] = useState(status);
-  useEffect(() => {
-    console.log("hudfhvud: ", status);
-    setShow(status);
-  }, status);
-
-  if (!show) {
+const Modal = ({ title, status, setShowModal, children }) => {
+  if (!status) {
     return null;
   }
   return (
@@ -19,7 +13,7 @@ const Modal = ({ title, status, children }) => {
           <label className={styles.title_modal}>{title}</label>
           <button
             className={styles.button_close_modal}
-            onClick={() => setShow(false)}
+            onClick={() => setShowModal(false)}
           >
             X
           </button>

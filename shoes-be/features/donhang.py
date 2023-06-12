@@ -163,13 +163,12 @@ def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
             FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH 
                 from DONHANG WHERE DONHANG.MAKH='{}') AS DONHANG
-            FULL OUTER JOIN (select * from V_GIAY where V_GIAY.MAKH='{}') 
+            FULL OUTER JOIN (select * from V_GIAY where V_GIAY.MAKH='{}'
+            and DONGIAQUAI is not null) 
             As V_GIAY on V_GIAY.magiay=DONHANG.magiay
             """.format(MAKH, MAKH)
     
-    start = datetime.now()
     result = donhang.read_custom(sql)
-    print("khachhang: ", datetime.now()-start)
     return result
 
 
