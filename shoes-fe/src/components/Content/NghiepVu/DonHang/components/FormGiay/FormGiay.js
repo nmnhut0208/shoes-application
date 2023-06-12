@@ -3,9 +3,9 @@ import { FormGiayBasic } from "~hang_hoa";
 import styles from "./FormGiay.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 
-const FormGiay = () => {
+const FormGiay = ({ setShowModal }) => {
   const [dataForm, setDataForm] = useState({});
-  const [stateTable, dispatchTable] = useTableContext();
+  // const [stateTable, dispatchTable] = useTableContext();
 
   const handleSaveFrom = () => {
     fetch("http://localhost:8000/giay", {
@@ -19,7 +19,8 @@ const FormGiay = () => {
       .catch((error) => {
         console.log("error: ", error);
       });
-    dispatchTable(actions_table.setModeShowModal(false));
+    // dispatchTable(actions_table.setModeShowModal(false));
+    setShowModal(false);
   };
 
   const handleNhapTiep = () => {

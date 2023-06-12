@@ -32,7 +32,7 @@ const Table = ({ columns, data }) => {
         // scroll to bottom
         enableRowVirtualization
         muiTableContainerProps={{
-          sx: { maxHeight: "30rem" },
+          sx: { maxHeight: "65rem" },
         }}
         // row number
         enableRowNumbers
@@ -65,7 +65,7 @@ const Table = ({ columns, data }) => {
       />
 
       <Modal>
-        <FormDonHang dataView={rowInfo} view={true} />
+        <FormDonHang dataView={rowInfo} />
       </Modal>
     </>
   );
@@ -78,7 +78,7 @@ const DonHang = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/items_donhang_truy_van")
+    fetch("http://localhost:8000/donhang/baocao_donhang")
       .then((response) => {
         return response.json();
       })

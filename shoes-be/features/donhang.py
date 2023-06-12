@@ -38,13 +38,13 @@ class ITEM_DONHANG(BaseModel):
     MAUSUON: Optional[str] = None
     MAUCA: Optional[str] = None
     MAUQUAI: Optional[str] = None
-    DAPHANCONG: int
+    DAPHANCONG: Optional[int] = 0
     GIALE: Optional[int] = 0
     INHIEU: Optional[str] = None
     TRANGTRI: Optional[str] = None
     GHICHU: Optional[str] = None
 
-class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
+class RESPONSE_GIAYDONHANG(BaseModel):
     SODH: Optional[str] = None
     SORTID: str
     MAGIAY: str
@@ -96,9 +96,29 @@ donhang = DONHANG()
 #     result = donhang.read_custom(sql)
 #     return result
 
+class RESPONSE_BAOCAO_DONHANG:
+    SODH: str 
+    NGAYDH: str
+    NGAYGH: str
+    MAKH: str
+    TENKH: str
+    DIENGIAI: str
+    SOLUONG: int 
+
+@router.get("/donhang/baocao_donhang")
+def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
+    sql = f"""select SODH, MAKH, TENKH, NGAYDH, NGAYGH, 
+                DIENGIAIPHIEU AS DIENGIAI,
+                SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
+                from V_BCDONHANG
+                group by SODH, MAKH, TENKH, NGAYDH, NGAYGH, DIENGIAIPHIEU
+            """
+    result = donhang.read_custom(sql)
+    return result
+
 
 @router.get("/donhang")
-def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
+def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
     print("SODH: ", SODH)
     sql = f"""SELECT MADONG, SODH, HINHANH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                 coalesce(MAUDE, '') as MAUDE, 
@@ -119,8 +139,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
                 SIZE9,SIZE8,SIZE0, NGAYDH, NGAYGH,
                 (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG
             from DONHANG 
-            WHERE DONHANG.SODH='{SODH}'
-            and DAPHANCONG=0 ) AS DONHANG
+            WHERE DONHANG.SODH='{SODH}') AS DONHANG
             left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  
             left JOIN (Select MAGIAY, HINHANH from DMGIAY) as DMGIAY
             on DMGIAY.MAGIAY = DONHANG.MAGIAY
@@ -131,7 +150,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
 
 @router.get("/donhang/khachhang/{MAKH}/giay")
 # lấy tất cả các loại giày của khách hàng MAKH
-def read(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
+def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
     sql = """SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                     coalesce(MAUDE, '') as MAUDE, 
                     coalesce(MAUGOT, '') AS MAUGOT, 

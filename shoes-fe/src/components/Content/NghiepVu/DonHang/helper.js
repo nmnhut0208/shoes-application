@@ -84,7 +84,7 @@ export const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
   for (let i = 0; i < dataDatHang.length; i++) {
     dataDatHang[i] = { ...dataDatHang[i], ...formInfoDonHang };
   }
-  console.log("save don hang");
+  console.log("save don hang", JSON.stringify(dataDatHang));
   fetch("http://localhost:8000/donhang", {
     method: "post",
     headers: { "Content-Type": "application/json" },

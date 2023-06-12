@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import moment from "moment";
 
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
-import { Modal } from "~common_tag";
+import Modal from "./Modal";
 import { useTableContext, actions_table } from "~table_context";
 import { renderDataEmpty } from "~utils/processing_data_table";
 
@@ -23,7 +23,8 @@ import {
 import { ItemKhachHang } from "~items";
 import { convertDate } from "~utils/processing_date";
 
-const DonHang = ({ dataView, view }) => {
+const DonHang = ({ dataView }) => {
+  const view = false; // chinh lai theo phancong
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
   // nên đành để thành thêm 1 dòng trống sau dataTable
   const [dataTable, setDataTable] = useState(() => {
@@ -53,6 +54,8 @@ const DonHang = ({ dataView, view }) => {
     dmGiaykh: false,
   });
 
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     updateDanhSachMau(setDataMau);
   }, []); // them dieu kieu check mau thay doi
@@ -62,7 +65,7 @@ const DonHang = ({ dataView, view }) => {
   // }, []);
 
   useEffect(() => {
-    if (view) {
+    if (dataView) {
       console.log("dataView: ", dataView);
       fetch(
         "http://localhost:8000/donhang?SODH=" +
@@ -72,7 +75,7 @@ const DonHang = ({ dataView, view }) => {
           return response.json();
         })
         .then((info) => {
-          setDataTable(info);
+          setDataTable([...info, dataTable[dataTable.length - 1]]);
           setFormInfoDonHang(info[0]);
           console.log(dataTable);
         })
@@ -106,8 +109,7 @@ const DonHang = ({ dataView, view }) => {
       mau: false,
       dmGiaykh: false,
     });
-    dispatchTable(actions_table.setTitleModal("Giày - F0025"));
-    dispatchTable(actions_table.setModeShowModal(true));
+    setShowModal(true);
   };
 
   const handleThemMau = () => {
@@ -116,8 +118,7 @@ const DonHang = ({ dataView, view }) => {
       mau: true,
       dmGiaykh: false,
     });
-    dispatchTable(actions_table.setTitleModal("Màu sắc - F0010"));
-    dispatchTable(actions_table.setModeShowModal(true));
+    setShowModal(true);
   };
 
   const handleNhapTiep = () => {
@@ -141,7 +142,10 @@ const DonHang = ({ dataView, view }) => {
       return;
     } else {
       saveDonDatHang(formInfoDonHang, dataDatHang);
-      updateSODH(lastestDH);
+      if (!dataView) {
+        console.log("updateSODH(lastestDH);: ");
+        updateSODH(lastestDH);
+      }
       setIsSavedData(true);
     }
   };
@@ -152,10 +156,7 @@ const DonHang = ({ dataView, view }) => {
       mau: false,
       dmGiaykh: true,
     });
-    dispatchTable(
-      actions_table.setTitleModal("Danh mục giày của Khách hàng - F0049")
-    );
-    dispatchTable(actions_table.setModeShowModal(true));
+    setShowModal(true);
   };
 
   const infoColumns = useMemo(() => {
@@ -250,7 +251,7 @@ const DonHang = ({ dataView, view }) => {
           data={dataTable}
           setDataTable={setDataTable}
           handleAddGiay={handleClickMaGiay}
-          view={view}
+          // view={view}
         />
       }
       <div className={styles.form}>
@@ -265,17 +266,21 @@ const DonHang = ({ dataView, view }) => {
         </div>
       </div>
       {infoFormWillShow["giay"] && (
-        <Modal>
-          <FormGiay />
+        <Modal title="Giày - F0025" status={showModal}>
+          <FormGiay setShowModal={setShowModal} />
         </Modal>
       )}
       {infoFormWillShow["mau"] && (
-        <Modal>
-          <FormMau dataMau={dataMau} setDataMau={setDataMau} />
+        <Modal title="Màu sắc - F0010" status={showModal}>
+          <FormMau
+            dataMau={dataMau}
+            setDataMau={setDataMau}
+            setShowModal={setShowModal}
+          />
         </Modal>
       )}
       {infoFormWillShow["dmGiaykh"] && (
-        <Modal>
+        <Modal title="Danh mục giày của Khách hàng - F0049" status={showModal}>
           <DanhMucGiayKhachHang
             MAKH={formInfoDonHang["MAKH"]}
             dataOrigin={dataTable}
