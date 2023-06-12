@@ -85,16 +85,16 @@ class DONHANG(BaseClass):
 donhang = DONHANG()
 
 
-@router.get("/donhang/{SODH}")
-def read(SODH: str) -> List[ITEM_DONHANG]:
-    print("SODH: ", SODH)
-    sql = f"""select *
-             from DONHANG
-             where DONHANG.SODH = '{SODH}'
-          """
+# @router.get("/donhang/{SODH}")
+# def read(SODH: str) -> List[ITEM_DONHANG]:
+#     print("SODH: ", SODH)
+#     sql = f"""select *
+#              from DONHANG
+#              where DONHANG.SODH = '{SODH}'
+#           """
 
-    result = donhang.read_custom(sql)
-    return result
+#     result = donhang.read_custom(sql)
+#     return result
 
 
 @router.get("/donhang")

@@ -29,9 +29,6 @@ const Table = ({ columns, data }) => {
           borderBottom: "0.2rem solid rgba(0, 0, 0, 0.3)",
         },
       }}
-      // muiTableContainerProps={{
-      //   sx: { maxWidth: "100%" },
-      // }}
       enableTopToolbar={false}
       columns={columns}
       data={data}

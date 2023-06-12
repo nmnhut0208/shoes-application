@@ -229,10 +229,8 @@ const PhanCong = ({ dataView, view }) => {
   };
 
   const handleClickXemPhanCong = () => {
-    if (
-      dataChiTietPhanCong.length == 0 ||
-      Object.keys(rowSelectionChiTietPhanCong).length == 0
-    ) {
+    console.log("handleClickXemPhanCong");
+    if (dataChiTietPhanCong.length == 0) {
       return false;
     }
     // show page DonHang with mode view
@@ -326,10 +324,9 @@ const PhanCong = ({ dataView, view }) => {
       {infoFormWillShow["xem_phancong"] && (
         <Modal>
           <XemPhanCong
-            dataView={
-              dataChiTietPhanCong[Object.keys(rowSelectionChiTietPhanCong)[0]]
-            }
-            view={true}
+            SOPHIEU={infoPhieu["SOPHIEU"]}
+            dataPhanCong={dataChiTietPhanCong}
+            // view={true}
           />
         </Modal>
       )}

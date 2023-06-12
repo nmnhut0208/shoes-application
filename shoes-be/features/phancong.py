@@ -82,16 +82,6 @@ phancong = PHANCONG()
 
 @router.get("/phancong/donhangchuaphancong")
 def read() -> List[RESPONSE_PHANCONG]:
-    # sql = f"""select DONHANG.SODH, NGAYDH, DONHANG.MAKH, DMKHACHHANG.TENKH, 
-    #             DONHANG.DIENGIAIPHIEU, 
-    #             SUM(DONHANG.SIZE5 + DONHANG.SIZE6 + DONHANG.SIZE7 + DONHANG.SIZE8 
-    #             + DONHANG.SIZE9+DONHANG.SIZE0) AS SOLUONG
-    #             from DONHANG
-    #             left join DMKHACHHANG on DMKHACHHANG.MAKH = DONHANG.MAKH
-    #             where DAPHANCONG = 0
-    #             group by DONHANG.SODH, NGAYDH, DONHANG.MAKH, DMKHACHHANG.TENKH, 
-    #             DONHANG.DIENGIAIPHIEU
-    #         """
     sql = """select madh as MADH, sodh as SODH, ngaydh as NGAYDH, 
              makh as MAKH, diengiaiphieu as DIENDAIPHIEU, tenkh as TENKH,
              SLDONHANG-SLPHANCONG as SOLUONG 
@@ -127,7 +117,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     return result
 
 
-@router.get("/phancong/{SOPC}")
+@router.get("/phancong")
 def read(SOPC: str) -> List[RESPONSE_PHANCONG]:
     sql = f"""select SOPHIEU, PHANCONG.SODH, NGAYDH, 
                     DONHANG.MAKH, DMKHACHHANG.TENKH, 
@@ -243,4 +233,31 @@ def delete(data: ITEM_PHANCONG) -> RESPONSE:
                 condition.append(f"{key}={value}")
     return phancong.delete(" and ".join(condition))
 
+class RESPONSE_PHANCONG_THO:
+    MANVIEN: str
+    TENNVIEN: str
+    SOLUONG: int
+    THANHTIEN: int
 
+@router.get("/phancong/get_thongtin_thode")
+def read(SOPC: str) -> List[RESPONSE_PHANCONG_THO]:
+    sql = f"""select THODE as MANVIEN, TENTHODE as TENNVIEN, 
+                SUM(TONGSL) as SOLUONG, SUM(LUONGDE) as THANHTIEN
+                from V_KQPHANCONG
+                where SOPHIEU = '{SOPC}'
+                group by THODE, TENTHODE
+            """
+    result = phancong.read_custom(sql)
+    return result
+
+
+@router.get("/phancong/get_thongtin_thoquai")
+def get_thongtin_thoquai(SOPC: str) -> List[RESPONSE_PHANCONG_THO]:
+    sql = f"""select THOQUAI as MANVIEN, TENTHOQUAI as TENNVIEN, 
+                SUM(TONGSL) as SOLUONG, SUM(LUONGQUAI) as THANHTIEN
+                from V_KQPHANCONG
+                where SOPHIEU = '{SOPC}'
+                group by THOQUAI, TENTHOQUAI
+            """
+    result = phancong.read_custom(sql)
+    return result
