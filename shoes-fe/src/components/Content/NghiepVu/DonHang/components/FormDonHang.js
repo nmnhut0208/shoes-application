@@ -21,7 +21,11 @@ import {
 import { ItemKhachHang } from "~items";
 import { convertDate } from "~utils/processing_date";
 
-const FormDonHang = ({ dataView }) => {
+const FormDonHang = ({
+  dataView,
+  setShowModalNghiepVuDonHang,
+  setIsSaveDataNghiepVuDonHang,
+}) => {
   const view = false; // chinh lai theo phancong
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
   // nên đành để thành thêm 1 dòng trống sau dataTable
@@ -30,7 +34,7 @@ const FormDonHang = ({ dataView }) => {
   });
 
   const [dataMau, setDataMau] = useState([]);
-  const [isSavedData, setIsSavedData] = useState(false);
+  const [isSavedData, setIsSavedData] = useState(true);
   // TODO: note lại trạng thái của page, đã save thông tin page hiện tại chưa
   // nếu save rồi thì thay đổi trạng thái hiện tại thành show
   // xem lại thử logic này cần ko
@@ -89,6 +93,7 @@ const FormDonHang = ({ dataView }) => {
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
     setIsSavedData(false);
+    setIsSaveDataNghiepVuDonHang(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
@@ -98,6 +103,7 @@ const FormDonHang = ({ dataView }) => {
     );
     setFormInfoDonHang(data);
     setIsSavedData(false);
+    setIsSaveDataNghiepVuDonHang(false);
   };
 
   const handleThemGiay = () => {
@@ -125,7 +131,8 @@ const FormDonHang = ({ dataView }) => {
     }
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
     setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
-    setIsSavedData(false);
+    setIsSavedData(true);
+    setIsSaveDataNghiepVuDonHang(true);
   };
 
   const handleSaveDonHang = () => {
@@ -144,6 +151,7 @@ const FormDonHang = ({ dataView }) => {
         updateSODH(lastestDH);
       }
       setIsSavedData(true);
+      setIsSaveDataNghiepVuDonHang(true);
     }
   };
 
@@ -157,9 +165,26 @@ const FormDonHang = ({ dataView }) => {
   };
 
   const infoColumns = useMemo(() => {
-    setIsSavedData(false);
     return updateColumnsInformations(dataMau, dataTable, setDataTable);
   }, [dataTable, dataMau]);
+
+  useEffect(() => {
+    if (dataTable.length > 1) {
+      setIsSavedData(false);
+      setIsSaveDataNghiepVuDonHang(false);
+    } else {
+      setIsSavedData(true);
+      setIsSaveDataNghiepVuDonHang(true);
+    }
+  }, [dataTable]);
+
+  const handleDongForm = () => {
+    if (!isSavedData) {
+      alert("Lưu thông tin thay đổi trước khi đóng");
+      return;
+    }
+    if (setShowModalNghiepVuDonHang) setShowModalNghiepVuDonHang(false);
+  };
 
   return (
     <>
@@ -259,7 +284,7 @@ const FormDonHang = ({ dataView }) => {
           {!view && <button onClick={handleNhapTiep}>Nhập tiếp</button>}
           {!view && <button onClick={handleSaveDonHang}>Lưu</button>}
           <button>In</button>
-          <button>Đóng</button>
+          <button onClick={handleDongForm}>Đóng</button>
         </div>
       </div>
       {infoFormWillShow["giay"] && (
