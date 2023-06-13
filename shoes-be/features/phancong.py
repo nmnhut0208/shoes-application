@@ -58,7 +58,6 @@ class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
     TENCA: Optional[str] = None
     TENKH: str
     # =============
-    MADONG: Optional[int] = None
     SIZE5: Optional[int] = None
     SIZE6: Optional[int] = None
     SIZE7: Optional[int] = None
@@ -98,7 +97,11 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     sql = f"""select V_KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, 
               HINHANH, madh as MADH, sodh as SODH, 
               ngaydh as NGAYDH, makh as MAKH, diengiaiphieu as DIENGIAIDONG, 
-              tenkh as TENKH, MAUDE, MAUGOT, MAUSUON, MAUCA, MAUQUAI, 
+              tenkh as TENKH, coalesce(MAUDE, '') as MAUDE, 
+              coalesce(MAUGOT, '') as MAUGOT, 
+              coalesce(MAUSUON, '') as MAUSUON,
+              coalesce(MAUCA, '') as MAUCA, 
+              coalesce(MAUQUAI, '') as MAUQUAI, 
               SIZE5-DaphancongSize5 as SIZE5, SIZE0-DaphancongSize0 as SIZE0,
               SIZE6-DaphancongSize6 as SIZE6,SIZE7-DaphancongSize7 as SIZE7,
               SIZE8-DaphancongSize8 as SIZE8,SIZE9-DaphancongSize9 as SIZE9,

@@ -3,7 +3,7 @@ import { useMemo, useState, useEffect } from "react";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 
-import { Modal } from "~common_tag";
+import Modal from "./Modal";
 import { useTableContext, actions_table } from "~table_context";
 
 import { processingInfoColumnTable } from "~utils/processing_data_table";
@@ -11,16 +11,18 @@ import { FormDonHang } from "~nghiep_vu/DonHang/";
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
 
 const Table = ({ columns, data }) => {
-  const [stateTable, dispatchTable] = useTableContext();
+  // const [stateTable, dispatchTable] = useTableContext();
   const [rowInfo, setRowInfo] = useState({});
+
+  const [isSaveData, setIsSaveData] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const handleCheckDonHang = () => {
-    dispatchTable(actions_table.setTitleModal("Đơn hàng - F0032"));
-    dispatchTable(actions_table.setModeShowModal(true));
+    setShowModal(true);
   };
   return (
     <>
       <MaterialReactTable
-        enableTopToolbar={false}
+        // enableTopToolbar={false}
         columns={columns}
         data={data}
         // components
@@ -64,8 +66,17 @@ const Table = ({ columns, data }) => {
         )}
       />
 
-      <Modal>
-        <FormDonHang dataView={rowInfo} />
+      <Modal
+        status={showModal}
+        title="Đơn hàng - F0032"
+        setShowModal={setShowModal}
+        isSaveData={isSaveData}
+      >
+        <FormDonHang
+          dataView={rowInfo}
+          setShowModalNghiepVuDonHang={setShowModal}
+          setIsSaveDataNghiepVuDonHang={setIsSaveData}
+        />
       </Modal>
     </>
   );

@@ -197,6 +197,7 @@ const FormDonHang = ({
   }, [dataTable]);
 
   const handleDongForm = () => {
+    console.log("ne: ", isSavedData);
     if (!isSavedData) {
       alert("Lưu thông tin thay đổi trước khi đóng");
       return;
