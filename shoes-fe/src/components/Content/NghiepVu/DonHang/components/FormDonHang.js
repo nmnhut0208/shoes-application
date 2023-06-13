@@ -32,6 +32,7 @@ const FormDonHang = ({
   const [dataTable, setDataTable] = useState(() => {
     return renderDataEmpty(INFO_COLS_DONHANG, 1);
   });
+  const [isUpdateFromDataView, setIsUpdateFromDataView] = useState(false);
 
   const [dataMau, setDataMau] = useState([]);
   const [isSavedData, setIsSavedData] = useState(true);
@@ -76,8 +77,17 @@ const FormDonHang = ({
           return response.json();
         })
         .then((info) => {
+          setIsUpdateFromDataView(true);
           setDataTable([...info, dataTable[dataTable.length - 1]]);
-          setFormInfoDonHang(info[0]);
+          setFormInfoDonHang({
+            SODH: info[0]["SODH"],
+            NGAYDH: info[0]["NGAYDH"],
+            NGAYGH: info[0]["NGAYGH"],
+            MAKH: info[0]["MAKH"],
+            TENKH: info[0]["TENKH"],
+            DIENGIAIPHIEU: info[0]["DIENGIAIPHIEU"],
+          });
+          setIsSavedData(true);
           console.log(dataTable);
         })
         .catch((err) => {
@@ -93,7 +103,7 @@ const FormDonHang = ({
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
     setIsSavedData(false);
-    setIsSaveDataNghiepVuDonHang(false);
+    if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
@@ -103,7 +113,7 @@ const FormDonHang = ({
     );
     setFormInfoDonHang(data);
     setIsSavedData(false);
-    setIsSaveDataNghiepVuDonHang(false);
+    if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(false);
   };
 
   const handleThemGiay = () => {
@@ -132,7 +142,7 @@ const FormDonHang = ({
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
     setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
     setIsSavedData(true);
-    setIsSaveDataNghiepVuDonHang(true);
+    if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
   };
 
   const handleSaveDonHang = () => {
@@ -151,7 +161,7 @@ const FormDonHang = ({
         updateSODH(lastestDH);
       }
       setIsSavedData(true);
-      setIsSaveDataNghiepVuDonHang(true);
+      if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
     }
   };
 
@@ -170,11 +180,19 @@ const FormDonHang = ({
 
   useEffect(() => {
     if (dataTable.length > 1) {
-      setIsSavedData(false);
-      setIsSaveDataNghiepVuDonHang(false);
+      if (isUpdateFromDataView) {
+        // Để lần update đầu tiên từ dataView thì trạng thái của page
+        // vẫn là chưa thay đổi => có thể đóng page mà ko cần save
+        setIsSavedData(true);
+        if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
+        setIsUpdateFromDataView(false);
+      } else {
+        setIsSavedData(false);
+        if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(false);
+      }
     } else {
       setIsSavedData(true);
-      setIsSaveDataNghiepVuDonHang(true);
+      if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
     }
   }, [dataTable]);
 
