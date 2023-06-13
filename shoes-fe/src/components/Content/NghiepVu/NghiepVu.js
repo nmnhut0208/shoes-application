@@ -1,6 +1,6 @@
 import { useTaskContext } from "~task";
 import { useUserContext } from "~user";
-import DonHang from "./DonHang";
+import { FormDonHang } from "./DonHang";
 import PhanCong from "./PhanCong/";
 import ChiTien from "./ChiTien";
 import GiaoHang from "./GiaoHang";
@@ -14,7 +14,7 @@ const NghiepVu = () => {
   console.log(inforCurrentTask);
   switch (inforCurrentTask.infoDetail) {
     case "Đơn hàng":
-      return <DonHang />;
+      return <FormDonHang />;
     case "Phân công":
       return <PhanCong />;
     case "Chi tiền":

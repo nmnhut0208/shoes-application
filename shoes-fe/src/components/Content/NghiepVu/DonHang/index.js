@@ -1,1 +1,1 @@
-export { default } from "./DonHang";
+export { default as FormDonHang } from "./components";

@@ -5,13 +5,12 @@ import { INFO_COLS_DONHANG } from "./ConstantVariable";
 import Modal from "./Modal";
 import { renderDataEmpty } from "~utils/processing_data_table";
 
-import {
-  TableDonHang,
-  FormGiay,
-  FormMau,
-  DanhMucGiayKhachHang,
-} from "./components";
-import styles from "./DonHang.module.scss";
+import TableDonHang from "./TableDonHang";
+import FormGiay from "./FormGiay";
+import FormMau from "./FormMau";
+import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
+
+import styles from "./FormDonHang.module.scss";
 import {
   updateSODH,
   updateDanhSachMau,
@@ -22,7 +21,7 @@ import {
 import { ItemKhachHang } from "~items";
 import { convertDate } from "~utils/processing_date";
 
-const DonHang = ({ dataView }) => {
+const FormDonHang = ({ dataView }) => {
   const view = false; // chinh lai theo phancong
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
   // nên đành để thành thêm 1 dòng trống sau dataTable
@@ -303,4 +302,4 @@ const DonHang = ({ dataView }) => {
   );
 };
 
-export default DonHang;
+export default FormDonHang;

@@ -25,7 +25,7 @@ import {
   processing_button_delete,
   updateSOPHIEU,
 } from "./helper";
-import DonHang from "../DonHang/";
+import { FormDonHang } from "../DonHang/";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
 
@@ -310,7 +310,7 @@ const PhanCong = ({ dataView, view }) => {
 
       {infoFormWillShow["chitiet_donhang"] && (
         <Modal>
-          <DonHang
+          <FormDonHang
             dataView={
               dataChiTietPhanCong[
                 parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])

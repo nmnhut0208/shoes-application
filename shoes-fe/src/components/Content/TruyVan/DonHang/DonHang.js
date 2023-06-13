@@ -7,7 +7,7 @@ import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
 
 import { processingInfoColumnTable } from "~utils/processing_data_table";
-import { default as FormDonHang } from "~nghiep_vu/DonHang/";
+import { FormDonHang } from "~nghiep_vu/DonHang/";
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
 
 const Table = ({ columns, data }) => {

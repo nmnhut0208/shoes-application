@@ -1,5 +1,5 @@
 import moment from "moment";
-import { OptionMau } from "./components";
+import OptionMau from "./OptionMau";
 import {
   INFO_COLS_DONHANG,
   COLS_HAVE_SUM_FOOTER,
