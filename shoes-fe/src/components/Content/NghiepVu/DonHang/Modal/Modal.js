@@ -21,7 +21,9 @@ const Modal = ({ title, status, isSaveData, setShowModal, children }) => {
                 if (window.confirm(text)) {
                   setShowModal(false);
                 }
+                return;
               }
+              setShowModal(false);
             }}
           >
             X
