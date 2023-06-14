@@ -25,8 +25,13 @@ const FormDonHang = ({
   dataView,
   setShowModalNghiepVuDonHang,
   setIsSaveDataNghiepVuDonHang,
+  permission,
 }) => {
-  const view = false; // chinh lai theo phancong
+  const view = useMemo(() => {
+    if (permission && permission.THEM === 0 && permission.SUA === 0)
+      return true;
+    else return false;
+  }, []); // chinh lai theo phancong
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
   // nên đành để thành thêm 1 dòng trống sau dataTable
   const [dataTable, setDataTable] = useState(() => {
@@ -61,10 +66,6 @@ const FormDonHang = ({
   useEffect(() => {
     updateDanhSachMau(setDataMau);
   }, []); // them dieu kieu check mau thay doi
-
-  // useEffect(() => {
-  //   updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
-  // }, []);
 
   useEffect(() => {
     if (dataView) {
@@ -234,6 +235,7 @@ const FormDonHang = ({
                 size_input={"15rem"}
                 size_span={"29.7rem"}
                 have_span={true}
+                readOnly={view}
               />
             </div>
           </div>
@@ -292,7 +294,7 @@ const FormDonHang = ({
           data={dataTable}
           setDataTable={setDataTable}
           handleAddGiay={handleClickMaGiay}
-          // view={view}
+          readOnly={view}
         />
       }
       <div className={styles.form}>
@@ -300,9 +302,15 @@ const FormDonHang = ({
         <div className={styles.group_button}>
           <button onClick={handleThemGiay}>Thêm giày</button>
           <button onClick={handleThemMau}>Thêm màu</button>
-          {!view && <button onClick={handleNhapTiep}>Nhập tiếp</button>}
-          {!view && <button onClick={handleSaveDonHang}>Lưu</button>}
-          <button>In</button>
+          {permission.THEM === 1 && (
+            <button onClick={handleNhapTiep}>Nhập tiếp</button>
+          )}
+          {(permission.THEM === 1 ||
+            permission.SUA === 1 ||
+            permission.XOA === 1) && (
+            <button onClick={handleSaveDonHang}>Lưu</button>
+          )}
+          {permission.IN === 1 && <button>In</button>}
           <button onClick={handleDongForm}>Đóng</button>
         </div>
       </div>
@@ -315,7 +323,7 @@ const FormDonHang = ({
           <FormGiay setShowModal={setShowModal} />
         </Modal>
       )}
-      {infoFormWillShow["mau"] && (
+      {!view && infoFormWillShow["mau"] && (
         <Modal
           title="Màu sắc - F0010"
           status={showModal}
@@ -328,7 +336,7 @@ const FormDonHang = ({
           />
         </Modal>
       )}
-      {infoFormWillShow["dmGiaykh"] && (
+      {!view && infoFormWillShow["dmGiaykh"] && (
         <Modal
           title="Danh mục giày của Khách hàng - F0049"
           status={showModal}

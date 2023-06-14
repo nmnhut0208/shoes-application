@@ -66,8 +66,12 @@ const FormGiay = () => {
         </div>
 
         <div>
-          <button onClick={handleSaveFrom}>Lưu</button>
-          <button onClick={handleNhapTiep}>Nhập tiếp</button>
+          {stateTable.inforShowTable.action_row !== "view" && (
+            <button onClick={handleSaveFrom}>Lưu</button>
+          )}
+          {stateTable.inforShowTable.action_row !== "view" && (
+            <button onClick={handleNhapTiep}>Nhập tiếp</button>
+          )}
           {/* <button>Đóng</button> */}
         </div>
       </div>

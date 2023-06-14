@@ -12,62 +12,44 @@ const DanhMuc = () => {
   const userAccess = stateUser.userPoolAccess;
   switch (inforCurrentTask.infoDetail) {
     case "Giày":
-      return <Giay />;
+      if (userAccess.some((obj) => obj.MAFORM === "F0024" && obj.XEM === 1))
+        return <Giay />;
     case "Kho hàng":
-      if (userAccess.some((obj) => obj.MAFORM === "F0007" && obj.XEM === 1)) {
+      if (userAccess.some((obj) => obj.MAFORM === "F0007" && obj.XEM === 1))
         return <KhoHang />;
-      } else {
-        alert("Bạn không có quyền truy cập vào chức năng này!");
-        return <></>;
-      }
     case "Màu":
-      return <Mau />;
+      if (userAccess.some((obj) => obj.MAFORM === "F0009" && obj.XEM === 1))
+        return <Mau />;
     case "Mũi":
-      if (userAccess.some((obj) => obj.MAFORM === "F0011" && obj.XEM === 1)) {
+      if (userAccess.some((obj) => obj.MAFORM === "F0011" && obj.XEM === 1))
         return <Mui />;
-      } else {
-        alert("Bạn không có quyền truy cập vào chức năng này!");
-        return <></>;
-      }
     case "Sườn":
-      return <Suon />;
+      if (userAccess.some((obj) => obj.MAFORM === "F0020" && obj.XEM === 1))
+        return <Suon />;
     case "Đế":
-      if (userAccess.some((obj) => obj.MAFORM === "F0015" && obj.XEM === 1)) {
+      if (userAccess.some((obj) => obj.MAFORM === "F0015" && obj.XEM === 1))
         return <De />;
-      } else {
-        alert("Bạn không có quyền truy cập vào chức năng này!");
-        return <></>;
-      }
     case "Gót":
-      return <Got />;
+      if (userAccess.some((obj) => obj.MAFORM === "F0013" && obj.XEM === 1))
+        return <Got />;
     case "Cá":
-      if (userAccess.some((obj) => obj.MAFORM === "F0022" && obj.XEM === 1)) {
+      if (userAccess.some((obj) => obj.MAFORM === "F0022" && obj.XEM === 1))
         return <Ca />;
-      } else {
-        alert("Bạn không có quyền truy cập vào chức năng này!");
-        return <></>;
-      }
     case "Quai":
-      return <Quai />;
+      if (userAccess.some((obj) => obj.MAFORM === "F0018" && obj.XEM === 1))
+        return <Quai />;
     case "Nhân viên":
-      if (userAccess.some((obj) => obj.MAFORM === "F0002" && obj.XEM === 1)) {
+      if (userAccess.some((obj) => obj.MAFORM === "F0002" && obj.XEM === 1))
         return <NhanVien />;
-      } else {
-        alert("Bạn không có quyền truy cập vào chức năng này!");
-        return <></>;
-      }
     case "Kỳ tính lương":
-      if (userAccess.some((obj) => obj.MAFORM === "F0040" && obj.XEM === 1)) {
+      if (userAccess.some((obj) => obj.MAFORM === "F0040" && obj.XEM === 1))
         return <KyTinhLuong />;
-      } else {
-        alert("Bạn không có quyền truy cập vào chức năng này!");
-        return <></>;
-      }
     case "Khách hàng":
-      return <KhachHang />;
-    default:
-      alert("Chua xu ly ngoai Giay");
+      if (userAccess.some((obj) => obj.MAFORM === "F0004" && obj.XEM === 1))
+        return <KhachHang />;
   }
+  alert("Bạn không có quyền truy cập vào chức năng này!");
+  return <></>;
 };
 
 export default DanhMuc;

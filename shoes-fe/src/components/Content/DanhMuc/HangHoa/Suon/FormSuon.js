@@ -13,6 +13,10 @@ const FormSuon = () => {
     stateTable.inforShowTable.record["HINHANH"]
   );
 
+  const [view, setView] = useState(
+    () => stateTable.inforShowTable.action_row === "view"
+  );
+
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
     data[e.target.name] = e.target.value;
@@ -77,7 +81,7 @@ const FormSuon = () => {
             <label>Mã sườn</label>
             <input
               name="MASUON"
-              readOnly={stateTable.inforShowTable.action_row === "edit"}
+              readOnly={stateTable.inforShowTable.action_row === "edit" || view}
               value={inputForm["MASUON"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
@@ -86,6 +90,7 @@ const FormSuon = () => {
           <div className={styles.item}>
             <label>Tên sườn</label>
             <input
+              readOnly={view}
               name="TENSUON"
               value={inputForm["TENSUON"]}
               onChange={(e) => handleChangeInformationForm(e)}
@@ -158,7 +163,9 @@ const FormSuon = () => {
       </div>
 
       <div className={styles.button_container}>
-        <button onClick={handleSaveFrom}>Lưu</button>
+        {stateTable.inforShowTable.action_row !== "view" && (
+          <button onClick={handleSaveFrom}>Lưu</button>
+        )}
         <button>Button 2</button>
         <button>Đóng</button>
       </div>
