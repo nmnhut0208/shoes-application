@@ -6,7 +6,12 @@ import {
   COLS_HAVE_SELECT_INPUT,
 } from "./ConstantVariable";
 
-export const updateColumnsInformations = (dataMau, dataTable, setDataTable) => {
+export const updateColumnsInformations = (
+  dataMau,
+  dataTable,
+  setDataTable,
+  view
+) => {
   const infoColumnsInit = [];
 
   for (var obj in INFO_COLS_DONHANG) {
@@ -33,6 +38,7 @@ export const updateColumnsInformations = (dataMau, dataTable, setDataTable) => {
                 dataTable[cell.row.id][cell.column.id] = value;
                 setDataTable([...dataTable]);
               }}
+              readOnly={view}
             />
           </>
         );
@@ -92,6 +98,7 @@ export const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
   })
     .then((response) => {
       console.log("response: ", response);
+      alert("Lưu thông tin thành công.");
     })
     .catch((error) => {
       console.log("error: ", error);

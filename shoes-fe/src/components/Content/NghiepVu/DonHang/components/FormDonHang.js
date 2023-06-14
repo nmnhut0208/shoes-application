@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import moment from "moment";
 
+import { useUserContext } from "~user";
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
 import Modal from "./Modal";
 import { renderDataEmpty } from "~utils/processing_data_table";
@@ -32,6 +33,9 @@ const FormDonHang = ({
       return true;
     else return false;
   }, []); // chinh lai theo phancong
+
+  const [stateUser, dispatchUser] = useUserContext();
+
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
   // nên đành để thành thêm 1 dòng trống sau dataTable
   const [dataTable, setDataTable] = useState(() => {
@@ -41,13 +45,10 @@ const FormDonHang = ({
 
   const [dataMau, setDataMau] = useState([]);
   const [isSavedData, setIsSavedData] = useState(true);
-  // TODO: note lại trạng thái của page, đã save thông tin page hiện tại chưa
-  // nếu save rồi thì thay đổi trạng thái hiện tại thành show
-  // xem lại thử logic này cần ko
+
   const [formInfoDonHang, setFormInfoDonHang] = useState({
-    // TODO: edit information edit pages
     SODH: "",
-    NGUOITAO: "thu",
+    NGUOITAO: stateUser.userName,
     DIENGIAIPHIEU: "",
     NGAYDH: "",
     NGAYGH: "",
@@ -69,7 +70,6 @@ const FormDonHang = ({
 
   useEffect(() => {
     if (dataView) {
-      console.log("dataView: ", dataView);
       fetch(
         "http://localhost:8000/donhang?SODH=" +
           encodeURIComponent(dataView["SODH"])
@@ -176,7 +176,7 @@ const FormDonHang = ({
   };
 
   const infoColumns = useMemo(() => {
-    return updateColumnsInformations(dataMau, dataTable, setDataTable);
+    return updateColumnsInformations(dataMau, dataTable, setDataTable, view);
   }, [dataTable, dataMau]);
 
   useEffect(() => {
@@ -305,11 +305,7 @@ const FormDonHang = ({
           {permission.THEM === 1 && (
             <button onClick={handleNhapTiep}>Nhập tiếp</button>
           )}
-          {(permission.THEM === 1 ||
-            permission.SUA === 1 ||
-            permission.XOA === 1) && (
-            <button onClick={handleSaveDonHang}>Lưu</button>
-          )}
+          {!view && <button onClick={handleSaveDonHang}>Lưu</button>}
           {permission.IN === 1 && <button>In</button>}
           <button onClick={handleDongForm}>Đóng</button>
         </div>

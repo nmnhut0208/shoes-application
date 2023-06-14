@@ -316,7 +316,15 @@ const PhanCong = ({ dataView, view }) => {
                 parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])
               ]
             }
-            view={true}
+            permission={{
+              MAFORM: "F0032",
+              TENFORM: "Đơn hàng",
+              THEM: 0,
+              SUA: 0,
+              XOA: 0,
+              XEM: 1,
+              IN: 1,
+            }}
           />
         </Modal>
       )}

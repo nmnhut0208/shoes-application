@@ -32,9 +32,6 @@ const TableContent = () => {
     }
   }, []);
 
-  console.log("showActionColumn: ", showActionColumn);
-  console.log("permission: ", permission);
-
   console.log("resize: ", inforShowTable.infoColumnTable);
 
   const emptyData = useMemo(() => {

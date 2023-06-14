@@ -68,9 +68,16 @@ const TableDonHang = ({
           },
         })}
         renderBottomToolbarCustomActions={() => (
-          <Typography sx={{ fontStyle: "italic", p: "0 1rem" }} variant="body2">
-            Double-Click a Cell to Edit
-          </Typography>
+          <>
+            {!readOnly && (
+              <Typography
+                sx={{ fontStyle: "italic", p: "0 1rem" }}
+                variant="body2"
+              >
+                Double-Click a Cell to Edit
+              </Typography>
+            )}
+          </>
         )}
         // add action in row
         enableRowActions={!readOnly}

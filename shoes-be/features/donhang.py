@@ -235,6 +235,12 @@ def update_status_phancong(MADONG: list = Query([]), status: int=0) -> RESPONSE:
     donhang.execute_custom(sql)
     return 1 
 
+@router.delete("/donhang")
+def delete(SODH: str) -> RESPONSE:
+    condition = f"SODH = '{SODH}'"
+    return donhang.delete(condition)
+
+
 
 
 

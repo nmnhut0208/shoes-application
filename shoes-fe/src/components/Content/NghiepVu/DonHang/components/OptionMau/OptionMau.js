@@ -6,11 +6,19 @@ import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItemMau from "./MenuItemMau";
 
-const OptionMau = ({ dataMau, handleChange, id_row, id_column, dataTable }) => {
+const OptionMau = ({
+  dataMau,
+  handleChange,
+  id_row,
+  id_column,
+  dataTable,
+  readOnly,
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   // const [selectedIndex, setSelectedIndex] = useState(1);
   const open = Boolean(anchorEl);
   const handleClickListItem = (event) => {
+    if (readOnly) return;
     setAnchorEl(event.currentTarget);
   };
 
@@ -18,8 +26,6 @@ const OptionMau = ({ dataMau, handleChange, id_row, id_column, dataTable }) => {
     // setSelectedIndex(index);
     setAnchorEl(null);
     handleChange(dataMau[index]["value"]);
-    console.log("hello thu", index);
-    console.log(dataMau[index]);
   };
 
   const handleClose = () => {
@@ -62,11 +68,13 @@ const OptionMau = ({ dataMau, handleChange, id_row, id_column, dataTable }) => {
           role: "listbox",
         }}
       >
-        <MenuItemMau
-          dataMau={dataMau}
-          handleMenuItemClick={handleMenuItemClick}
-          // selectedIndex={selectedIndex}
-        />
+        {!readOnly && (
+          <MenuItemMau
+            dataMau={dataMau}
+            handleMenuItemClick={handleMenuItemClick}
+            // selectedIndex={selectedIndex}
+          />
+        )}
       </Menu>
     </div>
   );
