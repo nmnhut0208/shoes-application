@@ -23,7 +23,7 @@ const TableContent = () => {
     return stateUser.userPoolAccess.filter((obj) => obj.MAFORM === maForm)[0];
   }, []);
   const showActionColumn = useMemo(() => {
-    if (permission.THEM + permission.SUA > 0) {
+    if (permission.THEM + permission.SUA + permission.XOA > 0) {
       return true;
     } else {
       if (permission.XEM === 1 && listFormHaveViewDetail.includes(maForm))
