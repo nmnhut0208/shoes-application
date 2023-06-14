@@ -100,6 +100,7 @@ const FormSuon = () => {
           <div className={styles.item}>
             <label>Mã gót</label>
             <ItemGot
+              readOnly={view}
               initValue={{
                 value: inputForm["MAGOT"],
                 label: inputForm["TENGOT"],
@@ -119,6 +120,7 @@ const FormSuon = () => {
           <div className={styles.item}>
             <label>Mã mũi</label>
             <ItemMui
+              readOnly={view}
               initValue={{
                 value: inputForm["MAMUI"],
                 label: inputForm["TENMUI"],
@@ -138,6 +140,7 @@ const FormSuon = () => {
           <div className={styles.item}>
             <label>Ghi chú</label>
             <input
+              readOnly={view}
               name="GHICHU"
               value={inputForm["GHICHU"]}
               onChange={(e) => handleChangeInformationForm(e)}
@@ -146,10 +149,13 @@ const FormSuon = () => {
         </div>
 
         <div className={styles.image_container}>
-          <label className={styles.label_choose_image} for="img">
-            Chọn hình ảnh
-          </label>
+          {!view && (
+            <label className={styles.label_choose_image} for="img">
+              Chọn hình ảnh
+            </label>
+          )}
           <input
+            readOnly={view}
             style={{ display: "none" }}
             type="file"
             id="img"
@@ -163,9 +169,7 @@ const FormSuon = () => {
       </div>
 
       <div className={styles.button_container}>
-        {stateTable.inforShowTable.action_row !== "view" && (
-          <button onClick={handleSaveFrom}>Lưu</button>
-        )}
+        {!view && <button onClick={handleSaveFrom}>Lưu</button>}
         <button>Button 2</button>
         <button>Đóng</button>
       </div>
