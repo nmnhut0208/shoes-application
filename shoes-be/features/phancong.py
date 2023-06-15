@@ -187,7 +187,6 @@ def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
 
 @router.post("/phancong/add_phancong")
 def add(data: ITEM_PHANCONG) -> RESPONSE:
-    print("vo day", data)
     # find common information
     today = datetime.now()
     year = today.year
@@ -219,7 +218,7 @@ def add(data: ITEM_PHANCONG) -> RESPONSE:
     # lưu lại thông tin mã dòng và mã đơn hàng
     save_info_primary_key("PHANCONG","PC", year, PHIEU)
     save_info_primary_key("PHANCONG","MD", year, MADONG)
-    return 1
+    return {"MADONG": _data["MADONG"]}
 
 
 

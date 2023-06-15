@@ -6,7 +6,12 @@ import styles from "../FormNghiepVuPhanCong/FormNghiepVuPhanCong.module.scss";
 import { convertDate } from "~utils/processing_date";
 import { useItemsContext } from "~items_context";
 
-const InfoPhieu = ({ infoPhieu, setInfoPhieu, setHavedSaveData }) => {
+const InfoPhieu = ({
+  infoPhieu,
+  setInfoPhieu,
+  setHavedSaveData,
+  setIsSaveDataNghiepVuPhanCong,
+}) => {
   const [stateItem, dispatchItem] = useItemsContext();
   const [dataKyTinhLuong, setDataKyTinhLuong] = useState(
     stateItem.infoItemKyTinhLuong
@@ -18,6 +23,7 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu, setHavedSaveData }) => {
     data[e.target.name] = e.target.value;
     setInfoPhieu(data);
     setHavedSaveData(false);
+    setIsSaveDataNghiepVuPhanCong(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
@@ -27,6 +33,7 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu, setHavedSaveData }) => {
     );
     setInfoPhieu(data);
     setHavedSaveData(false);
+    setIsSaveDataNghiepVuPhanCong(false);
   };
 
   return (

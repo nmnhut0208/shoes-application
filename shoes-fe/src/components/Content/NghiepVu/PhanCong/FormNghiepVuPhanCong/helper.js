@@ -43,7 +43,9 @@ export const processing_button_add = (
   listDonHangDonePhanCong,
   setListDonHangDonePhanCong,
   rowSelectionDonHangToPhanCong,
-  setRowSelectionDonHangToPhanCong
+  setRowSelectionDonHangToPhanCong,
+  listMaDongPhanCongAddButWaitSave,
+  setListMaDongPhanCongAddButWaitSave
 ) => {
   if (infoPhieu["MAKY"] === "") {
     alert("Chọn kỳ tính lương.");
@@ -72,7 +74,14 @@ export const processing_button_add = (
     body: JSON.stringify({ ...record, ...infoPhieu }),
   })
     .then((response) => {
-      console.log("response: ", response);
+      return response.json();
+    })
+    .then((data) => {
+      setListMaDongPhanCongAddButWaitSave([
+        ...listMaDongPhanCongAddButWaitSave,
+        ,
+        data["MADONG"],
+      ]);
     })
     .catch((error) => {
       console.log("error: ", error);

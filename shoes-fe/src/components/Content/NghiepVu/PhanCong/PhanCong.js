@@ -10,6 +10,16 @@ const PhanCong = () => {
   const [showModal, setShowModal] = useState(true);
   const [stateUser, dispatchUser] = useUserContext();
 
+  // Lưu lại những mà dòng được Add bằng button Thêm
+  // Nhưng chưa được lưu database bởi button Save
+  // Những dòng này là thông tin tạm thời
+  // (hiện vẫn được lưu xuống database để làm logic xóa bằng button Xóa, Sửa cho dễ dàng)
+  // Tuy nhiêu, nếu người dùng ko muốn lưu lại thì phải xóa những dòng này đi
+  const [
+    listMaDongPhanCongAddButWaitSave,
+    setListMaDongPhanCongAddButWaitSave,
+  ] = useState([]);
+
   const permission = useMemo(() => {
     console.log("stateUser.userPoolAccess ", stateUser.userPoolAccess);
     const phanquyen = stateUser.userPoolAccess.filter(
@@ -30,11 +40,15 @@ const PhanCong = () => {
       title="Phân Công - F0037"
       setShowModal={setShowModal}
       isSaveData={isSaveData}
+      listMaDongPhanCongAddButWaitSave={listMaDongPhanCongAddButWaitSave}
     >
       <FormNghiepVuPhanCong
-        setShowModalNghiepVuPhanCong={setShowModal}
         setIsSaveDataNghiepVuPhanCong={setIsSaveData}
         permission={permission}
+        listMaDongPhanCongAddButWaitSave={listMaDongPhanCongAddButWaitSave}
+        setListMaDongPhanCongAddButWaitSave={
+          setListMaDongPhanCongAddButWaitSave
+        }
       />
     </Modal>
   );

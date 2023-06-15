@@ -1,7 +1,14 @@
 import styles from "./Modal.module.scss";
 import { useTaskContext, resetHeader } from "~task";
 
-const Modal = ({ title, status, isSaveData, setShowModal, children }) => {
+const Modal = ({
+  title,
+  status,
+  isSaveData,
+  setShowModal,
+  listMaDongPhanCongAddButWaitSave,
+  children,
+}) => {
   const [stateTask, dispatchTask] = useTaskContext();
   if (!status) {
     resetHeader(dispatchTask);
@@ -19,6 +26,9 @@ const Modal = ({ title, status, isSaveData, setShowModal, children }) => {
               if (!isSaveData) {
                 let text = "Bạn muốn tắt Form mà không lưu thay đổi!";
                 if (window.confirm(text)) {
+                  // TODO: xem list listMaDongPhanCongAddButWaitSave
+                  // khác rỗng ko, nếu khác, xóa những dòng này trong
+                  // bảng Phân Công
                   setShowModal(false);
                 }
                 return;

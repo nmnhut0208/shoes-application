@@ -32,7 +32,7 @@ const FormDonHang = ({
     if (permission && permission.THEM === 0 && permission.SUA === 0)
       return true;
     else return false;
-  }, []); // chinh lai theo phancong
+  }, []);
 
   const [stateUser, dispatchUser] = useUserContext();
 

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 import {
   INFO_COLS_DONHANG,
@@ -38,13 +38,22 @@ const infoTableChiTietPhanCong = processingInfoColumnTable(
 
 const FormNghiepVuPhanCong = ({
   dataView,
-  view, // delete cai nay di
-  setShowModalNghiepVuPhanCong,
   setIsSaveDataNghiepVuPhanCong,
   permission,
+  listMaDongPhanCongAddButWaitSave,
+  setListMaDongPhanCongAddButWaitSave,
 }) => {
-  // Phan Cong
-  // TODO: delete button
+  const view = useMemo(() => {
+    if (permission && permission.THEM === 0 && permission.SUA === 0)
+      return true;
+    else return false;
+  }, []);
+
+  console.log(
+    "listMaDongPhanCongAddButWaitSave: ",
+    listMaDongPhanCongAddButWaitSave
+  );
+
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
@@ -84,11 +93,11 @@ const FormNghiepVuPhanCong = ({
       form_current[key] = "";
     }
     setFormPhanCong(form_current);
-    setHavedSaveData(false);
+    setHavedSaveData(true);
+    setIsSaveDataNghiepVuPhanCong(true);
   };
 
   useEffect(() => {
-    console.log("useEffect run again to get ds giay khach hang");
     updateMaGiayWillPhanCong(
       dataDonHang,
       rowSelectionDonHangToPhanCong,
@@ -101,7 +110,7 @@ const FormNghiepVuPhanCong = ({
 
   useEffect(() => {
     // case 1: Nghiệp Vụ Phân Công
-    if (!view) {
+    if (!dataView) {
       updateInfoPhieuPhanCong(infoPhieu, setInfoPhieu, setLastestSOPHIEU);
       fetch("http://localhost:8000/phancong/donhangchuaphancong")
         .then((response) => {
@@ -120,7 +129,7 @@ const FormNghiepVuPhanCong = ({
     }
 
     // case 2: Truy Vấn Phân Công
-    if (view) {
+    if (dataView) {
       // set Form Header
       setInfoPhieu(dataView);
       // query info to show for 2 table
@@ -169,9 +178,12 @@ const FormNghiepVuPhanCong = ({
       listDonHangDonePhanCong,
       setListDonHangDonePhanCong,
       rowSelectionDonHangToPhanCong,
-      setRowSelectionDonHangToPhanCong
+      setRowSelectionDonHangToPhanCong,
+      listMaDongPhanCongAddButWaitSave,
+      setListMaDongPhanCongAddButWaitSave
     );
     setHavedSaveData(false);
+    setIsSaveDataNghiepVuPhanCong(false);
   };
   const handleClickDelete = () => {
     processing_button_delete(
@@ -192,9 +204,9 @@ const FormNghiepVuPhanCong = ({
       resetForm
     );
     setHavedSaveData(false);
+    setIsSaveDataNghiepVuPhanCong(false);
   };
   const handleClickSave = () => {
-    console.log("havedSaveData: ", havedSaveData);
     if (havedSaveData) return;
     let dataSave = dataChiTietPhanCong;
     for (let i = 0; i < dataSave.length; i++) {
@@ -213,8 +225,10 @@ const FormNghiepVuPhanCong = ({
         console.log("error: ", error);
       });
 
-    updateSOPHIEU(lastestSOPHIEU);
+    if (!dataView) updateSOPHIEU(lastestSOPHIEU);
+    setListMaDongPhanCongAddButWaitSave([]);
     setHavedSaveData(true);
+    setIsSaveDataNghiepVuPhanCong(true);
   };
 
   const handleClickChiTietDonHang = () => {
@@ -235,7 +249,6 @@ const FormNghiepVuPhanCong = ({
   };
 
   const handleClickXemPhanCong = () => {
-    console.log("handleClickXemPhanCong");
     if (dataChiTietPhanCong.length == 0) {
       return false;
     }
@@ -261,11 +274,11 @@ const FormNghiepVuPhanCong = ({
 
   return (
     <div className={styles.container}>
-      <h2>Phân công - F0037</h2>
       <InfoPhieu
         infoPhieu={infoPhieu}
         setInfoPhieu={setInfoPhieu}
         setHavedSaveData={setHavedSaveData}
+        setIsSaveDataNghiepVuPhanCong={setIsSaveDataNghiepVuPhanCong}
       />
       <TableDonHang
         columns={infoTableDonHang}
@@ -340,7 +353,6 @@ const FormNghiepVuPhanCong = ({
           <XemPhanCong
             SOPHIEU={infoPhieu["SOPHIEU"]}
             dataPhanCong={dataChiTietPhanCong}
-            // view={true}
           />
         </Modal>
       )}
