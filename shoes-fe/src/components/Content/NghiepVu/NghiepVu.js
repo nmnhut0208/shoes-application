@@ -1,7 +1,7 @@
 import { useTaskContext } from "~task";
 import { useUserContext } from "~user";
 import { DonHang } from "./DonHang";
-import PhanCong from "./PhanCong/";
+import { PhanCong } from "./PhanCong";
 import ChiTien from "./ChiTien";
 import GiaoHang from "./GiaoHang";
 import ChamCong from "./ChamCong";

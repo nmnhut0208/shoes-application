@@ -2,7 +2,7 @@ import { memo, useState } from "react";
 import clsx from "clsx";
 import moment from "moment";
 
-import styles from "../PhanCong.module.scss";
+import styles from "../FormNghiepVuPhanCong/FormNghiepVuPhanCong.module.scss";
 import { convertDate } from "~utils/processing_date";
 import { useItemsContext } from "~items_context";
 
