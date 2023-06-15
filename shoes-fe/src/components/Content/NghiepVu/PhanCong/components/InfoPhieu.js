@@ -1,15 +1,29 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import clsx from "clsx";
 import moment from "moment";
 
-import styles from "../PhanCong.module.scss";
+import styles from "../FormNghiepVuPhanCong/FormNghiepVuPhanCong.module.scss";
 import { convertDate } from "~utils/processing_date";
+import { useItemsContext } from "~items_context";
 
-const InfoPhieu = ({ infoPhieu, setInfoPhieu }) => {
+const InfoPhieu = ({
+  infoPhieu,
+  setInfoPhieu,
+  setHavedSaveData,
+  setIsSaveDataNghiepVuPhanCong,
+}) => {
+  const [stateItem, dispatchItem] = useItemsContext();
+  const [dataKyTinhLuong, setDataKyTinhLuong] = useState(
+    stateItem.infoItemKyTinhLuong
+  );
+  console.log("stateItem.infoItemKyTinhLuong: ", stateItem.infoItemKyTinhLuong);
+
   const handleChangeInfoPhieu = (e) => {
     const data = { ...infoPhieu };
     data[e.target.name] = e.target.value;
     setInfoPhieu(data);
+    setHavedSaveData(false);
+    setIsSaveDataNghiepVuPhanCong(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
@@ -18,7 +32,8 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu }) => {
       "YYYY-MM-DD HH:mm:ss"
     );
     setInfoPhieu(data);
-    // setIsSavedData(false);
+    setHavedSaveData(false);
+    setIsSaveDataNghiepVuPhanCong(false);
   };
 
   return (
@@ -50,10 +65,11 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu }) => {
           value={infoPhieu["MAKY"]}
           onChange={(e) => handleChangeInfoPhieu(e)}
         >
-          <option value="01">Volvo</option>
-          <option value="02">Saab</option>
-          <option value="03">Mercedes</option>
-          <option value="04">Audi</option>
+          {dataKyTinhLuong.map((data, index) => (
+            <option value={data["value"]} key={index}>
+              {data["label"]}
+            </option>
+          ))}
         </select>
       </div>
       <div className={styles.pair}>

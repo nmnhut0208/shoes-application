@@ -4,6 +4,9 @@ import { useTableContext, actions_table } from "~table_context";
 
 const FormGot = () => {
   const [stateTable, dispatchTable] = useTableContext();
+  const [view, setView] = useState(
+    () => stateTable.inforShowTable.action_row === "view"
+  );
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   const [image_url, setImageURL] = useState("");
   const [image_base64, setImageBase64] = useState(
@@ -76,7 +79,7 @@ const FormGot = () => {
             <label>Mã gót</label>
             <input
               name="MAGOT"
-              readOnly={stateTable.inforShowTable.action_row === "edit"}
+              readOnly={stateTable.inforShowTable.action_row === "edit" || view}
               value={inputForm["MAGOT"]}
               onChange={(e) => handleChangeInformationForm(e)}
             />
@@ -85,6 +88,7 @@ const FormGot = () => {
           <div className={styles.item}>
             <label>Tên gót</label>
             <input
+              readOnly={view}
               name="TENGOT"
               value={inputForm["TENGOT"]}
               onChange={(e) => handleChangeInformationForm(e)}
@@ -94,6 +98,7 @@ const FormGot = () => {
           <div className={styles.item}>
             <label>Ghi chú</label>
             <input
+              readOnly={view}
               name="GHICHU"
               value={inputForm["GHICHU"]}
               onChange={(e) => handleChangeInformationForm(e)}
@@ -102,9 +107,11 @@ const FormGot = () => {
         </div>
 
         <div className={styles.image_container}>
-          <label className={styles.label_choose_image} for="img">
-            Chọn hình ảnh
-          </label>
+          {!view && (
+            <label className={styles.label_choose_image} for="img">
+              Chọn hình ảnh
+            </label>
+          )}
           <input
             style={{ display: "none" }}
             type="file"
@@ -119,7 +126,7 @@ const FormGot = () => {
       </div>
 
       <div className={styles.button_container}>
-        <button onClick={handleSaveFrom}>Lưu</button>
+        {!view && <button onClick={handleSaveFrom}>Lưu</button>}
         <button>Button 2</button>
         <button>Đóng</button>
       </div>

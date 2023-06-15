@@ -38,13 +38,13 @@ class ITEM_DONHANG(BaseModel):
     MAUSUON: Optional[str] = None
     MAUCA: Optional[str] = None
     MAUQUAI: Optional[str] = None
-    DAPHANCONG: int
+    DAPHANCONG: Optional[int] = 0
     GIALE: Optional[int] = 0
     INHIEU: Optional[str] = None
     TRANGTRI: Optional[str] = None
     GHICHU: Optional[str] = None
 
-class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
+class RESPONSE_GIAYDONHANG(BaseModel):
     SODH: Optional[str] = None
     SORTID: str
     MAGIAY: str
@@ -60,6 +60,7 @@ class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
     TENCA: Optional[str] = None
     TENKH: str
     # =============
+    MADONG: Optional[int] = None
     SIZE5: Optional[int] = None
     SIZE6: Optional[int] = None
     SIZE7: Optional[int] = None
@@ -84,22 +85,42 @@ class DONHANG(BaseClass):
 donhang = DONHANG()
 
 
-@router.get("/donhang/{SODH}")
-def read(SODH: str) -> List[ITEM_DONHANG]:
-    print("SODH: ", SODH)
-    sql = f"""select *
-             from DONHANG
-             where DONHANG.SODH = '{SODH}'
-          """
+# @router.get("/donhang/{SODH}")
+# def read(SODH: str) -> List[ITEM_DONHANG]:
+#     print("SODH: ", SODH)
+#     sql = f"""select *
+#              from DONHANG
+#              where DONHANG.SODH = '{SODH}'
+#           """
 
+#     result = donhang.read_custom(sql)
+#     return result
+
+class RESPONSE_BAOCAO_DONHANG:
+    SODH: str 
+    NGAYDH: str
+    NGAYGH: str
+    MAKH: str
+    TENKH: str
+    DIENGIAI: str
+    SOLUONG: int 
+
+@router.get("/donhang/baocao_donhang")
+def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
+    sql = f"""select SODH, MAKH, TENKH, NGAYDH, NGAYGH, 
+                DIENGIAIPHIEU AS DIENGIAI,
+                SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
+                from V_BCDONHANG
+                group by SODH, MAKH, TENKH, NGAYDH, NGAYGH, DIENGIAIPHIEU
+            """
     result = donhang.read_custom(sql)
     return result
 
 
 @router.get("/donhang")
-def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
+def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
     print("SODH: ", SODH)
-    sql = f"""SELECT SODH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+    sql = f"""SELECT MADONG, SODH, HINHANH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                 coalesce(MAUDE, '') as MAUDE, 
                 coalesce(MAUGOT, '') AS MAUGOT, 
                 coalesce(MAUSUON, '') AS MAUSUON,
@@ -113,12 +134,15 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
                 DONHANG.MAKH,
                 SOLUONG,NGAYDH, NGAYGH,
                 V_GIAY.DONGIA * SOLUONG AS THANHTIEN
-            FROM (select SODH, MAGIAY,MAUDE,MAUGOT, 
+            FROM (select MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
                 SIZE9,SIZE8,SIZE0, NGAYDH, NGAYGH,
                 (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG
-            from DONHANG WHERE DONHANG.SODH='{SODH}') AS DONHANG
+            from DONHANG 
+            WHERE DONHANG.SODH='{SODH}') AS DONHANG
             left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  
+            left JOIN (Select MAGIAY, HINHANH from DMGIAY) as DMGIAY
+            on DMGIAY.MAGIAY = DONHANG.MAGIAY
           """
     result = donhang.read_custom(sql)
     return result
@@ -126,7 +150,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
 
 @router.get("/donhang/khachhang/{MAKH}/giay")
 # lấy tất cả các loại giày của khách hàng MAKH
-def read(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
+def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
     sql = """SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                     coalesce(MAUDE, '') as MAUDE, 
                     coalesce(MAUGOT, '') AS MAUGOT, 
@@ -139,13 +163,12 @@ def read(MAKH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
             FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH 
                 from DONHANG WHERE DONHANG.MAKH='{}') AS DONHANG
-            FULL OUTER JOIN (select * from V_GIAY where V_GIAY.MAKH='{}') 
+            FULL OUTER JOIN (select * from V_GIAY where V_GIAY.MAKH='{}'
+            and DONGIAQUAI is not null) 
             As V_GIAY on V_GIAY.magiay=DONHANG.magiay
             """.format(MAKH, MAKH)
     
-    start = datetime.now()
     result = donhang.read_custom(sql)
-    print("khachhang: ", datetime.now()-start)
     return result
 
 
@@ -197,15 +220,26 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
     save_info_primary_key("DONHANG", "MD", year, MADONG)
     return 1
 
-
-@router.get("/donhang/update_status_daphancong/")
-def update_status_daphancong(SODH: list = Query([])) -> RESPONSE:
-    print("SoDH: ", SODH)
-    # update status of the SODHs
-    sql = """UPDATE donhang SET DAPHANCONG = 1 
-            WHERE SODH IN ({});
-            """.format(",".join(SODH))
+@router.get("/donhang/update_status_phancong/")
+def update_status_phancong(MADONG: list = Query([]), status: int=0) -> RESPONSE:
+    print("MADONG: ", MADONG)
+    # update status of the MADONGs
+    ds_madong = ""
+    for madong in MADONG:
+        ds_madong += f"'{madong}'," 
+    ds_madong = ds_madong[:-1]
+    sql = """UPDATE donhang SET DAPHANCONG = {} 
+            WHERE MADONG IN ({});
+            """.format(status, ds_madong)
+    print("sql: ", sql)
+    donhang.execute_custom(sql)
     return 1 
+
+@router.delete("/donhang")
+def delete(SODH: str) -> RESPONSE:
+    condition = f"SODH = '{SODH}'"
+    return donhang.delete(condition)
+
 
 
 

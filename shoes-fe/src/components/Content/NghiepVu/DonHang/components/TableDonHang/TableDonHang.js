@@ -3,7 +3,13 @@ import MaterialReactTable from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 
-const TableDonHang = ({ columns, data, setDataTable, handleAddGiay, view }) => {
+const TableDonHang = ({
+  columns,
+  data,
+  setDataTable,
+  handleAddGiay,
+  readOnly,
+}) => {
   const handleSaveCell = (cell, value) => {
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
     var row_current = data[cell.row.index];
@@ -47,14 +53,14 @@ const TableDonHang = ({ columns, data, setDataTable, handleAddGiay, view }) => {
         enablePagination={false}
         // scroll to bottom
         enableRowVirtualization
-        muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+        muiTableContainerProps={{ sx: { maxHeight: "45rem" } }}
         enableRowNumbers //  enable row numbers thay cho STT
         // enablePinning // enable pinning
         // footer sum
         enableStickyFooter
         // edit each cell in row
         editingMode="cell"
-        enableEditing={!view}
+        enableEditing={!readOnly}
         muiTableBodyCellEditTextFieldProps={({ cell }) => ({
           //onBlur is more efficient, but could use onChange instead
           onBlur: (event) => {
@@ -62,12 +68,19 @@ const TableDonHang = ({ columns, data, setDataTable, handleAddGiay, view }) => {
           },
         })}
         renderBottomToolbarCustomActions={() => (
-          <Typography sx={{ fontStyle: "italic", p: "0 1rem" }} variant="body2">
-            Double-Click a Cell to Edit
-          </Typography>
+          <>
+            {!readOnly && (
+              <Typography
+                sx={{ fontStyle: "italic", p: "0 1rem" }}
+                variant="body2"
+              >
+                Double-Click a Cell to Edit
+              </Typography>
+            )}
+          </>
         )}
         // add action in row
-        enableRowActions={!view}
+        enableRowActions={!readOnly}
         renderRowActions={({ row, table }) => (
           <Box
             sx={{

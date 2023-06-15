@@ -202,3 +202,24 @@ export const getListThoQuai = (dispatchItem) => {
       console.log(":error: ", err);
     });
 };
+
+export const getListKyTinhLuong = (dispatchItem) => {
+  fetch("http://localhost:8000/kytinhluong")
+    .then((response) => {
+      return response.json();
+    })
+    .then((info) => {
+      let listOptional = info.map(function (ob) {
+        return { label: ob.TENKY, value: ob.MAKY };
+      });
+      dispatchItem(
+        actions_items_context.setInfoKyTinhLuong([
+          { label: "", value: "" },
+          ...listOptional,
+        ])
+      );
+    })
+    .catch((err) => {
+      console.log(":error: ", err);
+    });
+};

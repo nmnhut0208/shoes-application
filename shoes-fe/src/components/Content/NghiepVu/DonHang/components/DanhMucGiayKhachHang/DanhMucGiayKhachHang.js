@@ -1,14 +1,17 @@
 import { useEffect, useState, useMemo } from "react";
 import MaterialReactTable from "material-react-table";
 
-import { useTableContext, actions_table } from "~table_context";
 import { COL_GIAY_KHACHHANG } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import styles from "./DanhMucGiayKhachHang.module.scss";
 
-const DanhMucGiayKhachHang = ({ MAKH, dataOrigin, setInfoSelection }) => {
+const DanhMucGiayKhachHang = ({
+  MAKH,
+  dataOrigin,
+  setInfoSelection,
+  setShowModal,
+}) => {
   const [rowSelection, setRowSelection] = useState({});
-  const [stateTable, dispatchTable] = useTableContext();
   const [dataTable, setDataTable] = useState([]);
 
   const infoColumns = useMemo(() => {
@@ -56,7 +59,7 @@ const DanhMucGiayKhachHang = ({ MAKH, dataOrigin, setInfoSelection }) => {
       ...columns_selected,
       dataOrigin[dataOrigin.length - 1],
     ]);
-    dispatchTable(actions_table.setModeShowModal(false));
+    setShowModal(false);
   };
 
   return (
@@ -80,7 +83,7 @@ const DanhMucGiayKhachHang = ({ MAKH, dataOrigin, setInfoSelection }) => {
       />
       <div className={styles.group_button}>
         <button onClick={handleSubmit}>Đồng ý</button>
-        <button>Đóng</button>
+        <button onClick={() => setShowModal(false)}>Đóng</button>
       </div>
     </>
   );

@@ -22,8 +22,21 @@
         width: 15rem;
         object-fit: cover;
       }
-      border: 0.01rem solid rgba(0, 0, 0, 0.1);
-      border-bottom: none;
+      border: 0.2rem solid rgba(0, 0, 0, 0.3);
+      // border-bottom: none;
     }
   }
+}
+
+.group_phanso {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.phan_so {
+  text-align: center;
+}
+
+.tu_so {
+  border-bottom: solid 1px;
 }
