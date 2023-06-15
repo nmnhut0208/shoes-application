@@ -3,6 +3,7 @@ import {
   SET_USER_PASSWORD,
   SET_POOL_USER_ACCESS,
   SET_IS_LOGIN,
+  SET_ORIGINAL_SETTINGS,
 } from "./constants";
 
 const initState = {
@@ -25,6 +26,9 @@ function reducer(state, action) {
     }
     case SET_POOL_USER_ACCESS: {
       return { ...state, userPoolAccess: action.payload };
+    }
+    case SET_ORIGINAL_SETTINGS: {
+      return action.payload;
     }
     default:
       // throw new Error("Action is not supported")

@@ -42,3 +42,22 @@ def update(data: dict) -> RESPONSE:
     val = f"MATKHAU = '{data['newpassword']}'"
     condition = f"MANVIEN = '{data['username']}'"
     return LG.update(val, condition)
+
+@router.post("/existuser")
+def read(data: dict) -> RESPONSE_EXISTUSER:
+    data = dict(data)
+    sql = f"SELECT MANVIEN FROM DMNHANVIEN where MANVIEN='{data['username']}'"
+    data = LG.read_custom(sql)
+    if len(data) > 0:
+        return {"exist": True}
+    else:
+        return {"exist": False}
+
+@router.post("/register")
+def add(data: dict) -> RESPONSE:
+    data = dict(data)
+    username = data["username"]
+    password = data["password"]
+    col = "MANVIEN, MATKHAU"
+    val = f"'{username}', '{password}'"
+    return LG.add(col, val)

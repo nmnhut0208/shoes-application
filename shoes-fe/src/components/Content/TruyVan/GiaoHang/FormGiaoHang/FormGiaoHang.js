@@ -1,14 +1,15 @@
 import { useState, useEffect, useMemo } from "react";
 import SubTable from "./SubTable";
 import styles from "./FormGiaoHang.module.scss";
+import { useUserContext, actions } from "~user";
 // import { Header } from "antd/es/layout/layout";
 
 const list_key = [
   { header: "Số đơn hàng", key: "SODH", width: "10rem" },
   { header: "Ngày đơn hàng", key: "NGAYDH", width: "10rem" },
   { header: "Ngày giao hàng", key: "NGAYGH", width: "10rem" },
-  { header: "Diễn giải", key: "DIENGIAIPHIEU", width: "10rem" },
-  { header: "Số lượng còn lại", key: "SOLUONGCONLAI", width: "10rem" },
+  { header: "Diễn giải", key: "DIENGIAIDONG", width: "10rem" },
+  { header: "Số lượng", key: "SOLUONG", width: "10rem" },
 ];
 
 const infoColumns = [];
@@ -52,7 +53,8 @@ const COLS_HAVE_SUM_FOOTER = [
   "THANHTIEN",
 ];
 
-const FormGiaoHang = ({infoKH}) => {
+const FormGiaoHang = ({ infoKH }) => {
+  const [userState, userDispatch] = useUserContext();
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
@@ -62,6 +64,32 @@ const FormGiaoHang = ({infoKH}) => {
   // const [infoKH, setInfoKH] = useState({});
 
   console.log("GiaoHang");
+
+  const handleSave = () => {
+    const send_data = {
+      data: dataTableSub,
+      makh: infoKH.MAKH,
+      sophieu: infoKH.SOPHIEU,
+      diengiai: infoKH.DIENGIAIPHIEU,
+      user: userState.userName,
+    };
+    fetch("http://localhost:8000/savegiaohang", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(send_data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        alert("Lưu thành công");
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+  };
 
   // useEffect(() => {
   //   let keys = Object.keys(rowSelectionMaKH);
@@ -113,14 +141,15 @@ const FormGiaoHang = ({infoKH}) => {
       }
     }
     const send_data = {
-      sodh: data,
-      makh: infoKH["MAKH"],
+      SODH: data,
+      MAKH: infoKH["MAKH"],
+      SOPHIEU: infoKH["SOPHIEU"],
     };
     if (data.length === 0) {
       setDataTableSub([]);
       return;
     }
-    fetch("http://localhost:8000/giaohang/" + infoKH["MAKH"], {
+    fetch("http://localhost:8000/tv_giaohangsub", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -168,7 +197,7 @@ const FormGiaoHang = ({infoKH}) => {
     if (infoKH["MAKH"] == undefined) {
       return;
     }
-    fetch("http://localhost:8000/giaohang", {
+    fetch("http://localhost:8000/tv_giaohang", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -179,7 +208,13 @@ const FormGiaoHang = ({infoKH}) => {
         return response.json();
       })
       .then((info) => {
+        console.log("info dh: ", info);
         setDataTable(info);
+        const selected = {};
+        for (var i = 0; i < info.length; i++) {
+          selected[i] = true;
+        }
+        setRowSelection(selected);
       })
       .catch((err) => {
         console.log(":error: ", err);
@@ -209,19 +244,27 @@ const FormGiaoHang = ({infoKH}) => {
           <label className={styles.title}>Thông tin phiếu</label>
           <div className={styles.right_row}>
             <label>Số phiếu</label>
-            <input type="text" 
-            className={styles.small}
-            value={infoKH["SOPHIEU"]} />
+            <input
+              type="text"
+              className={styles.small}
+              value={infoKH["SOPHIEU"]}
+            />
           </div>
           <div className={styles.right_row}>
             <label>Ngày phiếu</label>
-            <input type="text" 
-            className={styles.small} 
-            value={infoKH["NGAYPHIEU"]}/>
+            <input
+              type="text"
+              className={styles.small}
+              value={infoKH["NGAYPHIEU"]}
+            />
           </div>
           <div className={styles.right_row}>
             <label>Diễn giải</label>
-            <input type="text" className={styles.large} />
+            <input
+              type="text"
+              value={infoKH["DIENGIAIPHIEU"]}
+              className={styles.large}
+            />
           </div>
         </div>
       </div>
@@ -245,12 +288,8 @@ const FormGiaoHang = ({infoKH}) => {
       />
       <div className={styles.group_button}>
         <div>
-          <button
-          // onClick={handleSaveFrom}
-          >
-            Lưu
-          </button>
-          <button>Nhập tiếp</button>
+          <button onClick={handleSave}>Lưu</button>
+          {/* <button>Nhập tiếp</button> */}
           <button>Đóng</button>
         </div>
       </div>

@@ -5,13 +5,16 @@ import { Popover } from "antd";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import MaterialReactTable from "material-react-table";
 import { rem_to_px } from "~config/ui";
+import moment from "moment";
+import { convertDate } from "~utils/processing_date";
+import { useUserContext, actions } from "~user";
 // import { Header } from "antd/es/layout/layout";
 
 const list_key = [
   { header: "Số đơn hàng", key: "SODH", width: "10rem" },
   { header: "Ngày đơn hàng", key: "NGAYDH", width: "10rem" },
   { header: "Ngày giao hàng", key: "NGAYGH", width: "10rem" },
-  { header: "Diễn giải", key: "DIENGIAIPHIEU", width: "10rem" },
+  { header: "Diễn giải", key: "DIENGIAIDONG", width: "10rem" },
   { header: "Số lượng còn lại", key: "SOLUONGCONLAI", width: "10rem" },
 ];
 
@@ -39,6 +42,7 @@ const list_key_sub = [
   { header: "Size 7", key: "SIZE7", width: "10rem" },
   { header: "Size 8", key: "SIZE8", width: "10rem" },
   { header: "Size 9", key: "SIZE9", width: "10rem" },
+  { header: "Size 0", key: "SIZE0", width: "10rem" },
   { header: "Số lượng", key: "SOLUONG", width: "10rem" },
   { header: "Giá bán", key: "GIABAN", width: "10rem" },
   { header: "Thành tiền", key: "THANHTIEN", width: "10rem" },
@@ -97,6 +101,7 @@ const TableMaKH = ({ data, rowSelection, setRowSelection }) => {
 };
 
 const GiaoHang = () => {
+  const [userState, userDispatch] = useUserContext();
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
@@ -104,8 +109,103 @@ const GiaoHang = () => {
   const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
   const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
   const [infoKH, setInfoKH] = useState({});
+  const [infoForm, setInfoForm] = useState({
+    SOPHIEU: "",
+    LastestGH: "",
+    DIENGIAI: "",
+    NGAYPHIEU: "",
+  });
 
   console.log("GiaoHang");
+
+  const handleSave = () => {
+    const send_data = {
+      data: dataTableSub,
+      makh: infoKH.MAKH,
+      sophieu: infoForm.SOPHIEU,
+      diengiai: infoForm.DIENGIAI,
+      user: userState.userName,
+    };
+    fetch("http://localhost:8000/savegiaohang", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(send_data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log("data: ", data);
+        if (data["status"] == "success") {
+          fetch("http://localhost:8000/hethong/giaohang/SOPHIEU", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ LASTNUMBER: infoForm.LastestGH }),
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              console.log("data: ", data);
+              if (data["status"] == "success") {
+                alert("Lưu thành công");
+              } else {
+                alert("Lưu thất bại");
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          alert("Lưu thất bại");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleNhapTiep = () => {
+    setDataTable([]);
+    setDataTableSub([]);
+    setRowSelection({});
+    setRowSelectionMaKH({});
+    setInfoKH({});
+    setInfoForm({
+      ...infoForm,
+      SOPHIEU: infoForm.SOPHIEU,
+      LastestGH: infoForm.LastestGH,
+      DIENGIAI: "",
+      NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+    });
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:8000/hethong/giaohang/SOPHIEU")
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        console.log("info don hang: ", info);
+        // setDataTable(info);
+        setInfoForm({
+          ...infoForm,
+          SOPHIEU: info["SOPHIEU"],
+          LastestGH: info["LastestGH"],
+          DIENGIAI: "",
+          NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+        });
+        setRowSelection({});
+        setDataTableSub([]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [rowSelectionMaKH]);
 
   useEffect(() => {
     let keys = Object.keys(rowSelectionMaKH);
@@ -139,7 +239,7 @@ const GiaoHang = () => {
 
   useEffect(() => {
     console.log("info kh: ", infoKH["MAKH"]);
-    if (infoKH["MAKH"] == undefined) {
+    if (infoKH["MAKH"] == undefined || infoKH["MAKH"] == "") {
       return;
     }
     const keys = Object.keys(rowSelection);
@@ -209,7 +309,8 @@ const GiaoHang = () => {
   }, [dataTableSub]);
 
   useEffect(() => {
-    if (infoKH["MAKH"] == undefined) {
+    if (infoKH["MAKH"] == undefined || infoKH["MAKH"] == "") {
+      // setDataTable([]);
       return;
     }
     fetch("http://localhost:8000/giaohang", {
@@ -246,18 +347,17 @@ const GiaoHang = () => {
                   rowSelection={rowSelectionMaKH}
                   setRowSelection={setRowSelectionMaKH}
                 />
-              }
-            >
+              }>
               <input
                 name="MAKH"
-                value={infoKH["MAKH"]}
+                value={infoKH["MAKH"] ? infoKH["MAKH"] : ""}
                 // onChange={(e) => setFormInfoDonHang(e)}
               />
             </Popover>
             <input
               type="text"
               className={styles.medium}
-              value={infoKH["TENKH"]}
+              value={infoKH["TENKH"] ? infoKH["TENKH"] : ""}
             />
           </div>
         </div>
@@ -265,15 +365,33 @@ const GiaoHang = () => {
           <label className={styles.title}>Thông tin phiếu</label>
           <div className={styles.right_row}>
             <label>Số phiếu</label>
-            <input type="text" className={styles.small} />
+            <input
+              type="text"
+              value={infoForm["SOPHIEU"]}
+              className={styles.small}
+            />
           </div>
           <div className={styles.right_row}>
             <label>Ngày phiếu</label>
-            <input type="text" className={styles.small} />
+            <input
+              type="date"
+              value={convertDate(infoForm["NGAYPHIEU"])}
+              onChange={(e) =>
+                setInfoForm({ ...infoForm, NGAYPHIEU: e.target.value })
+              }
+              className={styles.small}
+            />
           </div>
           <div className={styles.right_row}>
             <label>Diễn giải</label>
-            <input type="text" className={styles.large} />
+            <input
+              type="text"
+              value={infoForm["DIENGIAI"]}
+              onChange={(e) =>
+                setInfoForm({ ...infoForm, DIENGIAI: e.target.value })
+              }
+              className={styles.large}
+            />
           </div>
         </div>
       </div>
@@ -297,12 +415,8 @@ const GiaoHang = () => {
       />
       <div className={styles.group_button}>
         <div>
-          <button
-          // onClick={handleSaveFrom}
-          >
-            Lưu
-          </button>
-          <button>Nhập tiếp</button>
+          <button onClick={handleSave}>Lưu</button>
+          <button onClick={handleNhapTiep}>Nhập tiếp</button>
           <button>Đóng</button>
         </div>
       </div>

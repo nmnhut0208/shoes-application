@@ -3,6 +3,7 @@ import { DonHang } from "./DonHang";
 import { PhanCong } from "./PhanCong";
 import GiaoHang from "./GiaoHang";
 import ThuChi from "./ThuChi";
+import ChamCong from "./ChamCong";
 
 const TruyVan = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -17,6 +18,8 @@ const TruyVan = () => {
       return <GiaoHang />;
     case "Thu chi":
       return <ThuChi />;
+    case "Chấm công":
+      return <ChamCong />;
     default:
       alert("Chua xu ly ngoai TruyVan");
   }

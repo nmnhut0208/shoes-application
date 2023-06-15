@@ -22,6 +22,10 @@ class BaseClass:
         insert_sql(self.table_name, col, val)
         return {"status": "success"}
     
+    def add_with_table_name(self, table_name: str, col: str, val: str):
+        insert_sql(table_name, col, val)
+        return {"status": "success"}
+    
     def add_many(self, col: str, val: str):
         insert_many_records_sql(self.table_name, col, val)
         return {"status": "success"}

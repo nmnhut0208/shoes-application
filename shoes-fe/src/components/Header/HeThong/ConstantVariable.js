@@ -12,6 +12,10 @@ export const itemsHeThong = [
     label: "Đổi mật khẩu",
   },
   {
+    key: "Đăng ký",
+    label: "Đăng ký",
+  },
+  {
     key: "Phân quyền",
     label: "Phân quyền",
   },

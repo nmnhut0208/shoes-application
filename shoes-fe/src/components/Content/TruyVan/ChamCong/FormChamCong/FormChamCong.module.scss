@@ -1,0 +1,76 @@
+@import "~common_scss/form.module.scss";
+
+.container {
+  height: 70rem;
+}
+
+.form {
+  @extend .flex-row;
+  input {
+    margin-bottom: 1rem;
+  }
+}
+
+.left {
+  flex: 1;
+  //   border: 1px solid black;
+  //   margin-right: 0.5rem;
+}
+
+.right {
+  flex: 1;
+  //   border: 1px solid black;
+  //   input {
+  //     margin-bottom: 0.5rem;
+  //   }
+}
+
+// .left_row {
+//   margin-left: 1rem;
+// }
+
+// .right_row {
+//   margin-left: 1rem;
+// }
+
+.title {
+  width: 20rem !important;
+}
+
+.small {
+  width: 24.5rem;
+  margin-right: 0.5rem;
+}
+
+.medium {
+  width: 35rem;
+}
+
+.large {
+  width: 63.96rem;
+}
+
+.header_table {
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 1.4rem;
+  font-family: Arial;
+}
+
+.group_button {
+  // góc dưới bên phải
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 1rem;
+
+  button {
+    margin-right: 1rem;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 1.4rem;
+    font-family: Arial;
+    width: 10rem;
+    height: 3rem;
+  }
+}

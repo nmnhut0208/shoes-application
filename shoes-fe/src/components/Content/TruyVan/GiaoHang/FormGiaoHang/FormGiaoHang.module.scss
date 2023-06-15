@@ -1,5 +1,9 @@
 @import "~common_scss/form.module.scss";
 
+.container {
+  height: 70rem;
+}
+
 .form {
   @extend .flex-row;
 }

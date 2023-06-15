@@ -2,6 +2,9 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from datetime import datetime
+from features.hethong import (find_info_primary_key, 
+                              save_info_primary_key)
 
 router = APIRouter()
 
@@ -13,6 +16,10 @@ class CHAMCONG(BaseClass):
 
 CC = CHAMCONG()
 
+def get_type_nvien(manvien):
+    sql = f"SELECT LOAINVIEN FROM DMNHANVIEN WHERE MANVIEN='{manvien}'"
+    df = CC.read_custom(sql)
+    return df[0]["LOAINVIEN"]
 
 @router.post("/chamcong")
 def read(data: dict) -> RESPONSE_CHAMCONG:
@@ -20,8 +27,56 @@ def read(data: dict) -> RESPONSE_CHAMCONG:
     # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
     maky = data["MAKY"]
     manv = data["MANVIEN"]
-    sql = f"SELECT DISTINCT phieupc, NgayPhieu, DienGiai from CHAMCONG where MAKY='{maky}' AND MANVIEN='{manv}'"
-    return CC.read_custom(sql)
+    loainv = get_type_nvien(manv)
+    # loainv TD : THODE, TQ : THOQUAI
+    typenv = None
+    if loainv == "TD":
+        typenv = "THODE"
+    elif loainv == "TQ":
+        typenv = "THOQUAI"
+    
+    if typenv is not None:
+        sql = f"""
+        select distinct abc.SOPHIEU as SOPHIEU, abc.NGAYPHIEU as NGAYPHIEU, abc.DIENGIAIPHIEU as DIENGIAI
+from
+(select info_chamcong.SOPHIEU, info_chamcong.NGAYPHIEU, info_chamcong.DIENGIAIPHIEU, SLCHAMCONG, SLCONLAI
+ from (SELECT 
+	dmgiay.tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.DIENGIAIPHIEU, PC.MAGIAY,  
+	pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI,pc.{typenv},
+	SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8  +PC.SIZE9 +PC.SIZE0 ) AS SLPHANCONG, 
+	ISNULL((SELECT SUM(ISNULL(CC.SOLUONG,0))  FROM CHAMCONG CC  WHERE PC.SOPHIEU = CC.PHIEUPC AND 
+								PC.MAGIAY = CC.MAGIAY AND 
+								coalesce(PC.MAUGOT,'') = coalesce(CC.MAUGOT,'') AND 
+								coalesce(PC.MAUSUON,'') = coalesce(CC.MAUSUON,'') AND 
+								coalesce(PC.MAUCA,'') = coalesce(CC.MAUCA,'') AND 
+								coalesce(PC.mauquai,'') = coalesce(CC.mauquai,'') and 
+								coalesce(pc.maude,'') = coalesce(cc.maude,'') and 
+								pc.{typenv}=cc.manvien),0) AS SLCHAMCONG, 
+	
+	(SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8  +PC.SIZE9 +PC.SIZE0 ) - 
+	
+	ISNULL((SELECT SUM(ISNULL(CC.SOLUONG,0))  FROM CHAMCONG CC  WHERE PC.SOPHIEU = CC.PHIEUPC AND 
+								PC.MAGIAY = CC.MAGIAY AND 
+								coalesce(PC.MAUGOT,'') = coalesce(CC.MAUGOT,'') AND 
+								coalesce(PC.MAUSUON,'') = coalesce(CC.MAUSUON,'') AND 
+								coalesce(PC.MAUCA,'') = coalesce(CC.MAUCA,'') AND 
+								coalesce(PC.mauquai,'') = coalesce(CC.mauquai,'') and 
+								coalesce(pc.maude,'') = coalesce(cc.maude,'') and 
+								pc.{typenv}=cc.manvien),0)) AS SLCONLAI 
+FROM PHANCONG PC 
+			left join dmgiay on dmgiay.magiay=pc.magiay 
+where PC.MAKY = '{maky}'
+and PC.{typenv} = '{manv}'
+GROUP BY tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.DIENGIAIPHIEU, PC.MAGIAY,  
+pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.{typenv}) as info_chamcong) as abc
+where abc.SLCONLAI > 0
+        """
+        return CC.read_custom(sql)
+
+
+    # sql = f"SELECT DISTINCT phieupc, NgayPhieu, DienGiai from CHAMCONG where MAKY='{maky}' AND MANVIEN='{manv}'"
+
+    # return CC.read_custom(sql)
 
 
 @router.get("/chamcong/nhanvien")
@@ -30,7 +85,7 @@ def read_nhanvien():
     col1 = "MANVIEN"
     col2 = "TENNVIEN"
     tbn = "DMNHANVIEN"
-    sql = f"SELECT {col1}, {col2} FROM {tbn}"
+    sql = f"SELECT {col1}, {col2} FROM {tbn} WHERE LOAINVIEN IN ('TD', 'TQ')"
     return CC.read_custom(sql)
 
 
@@ -50,9 +105,67 @@ def read(data: dict):
     print(data)
     phieupc = "(" + \
         ", ".join([f"'{value}'" for value in data["PHIEUPC"]]) + ")"
-    # print(sodh)
     maky = data["MAKY"]
     manvien = data["MANVIEN"]
-    sql = f"SELECT MAGIAY, SOLUONG FROM CHAMCONG where MAKY='{maky}' AND MANVIEN='{manvien}' and phieupc IN {phieupc}"
-    print(sql)
-    return CC.read_custom(sql)
+    loainv = get_type_nvien(manvien)
+    typenv = None
+    if loainv == "TD":
+        typenv = "THODE"
+    elif loainv == "TQ":
+        typenv = "THOQUAI"
+    
+    if typenv is not None:
+        sql = f"SELECT * FROM V_CHAMCONG{typenv} where {typenv}='{manvien}' and SOPHIEU IN {phieupc}"
+        print(sql)
+        return CC.read_custom(sql)
+
+@router.post("/savechamcong")
+def save(data: dict) -> RESPONSE:
+    items = data["data"]
+    manv = data["MANVIEN"]
+    maky = data["MAKY"]
+    phieupc = data["SOPHIEU"]
+    ngaypc = data["NGAYPHIEU"]
+    diengiai = data["DIENGIAI"]
+    sql_delete = f"DELETE FROM CHAMCONG WHERE MAKY='{maky}' AND MANVIEN='{manv}' AND PHIEUPC='{phieupc}'"
+    CC.execute_custom(sql_delete)
+    today = datetime.now()
+    year = today.year
+    madong = find_info_primary_key("CHAMCONG", "MD", today)
+    cc = find_info_primary_key("CHAMCONG", "CC", today) + 1
+    MAPHIEU = f"CC{year}{str(cc).zfill(12)}"
+    # day_created = today.strftime("%Y-%m-%d %H:%M:%S")
+    for item in items:
+        _c = []
+        _v = []
+        d_item = {}
+        madong += 1
+        d_item["MAKY"] = maky
+        d_item["MANVIEN"] = manv
+        d_item["MAGIAY"] = item["MAGIAY"]
+        d_item["SOLUONG"] = item["SLPHANCONG"]
+        d_item["madong"] = f"MD{year}{str(madong).zfill(12)}"
+        d_item["maphieu"] = MAPHIEU
+        d_item["phieupc"] = phieupc
+        d_item["maude"] = item["maude"]
+        d_item["maugot"] = item["MAUGOT"]
+        d_item["mausuon"] = item["MAUSUON"]
+        d_item["mauca"] = item["MAUCA"]
+        d_item["mauquai"] = item["MAUQUAI"]
+        d_item["NgayPhieu"] = ngaypc
+        d_item["DienGiai"] = diengiai
+        for k, v in d_item.items():
+            if v is not None:
+                _c.append(k)
+                if type(v) is str:
+                    _v.append(f"'{v}'")
+                else:
+                    _v.append(f"{v}")
+        _c = ", ".join(_c)
+        _v = ", ".join(_v)
+        print(_c, "\n", _v)
+        CC.add_with_table_name("CHAMCONG", _c, _v)
+
+    save_info_primary_key("CHAMCONG", "MD", year, madong)
+    save_info_primary_key("CHAMCONG", "CC", year, cc)
+    return {"status": "success"}

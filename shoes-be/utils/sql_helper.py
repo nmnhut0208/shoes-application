@@ -5,8 +5,8 @@ from fastapi import Request, HTTPException
 
 conn = pyodbc.connect(
     driver="{ODBC Driver 17 for SQL Server}",
-    # server="MINH\SQLEXPRESS",
-      server="DESKTOP-GT3LP7K\SQLEXPRESS",
+    server="MINH\SQLEXPRESS",
+    #   server="DESKTOP-GT3LP7K\SQLEXPRESS",
     database="PT",
     trusted_connection="yes",
     mars_connection="yes",
@@ -19,8 +19,8 @@ authenticate_User = ["nhutnm123456", "thuntk123456"]
 
 def execute_database(sql, action_type='read'):
     conn = pyodbc.connect(driver='{ODBC Driver 17 for SQL Server}',
-                          #   server="MINH\SQLEXPRESS",
-                          server="DESKTOP-GT3LP7K\SQLEXPRESS",
+                            server="MINH\SQLEXPRESS",
+                        #   server="DESKTOP-GT3LP7K\SQLEXPRESS",
                           database="PT",
                           trusted_connection="yes",
                           mars_connection="yes")
@@ -50,14 +50,14 @@ def read_sql_custom(sql: str) -> pd.DataFrame:
 
 def execute_custom(sql: str) -> pd.DataFrame:
     execute_database(sql, action_type='custom')
-    df = pd.read_sql(sql, conn)
+    # df = pd.read_sql(sql, conn)
     # cursor.execute(sql)
     # columns = [column[0] for column in cursor.description]
     # results = []
     # for row in cursor.fetchall():
     #     results.append(dict(zip(columns, row)))
     # return results
-    return df
+    # return df
 
 
 def insert_sql(tbn: str, col: str, val: str) -> None:
@@ -76,8 +76,8 @@ def update_sql(tbn: str, val: str, condition: str) -> None:
 def delete_sql(tbn: str, condition: str) -> None:
     sql = f"DELETE FROM {tbn} WHERE {condition}"
     execute_database(sql, action_type='delete')
-    cursor.execute(sql)
-    conn.commit()
+    # cursor.execute(sql)
+    # conn.commit()
 
 
 def user_access(f):

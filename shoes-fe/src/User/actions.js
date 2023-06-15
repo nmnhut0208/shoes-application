@@ -3,6 +3,7 @@ import {
   SET_USER_PASSWORD,
   SET_POOL_USER_ACCESS,
   SET_IS_LOGIN,
+  SET_ORIGINAL_SETTINGS,
 } from "./constants";
 
 export const setUserName = (payload) => {
@@ -29,6 +30,13 @@ export const setPoolUserAccess = (payload) => {
 export const setIsLogin = (payload) => {
   return {
     type: SET_IS_LOGIN,
+    payload,
+  };
+};
+
+export const setOriginalSettings = (payload) => {
+  return {
+    type: SET_ORIGINAL_SETTINGS,
     payload,
   };
 };

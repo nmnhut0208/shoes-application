@@ -5,12 +5,14 @@ import { Popover } from "antd";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import MaterialReactTable from "material-react-table";
 import { rem_to_px } from "~config/ui";
+import { convertDate } from "~utils/processing_date";
+import moment from "moment";
 
 const list_key = [
   // { key: "STT" },
-  { header: "Số phiếu", key: "phieupc" },
-  { header: "Ngày phiếu", key: "NgayPhieu" },
-  { header: "Diễn giải", key: "DienGiai" },
+  { header: "Số phiếu", key: "SOPHIEU" },
+  { header: "Ngày phiếu", key: "NGAYPHIEU" },
+  { header: "Diễn giải", key: "DIENGIAI" },
 ];
 
 const infoColumns = [];
@@ -26,9 +28,9 @@ for (var obj in list_key) {
 
 const list_key_sub = [
   { header: "Mã giày", key: "MAGIAY" },
-  { header: "Tên giày", key: "TENGIAY" },
-  { header: "Số lượng phân công", key: "SOLUONG" },
-  { header: "Số lượng hoàn thành", key: "SOLUONG" },
+  { header: "Tên giày", key: "tengiay" },
+  { header: "Số lượng phân công", key: "SLPHANCONG" },
+  { header: "Số lượng hoàn thành", key: "SLCHAMCONG" },
 ];
 
 const infoColumnsSub = [];
@@ -128,10 +130,19 @@ const ChamCong = () => {
   const [rowSelection, setRowSelection] = useState({});
   const [dataTableKY, setDataTableKY] = useState([]);
   const [rowSelectionMaKY, setRowSelectionMaKY] = useState({});
-  const [infoKY, setInfoKY] = useState({});
+  // const [infoKY, setInfoKY] = useState({});
   const [dataTableNhanVien, setDataTableNhanVien] = useState([]);
   const [rowSelectionMaNVIEN, setRowSelectionMaNVIEN] = useState({});
-  const [infoNVIEN, setInfoNVIEN] = useState({});
+  // const [infoNVIEN, setInfoNVIEN] = useState({});
+  const [infoForm, setInfoForm] = useState({
+    MAKY: "",
+    TENKY: "",
+    MANVIEN: "",
+    TENNVIEN: "",
+    NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+    DIENGIAI: "",
+    SOPHIEU: "",
+  });
   // const [infoKH, setInfoKH] = useState({});
   // const infoKH = {
   //   MAKY: "02",
@@ -145,7 +156,36 @@ const ChamCong = () => {
   //   });
   // }, []);
 
-  console.log("ChamCong", infoKY);
+  console.log("ChamCong", infoForm["MAKY"]);
+
+  const handleSave = () => {
+    const send_data = {
+      MAKY: infoForm["MAKY"],
+      MANVIEN: infoForm["MANVIEN"],
+      NGAYPHIEU: infoForm["NGAYPHIEU"],
+      DIENGIAI: infoForm["DIENGIAI"],
+      SOPHIEU: infoForm["SOPHIEU"],
+      data: dataTableSub,
+    };
+    fetch("http://localhost:8000/savechamcong", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(send_data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data["status"] === "success") {
+          alert("Lưu thành công");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     let keys = Object.keys(rowSelectionMaKY);
@@ -159,7 +199,8 @@ const ChamCong = () => {
         MAKY: dataTableKY[keys[0]]["MAKY"],
         TENKY: dataTableKY[keys[0]]["TENKY"],
       };
-      setInfoKY(info);
+      // setInfoKY(info);
+      setInfoForm({ ...infoForm, ...info });
       setDataTable([]);
       setDataTableSub([]);
       setRowSelection({});
@@ -192,7 +233,8 @@ const ChamCong = () => {
         MANVIEN: dataTableNhanVien[keys[0]]["MANVIEN"],
         TENNVIEN: dataTableNhanVien[keys[0]]["TENNVIEN"],
       };
-      setInfoNVIEN(info);
+      // setInfoNVIEN(info);
+      setInfoForm({ ...infoForm, ...info });
       setDataTable([]);
       setDataTableSub([]);
       setRowSelection({});
@@ -223,17 +265,18 @@ const ChamCong = () => {
     const data = [];
     for (var i = 0; i < keys.length; i++) {
       if (rowSelection[keys[i]] === true) {
-        data.push(dataTable[keys[i]]["phieupc"]);
+        data.push(dataTable[keys[i]]["SOPHIEU"]);
+        setInfoForm({ ...infoForm, SOPHIEU: dataTable[keys[i]]["SOPHIEU"] });
         //     // console.log("data: ", dataTable[keys[i]]);
         //     // setDataTableSub([dataTable[keys[i]]]);
       }
     }
     const send_data = {
-      MANVIEN: infoNVIEN["MANVIEN"],
-      MAKY: infoKY["MAKY"],
+      MANVIEN: infoForm["MANVIEN"],
+      MAKY: infoForm["MAKY"],
       PHIEUPC: data,
     };
-    fetch("http://localhost:8000/chamcong/" + infoNVIEN["MANVIEN"], {
+    fetch("http://localhost:8000/chamcong/" + infoForm["MANVIEN"], {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -254,12 +297,17 @@ const ChamCong = () => {
   }, [rowSelection]);
 
   useEffect(() => {
-    if (infoNVIEN["MANVIEN"] == undefined || infoKY["MAKY"] == undefined) {
+    if (
+      infoForm["MANVIEN"] == undefined ||
+      infoForm["MAKY"] == undefined ||
+      infoForm["MANVIEN"] == "" ||
+      infoForm["MAKY"] == ""
+    ) {
       return;
     }
     const send_data = {
-      MANVIEN: infoNVIEN["MANVIEN"],
-      MAKY: infoKY["MAKY"],
+      MANVIEN: infoForm["MANVIEN"],
+      MAKY: infoForm["MAKY"],
     };
 
     fetch("http://localhost:8000/chamcong", {
@@ -278,7 +326,7 @@ const ChamCong = () => {
       .catch((err) => {
         console.log(":error: ", err);
       });
-  }, [infoKY, infoNVIEN]);
+  }, [infoForm]);
 
   return (
     <div className={styles.container}>
@@ -296,16 +344,15 @@ const ChamCong = () => {
                   rowSelection={rowSelectionMaKY}
                   data={dataTableKY}
                 />
-              }
-            >
+              }>
               <input
-                value={infoKY["MAKY"]}
+                value={infoForm["MAKY"]}
                 type="text"
                 className={styles.small}
               />
             </Popover>
             <input
-              value={infoKY["TENKY"]}
+              value={infoForm["TENKY"]}
               type="text"
               className={styles.medium}
             />
@@ -320,16 +367,15 @@ const ChamCong = () => {
                   rowSelection={rowSelectionMaNVIEN}
                   data={dataTableNhanVien}
                 />
-              }
-            >
+              }>
               <input
-                value={infoNVIEN["MANVIEN"]}
+                value={infoForm["MANVIEN"]}
                 type="text"
                 className={styles.small}
               />
             </Popover>
             <input
-              value={infoNVIEN["TENNVIEN"]}
+              value={infoForm["TENNVIEN"]}
               type="text"
               className={styles.medium}
             />
@@ -339,11 +385,24 @@ const ChamCong = () => {
           {/* <label className={styles.title}>Thông tin phiếu</label> */}
           <div className={styles.right_row}>
             <label>Ngày phiếu</label>
-            <input type="text" className={styles.small} />
+            <input
+              type="date"
+              value={convertDate(infoForm["NGAYPHIEU"])}
+              onChange={(e) => {
+                setInfoForm({ ...infoForm, NGAYPHIEU: e.target.value });
+              }}
+              className={styles.small}
+            />
           </div>
           <div className={styles.right_row}>
             <label>Diễn giải</label>
-            <input type="text" className={styles.large} />
+            <input
+              type="text"
+              onChange={(e) => {
+                setInfoForm({ ...infoForm, DIENGIAI: e.target.value });
+              }}
+              className={styles.large}
+            />
           </div>
         </div>
       </div>
@@ -367,11 +426,7 @@ const ChamCong = () => {
       />
       <div className={styles.group_button}>
         <div>
-          <button
-          // onClick={handleSaveFrom}
-          >
-            Lưu
-          </button>
+          <button onClick={handleSave}>Lưu</button>
           <button>Đóng</button>
         </div>
       </div>
