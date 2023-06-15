@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
@@ -32,6 +32,12 @@ class ITEM_PHANCONG(BaseModel):
     MAUQUAI: Optional[str] = None
     MAKY: str
     DIENGIAIDONG: Optional[str] = None
+
+class RESPONSE_PHANCONG_THO:
+    MANVIEN: str
+    TENNVIEN: str
+    SOLUONG: int
+    THANHTIEN: int
 
 
 class RESPONSE_PHANCONG(BaseModel):
@@ -235,11 +241,6 @@ def delete(data: ITEM_PHANCONG) -> RESPONSE:
                 condition.append(f"{key}={value}")
     return phancong.delete(" and ".join(condition))
 
-class RESPONSE_PHANCONG_THO:
-    MANVIEN: str
-    TENNVIEN: str
-    SOLUONG: int
-    THANHTIEN: int
 
 @router.get("/phancong/get_thongtin_thode")
 def read(SOPC: str) -> List[RESPONSE_PHANCONG_THO]:
@@ -263,3 +264,15 @@ def get_thongtin_thoquai(SOPC: str) -> List[RESPONSE_PHANCONG_THO]:
             """
     result = phancong.read_custom(sql)
     return result
+
+
+@router.delete("/phancong/by_list_MADONG/")
+def delete(MADONG: list = Query([])) -> RESPONSE:
+    print("MADONG: ", MADONG)
+    # update status of the MADONGs
+    ds_madong = ""
+    for madong in MADONG:
+        ds_madong += f"'{madong}'," 
+    ds_madong = ds_madong[:-1]
+    condition = f"MADONG in ({ds_madong})"
+    return phancong.delete(condition)

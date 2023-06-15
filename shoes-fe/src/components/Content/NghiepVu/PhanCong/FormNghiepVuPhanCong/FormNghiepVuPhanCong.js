@@ -201,7 +201,9 @@ const FormNghiepVuPhanCong = ({
       setListGiayWillPhanCong,
       setFormPhanCong,
       infoPhieu,
-      resetForm
+      resetForm,
+      listMaDongPhanCongAddButWaitSave,
+      setListMaDongPhanCongAddButWaitSave
     );
     setHavedSaveData(false);
     setIsSaveDataNghiepVuPhanCong(false);
