@@ -34,7 +34,7 @@ const Suon = () => {
   const [stateTable, dispatchTable] = useTableContext();
 
   useEffect(() => {
-    dispatchTable(actions_table.setTitleModal("Sườn - F0022"));
+    dispatchTable(actions_table.setTitleModal("Sườn - F0021"));
     dispatchTable(actions_table.setTitleTable("Sườn - F0020"));
     dispatchTable(actions_table.setComponentForm(FormSuon));
     fetch("http://localhost:8000/suon")

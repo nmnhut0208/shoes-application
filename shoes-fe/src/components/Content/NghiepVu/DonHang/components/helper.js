@@ -1,12 +1,17 @@
 import moment from "moment";
-import { OptionMau } from "./components";
+import OptionMau from "./OptionMau";
 import {
   INFO_COLS_DONHANG,
   COLS_HAVE_SUM_FOOTER,
   COLS_HAVE_SELECT_INPUT,
 } from "./ConstantVariable";
 
-export const updateColumnsInformations = (dataMau, dataTable, setDataTable) => {
+export const updateColumnsInformations = (
+  dataMau,
+  dataTable,
+  setDataTable,
+  view
+) => {
   const infoColumnsInit = [];
 
   for (var obj in INFO_COLS_DONHANG) {
@@ -33,6 +38,7 @@ export const updateColumnsInformations = (dataMau, dataTable, setDataTable) => {
                 dataTable[cell.row.id][cell.column.id] = value;
                 setDataTable([...dataTable]);
               }}
+              readOnly={view}
             />
           </>
         );
@@ -84,7 +90,7 @@ export const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
   for (let i = 0; i < dataDatHang.length; i++) {
     dataDatHang[i] = { ...dataDatHang[i], ...formInfoDonHang };
   }
-  console.log("save don hang");
+  console.log("save don hang", JSON.stringify(dataDatHang));
   fetch("http://localhost:8000/donhang", {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -92,6 +98,7 @@ export const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
   })
     .then((response) => {
       console.log("response: ", response);
+      alert("Lưu thông tin thành công.");
     })
     .catch((error) => {
       console.log("error: ", error);

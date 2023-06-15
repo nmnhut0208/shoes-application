@@ -8,3 +8,4 @@ export const SET_INFO_MUI = "setInfoMui";
 export const SET_INFO_KHACHHANG = "setInfoKhachHang";
 export const SET_INFO_THODE = "setInfoThoDe";
 export const SET_INFO_THOQUAI = "setInfoThoQuai";
+export const SET_INFO_KYTINHLUONG = "setInfoKyTinhLuong";

@@ -71,13 +71,13 @@ export const INFO_COLS_DONHANG = [
     header: "Diễn giải",
     key: "DIENGIAIPHIEU",
     width: 48 * rem_to_px,
-    enableEditing: false,
+    enableEditing: true,
   },
   {
     header: "In hiệu",
     key: "INHIEU",
     width: 48 * rem_to_px,
-    enableEditing: false,
+    enableEditing: true,
   },
 ];
 

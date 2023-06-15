@@ -31,7 +31,7 @@ def find_info_primary_key(table, key, today):
     lastnumber = 1
     if len(data) == 0:
         sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-                        VALUES ('{table}', '{key}{year}', {lastnumber})"""
+                        VALUES ('{table}', '{key}{year}', 0)"""
         hethong.execute_custom(sql_insert)
     else:
         lastnumber = data[0]['LASTKEY']
@@ -60,7 +60,7 @@ def find_info_SODH():
     lastnumber = 1
     if len(data) == 0:
         sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-                    VALUES ('DONHANG', 'DH--{month}/{year}', {lastnumber})"""
+                    VALUES ('DONHANG', 'DH--{month}/{year}', 0)"""
         hethong.execute_custom(sql_insert)
     else:
         lastnumber = data[0]['LASTKEY'] + 1
@@ -132,7 +132,7 @@ def find_info_SOPC():
     lastnumber = 1
     if len(data) == 0:
         sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-                    VALUES ('PHANCONG', 'PC--{month}/{year}', {lastnumber})"""
+                    VALUES ('PHANCONG', 'PC--{month}/{year}', 0)"""
         hethong.execute_custom(sql_insert)
     else:
         lastnumber = data[0]['LASTKEY'] + 1
@@ -150,6 +150,6 @@ def update_info_SOPC(data: ITEM_HETHONG) -> RESPONSE:
     year = str(today.year)[2:]
     sql_insert = f"""UPDATE V1T4444 
                      SET LASTKEY = {SOPC}
-                     WHERE TABLENAME = 'DONHANG'
+                     WHERE TABLENAME = 'PHANCONG'
                      AND KEYSTRING = 'PC--{month}/{year}'"""
     return hethong.execute_custom(sql_insert)

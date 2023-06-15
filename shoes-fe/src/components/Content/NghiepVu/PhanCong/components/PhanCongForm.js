@@ -10,7 +10,7 @@ import {
   renderDataEmpty,
   processingInfoColumnTable,
 } from "~utils/processing_data_table";
-import styles from "../PhanCong.module.scss";
+import styles from "../FormNghiepVuPhanCong/FormNghiepVuPhanCong.module.scss";
 
 import { ItemThoDe, ItemThoQuai } from "~items";
 
@@ -76,7 +76,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
   const [rowSelection, setRowSelection] = useState({});
   const handleChangeForm = (e) => {
     const data = { ...form };
-    data[e.target.name] = e.target.value;
+    if (e.target.name.includes("Size")) {
+      data[e.target.name] = parseInt(e.target.value);
+    } else data[e.target.name] = e.target.value;
     setChiTietPhanCong(data);
   };
 

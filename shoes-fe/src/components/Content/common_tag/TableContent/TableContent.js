@@ -1,13 +1,16 @@
-import { Modal } from "~common_tag";
+import { useMemo } from "react";
 import MaterialReactTable from "material-react-table";
-import { TableTitle } from "material-react-table";
+import { Box, IconButton, Tooltip } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import { Delete, Edit } from "@mui/icons-material";
+
+import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
 import { useTaskContext } from "~task";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { useMemo } from "react";
 import { useUserContext } from "~user";
+
+const listFormHaveViewDetail = ["F0024", "F0020", "F0013", "F0018"];
 
 const TableContent = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -16,6 +19,18 @@ const TableContent = () => {
   const inforShowTable = stateTable["inforShowTable"];
   const ComponentForm = stateTable["infoShowForm"]["component_form"];
   const maForm = stateTable["inforShowTable"]["title"].split(" - ")[1];
+  const permission = useMemo(() => {
+    return stateUser.userPoolAccess.filter((obj) => obj.MAFORM === maForm)[0];
+  }, []);
+  const showActionColumn = useMemo(() => {
+    if (permission.THEM + permission.SUA + permission.XOA > 0) {
+      return true;
+    } else {
+      if (permission.XEM === 1 && listFormHaveViewDetail.includes(maForm))
+        return true;
+      else return false;
+    }
+  }, []);
 
   console.log("resize: ", inforShowTable.infoColumnTable);
 
@@ -95,9 +110,8 @@ const TableContent = () => {
             autoResetPageIndex={false}
             // resize width of each column
             enableColumnResizing
-            // columnResizeMode="onChange" //default
             enableRowNumbers
-            enableEditing
+            enableEditing={showActionColumn}
             displayColumnDefOptions={{
               "mrt-row-actions": {
                 size: 130, //set custom width
@@ -117,62 +131,69 @@ const TableContent = () => {
                 sx={{
                   display: "flex",
                   justifyContent: "center",
-                }}>
-                <Tooltip arrow placement="right" title="Add">
-                  <IconButton
-                    onClick={() => {
-                      if (
-                        stateUser.userPoolAccess.some(
-                          (obj) => obj.MAFORM === maForm && obj.THEM === 1
-                        )
-                      ) {
+                }}
+              >
+                {permission.THEM === 1 && (
+                  <Tooltip arrow placement="right" title="Add">
+                    <IconButton
+                      onClick={() => {
                         dispatchTable(
                           actions_table.setInforRecordTable(emptyData)
                         );
                         dispatchTable(actions_table.setActionForm("add"));
                         dispatchTable(actions_table.setModeShowModal(true));
-                      } else {
-                        alert("Bạn không có quyền thêm kho hàng");
-                      }
-                    }}>
-                    <AddCircleIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip arrow placement="right" title="Edit">
-                  <IconButton
-                    onClick={() => {
-                      if (
-                        stateUser.userPoolAccess.some(
-                          (obj) => obj.MAFORM === maForm && obj.SUA === 1
-                        )
-                      ) {
+                      }}
+                    >
+                      <AddCircleIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {permission.SUA === 1 && (
+                  <Tooltip arrow placement="right" title="Edit">
+                    <IconButton
+                      onClick={() => {
                         dispatchTable(
                           actions_table.setInforRecordTable(row.original)
                         );
                         dispatchTable(actions_table.setActionForm("edit"));
                         dispatchTable(actions_table.setModeShowModal(true));
-                      } else {
-                        alert("Bạn không có quyền sửa kho hàng");
-                      }
-                    }}>
-                    <Edit />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip arrow placement="right" title="Delete">
-                  <IconButton
-                    color="error"
-                    onClick={() => {
-                      if (
-                        stateUser.userPoolAccess.some(
-                          (obj) => obj.MAFORM === maForm && obj.XOA === 1
-                        )
-                      ) {
+                      }}
+                    >
+                      <Edit />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {permission.XOA === 1 && (
+                  <Tooltip arrow placement="right" title="Delete">
+                    <IconButton
+                      color="error"
+                      onClick={() => {
                         handleDeleteRow(row.original);
-                      }
-                    }}>
-                    <Delete />
-                  </IconButton>
-                </Tooltip>
+                      }}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </Tooltip>
+                )}
+
+                {permission.XEM === 1 &&
+                  permission.THEM === 0 &&
+                  permission.SUA === 0 &&
+                  listFormHaveViewDetail.includes(maForm) && (
+                    <Tooltip arrow placement="right" title="View Detail">
+                      <IconButton
+                        onClick={() => {
+                          dispatchTable(
+                            actions_table.setInforRecordTable(row.original)
+                          );
+                          dispatchTable(actions_table.setActionForm("view"));
+                          dispatchTable(actions_table.setModeShowModal(true));
+                        }}
+                      >
+                        <VisibilityOutlinedIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )}
               </Box>
             )}
           />

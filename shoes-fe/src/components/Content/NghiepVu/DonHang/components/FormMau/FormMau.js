@@ -3,9 +3,9 @@ import styles from "./FormMau.module.scss";
 import { FormMauBasic } from "~hang_hoa";
 import { useTableContext, actions_table } from "~table_context";
 
-const FormMau = ({ dataMau, setDataMau }) => {
+const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
   const [dataForm, setDataForm] = useState({});
-  const [stateTable, dispatchTable] = useTableContext();
+  // const [stateTable, dispatchTable] = useTableContext();
 
   const handleSaveFrom = () => {
     fetch("http://localhost:8000/mau", {
@@ -23,7 +23,8 @@ const FormMau = ({ dataMau, setDataMau }) => {
       ...dataMau,
       { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
     ]);
-    dispatchTable(actions_table.setModeShowModal(false));
+    // dispatchTable(actions_table.setModeShowModal(false));
+    setShowModal(false);
   };
 
   return (
@@ -33,7 +34,7 @@ const FormMau = ({ dataMau, setDataMau }) => {
       <div className={styles.group_button}>
         <button onClick={handleSaveFrom}>Lưu</button>
         <button>Button 2</button>
-        <button>Đóng</button>
+        <button onClick={() => setShowModal(false)}>Đóng</button>
       </div>
     </div>
   );
