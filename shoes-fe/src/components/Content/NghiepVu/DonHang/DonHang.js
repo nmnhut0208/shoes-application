@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import Modal from "./Modal";
-import FormDonHang from "./components";
+import { FormDonHang } from "./components";
 import { useUserContext } from "~user";
 
 const MAFORM_DONHANG = "F0032";
