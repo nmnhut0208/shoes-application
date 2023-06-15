@@ -19,7 +19,7 @@ authenticate_User = ["nhutnm123456", "thuntk123456"]
 
 def execute_database(sql, action_type='read'):
     conn = pyodbc.connect(driver='{ODBC Driver 17 for SQL Server}',
-                          #   server="MINH\SQLEXPRESS",
+                            # server="MINH\SQLEXPRESS",
                           server="DESKTOP-GT3LP7K\SQLEXPRESS",
                           database="PT",
                           trusted_connection="yes",
@@ -45,8 +45,6 @@ def read_sql(tbn: str) -> pd.DataFrame:
 def read_sql_custom(sql: str) -> pd.DataFrame:
     data = execute_database(sql)
     return data
-
-
 
 def execute_custom(sql: str) -> pd.DataFrame:
     execute_database(sql, action_type='custom')

@@ -1,1 +1,1 @@
-export { default } from "./FormDonHang";
+export { default as FormDonHang } from "./FormDonHang";

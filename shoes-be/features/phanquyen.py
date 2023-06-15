@@ -49,3 +49,9 @@ def delete(data: ITEM_PHANQUYEN) -> RESPONSE:
     # condition = f"MAKHO = '{data['MAKHO']}'"
     condition = f"MANVIEN = '{MANVIEN}' AND MAFORM = '{MAFORM}'"
     return PQ.delete(condition)
+
+
+@router.get("/getform")
+def getform() -> RESPONSE:
+    sql = f"SELECT distinct MAFORM, TENFORM FROM PHANQUYEN"
+    return PQ.read_custom(sql)

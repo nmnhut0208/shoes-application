@@ -84,6 +84,9 @@ class RESPONSE_CHAMCONG(BaseModel):
 class RESPONSE_LOGIN(BaseModel):
     exist: bool
 
+class RESPONSE_EXISTUSER(BaseModel):
+    exist: bool
+
 class RESPONSE_ACCESS(BaseModel):
     MAFROM: str
     TENFORM: str

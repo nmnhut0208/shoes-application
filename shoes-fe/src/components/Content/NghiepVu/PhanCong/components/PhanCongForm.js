@@ -10,7 +10,7 @@ import {
   renderDataEmpty,
   processingInfoColumnTable,
 } from "~utils/processing_data_table";
-import styles from "../PhanCong.module.scss";
+import styles from "../FormNghiepVuPhanCong/FormNghiepVuPhanCong.module.scss";
 
 import { ItemThoDe, ItemThoQuai } from "~items";
 

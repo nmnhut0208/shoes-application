@@ -1,17 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTableContext, actions_table } from "~table_context";
 import styles from "./FormPhanQuyen.module.scss";
 
 const FormPhanQuyen = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
+  const [typeForm, setTypeForm] = useState([]);
+  const readOnly =
+    stateTable.inforShowTable.action_row === "edit" ? true : false;
   console.log("phan quyen:", inputForm);
 
   const handleChangeInformationForm = (e) => {
-    const data = { ...inputForm };
-    data[e.target.name] = e.target.value;
-    setInputForm(data);
+    if (e.target.name === "MAFORM") {
+      const data = { ...inputForm };
+      data[e.target.name] = e.target.value;
+      const type = typeForm.filter((info) => info["MAFORM"] === e.target.value);
+      data["TENFORM"] = type[0]["TENFORM"];
+      setInputForm(data);
+    } else {
+      const data = { ...inputForm };
+      data[e.target.name] = e.target.value;
+      setInputForm(data);
+    }
   };
+
+  useEffect(() => {
+    fetch("http://localhost:8000/getform")
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        console.log("info: ", info);
+        setTypeForm(info);
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+  }, []);
 
   const handleSaveFrom = () => {
     // saveDataBase()
@@ -68,21 +93,37 @@ const FormPhanQuyen = () => {
             <label>Mã Nhân Viên</label>
             <input
               value={inputForm["MANVIEN"]}
+              readOnly={readOnly}
               onChange={(e) => handleChangeInformationForm(e)}
               name="MANVIEN"
               className={styles.item_size_big}
             />
           </div>
           <div className={styles.form_group_first}>
-            <label>Mã Form</label>
-            <input
-              value={inputForm["MAFORM"]}
-              onChange={(e) => handleChangeInformationForm(e)}
-              name="MAFORM"
-              className={styles.item_size_big}
-            />
+            <label>Tên Form</label>
+            {readOnly && (
+              <input
+                value={inputForm["TENFORM"]}
+                readOnly={readOnly}
+                // onChange={(e) => handleChangeInformationForm(e)}
+                name="TENFORM"
+                className={styles.item_size_big}
+              />
+            )}
+            {!readOnly && (
+              <select
+                value={inputForm["MAFORM"]}
+                readOnly={readOnly}
+                name="MAFORM"
+                onChange={(e) => handleChangeInformationForm(e)}
+                className={styles.item_size_big}>
+                {typeForm.map((form) => (
+                  <option value={form["MAFORM"]}>{form["TENFORM"]}</option>
+                ))}
+              </select>
+            )}
           </div>
-          <div className={styles.form_group_first}>
+          {/* <div className={styles.form_group_first}>
             <label>Tên Form</label>
             <input
               value={inputForm["TENFORM"]}
@@ -90,7 +131,7 @@ const FormPhanQuyen = () => {
               name="TENFORM"
               className={styles.item_size_big}
             />
-          </div>
+          </div> */}
           <div className={styles.form_group_first}>
             <label>Thêm</label>
             <input

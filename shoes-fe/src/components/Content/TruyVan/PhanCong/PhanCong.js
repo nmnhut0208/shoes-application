@@ -7,7 +7,7 @@ import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
 
 import { processingInfoColumnTable } from "~utils/processing_data_table";
-import { default as FormPhanCong } from "~nghiep_vu/PhanCong/";
+import { FormNghiepVuPhanCong } from "~nghiep_vu/PhanCong/";
 import { INFO_COLS_PHANCONG } from "./ConstantVariable";
 
 const Table = ({ columns, data }) => {
@@ -64,7 +64,7 @@ const Table = ({ columns, data }) => {
         )}
       />
       <Modal>
-        <FormPhanCong dataView={rowInfo} view={true} />
+        <FormNghiepVuPhanCong dataView={rowInfo} view={true} />
         {/* 
         Khi hiện FormPhanCong ở chế độ view chỉ hiện thông tin của đơn hàng hiện tại
         thôi 

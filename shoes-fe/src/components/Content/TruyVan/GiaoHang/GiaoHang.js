@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import FormGiaoHang from "./FormGiaoHang";
+import FormGiaoHang from "./FormGiaoHang/";
 import { Modal } from "~common_tag";
 import SubTable from "./SubTable";
 import styles from "./GiaoHang.module.scss";
@@ -7,7 +7,7 @@ import styles from "./GiaoHang.module.scss";
 const list_key = [
   { header: "Số phiếu", key: "SOPHIEU" },
   { header: "Ngày phiếu", key: "NGAYPHIEU" },
-  { header: "Số đơn hàng", key: "SODH" },
+  // { header: "Số đơn hàng", key: "SODH" },
   { header: "Khách hàng", key: "MAKH" },
   { header: "Tên khách hàng", key: "TENKH" },
   { header: "Diễn giải", key: "DIENGIAIPHIEU" },
