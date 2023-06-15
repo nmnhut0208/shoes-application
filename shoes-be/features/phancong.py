@@ -96,6 +96,23 @@ def read() -> List[RESPONSE_PHANCONG]:
     result = phancong.read_custom(sql)
     return result
 
+# TODO: chinh sua de lam Truy Van Phan Cong 
+class RESPONSE_BAOCAO_PHANCONG:
+    SOPHIEU: str 
+    NGAYPHIEU: str
+
+
+@router.get("/phancong/baocao_phancong")
+def baocao_phancong() -> List[RESPONSE_BAOCAO_PHANCONG]:
+    sql = f"""select SOPHIEU, NGAYPHIEU, TENKH, NGAYDH, NGAYGH, 
+                DIENGIAIPHIEU AS DIENGIAI,
+                SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
+                from V_BCDONHANG
+                group by SODH, MAKH, TENKH, NGAYDH, NGAYGH, DIENGIAIPHIEU
+            """
+    result = phancong.read_custom(sql)
+    return result
+
 
 @router.get("/phancong/get_chitietdonhang_dephancong")
 def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:

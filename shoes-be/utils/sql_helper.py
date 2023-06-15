@@ -23,9 +23,9 @@ def execute_database(sql, action_type='read'):
                           server="DESKTOP-GT3LP7K\SQLEXPRESS",
                           database="PT",
                           trusted_connection="yes",
-                          mars_connection="yes")
-
-
+                          mars_connection="yes",
+                          unicode_results=True,
+                          CHARSET='UTF8')
     cursor = conn.cursor()
     cursor.execute(sql)
     if action_type == 'read':

@@ -71,6 +71,7 @@ class RESPONSE_GIAYDONHANG(BaseModel):
     THANHTIEN: Optional[int] = None
     NGAYDH: Optional[str] = None
     NGAYGH: Optional[str] = None
+    DIENGIAIPHIEU: Optional[str] = None
 
 
 
@@ -84,17 +85,6 @@ class DONHANG(BaseClass):
 
 donhang = DONHANG()
 
-
-# @router.get("/donhang/{SODH}")
-# def read(SODH: str) -> List[ITEM_DONHANG]:
-#     print("SODH: ", SODH)
-#     sql = f"""select *
-#              from DONHANG
-#              where DONHANG.SODH = '{SODH}'
-#           """
-
-#     result = donhang.read_custom(sql)
-#     return result
 
 class RESPONSE_BAOCAO_DONHANG:
     SODH: str 
@@ -120,7 +110,8 @@ def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
 @router.get("/donhang")
 def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
     print("SODH: ", SODH)
-    sql = f"""SELECT MADONG, SODH, HINHANH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+    sql = f"""SELECT DIENGIAIPHIEU,MADONG, SODH, 
+                HINHANH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                 coalesce(MAUDE, '') as MAUDE, 
                 coalesce(MAUGOT, '') AS MAUGOT, 
                 coalesce(MAUSUON, '') AS MAUSUON,
@@ -134,7 +125,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
                 DONHANG.MAKH,
                 SOLUONG,NGAYDH, NGAYGH,
                 V_GIAY.DONGIA * SOLUONG AS THANHTIEN
-            FROM (select MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
+            FROM (select DIENGIAIPHIEU, MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
                 SIZE9,SIZE8,SIZE0, NGAYDH, NGAYGH,
                 (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG
