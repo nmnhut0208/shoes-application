@@ -26,16 +26,15 @@ class CONGNO(BaseClass):
 congno = CONGNO()
 
 
-@router.get("/congno/phieuthu")
-def read() -> List[ITEM_PHIEUTHU]:
-    sql = """select SOPHIEU, 
-            COALESCE(DIENGIAIPHIEU, '') as DIENGIAIPHIEU,
-            MAKH, THANHTIEN
-            from CONGNO
-            where LOAIPHIEU='PT'
-            """
-    return congno.read_custom(sql)
-
+# @router.get("/congno/get_all_phieuthu")
+# def read() -> List[ITEM_PHIEUTHU]:
+#     sql = """select SOPHIEU, 
+#             COALESCE(DIENGIAIPHIEU, '') as DIENGIAIPHIEU,
+#             MAKH, THANHTIEN
+#             from CONGNO
+#             where LOAIPHIEU='PT'
+#             """
+#     return congno.read_custom(sql)
 
 @router.post("/congno/phieuthu")
 def add(data: ITEM_PHIEUTHU) -> RESPONSE:

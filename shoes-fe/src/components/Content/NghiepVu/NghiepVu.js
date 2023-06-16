@@ -3,7 +3,7 @@ import { useUserContext } from "~user";
 import { DonHang } from "./DonHang";
 import { PhanCong } from "./PhanCong";
 import ChiTien from "./ChiTien";
-import ThuTien from "./ThuTien";
+import { ThuTien } from "./ThuTien";
 import GiaoHang from "./GiaoHang";
 import ChamCong from "./ChamCong";
 

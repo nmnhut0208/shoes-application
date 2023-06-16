@@ -8,6 +8,17 @@ import { useTableContext, actions_table } from "~table_context";
 import { convertDate } from "~utils/processing_date";
 import { useUserContext } from "~user";
 
+const updateSOPHIEU = (sophieu) => {
+  console.log("save so don hang");
+  fetch("http://localhost:8000/hethong/phieuthu/SOPHIEU", {
+    method: "put",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ LASTNUMBER: sophieu }),
+  }).catch((error) => {
+    console.log("error: ", error);
+  });
+};
+
 const FormThuTien = ({ dataView, type_action }) => {
   const [stateTable, dispatchTable] = useTableContext();
   const [form, setForm] = useState({});
@@ -16,7 +27,6 @@ const FormThuTien = ({ dataView, type_action }) => {
   console.log("form hhe: ", form);
   useEffect(() => {
     if (!dataView) {
-      // get SOPHIEU
       fetch("http://localhost:8000/hethong/phieuthu/SOPHIEU")
         .then((response) => {
           return response.json();
@@ -24,21 +34,20 @@ const FormThuTien = ({ dataView, type_action }) => {
         .then((data) => {
           let sophieu = data["SOPHIEU"];
           setForm({
-            ...form,
             NGUOITAO: stateUser.userName,
             NGUOISUA: stateUser.userName,
             DIENGIAIPHIEU: "",
             SOPHIEU: sophieu,
             NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
           });
-          setLastestSOPHIEU(data["LastestDH"]);
+          setLastestSOPHIEU(data["LastestSOPHIEU"]);
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
       // load data from dataView
-      // TODO
+      setForm({ ...dataView, THANHTIEN: dataView["SODUCUOI"] });
     }
   }, []);
 
@@ -70,10 +79,31 @@ const FormThuTien = ({ dataView, type_action }) => {
     })
       .then((response) => {
         console.log("response: ", response);
+        if (type_action === "add") {
+          updateSOPHIEU(lastestSOPHIEU);
+        }
+        alert("Lưu thông tin thành công.");
       })
       .catch((error) => {
         console.log("error: ", error);
       });
+  };
+
+  const handleNhapTiep = () => {
+    let SOPHIEU_old = form["SOPHIEU"];
+    const sub_components = SOPHIEU_old.split("-");
+    const str_number = ("000" + (lastestSOPHIEU + 1)).slice(-4);
+    const SOPHIEU_new =
+      sub_components[0] + "-" + str_number + "-" + sub_components[2];
+    setForm({
+      SOPHIEU: SOPHIEU_new,
+      NGUOITAO: stateUser.userName,
+      NGUOISUA: stateUser.userName,
+      DIENGIAIPHIEU: "",
+      SOPHIEU: SOPHIEU_new,
+      NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+    });
+    setLastestSOPHIEU(lastestSOPHIEU + 1);
   };
 
   return (
@@ -83,6 +113,7 @@ const FormThuTien = ({ dataView, type_action }) => {
           <div className="styles.group_first_row_between">
             <label>Số phiếu</label>
             <input
+              readOnly={true}
               name="SOPHIEU"
               value={form["SOPHIEU"]}
               className={styles.item_size_small}
@@ -104,14 +135,14 @@ const FormThuTien = ({ dataView, type_action }) => {
         <div className={styles.group_second_row}>
           <label>Khách hàng</label>
           <ItemKhachHang
-            initValue={{ MAKH: form["MAKH"] }}
+            initValue={{ MAKH: form["MAKH"], TENKH: form["TENKH"] }}
             changeData={(data) => {
               handleChangeInformationForm(data);
             }}
             size_input={"15rem"}
             size_span={"29.7rem"}
             have_span={true}
-            // readOnly={view}
+            readOnly={type_action !== "add"}
           />
         </div>
         <div className={styles.group_second_row}>
@@ -142,8 +173,10 @@ const FormThuTien = ({ dataView, type_action }) => {
       <div className={styles.group_button}>
         <div>
           <button onClick={handleSaveFrom}>Lưu</button>
-          <button>Nhập tiếp</button>
-          <button>Đóng</button>
+          {type_action === "add" && (
+            <button onClick={handleNhapTiep}>Nhập tiếp</button>
+          )}
+          {/* <button>Đóng</button> */}
         </div>
       </div>
     </div>

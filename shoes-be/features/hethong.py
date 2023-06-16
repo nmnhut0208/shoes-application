@@ -125,7 +125,7 @@ def update_info_SOPC(data: ITEM_HETHONG) -> RESPONSE:
 @router.get("/hethong/phieuthu/SOPHIEU")
 def find_info_SOPC():
     lastnumber, showUI = find_info_UI("CONGNO", "PT")
-    return {"SOPHIEU": showUI, "LastestPC": lastnumber}
+    return {"SOPHIEU": showUI, "LastestSOPHIEU": lastnumber}
 
 
 @router.put("/hethong/phieuthu/SOPHIEU")
