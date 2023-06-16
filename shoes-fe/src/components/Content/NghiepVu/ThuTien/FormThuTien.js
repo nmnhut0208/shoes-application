@@ -47,7 +47,12 @@ const FormThuTien = ({ dataView, type_action }) => {
         });
     } else {
       // load data from dataView
-      setForm({ ...dataView, THANHTIEN: dataView["SODUCUOI"] });
+      setForm({
+        ...dataView,
+        THANHTIEN: dataView["SODUCUOI"],
+        NGUOITAO: stateUser.userName,
+        NGUOISUA: stateUser.userName,
+      });
     }
   }, []);
 

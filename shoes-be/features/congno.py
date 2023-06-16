@@ -61,7 +61,7 @@ def add(data: ITEM_PHIEUTHU) -> RESPONSE:
 @router.put("/congno/phieuthu")
 def update(data: ITEM_PHIEUTHU) -> RESPONSE:
     data = dict(data)    
-    data["NGAYSUA"] = datetime.now()
+    data["NGAYSUA"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     val = ", ".join([f"{key} = '{value}'" for key, value in data.items()
                       if value is not None])
     condition = f"SOPHIEU = '{data['SOPHIEU']}'"
