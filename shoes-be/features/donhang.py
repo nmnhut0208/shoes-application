@@ -72,6 +72,8 @@ class RESPONSE_GIAYDONHANG(BaseModel):
     NGAYDH: Optional[str] = None
     NGAYGH: Optional[str] = None
     DIENGIAIPHIEU: Optional[str] = None
+    DIENGIAIDONG: Optional[str] = None
+    INHIEU: Optional[str] = None
 
 
 
@@ -124,11 +126,13 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
                 SIZE9,SIZE8,SIZE0,
                 DONHANG.MAKH,
                 SOLUONG,NGAYDH, NGAYGH,
-                V_GIAY.DONGIA * SOLUONG AS THANHTIEN
+                V_GIAY.DONGIA * SOLUONG AS THANHTIEN,
+                DIENGIAIDONG, INHIEU
             FROM (select DIENGIAIPHIEU, MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
                 SIZE9,SIZE8,SIZE0, NGAYDH, NGAYGH,
-                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG
+                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG,
+                DIENGIAIDONG, INHIEU
             from DONHANG 
             WHERE DONHANG.SODH='{SODH}') AS DONHANG
             left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  

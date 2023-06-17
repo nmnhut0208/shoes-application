@@ -69,7 +69,7 @@ export const INFO_COLS_DONHANG = [
   },
   {
     header: "Diễn giải",
-    key: "DIENGIAIPHIEU",
+    key: "DIENGIAIDONG",
     width: 48 * rem_to_px,
     enableEditing: true,
   },

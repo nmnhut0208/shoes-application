@@ -141,7 +141,7 @@ dict_vni_to_unicode = {
 dict_unicode_to_vni = {v:k for k, v in dict_vni_to_unicode.items()}
 
 columns_vietnamese = ["TEN", "GHICHU", "DIACHI", "DIENGIAI",
-                      "TRANGTRIDE", "TRANGTRIQUAI"]
+                      "TRANGTRIDE", "TRANGTRIQUAI", "INHIEU"]
 
 
 def convert_vni_to_unicode(vni_str):
