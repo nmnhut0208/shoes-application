@@ -3,6 +3,7 @@ from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
 from datetime import datetime
+from utils.vietnamese import convert_data_to_save_database
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
 
@@ -48,10 +49,9 @@ def add(data: ITEM_PHIEUTHU) -> RESPONSE:
     data["MADONG"] = f"MD{year}{str(SODONG).zfill(12)}"
     SOPHIEU = find_info_primary_key("CONGNO","PT", today) + 1
     data["MAPHIEU"] = f"PT{year}{str(SOPHIEU).zfill(12)}"
-    print(data)
-    col = ", ".join(data.keys())
-    val = ", ".join([f"'{value}'" for value in data.values() 
-                     if value is not None])
+    data = convert_data_to_save_database(data)
+    col = ", ".join(k for k, v in data.items() if v is not None)
+    val = ", ".join([v for v in data.values() if v is not None])
     congno.add(col, val)
     save_info_primary_key("CONGNO", "PT", year, SOPHIEU)
     save_info_primary_key("CONGNO", "MD", year, SODONG)
@@ -60,11 +60,12 @@ def add(data: ITEM_PHIEUTHU) -> RESPONSE:
 
 @router.put("/congno/phieuthu")
 def update(data: ITEM_PHIEUTHU) -> RESPONSE:
-    data = dict(data)    
+    data = dict(data)
     data["NGAYSUA"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    val = ", ".join([f"{key} = '{value}'" for key, value in data.items()
+    data = convert_data_to_save_database(data)
+    val = ", ".join([f"{key} = {value}" for key, value in data.items()
                       if value is not None])
-    condition = f"SOPHIEU = '{data['SOPHIEU']}'"
+    condition = f"SOPHIEU = {data['SOPHIEU']}"
     return congno.update(val, condition)
 
 

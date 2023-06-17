@@ -1,10 +1,11 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
+from typing import Optional
+
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
-
-from pydantic import BaseModel
-from typing import Optional
+from utils.vietnamese import convert_data_to_save_database
 
 
 class ITEM_KHACHHANG(BaseModel):
@@ -38,29 +39,23 @@ def read() -> List[ITEM_KHACHHANG]:
                 COALESCE(EMAIL, '') AS EMAIL, \
                 COALESCE(GHICHU, '') AS GHICHU \
             FROM DMKHACHHANG"
-    # sql = "SELECT * FROM DMKHACHHANG"
     return kh.read_custom(sql)
 
 
 @router.post("/khachhang")
 def add(data: ITEM_KHACHHANG) -> RESPONSE:
-    data = dict(data)
-    col = []
-    val = []
-    for k, v in data.items():
-        if v is not None:
-            col.append(k)
-            val.append(f"'{v}'")
-    col = " ,".join(col)
-    val = " ,".join(val)
+    data = convert_data_to_save_database(dict(data))
+    col = " ,".join([k for k, v in data.items() if v is not None])
+    val = " ,".join([v for v in data.values() if v is not None]) 
     return kh.add(col, val)
 
 
 @router.put("/khachhang")
 def update(data: ITEM_KHACHHANG) -> RESPONSE:
-    data = dict(data)
-    val = ", ".join([f"{key} = '{value}'" for key, value in data.items() if value is not None])
-    condition = f"MAKH = '{data['MAKH']}'"
+    data = convert_data_to_save_database(dict(data))
+    val = ", ".join([f"{key} = {value}" for key, value in data.items() \
+                     if value is not None])
+    condition = f"MAKH = {data['MAKH']}"
     return kh.update(val, condition)
 
 

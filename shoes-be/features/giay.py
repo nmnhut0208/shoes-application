@@ -2,6 +2,8 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from utils.vietnamese import convert_data_to_save_database
+
 
 from pydantic import BaseModel
 from typing import Optional
@@ -95,28 +97,20 @@ def read() -> List[RESPONSE_GIAY]:
 
 @router.post("/giay")
 def add(data: ITEM_GIAY) -> RESPONSE:
-    sql_delete = f"""delete DMGIAY
-                    where MAGIAY = '{data.MAGIAY}'"""
-    giay.execute_custom(sql_delete)
-    data = dict(data)
-    col = []
-    val = []
-    for k, v in data.items():
-        if v is not None:
-            col.append(k)
-            val.append(f"'{v}'")
-    col = " ,".join(col)
-    val = " ,".join(val)
+    data = convert_data_to_save_database(dict(data))
+    col = " ,".join([k for k, v in data.items() if v is not None])
+    val = " ,".join([v for v in data.values() if v is not None]) 
+
     return giay.add(col, val)
 
 
 @router.put("/giay")
 def update(data: ITEM_GIAY) -> RESPONSE:
-    data = dict(data)
-    val = ", ".join([f"{key} = '{value}'" for key,
-                    value in data.items() if value is not None])
+    data = convert_data_to_save_database(dict(data))
+
+    val = ", ".join([f"{k} = {v}" for k, v in data.items() if v is not None])
     
-    condition = f"MAGIAY = '{data['MAGIAY']}'"
+    condition = f"MAGIAY = {data['MAGIAY']}"
     return giay.update(val, condition)
 
 

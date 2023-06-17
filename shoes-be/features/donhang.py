@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Request, Query
 from typing_extensions import Annotated
+from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime
 
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
-
-from pydantic import BaseModel
-from typing import Optional
-from datetime import datetime
+from utils.vietnamese import convert_data_to_save_database
 
 
 class ITEM_DONHANG(BaseModel):
@@ -174,7 +174,6 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
                     where SODH = '{data[0].SODH}'"""
     donhang.execute_custom(sql_delete)
 
-
     # find common information
     today = datetime.now()
     year = today.year
@@ -184,24 +183,16 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
     day_created = today.strftime("%Y-%m-%d %H:%M:%S")
 
     for i in range(len(data)):
-        _v = []
-        _c = []
         _data = dict(data[i])
         MADONG += 1
         _data["NGAYTAO"] = day_created
         _data["NGAYSUA"] = day_created
         _data["MADH"] = MADH
         _data["MADONG"] = f"MD{year}{str(MADONG).zfill(12)}"
-        for k, v in _data.items():
-            if v is not None:
-                _c.append(k)
-                if type(v) is str:
-                    _v.append(f"'{v}'")
-                else:
-                    _v.append(f"{v}")
-           
-        _c = ",".join(_c)
-        _v = ",".join(_v)
+
+        _data = convert_data_to_save_database(_data)
+        _c = ",".join([k for k, v in _data.items() if v is not None])
+        _v = ",".join([v for v in _data.values() if v is not None])
         # phòng trường hợp những record khác nhau có số lượng
         # cột insert khác nhau nên phải insert từng dòng như thế này 
         donhang.add(_c, _v) 
