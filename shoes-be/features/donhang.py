@@ -99,11 +99,14 @@ class RESPONSE_BAOCAO_DONHANG:
 
 @router.get("/donhang/baocao_donhang")
 def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
-    sql = f"""select SODH, MAKH, TENKH, NGAYDH, NGAYGH, 
+    sql = f"""SELECT SODH, DH.MAKH, KH.TENKH, NGAYDH, NGAYGH, 
                 DIENGIAIPHIEU AS DIENGIAI,
                 SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
-                from V_BCDONHANG
-                group by SODH, MAKH, TENKH, NGAYDH, NGAYGH, DIENGIAIPHIEU
+              FROM DONHANG DH
+                LEFT JOIN V_GIAY ON V_GIAY.MAGIAY = DH.MAGIAY
+                LEFT JOIN DMKHACHHANG KH ON KH.MAKH = DH.MAKH
+              group by SODH, DH.MAKH, KH.TENKH, NGAYDH,
+                NGAYGH, DIENGIAIPHIEU
             """
     result = donhang.read_custom(sql)
     return result
