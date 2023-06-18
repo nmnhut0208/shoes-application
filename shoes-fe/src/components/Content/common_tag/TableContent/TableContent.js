@@ -9,6 +9,10 @@ import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
 import { useTaskContext } from "~task";
 import { useUserContext } from "~user";
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 const listFormHaveViewDetail = ["F0024", "F0020", "F0013", "F0018"];
 
@@ -16,6 +20,7 @@ const TableContent = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateTask, dispatchTask] = useTaskContext();
   const [stateUser, dispatchUser] = useUserContext();
+  const [stateItem, dispatchItem] = useItemsContext();
   const inforShowTable = stateTable["inforShowTable"];
   const ComponentForm = stateTable["infoShowForm"]["component_form"];
   const maForm = stateTable["inforShowTable"]["title"].split(" - ")[1];
@@ -43,6 +48,7 @@ const TableContent = () => {
   }, []);
 
   const handleDeleteRow = (row) => {
+    console.log("row: ", row);
     let url = "";
     switch (stateTask.inforCurrentTask.infoDetail) {
       case "Kho hàng":
@@ -53,6 +59,13 @@ const TableContent = () => {
         break;
       case "Đế":
         url = "http://localhost:8000/de";
+        const data_de = stateItem.infoItemDe.filter(
+          (item) => item["value"] != row["MADE"]
+        );
+        console.log("data_de: ", data_de);
+        actions_items_context.setInfoDe([
+          { value: "md", label: "thiet a cho" },
+        ]);
         break;
       case "Cá":
         url = "http://localhost:8000/ca";
@@ -85,18 +98,21 @@ const TableContent = () => {
         url = "http://localhost:8000/phanquyen";
         break;
     }
-    fetch(url, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(row),
-    })
-      .then((res) => console.log("response: ", res))
-      .catch((err) => console.log("error: ", err));
+    // actions_items_context.setInfoDe([{ value: "md", label: "thiet a cho" }]);
+    // fetch(url, {
+    //   method: "DELETE",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(row),
+    // })
+    //   .then((res) => console.log("response: ", res))
+    //   .catch((err) => console.log("error: ", err));
     const newData = inforShowTable.infoTable.filter((item) => item != row);
     dispatchTable(actions_table.setInforTable(newData));
   };
+
+  console.log("stateItem.infoItemDe: ", stateItem.infoItemDe);
 
   return (
     <>

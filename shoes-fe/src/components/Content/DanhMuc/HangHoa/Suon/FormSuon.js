@@ -1,13 +1,18 @@
 import { useState } from "react";
-import clsx from "clsx";
 import styles from "./FormSuon.module.scss";
 import { useTableContext, actions_table } from "~table_context";
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 import { ItemGot, ItemMui } from "~items";
 
 const FormSuon = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
+  const [stateItem, dispatchItem] = useItemsContext();
+
   const [image_url, setImageURL] = useState("");
   const [image_base64, setImageBase64] = useState(
     stateTable.inforShowTable.record["HINHANH"]
@@ -42,6 +47,12 @@ const FormSuon = () => {
           inputForm,
         ])
       );
+      dispatchItem(
+        actions_items_context.setInfoSuon([
+          ...stateItem.infoItemSuon,
+          { label: inputForm["TENSUON"], value: inputForm["MASUON"] },
+        ])
+      );
     }
     console.log("inputForm: ", inputForm);
     fetch("http://localhost:8000/suon", {
@@ -51,9 +62,11 @@ const FormSuon = () => {
     })
       .then((response) => {
         console.log("response: ", response);
+        alert("Lưu thành công.");
       })
       .catch((error) => {
         console.log("error: ", error);
+        alert("Xảy ra lỗi. Chưa lưu được.");
       });
     dispatchTable(actions_table.setModeShowModal(false));
   };

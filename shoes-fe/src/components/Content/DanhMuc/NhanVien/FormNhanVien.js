@@ -2,11 +2,16 @@ import { useState } from "react";
 import clsx from "clsx";
 import styles from "./FormNhanVien.module.scss";
 import { useTableContext, actions_table } from "~table_context";
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 const FormNhanVien = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   console.log("record form: re-render");
+  const [stateItem, dispatchItem] = useItemsContext();
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -15,18 +20,9 @@ const FormNhanVien = () => {
   };
 
   const handleSaveFrom = () => {
+    let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
-      fetch("http://localhost:8000/nhanvien", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputForm),
-      })
-        .then((response) => {
-          console.log("response: ", response);
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
+      method = "PUT";
       dispatchTable(
         actions_table.setInforTable(
           stateTable.inforShowTable.infoTable.map((info) =>
@@ -35,24 +31,41 @@ const FormNhanVien = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
-      fetch("http://localhost:8000/nhanvien", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputForm),
-      })
-        .then((response) => {
-          console.log("response: ", response);
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
+      method = "POST";
       dispatchTable(
         actions_table.setInforTable([
           ...stateTable.inforShowTable.infoTable,
           inputForm,
         ])
       );
+      if (inputForm["LOAINVIEN"] === "TD") {
+        dispatchItem(
+          actions_items_context.setInfoThoDe([
+            ...stateItem.infoItemThoDe,
+            { label: inputForm["TENNVIEN"], value: inputForm["MANVIEN"] },
+          ])
+        );
+      }
+      if (inputForm["LOAINVIEN"] === "TQ") {
+        dispatchItem(
+          actions_items_context.setInfoThoQuai([
+            ...stateItem.infoItemThoQuai,
+            { label: inputForm["TENNVIEN"], value: inputForm["MANVIEN"] },
+          ])
+        );
+      }
     }
+    fetch("http://localhost:8000/nhanvien", {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inputForm),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
     dispatchTable(actions_table.setModeShowModal(false));
   };
 

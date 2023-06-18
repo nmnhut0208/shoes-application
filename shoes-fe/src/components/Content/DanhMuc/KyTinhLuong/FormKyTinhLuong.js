@@ -3,9 +3,14 @@ import { useState } from "react";
 import clsx from "clsx";
 import styles from "./FormKyTinhLuong.module.scss";
 import { useTableContext, actions_table } from "~table_context";
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 const FormKyTinhLuong = () => {
   const [stateTable, dispatchTable] = useTableContext();
+  const [stateItem, dispatchItem] = useItemsContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   console.log("record form: re-render");
 
@@ -29,18 +34,9 @@ const FormKyTinhLuong = () => {
   };
 
   const handleSaveFrom = () => {
+    let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
-      fetch("http://localhost:8000/kytinhluong", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputForm),
-      })
-        .then((response) => {
-          console.log("response: ", response);
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
+      method = "PUT";
       dispatchTable(
         actions_table.setInforTable(
           stateTable.inforShowTable.infoTable.map((info) =>
@@ -49,24 +45,32 @@ const FormKyTinhLuong = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
-      fetch("http://localhost:8000/kytinhluong", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputForm),
-      })
-        .then((response) => {
-          console.log("response: ", response);
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
+      method = "POST";
       dispatchTable(
         actions_table.setInforTable([
           ...stateTable.inforShowTable.infoTable,
           inputForm,
         ])
       );
+      dispatchItem(
+        actions_items_context.setInfoKyTinhLuong([
+          ...stateItem.infoItemKyTinhLuong,
+          { label: inputForm["TENKY"], value: inputForm["MAKY"] },
+        ])
+      );
     }
+    fetch("http://localhost:8000/kytinhluong", {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inputForm),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
+
     dispatchTable(actions_table.setModeShowModal(false));
   };
 

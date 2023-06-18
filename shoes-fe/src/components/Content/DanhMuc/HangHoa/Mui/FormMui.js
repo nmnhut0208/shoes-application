@@ -2,9 +2,14 @@ import { useState } from "react";
 import clsx from "clsx";
 import styles from "./FormMui.module.scss";
 import { useTableContext, actions_table } from "~table_context";
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 const FormMui = () => {
   const [stateTable, dispatchTable] = useTableContext();
+  const [stateItem, dispatchItem] = useItemsContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   console.log("record form: re-render");
 
@@ -50,6 +55,12 @@ const FormMui = () => {
         actions_table.setInforTable([
           ...stateTable.inforShowTable.infoTable,
           inputForm,
+        ])
+      );
+      dispatchItem(
+        actions_items_context.setInfoMui([
+          ...stateItem.infoItemMui,
+          { label: inputForm["TENMUI"], value: inputForm["MAMUI"] },
         ])
       );
     }
