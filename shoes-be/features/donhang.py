@@ -194,9 +194,9 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
         _data["MADH"] = MADH
         _data["MADONG"] = f"MD{year}{str(MADONG).zfill(12)}"
 
-        _data = convert_data_to_save_database(_data)
-        _c = ",".join([k for k, v in _data.items() if v is not None])
-        _v = ",".join([v for v in _data.values() if v is not None])
+        _data_save = convert_data_to_save_database(_data)
+        _c = ",".join([k for k, v in _data_save.items() if v is not None])
+        _v = ",".join([v for v in _data_save.values() if v is not None])
         # phòng trường hợp những record khác nhau có số lượng
         # cột insert khác nhau nên phải insert từng dòng như thế này 
         donhang.add(_c, _v) 

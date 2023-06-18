@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 dict_vni_to_unicode = {
     "AØ": "À",
     "AÙ":"Á",
@@ -140,8 +142,16 @@ dict_vni_to_unicode = {
 
 dict_unicode_to_vni = {v:k for k, v in dict_vni_to_unicode.items()}
 
-columns_vietnamese = ["TEN", "GHICHU", "DIACHI", "DIENGIAI",
-                      "TRANGTRIDE", "TRANGTRIQUAI", "INHIEU"]
+columns_vietnamese = {"TENGIAY", "TENKHO", 
+                      "TENNVIEN", "TENKH",
+                      "TENDE", "TENSUON",
+                      "TENCA", "TENQUAI",
+                      "GHICHUDE", "GHICHUQUAI",
+                      "GHICHU", "DIACHI", "DIENGIAI",
+                      "DIENGIAIDONG", "DIENGIAIPHIEU",
+                      "TRANGTRIDE", "TRANGTRIQUAI", "INHIEU",
+                      "TENMAU", "TENMAUDE", "TENMAUCA",
+                      "TENMAUQUAI", "TENMAUSUON"}
 
 
 def convert_vni_to_unicode(vni_str):
@@ -174,20 +184,22 @@ def convert_unicode_to_vni(unicode_str):
     return result
 
 def check_need_convert(key):
-    for sub_name in columns_vietnamese:
-        if sub_name in key:
-            return True
-    return False
+    return key in columns_vietnamese
+    # for sub_name in columns_vietnamese:
+    #     if sub_name in key:
+    #         return True
+    # return False
 
 def convert_data_to_save_database(data):
-    for k, v in data.items():
+    _data = deepcopy(data)
+    for k, v in _data.items():
         if v is not None:
             if type(v) is str:
                 if check_need_convert(k):
-                    data[k] = f"'{convert_unicode_to_vni(v)}'"
+                    _data[k] = f"'{convert_unicode_to_vni(v)}'"
                 else:
-                    data[k] = f"'{v}'"
+                    _data[k] = f"'{v}'"
             else:
-                data[k] = str(v)
+                _data[k] = str(v)
                
-    return data
+    return _data

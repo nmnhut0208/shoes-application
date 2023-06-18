@@ -222,9 +222,11 @@ const FormNghiepVuPhanCong = ({
     })
       .then((response) => {
         console.log("response: ", response);
+        alert("Lưu thành công!");
       })
       .catch((error) => {
         console.log("error: ", error);
+        alert("Lỗi! Chưa lưu được!");
       });
 
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);
