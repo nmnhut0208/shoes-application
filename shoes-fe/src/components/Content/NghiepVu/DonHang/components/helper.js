@@ -34,8 +34,11 @@ export const updateColumnsInformations = (
               id_column={cell.column.id}
               dataTable={dataTable}
               dataMau={dataMau}
-              handleChange={(value) => {
+              handleChange={(value, label) => {
+                console.log("cell.row.id: ", cell.row.id);
+                console.log("cell.column.id: ", cell.column.id);
                 dataTable[cell.row.id][cell.column.id] = value;
+                dataTable[cell.row.id]["TEN" + cell.column.id] = label;
                 setDataTable([...dataTable]);
               }}
               readOnly={view}

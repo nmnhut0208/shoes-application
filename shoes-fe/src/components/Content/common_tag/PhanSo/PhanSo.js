@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import styles from "./InTongHop.module.scss";
+import styles from "./PhanSo.module.scss";
 
 const PhanSo = ({ tuso, mauso }) => {
   return (

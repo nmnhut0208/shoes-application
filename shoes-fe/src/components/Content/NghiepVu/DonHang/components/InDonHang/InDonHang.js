@@ -2,7 +2,7 @@ import { useMemo, useRef, useState, useLayoutEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import MaterialReactTable from "material-react-table";
 
-import styles from "./InTongHop.module.scss";
+import styles from "./InDonHang.module.scss";
 import { INFO_COLS_THO } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { PhanSo } from "~common_tag";
@@ -73,7 +73,7 @@ const SIZE_INFOR_PRINT = ({ list_tuso, list_mauso }) => {
   );
 };
 
-const InTongHop = ({ sophieu, data }) => {
+const InDonHang = ({ infoHeader, dataTable }) => {
   const [dataPrint, setDataPrint] = useState([]);
   const [stateTable, dispatchTable] = useTableContext();
   const columns = useMemo(() => {
@@ -82,20 +82,21 @@ const InTongHop = ({ sophieu, data }) => {
   const componentRef = useRef();
   const handelPrint = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: "Thông tin phân công",
+    documentTitle: "Thông tin đơn hàng",
   });
   useLayoutEffect(() => {
     let ma_giay_checked = [];
     let info_print = [];
-    for (let i = 0; i < data.length; i++) {
-      let ma_giay = data[i]["MAGIAY"];
+    for (let i = 0; i < dataTable.length; i++) {
+      let ma_giay = dataTable[i]["MAGIAY"];
       if (!ma_giay_checked.includes(ma_giay)) {
         const info = {
           MAGIAY: ma_giay,
-          TENGIAY: data[i]["TENGIAY"],
-          HINHANH: data[i]["HINHANH"],
+          TENGIAY: dataTable[i]["TENGIAY"],
+          HINHANH: dataTable[i]["HINHANH"], // CALL API lấy hình ảnh lên
+          // viết call API chờ chạy xong mới làm tiếp
         };
-        info["THO"] = data.filter((_data) => _data["MAGIAY"] === ma_giay);
+        info["THO"] = dataTable.filter((_data) => _data["MAGIAY"] === ma_giay);
         console.log("info[tho]: ", info["THO"]);
         for (let j = 0; j < info["THO"].length; j++) {
           info["THO"][j]["SIZE"] = "";
@@ -135,16 +136,27 @@ const InTongHop = ({ sophieu, data }) => {
 
   return (
     <div ref={componentRef} className={styles.print_page}>
-      <h1 className={styles.print_header}>Số phiếu: {sophieu}</h1>
+      <div className={styles.print_header}>
+        <div className={styles.info}>
+          <h1>Số đơn hàng: {infoHeader["SODH"]}</h1>
+          <h1>Ngày: {infoHeader["NGAYDH"]}</h1>
+        </div>
+        <div className={styles.header_right}>
+          <h1>{infoHeader["TENKH"]}</h1>
+        </div>
+      </div>
+      <br />
+      <br />
+
       {dataPrint.length > 0 &&
         dataPrint.map((info, index) => (
           <div className={styles.print_object} key={index}>
             <div className={styles.info_giay}>
               <table style={{ width: "100%" }}>
                 <tr className={styles.info_row_giay}>
-                  <th>{info["TENGIAY"]}</th>
-                  <th>{info["HINHANH"] && <img src={info["HINHANH"]} />}</th>
-                  <th>{info["MAGIAY"]}</th>
+                  <td>{info["TENGIAY"]}</td>
+                  <td>{info["HINHANH"] && <img src={info["HINHANH"]} />}</td>
+                  <td>{info["MAGIAY"]}</td>
                 </tr>
               </table>
             </div>
@@ -155,4 +167,4 @@ const InTongHop = ({ sophieu, data }) => {
   );
 };
 
-export default InTongHop;
+export default InDonHang;

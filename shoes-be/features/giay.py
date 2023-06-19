@@ -101,6 +101,13 @@ def read() -> List[RESPONSE_GIAY]:
             """
     return giay.read_custom(sql)
 
+@router.get("/giay/get_HINHANH")
+def read(MAGIAY: str) -> dict:
+    sql = f"""select MAGIAY, coalesce(HINHANH, '') as HINHANH
+            from DMGIAY  
+            where MAGIAY='{MAGIAY}'
+            """
+    return giay.read_custom(sql)
 
 @router.post("/giay")
 def add(data: ITEM_GIAY) -> RESPONSE:

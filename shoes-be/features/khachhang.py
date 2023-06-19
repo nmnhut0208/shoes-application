@@ -32,13 +32,29 @@ kh = KHACHHANG()
 
 @router.get("/khachhang")
 def read() -> List[ITEM_KHACHHANG]:
-    sql = "SELECT MAKH, TENKH, COALESCE(DONGIA, 0) as DONGIA, \
-                COALESCE(DIACHI, '') AS DIACHI, \
-                COALESCE(TEL, '') AS TEL, \
-                COALESCE(FAX, '') AS FAX, \
-                COALESCE(EMAIL, '') AS EMAIL, \
-                COALESCE(GHICHU, '') AS GHICHU \
-            FROM DMKHACHHANG"
+    sql = """SELECT MAKH, TENKH, COALESCE(DONGIA, 0) as DONGIA, 
+                COALESCE(DIACHI, '') AS DIACHI, 
+                COALESCE(TEL, '') AS TEL, 
+                COALESCE(FAX, '') AS FAX,
+                COALESCE(EMAIL, '') AS EMAIL, 
+                COALESCE(GHICHU, '') AS GHICHU 
+            FROM DMKHACHHANG
+            """
+    return kh.read_custom(sql)
+
+
+@router.get("/khachhang/get_details")
+def read(MAKH: str) -> List[ITEM_KHACHHANG]:
+    print("MAKH: ", MAKH)
+    sql = f"""SELECT MAKH, TENKH, COALESCE(DONGIA, 0) as DONGIA, 
+                COALESCE(DIACHI, '') AS DIACHI, 
+                COALESCE(TEL, '') AS TEL, 
+                COALESCE(FAX, '') AS FAX,
+                COALESCE(EMAIL, '') AS EMAIL, 
+                COALESCE(GHICHU, '') AS GHICHU 
+            FROM DMKHACHHANG
+            where MAKH='{MAKH}'
+            """
     return kh.read_custom(sql)
 
 

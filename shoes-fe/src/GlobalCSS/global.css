@@ -2,7 +2,8 @@
   font-size: 1.7rem;
 }
 
-table {
+
+.MuiTableContainer-root {
   border: 0.1rem solid rgba(0, 0, 0, 0.5);
 }
 

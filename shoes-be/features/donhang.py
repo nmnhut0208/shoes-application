@@ -74,6 +74,13 @@ class RESPONSE_GIAYDONHANG(BaseModel):
     DIENGIAIPHIEU: Optional[str] = None
     DIENGIAIDONG: Optional[str] = None
     INHIEU: Optional[str] = None
+    # ============================
+    TENMAUDE: str = ""
+    TENMAUGOT: str = ""
+    TENMAUSUON: str = ""
+    TENMAUCA: str = ""
+    TENMAUQUAI: str = ""
+
 
 
 
@@ -149,22 +156,37 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
 @router.get("/donhang/khachhang/{MAKH}/giay")
 # lấy tất cả các loại giày của khách hàng MAKH
 def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
-    sql = """SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
-                    coalesce(MAUDE, '') as MAUDE, 
-                    coalesce(MAUGOT, '') AS MAUGOT, 
-                    coalesce(MAUSUON, '') AS MAUSUON,
-                    coalesce(MAUCA, '') AS MAUCA,
-                    coalesce(MAUQUAI, '') AS MAUQUAI ,
+    sql = f"""SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+                    coalesce(MAUDE, '') as MAUDE, TENMAUDE,
+                    coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT,
+                    coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
+                    coalesce(MAUCA, '') AS MAUCA,TENMAUCA,
+                    coalesce(MAUQUAI, '') AS MAUQUAI,TENMAUQUAI,
                     coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH, 
                     V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
                     V_GIAY.TENCA, V_GIAY.TENKH
             FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH 
-                from DONHANG WHERE DONHANG.MAKH='{}') AS DONHANG
-            FULL OUTER JOIN (select * from V_GIAY where V_GIAY.MAKH='{}'
+                from DONHANG WHERE DONHANG.MAKH='{MAKH}') AS DONHANG
+            FULL OUTER JOIN (select * from V_GIAY where V_GIAY.MAKH='{MAKH}'
             and DONGIAQUAI is not null) 
             As V_GIAY on V_GIAY.magiay=DONHANG.magiay
-            """.format(MAKH, MAKH)
+            left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
+                    AS DMMAUDE 
+					ON coalesce(DMMAUDE.MAMAU, '') = coalesce(DONHANG.MAUDE, '')
+			left join (select MAMAU, TENMAU as TENMAUGOT from DMMAU) 
+                    AS DMMAUGOT 
+					ON coalesce(DMMAUGOT.MAMAU, '') = coalesce(DONHANG.MAUGOT, '')
+			left join (select MAMAU, TENMAU as TENMAUSUON from DMMAU) 
+                    AS DMMAUSUON 
+					ON coalesce(DMMAUSUON.MAMAU, '') = coalesce(DONHANG.MAUSUON, '')
+			left join (select MAMAU, TENMAU as TENMAUCA from DMMAU) 
+                    AS DMMAUCA 
+					ON coalesce(DMMAUCA.MAMAU, '') = coalesce(DONHANG.MAUCA, '')
+			left join (select MAMAU, TENMAU as TENMAUQUAI from DMMAU) 
+                    AS DMMAUQUAI 
+					ON coalesce(DMMAUQUAI.MAMAU, '') = coalesce(DONHANG.MAUQUAI, '')
+            """
     
     result = donhang.read_custom(sql)
     return result
