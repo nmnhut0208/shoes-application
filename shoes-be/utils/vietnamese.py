@@ -152,6 +152,7 @@ columns_vietnamese = {"TENGIAY", "TENKHO",
                       "TRANGTRIDE", "TRANGTRIQUAI", "INHIEU",
                       "TENMAU", "TENMAUDE", "TENMAUCA",
                       "TENMAUQUAI", "TENMAUSUON",
+                      "TENMAUGOT", 
                       "TENFORM"}
 
 
