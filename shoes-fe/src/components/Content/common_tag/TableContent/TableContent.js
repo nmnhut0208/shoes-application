@@ -48,7 +48,6 @@ const TableContent = () => {
   }, []);
 
   const handleDeleteRow = (row) => {
-    console.log("row: ", row);
     let url = "";
     switch (stateTask.inforCurrentTask.infoDetail) {
       case "Kho hàng":
@@ -56,58 +55,128 @@ const TableContent = () => {
         break;
       case "Mũi":
         url = "http://localhost:8000/mui";
+        dispatchItem(
+          actions_items_context.setInfoMui(
+            stateItem.infoItemMui.filter(
+              (item) => item["value"] != row["MAMUI"]
+            )
+          )
+        );
         break;
       case "Đế":
         url = "http://localhost:8000/de";
-        const data_de = stateItem.infoItemDe.filter(
-          (item) => item["value"] != row["MADE"]
+        dispatchItem(
+          actions_items_context.setInfoDe(
+            stateItem.infoItemDe.filter((item) => item["value"] != row["MADE"])
+          )
         );
-        console.log("data_de: ", data_de);
-        actions_items_context.setInfoDe([
-          { value: "md", label: "thiet a cho" },
-        ]);
         break;
       case "Cá":
         url = "http://localhost:8000/ca";
+        dispatchItem(
+          actions_items_context.setInfoCa(
+            stateItem.infoItemCa.filter((item) => item["value"] != row["MACA"])
+          )
+        );
         break;
       case "Nhân viên":
         url = "http://localhost:8000/nhanvien";
+        if (row["LOAINVIEN"] === "TD") {
+          dispatchItem(
+            actions_items_context.setInfoThoDe(
+              stateItem.infoItemThoDe.filter(
+                (item) => item["value"] != row["MANVIEN"]
+              )
+            )
+          );
+        }
+        if (row["LOAINVIEN"] === "TQ") {
+          dispatchItem(
+            actions_items_context.setInfoThoQuai(
+              stateItem.infoItemThoQuai.filter(
+                (item) => item["value"] != row["MANVIEN"]
+              )
+            )
+          );
+        }
         break;
       case "Kỳ tính lương":
         url = "http://localhost:8000/kytinhluong";
+        dispatchItem(
+          actions_items_context.setInfoKyTinhLuong(
+            stateItem.infoItemKyTinhLuong.filter(
+              (item) => item["value"] != row["MAKY"]
+            )
+          )
+        );
         break;
       case "Giày":
         url = "http://localhost:8000/giay";
         break;
       case "Màu":
         url = "http://localhost:8000/mau";
+        dispatchItem(
+          actions_items_context.setInfoMau(
+            stateItem.infoItemMau.filter(
+              (item) => item["value"] != row["MAMAU"]
+            )
+          )
+        );
         break;
       case "Sườn":
         url = "http://localhost:8000/suon";
+        dispatchItem(
+          actions_items_context.setInfoSuon(
+            stateItem.infoItemSuon.filter(
+              (item) => item["value"] != row["MASUON"]
+            )
+          )
+        );
         break;
       case "Gót":
         url = "http://localhost:8000/got";
+        dispatchItem(
+          actions_items_context.setInfoGot(
+            stateItem.infoItemGot.filter(
+              (item) => item["value"] != row["MAGOT"]
+            )
+          )
+        );
         break;
       case "Quai":
         url = "http://localhost:8000/quai";
+        dispatchItem(
+          actions_items_context.setInfoQuai(
+            stateItem.infoItemQuai.filter(
+              (item) => item["value"] != row["MAQUAI"]
+            )
+          )
+        );
         break;
       case "Khách hàng":
         url = "http://localhost:8000/khachhang";
+        dispatchItem(
+          actions_items_context.setInfoKhachHang(
+            stateItem.infoItemKhachHang.filter(
+              (item) => item["MAKH"] != row["MAKH"]
+            )
+          )
+        );
         break;
       case "Phân quyền":
         url = "http://localhost:8000/phanquyen";
         break;
     }
-    // actions_items_context.setInfoDe([{ value: "md", label: "thiet a cho" }]);
-    // fetch(url, {
-    //   method: "DELETE",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(row),
-    // })
-    //   .then((res) => console.log("response: ", res))
-    //   .catch((err) => console.log("error: ", err));
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(row),
+    })
+      .then((res) => console.log("response: ", res))
+      .catch((err) => console.log("error: ", err));
+
     const newData = inforShowTable.infoTable.filter((item) => item != row);
     dispatchTable(actions_table.setInforTable(newData));
   };
