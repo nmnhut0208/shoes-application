@@ -7,6 +7,7 @@ import { INFO_COLS_THO } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { PhanSo } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
+import { convertDateForReport } from "~utils/processing_date";
 
 const Table = ({ columns, data }) => {
   return (
@@ -73,8 +74,28 @@ const SIZE_INFOR_PRINT = ({ list_tuso, list_mauso }) => {
   );
 };
 
-const InDonHang = ({ infoHeader, dataTable }) => {
+const getImageFromMAGIAY = async (MAGIAY) => {
+  const response = await fetch(
+    "http://localhost:8000/giay/get_HINHANH?MAGIAY=" + MAGIAY
+  );
+  const result = await response.json();
+  console.log(MAGIAY, result);
+  return result[0]["HINHANH"];
+};
+
+const getDiaChiKhachHang = async (MAKH) => {
+  const response = await fetch(
+    "http://localhost:8000/khachhang/get_details?MAKH=" + MAKH
+  );
+  const result = await response.json();
+  return result[0];
+};
+
+const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
+  const [header, setHeader] = useState(infoHeader);
   const [dataPrint, setDataPrint] = useState([]);
+  const [listImage, setListImage] = useState([]);
+  const [doneGetDiaChi, setDoneGetDiaChi] = useState(false);
   const [stateTable, dispatchTable] = useTableContext();
   const columns = useMemo(() => {
     return processingInfoColumnTable(INFO_COLS_THO);
@@ -87,17 +108,16 @@ const InDonHang = ({ infoHeader, dataTable }) => {
   useLayoutEffect(() => {
     let ma_giay_checked = [];
     let info_print = [];
+    let list_promises = [];
     for (let i = 0; i < dataTable.length; i++) {
       let ma_giay = dataTable[i]["MAGIAY"];
       if (!ma_giay_checked.includes(ma_giay)) {
         const info = {
           MAGIAY: ma_giay,
           TENGIAY: dataTable[i]["TENGIAY"],
-          HINHANH: dataTable[i]["HINHANH"], // CALL API lấy hình ảnh lên
-          // viết call API chờ chạy xong mới làm tiếp
         };
+        list_promises.push(getImageFromMAGIAY(ma_giay));
         info["THO"] = dataTable.filter((_data) => _data["MAGIAY"] === ma_giay);
-        console.log("info[tho]: ", info["THO"]);
         for (let j = 0; j < info["THO"].length; j++) {
           info["THO"][j]["SIZE"] = "";
           let top = [];
@@ -123,27 +143,38 @@ const InDonHang = ({ infoHeader, dataTable }) => {
         info_print.push(info);
       }
     }
-    console.log("info_print: ", info_print);
+    Promise.all([getDiaChiKhachHang(infoHeader["MAKH"])]).then((values) => {
+      setHeader({ ...header, ...values[0] });
+      setDoneGetDiaChi(true);
+    });
+    Promise.all(list_promises).then((values) => {
+      setListImage(values);
+    });
+
     setDataPrint(info_print);
   }, []);
+  // console.log("==============================");
+  // console.log("header: ", header);
+  // console.log("dataPrint: ", dataPrint);
+  // console.log("listImage: ", listImage);
+  // console.log("doneGetDiaChi: ", doneGetDiaChi);
 
   useLayoutEffect(() => {
-    if (dataPrint.length > 0) {
+    if (dataPrint.length > 0 && listImage.length > 0 && doneGetDiaChi) {
       handelPrint();
-      dispatchTable(actions_table.setModeShowModal(false));
+      setShowModal(false);
     }
-  }, [dataPrint]);
+  }, [dataPrint, listImage, doneGetDiaChi]);
 
   return (
     <div ref={componentRef} className={styles.print_page}>
       <div className={styles.print_header}>
-        <div className={styles.info}>
-          <h1>Số đơn hàng: {infoHeader["SODH"]}</h1>
-          <h1>Ngày: {infoHeader["NGAYDH"]}</h1>
-        </div>
-        <div className={styles.header_right}>
-          <h1>{infoHeader["TENKH"]}</h1>
-        </div>
+        <h1>Số đơn hàng: {header["SODH"]}</h1>
+        <h1>{header["TENKH"]}</h1>
+      </div>
+      <div className={styles.print_header}>
+        <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
+        <h2>{header["DIACHI"]}</h2>
       </div>
       <br />
       <br />
@@ -154,8 +185,8 @@ const InDonHang = ({ infoHeader, dataTable }) => {
             <div className={styles.info_giay}>
               <table style={{ width: "100%" }}>
                 <tr className={styles.info_row_giay}>
-                  <td>{info["TENGIAY"]}</td>
-                  <td>{info["HINHANH"] && <img src={info["HINHANH"]} />}</td>
+                  <td className={styles.TENGIAY}>{info["TENGIAY"]}</td>
+                  <td>{listImage[index] && <img src={listImage[index]} />}</td>
                   <td>{info["MAGIAY"]}</td>
                 </tr>
               </table>

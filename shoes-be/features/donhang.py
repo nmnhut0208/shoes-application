@@ -124,11 +124,11 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
     print("SODH: ", SODH)
     sql = f"""SELECT DIENGIAIPHIEU,MADONG, SODH, 
                 HINHANH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
-                coalesce(MAUDE, '') as MAUDE, 
-                coalesce(MAUGOT, '') AS MAUGOT, 
-                coalesce(MAUSUON, '') AS MAUSUON,
-                coalesce(MAUCA, '') AS MAUCA,
-                coalesce(MAUQUAI, '') AS MAUQUAI ,
+                coalesce(MAUDE, '') as MAUDE, TENMAUDE,
+                coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT, 
+                coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
+                coalesce(MAUCA, '') AS MAUCA,TENMAUCA,
+                coalesce(MAUQUAI, '') AS MAUQUAI, TENMAUQUAI,
                 coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH, 
                 V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
                 V_GIAY.TENCA, V_GIAY.TENKH,
@@ -148,6 +148,21 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
             left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  
             left JOIN (Select MAGIAY, HINHANH from DMGIAY) as DMGIAY
             on DMGIAY.MAGIAY = DONHANG.MAGIAY
+            left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
+                AS DMMAUDE 
+                ON coalesce(DMMAUDE.MAMAU, '') = coalesce(DONHANG.MAUDE, '')
+			left join (select MAMAU, TENMAU as TENMAUGOT from DMMAU) 
+                AS DMMAUGOT 
+                ON coalesce(DMMAUGOT.MAMAU, '') = coalesce(DONHANG.MAUGOT, '')
+			left join (select MAMAU, TENMAU as TENMAUSUON from DMMAU) 
+                AS DMMAUSUON 
+                ON coalesce(DMMAUSUON.MAMAU, '') = coalesce(DONHANG.MAUSUON, '')
+			left join (select MAMAU, TENMAU as TENMAUCA from DMMAU) 
+                AS DMMAUCA 
+                ON coalesce(DMMAUCA.MAMAU, '') = coalesce(DONHANG.MAUCA, '')
+			left join (select MAMAU, TENMAU as TENMAUQUAI from DMMAU) 
+                AS DMMAUQUAI 
+                ON coalesce(DMMAUQUAI.MAMAU, '') = coalesce(DONHANG.MAUQUAI, '')
           """
     result = donhang.read_custom(sql)
     return result

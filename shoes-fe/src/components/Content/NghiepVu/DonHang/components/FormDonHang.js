@@ -375,6 +375,7 @@ const FormDonHang = ({
           <InDonHang
             infoHeader={formInfoDonHang}
             dataTable={dataTable.slice(0, dataTable.length - 1)}
+            setShowModal={setShowModal}
           />
         </Modal>
       )}
