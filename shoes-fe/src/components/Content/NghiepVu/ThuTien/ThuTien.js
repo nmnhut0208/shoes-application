@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import Modal from "./Modal";
+import ModalMain from "./ModalMain";
 import { useUserContext } from "~user";
 import FormThuTien from "./FormThuTien";
 
@@ -21,9 +21,9 @@ const ThuTien = () => {
 
   return (
     <>
-      <Modal title="Thu Tiền">
+      <ModalMain title="Thu Tiền">
         <FormThuTien type_action="add" />
-      </Modal>
+      </ModalMain>
     </>
   );
 };

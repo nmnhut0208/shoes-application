@@ -3,6 +3,8 @@ import clsx from "clsx";
 import moment from "moment";
 
 import { ItemKhachHang } from "~items";
+import ModalForButton from "./ModalForButton";
+import In from "./In";
 import styles from "./FormThuTien.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import { convertDate } from "~utils/processing_date";
@@ -24,7 +26,9 @@ const FormThuTien = ({ dataView, type_action }) => {
   const [form, setForm] = useState({});
   const [lastestSOPHIEU, setLastestSOPHIEU] = useState(0);
   const [stateUser, dispatchUser] = useUserContext();
+  const [showPrint, setShowPrint] = useState(false);
   console.log("form hhe: ", form);
+
   useEffect(() => {
     if (!dataView) {
       fetch("http://localhost:8000/hethong/phieuthu/SOPHIEU")
@@ -37,6 +41,8 @@ const FormThuTien = ({ dataView, type_action }) => {
             NGUOITAO: stateUser.userName,
             NGUOISUA: stateUser.userName,
             DIENGIAIPHIEU: "",
+            MAKH: "",
+            TENKH: "",
             SOPHIEU: sophieu,
             NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
           });
@@ -111,6 +117,10 @@ const FormThuTien = ({ dataView, type_action }) => {
     setLastestSOPHIEU(lastestSOPHIEU + 1);
   };
 
+  const handlePrint = () => {
+    setShowPrint(true);
+  };
+
   return (
     <div className={styles.form}>
       <div className={styles.group_first}>
@@ -165,7 +175,7 @@ const FormThuTien = ({ dataView, type_action }) => {
         </div>
         <div className={styles.group_second_row}>
           <label>Diễn giải</label>
-          <input
+          <textarea
             name="DIENGIAIPHIEU"
             value={form["DIENGIAIPHIEU"]}
             onChange={(e) =>
@@ -181,9 +191,15 @@ const FormThuTien = ({ dataView, type_action }) => {
           {type_action === "add" && (
             <button onClick={handleNhapTiep}>Nhập tiếp</button>
           )}
-          {/* <button>Đóng</button> */}
+          <button onClick={handlePrint}>In</button>
         </div>
       </div>
+
+      {showPrint && (
+        <ModalForButton status={showPrint} setShowModal={setShowPrint}>
+          <In data={form} setShowModal={setShowPrint} />
+        </ModalForButton>
+      )}
     </div>
   );
 };

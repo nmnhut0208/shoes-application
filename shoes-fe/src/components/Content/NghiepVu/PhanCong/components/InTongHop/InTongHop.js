@@ -4,7 +4,7 @@ import { useReactToPrint } from "react-to-print";
 import styles from "./InTongHop.module.scss";
 import { INFO_COLS_THO } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
-import { TableToPrint, SizeColumnInPrint } from "~common_tag";
+import { TableToPrint, SizeColumnInPrint } from "~common_tag/reports";
 import { useTableContext, actions_table } from "~table_context";
 
 const COL_INFO_SIZE = [

@@ -4,7 +4,11 @@ import { useReactToPrint } from "react-to-print";
 import styles from "./InDonHang.module.scss";
 import { INFO_COLS_THO } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
-import { TableToPrint, SizeColumnInPrint } from "~common_tag";
+import {
+  TableToPrint,
+  SizeColumnInPrint,
+  Signature,
+} from "~common_tag/reports";
 import { convertDateForReport } from "~utils/processing_date";
 
 const COL_INFO_SIZE = [
@@ -135,6 +139,10 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
             <TableToPrint data={info["THO"]} columns={columns} />
           </div>
         ))}
+
+      <br />
+      <br />
+      <Signature />
     </div>
   );
 };

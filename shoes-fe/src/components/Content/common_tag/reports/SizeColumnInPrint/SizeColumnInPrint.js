@@ -1,4 +1,4 @@
-import { PhanSo } from "~common_tag";
+import { PhanSo } from "~common_tag/reports";
 import styles from "./SizeColumnInPrint.module.scss";
 
 const SizeColumnInPrint = ({ list_tuso, list_mauso }) => {

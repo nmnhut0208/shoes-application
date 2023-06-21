@@ -1,15 +1,9 @@
-import { useTableContext, actions_table } from "~table_context";
-import styles from "./Modal.module.scss";
+import styles from "./ModalMain.module.scss";
 import { useTaskContext, resetHeader } from "~task";
 
-const Modal = ({ title, children }) => {
+const ModalMain = ({ title, children }) => {
   const [stateTask, dispatchTask] = useTaskContext();
-  // const [stateTable, dispatchTable] = useTableContext();
-  // const infoShowModal = stateTable["infoShowModal"];
 
-  // if (!infoShowModal.visible) {
-  //   return null;
-  // }
   return (
     <div className={styles.modal}>
       <div className={styles.modal__overlay}></div>
@@ -31,4 +25,4 @@ const Modal = ({ title, children }) => {
   );
 };
 
-export default Modal;
+export default ModalMain;
