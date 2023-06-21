@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState, useLayoutEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import { Signature } from "~common_tag/reports";
+import { convertDateForReport } from "~utils/processing_date";
 
 import styles from "./In.module.scss";
 
@@ -27,7 +28,7 @@ const In = ({ data, setShowModal }) => {
         </div>
         <div>
           <label>Ngày:</label>
-          <input value={data["NGAYPHIEU"]} />
+          <input value={convertDateForReport(data["NGAYPHIEU"])} />
         </div>
       </div>
 
