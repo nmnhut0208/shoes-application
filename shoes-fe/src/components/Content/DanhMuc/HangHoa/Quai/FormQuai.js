@@ -1,10 +1,14 @@
 import { useState } from "react";
-import clsx from "clsx";
 import styles from "./FormQuai.module.scss";
 import { useTableContext, actions_table } from "~table_context";
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 const FormQuai = () => {
   const [stateTable, dispatchTable] = useTableContext();
+  const [stateItem, dispatchItem] = useItemsContext();
   const [view, setView] = useState(
     () => stateTable.inforShowTable.action_row === "view"
   );
@@ -39,6 +43,12 @@ const FormQuai = () => {
           inputForm,
         ])
       );
+      dispatchItem(
+        actions_items_context.setInfoQuai([
+          ...stateItem.infoItemQuai,
+          { label: inputForm["TENQUAI"], value: inputForm["MAQUAI"] },
+        ])
+      );
     }
     console.log("inputForm: ", inputForm);
     fetch("http://localhost:8000/quai", {
@@ -48,9 +58,11 @@ const FormQuai = () => {
     })
       .then((response) => {
         console.log("response: ", response);
+        alert("Lưu thành công.");
       })
       .catch((error) => {
         console.log("error: ", error);
+        alert("Xảy ra lỗi. Chưa lưu được.");
       });
     dispatchTable(actions_table.setModeShowModal(false));
   };

@@ -2,6 +2,8 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from utils.vietnamese import convert_data_to_save_database
+
 
 from pydantic import BaseModel
 from typing import Optional
@@ -76,47 +78,53 @@ giay = GIAY()
 
 @router.get("/giay")
 def read() -> List[RESPONSE_GIAY]:
-    sql = "select MAGIAY, TENGIAY, DMGIAY.MADE, \
-                TENDE, DMGIAY.MASUON,TENSUON, DMGIAY.MACA, \
-                TENCA, DMGIAY.MAQUAI, TENQUAI, GHICHU, DONGIA,\
-                DMGIAY.MAMAU, TENMAU, DMGIAY.MAKH, TENKH, SortID,\
-                GIATRANGTRI,GIASUON, GIAGOT, GIATANTRANG, \
-                GIANHANCONG, GIAKEO,TRANGTRIDE, GHICHUDE, \
-                TRANGTRIQUAI, GHICHUQUAI, HINHANH \
-            from DMGIAY  \
-            LEFT JOIN(select MADE, TENDE FROM DMDE) AS DMDE ON DMGIAY.MADE = DMDE.MADE \
-            LEFT JOIN(SELECT MASUON, TENSUON FROM DMSUON) AS DMSUON ON DMGIAY.MASUON = DMSUON.MASUON \
-            LEFT JOIN(SELECT MACA, TENCA FROM DMCA) AS DMCA ON DMGIAY.MACA = DMCA.MACA \
-            LEFT JOIN(SELECT MAQUAI, TENQUAI FROM DMQUAI) AS DMQUAI ON DMGIAY.MAQUAI = DMQUAI.MAQUAI \
-            LEFT JOIN(SELECT MAMAU, TENMAU FROM DMMAU) AS DMMAU ON DMGIAY.MAMAU = DMMAU.MAMAU \
-            LEFT JOIN(SELECT MAKH, TENKH FROM DMKHACHHANG) AS DMKHACHHANG ON DMGIAY.MAKH = DMKHACHHANG.MAKH"
+    sql = """select MAGIAY, TENGIAY, DMGIAY.MADE, 
+                TENDE, DMGIAY.MASUON,TENSUON, DMGIAY.MACA, 
+                TENCA, DMGIAY.MAQUAI, TENQUAI, GHICHU, DONGIA,
+                DMGIAY.MAMAU, TENMAU, DMGIAY.MAKH, TENKH, SortID,
+                GIATRANGTRI,GIASUON, GIAGOT, GIATANTRANG, 
+                GIANHANCONG, GIAKEO,TRANGTRIDE, GHICHUDE, 
+                TRANGTRIQUAI, GHICHUQUAI, HINHANH 
+            from DMGIAY  
+            LEFT JOIN(select MADE, TENDE FROM DMDE) AS DMDE 
+                     ON DMGIAY.MADE = DMDE.MADE 
+            LEFT JOIN(SELECT MASUON, TENSUON FROM DMSUON) AS DMSUON 
+                    ON DMGIAY.MASUON = DMSUON.MASUON 
+            LEFT JOIN(SELECT MACA, TENCA FROM DMCA) AS DMCA 
+                    ON DMGIAY.MACA = DMCA.MACA 
+            LEFT JOIN(SELECT MAQUAI, TENQUAI FROM DMQUAI) AS DMQUAI 
+                    ON DMGIAY.MAQUAI = DMQUAI.MAQUAI 
+            LEFT JOIN(SELECT MAMAU, TENMAU FROM DMMAU) AS DMMAU 
+                    ON DMGIAY.MAMAU = DMMAU.MAMAU 
+            LEFT JOIN(SELECT MAKH, TENKH FROM DMKHACHHANG) AS DMKHACHHANG 
+                    ON DMGIAY.MAKH = DMKHACHHANG.MAKH
+            """
     return giay.read_custom(sql)
 
+@router.get("/giay/get_HINHANH")
+def read(MAGIAY: str) -> dict:
+    sql = f"""select MAGIAY, coalesce(HINHANH, '') as HINHANH
+            from DMGIAY  
+            where MAGIAY='{MAGIAY}'
+            """
+    return giay.read_custom(sql)
 
 @router.post("/giay")
 def add(data: ITEM_GIAY) -> RESPONSE:
-    sql_delete = f"""delete DMGIAY
-                    where MAGIAY = '{data.MAGIAY}'"""
-    giay.execute_custom(sql_delete)
-    data = dict(data)
-    col = []
-    val = []
-    for k, v in data.items():
-        if v is not None:
-            col.append(k)
-            val.append(f"'{v}'")
-    col = " ,".join(col)
-    val = " ,".join(val)
+    data = convert_data_to_save_database(dict(data))
+    col = " ,".join([k for k, v in data.items() if v is not None])
+    val = " ,".join([v for v in data.values() if v is not None]) 
+
     return giay.add(col, val)
 
 
 @router.put("/giay")
 def update(data: ITEM_GIAY) -> RESPONSE:
-    data = dict(data)
-    val = ", ".join([f"{key} = '{value}'" for key,
-                    value in data.items() if value is not None])
+    data = convert_data_to_save_database(dict(data))
+
+    val = ", ".join([f"{k} = {v}" for k, v in data.items() if v is not None])
     
-    condition = f"MAGIAY = '{data['MAGIAY']}'"
+    condition = f"MAGIAY = {data['MAGIAY']}"
     return giay.update(val, condition)
 
 

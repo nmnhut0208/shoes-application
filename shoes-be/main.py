@@ -22,6 +22,7 @@ from features.donhang import router as router_donhang
 from features.chamcong import router as router_chamcong
 from features.hethong import router as router_hethong
 from features.phancong import router as router_phancong
+from features.congno import router as router_congno
 from features.tv_giaohang import router as router_tv_giaohang
 from features.tv_thuchi import router as router_tv_thuchi
 from features.login import router as router_login
@@ -105,3 +106,6 @@ app.include_router(
 
 app.include_router(
     router_tv_chamcong, tags=["TV Chấm Công"])
+
+app.include_router(
+    router_congno, tags=["Công nợ"])

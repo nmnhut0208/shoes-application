@@ -1,0 +1,12 @@
+.end_page {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-right: 5rem;
+  p {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+  p:last-child {
+    text-align: center;
+  }
+}

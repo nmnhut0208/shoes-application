@@ -1,9 +1,14 @@
 import { useState } from "react";
 import styles from "./FormKhachHang.module.scss";
 import { useTableContext, actions_table } from "~table_context";
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 const FormKhachHang = () => {
   const [stateTable, dispatchTable] = useTableContext();
+  const [stateItem, dispatchItem] = useItemsContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
 
   const handleChangeInformationForm = (e) => {
@@ -31,6 +36,12 @@ const FormKhachHang = () => {
           inputForm,
         ])
       );
+      dispatchItem(
+        actions_items_context.setInfoKhachHang([
+          ...stateItem.infoItemKhachHang,
+          { TENKH: inputForm["TENKH"], MAKH: inputForm["MAKH"] },
+        ])
+      );
     }
     console.log("inputForm: ", inputForm);
     fetch("http://localhost:8000/khachhang", {
@@ -40,9 +51,11 @@ const FormKhachHang = () => {
     })
       .then((response) => {
         console.log("response: ", response);
+        alert("Lưu thành công.");
       })
       .catch((error) => {
         console.log("error: ", error);
+        alert("Xảy ra lỗi. Chưa lưu được.");
       });
     dispatchTable(actions_table.setModeShowModal(false));
   };

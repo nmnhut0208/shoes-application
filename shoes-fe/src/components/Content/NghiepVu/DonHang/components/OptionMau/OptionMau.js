@@ -24,8 +24,9 @@ const OptionMau = ({
 
   const handleMenuItemClick = (event, index) => {
     // setSelectedIndex(index);
+    console.log("dataMau: ", dataMau[index]["value"], dataMau[index]["label"]);
     setAnchorEl(null);
-    handleChange(dataMau[index]["value"]);
+    handleChange(dataMau[index]["value"], dataMau[index]["label"]);
   };
 
   const handleClose = () => {

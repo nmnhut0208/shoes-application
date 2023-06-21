@@ -63,32 +63,6 @@ export const processing_button_add = (
     if (key.includes("SIZE")) record[key] = parseInt(record[key]);
   }
 
-  console.log(
-    " JSON.stringify({ ...record, ...infoPhieu }): ",
-    JSON.stringify({ ...record, ...infoPhieu })
-  );
-
-  fetch("http://localhost:8000/phancong/add_phancong", {
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...record, ...infoPhieu }),
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      setListMaDongPhanCongAddButWaitSave([
-        ...listMaDongPhanCongAddButWaitSave,
-        ,
-        data["MADONG"],
-      ]);
-    })
-    .catch((error) => {
-      console.log("error: ", error);
-    });
-
-  // TODO: khi đoạn này có giá trị null
-  // luôn luôn tìm thấy nên ko check lại index
   let index = listGiayWillPhanCong.findIndex(
     (item) =>
       item["MAGIAY"] === formPhanCong["MAGIAY"] &&
@@ -107,8 +81,29 @@ export const processing_button_add = (
       if (remain[key] > 0) is_remain = true;
     }
   }
-  if (nof_giay_phan_cong > 0)
-    setDataChiTietPhanCong([...dataChiTietPhanCong, record]);
+  if (nof_giay_phan_cong > 0) {
+    fetch("http://localhost:8000/phancong/add_phancong", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...record, ...infoPhieu }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setListMaDongPhanCongAddButWaitSave([
+          ...listMaDongPhanCongAddButWaitSave,
+          data["MADONG"],
+        ]);
+        setDataChiTietPhanCong([
+          ...dataChiTietPhanCong,
+          { ...record, MADONG: data["MADONG"] },
+        ]);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
+  }
   if (is_remain) {
     setFormPhanCong({
       ...remain,
@@ -194,49 +189,6 @@ export const updateMaGiayWillPhanCong = (
         })
         .then((info) => {
           console.log("chi tiet don hang can phan cong: ", info);
-          // TODO: lọc những mã giày đã phân công
-          // trừ số lượng nó đi
-          // làm API giả khéo léo xíu để dễ test nè
-          // Để khi user chỉnh sửa danh sách đã phân công thì
-          // dễ dàng show ra những đứa chưa phân công thôi
-          // let list_index_done_phan_cong = [];
-          // for (let index = 0; index < info.length; index++) {
-          //   // TODO: test khi có columns none khi so sánh
-          //   let col = dataChiTietPhanCong.findIndex(
-          //     (data) =>
-          //       info[index]["SODH"] === data["SODH"] &&
-          //       info[index]["MAGIAY"] === data["MAGIAY"] &&
-          //       info[index]["MAUDE"] === data["MAUDE"] &&
-          //       info[index]["MAUGOT"] === data["MAUGOT"] &&
-          //       info[index]["MAUSUON"] === data["MAUSUON"] &&
-          //       info[index]["MAUCA"] === data["MAUCA"] &&
-          //       info[index]["MAUQUAI"] === data["MAUQUAI"]
-          //   );
-          //   if (col >= 0) {
-          //     // Cập nhật lại info
-          //     let nof_giay_se_phan_cong = 0;
-          //     for (let key in info[index]) {
-          //       if (key.includes("SIZE")) {
-          //         info[index][key] =
-          //           info[index][key] - dataChiTietPhanCong[col][key];
-          //         nof_giay_se_phan_cong += info[index][key];
-          //       }
-          //     }
-          //     if (nof_giay_se_phan_cong == 0) {
-          //       // delete row done PhanCong
-          //       list_index_done_phan_cong.push(index);
-          //     }
-          //   }
-          // }
-
-          // // delete index in list_index_done_phan_cong
-          // let list_data_will_phancong = [];
-          // for (let index = 0; index < info.length; index++) {
-          //   if (!list_index_done_phan_cong.includes(index)) {
-          //     list_data_will_phancong.push(info[index]);
-          //   }
-          // }
-
           let list_data_will_phancong = info;
           console.log("list_data_will_phancong: ", list_data_will_phancong);
           setListGiayWillPhanCong(list_data_will_phancong);
@@ -275,24 +227,32 @@ export const processing_button_delete = (
   setListGiayWillPhanCong,
   setFormPhanCong,
   infoPhieu,
-  resetForm
+  resetForm,
+  listMaDongPhanCongAddButWaitSave,
+  setListMaDongPhanCongAddButWaitSave
 ) => {
   if (Object.keys(rowSelectionChiTietPhanCong).length == 0) return;
   let data_delete =
     dataChiTietPhanCong[parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])];
   data_delete = { ...data_delete, ...infoPhieu };
-  console.log("JSON.stringify(data_delete): ", JSON.stringify(data_delete));
-  fetch("http://localhost:8000/phancong", {
-    method: "delete",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data_delete),
-  })
+
+  fetch(
+    "http://localhost:8000/phancong/by_list_MADONG/?MADONG=" +
+      data_delete["MADONG"],
+    {
+      method: "delete",
+    }
+  )
     .then((response) => {
       let SoDH_del = data_delete["SODH"];
-
       let index = parseInt(Object.keys(rowSelectionChiTietPhanCong)[0]);
       dataChiTietPhanCong.splice(index, 1);
       setDataChiTietPhanCong([...dataChiTietPhanCong]);
+
+      let new_listMADONG = listMaDongPhanCongAddButWaitSave.filter(
+        (data) => data === data_delete["MADONG"]
+      );
+      setListMaDongPhanCongAddButWaitSave(new_listMADONG);
 
       if (listDonHangDonePhanCong.includes(SoDH_del)) {
         let newListDonHangDonePhanCong = listDonHangDonePhanCong.filter(

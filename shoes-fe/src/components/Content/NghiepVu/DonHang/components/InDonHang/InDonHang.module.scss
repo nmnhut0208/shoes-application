@@ -1,0 +1,36 @@
+@import "~common_scss/form.module.scss";
+
+.print_page {
+  margin: 1rem 1rem 1rem 1rem;
+
+  .print_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .print_object {
+    margin-top: 3rem;
+
+    .info_giay {
+      @extend .font-setting;
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      .info_row_giay {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .TENGIAY {
+          width: 40rem;
+        }
+      }
+
+      img {
+        height: 15rem;
+        width: 15rem;
+        object-fit: cover;
+      }
+    }
+  }
+}

@@ -1,10 +1,11 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
+from typing import Optional
+
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
-
-from pydantic import BaseModel
-from typing import Optional
+from utils.vietnamese import convert_data_to_save_database
 
 
 class ITEM_GOT(BaseModel):
@@ -33,18 +34,19 @@ def read() -> List[ITEM_GOT]:
 
 @router.post("/got")
 def add(data: ITEM_GOT) -> RESPONSE:
-    data = dict(data)
+    data = convert_data_to_save_database(dict(data))
     print(data)
-    col = ", ".join(data.keys())
-    val = ", ".join([f"'{value}'" for value in data.values()])
+    col = ", ".join([k for k, v in data.items() if v is not None])
+    val = ", ".join([v for v in data.values() if v is not None])
     return got.add(col, val)
 
 
 @router.put("/got")
 def update(data: ITEM_GOT) -> RESPONSE:
-    data = dict(data)
-    val = ", ".join([f"{key} = '{value}'" for key, value in data.items()])
-    condition = f"MAGOT = '{data['MAGOT']}'"
+    data = convert_data_to_save_database(dict(data))
+    val = ", ".join([f"{k} = {v}" for k, v in data.items() \
+                     if v is not None])
+    condition = f"MAGOT = {data['MAGOT']}"
     return got.update(val, condition)
 
 

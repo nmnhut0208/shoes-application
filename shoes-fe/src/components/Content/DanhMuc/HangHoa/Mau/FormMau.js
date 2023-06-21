@@ -1,12 +1,16 @@
 import { useState } from "react";
-import clsx from "clsx";
 import styles from "./FormMau.module.scss";
 import FormMauBasic from "./FormMauBasic";
 import { useTableContext, actions_table } from "~table_context";
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 const FormMau = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [dataForm, setDataForm] = useState(stateTable.inforShowTable.record);
+  const [stateItem, dispatchItem] = useItemsContext();
 
   const handleSaveFrom = () => {
     let method = "";
@@ -27,6 +31,12 @@ const FormMau = () => {
           dataForm,
         ])
       );
+      dispatchItem(
+        actions_items_context.setInfoMau([
+          ...stateItem.infoItemMau,
+          { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
+        ])
+      );
     }
     fetch("http://localhost:8000/mau", {
       method: method,
@@ -35,9 +45,11 @@ const FormMau = () => {
     })
       .then((response) => {
         console.log("response: ", response);
+        alert("Lưu thành công.");
       })
       .catch((error) => {
         console.log("error: ", error);
+        alert("Xảy ra lỗi. Chưa lưu được.");
       });
     dispatchTable(actions_table.setModeShowModal(false));
   };

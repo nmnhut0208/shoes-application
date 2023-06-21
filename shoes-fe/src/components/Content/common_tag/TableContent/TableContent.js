@@ -9,6 +9,10 @@ import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
 import { useTaskContext } from "~task";
 import { useUserContext } from "~user";
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 const listFormHaveViewDetail = ["F0024", "F0020", "F0013", "F0018"];
 
@@ -16,6 +20,7 @@ const TableContent = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateTask, dispatchTask] = useTaskContext();
   const [stateUser, dispatchUser] = useUserContext();
+  const [stateItem, dispatchItem] = useItemsContext();
   const inforShowTable = stateTable["inforShowTable"];
   const ComponentForm = stateTable["infoShowForm"]["component_form"];
   const maForm = stateTable["inforShowTable"]["title"].split(" - ")[1];
@@ -50,36 +55,113 @@ const TableContent = () => {
         break;
       case "Mũi":
         url = "http://localhost:8000/mui";
+        dispatchItem(
+          actions_items_context.setInfoMui(
+            stateItem.infoItemMui.filter(
+              (item) => item["value"] != row["MAMUI"]
+            )
+          )
+        );
         break;
       case "Đế":
         url = "http://localhost:8000/de";
+        dispatchItem(
+          actions_items_context.setInfoDe(
+            stateItem.infoItemDe.filter((item) => item["value"] != row["MADE"])
+          )
+        );
         break;
       case "Cá":
         url = "http://localhost:8000/ca";
+        dispatchItem(
+          actions_items_context.setInfoCa(
+            stateItem.infoItemCa.filter((item) => item["value"] != row["MACA"])
+          )
+        );
         break;
       case "Nhân viên":
         url = "http://localhost:8000/nhanvien";
+        if (row["LOAINVIEN"] === "TD") {
+          dispatchItem(
+            actions_items_context.setInfoThoDe(
+              stateItem.infoItemThoDe.filter(
+                (item) => item["value"] != row["MANVIEN"]
+              )
+            )
+          );
+        }
+        if (row["LOAINVIEN"] === "TQ") {
+          dispatchItem(
+            actions_items_context.setInfoThoQuai(
+              stateItem.infoItemThoQuai.filter(
+                (item) => item["value"] != row["MANVIEN"]
+              )
+            )
+          );
+        }
         break;
       case "Kỳ tính lương":
         url = "http://localhost:8000/kytinhluong";
+        dispatchItem(
+          actions_items_context.setInfoKyTinhLuong(
+            stateItem.infoItemKyTinhLuong.filter(
+              (item) => item["value"] != row["MAKY"]
+            )
+          )
+        );
         break;
       case "Giày":
         url = "http://localhost:8000/giay";
         break;
       case "Màu":
         url = "http://localhost:8000/mau";
+        dispatchItem(
+          actions_items_context.setInfoMau(
+            stateItem.infoItemMau.filter(
+              (item) => item["value"] != row["MAMAU"]
+            )
+          )
+        );
         break;
       case "Sườn":
         url = "http://localhost:8000/suon";
+        dispatchItem(
+          actions_items_context.setInfoSuon(
+            stateItem.infoItemSuon.filter(
+              (item) => item["value"] != row["MASUON"]
+            )
+          )
+        );
         break;
       case "Gót":
         url = "http://localhost:8000/got";
+        dispatchItem(
+          actions_items_context.setInfoGot(
+            stateItem.infoItemGot.filter(
+              (item) => item["value"] != row["MAGOT"]
+            )
+          )
+        );
         break;
       case "Quai":
         url = "http://localhost:8000/quai";
+        dispatchItem(
+          actions_items_context.setInfoQuai(
+            stateItem.infoItemQuai.filter(
+              (item) => item["value"] != row["MAQUAI"]
+            )
+          )
+        );
         break;
       case "Khách hàng":
         url = "http://localhost:8000/khachhang";
+        dispatchItem(
+          actions_items_context.setInfoKhachHang(
+            stateItem.infoItemKhachHang.filter(
+              (item) => item["MAKH"] != row["MAKH"]
+            )
+          )
+        );
         break;
       case "Phân quyền":
         url = "http://localhost:8000/phanquyen";
@@ -94,9 +176,12 @@ const TableContent = () => {
     })
       .then((res) => console.log("response: ", res))
       .catch((err) => console.log("error: ", err));
+
     const newData = inforShowTable.infoTable.filter((item) => item != row);
     dispatchTable(actions_table.setInforTable(newData));
   };
+
+  console.log("stateItem.infoItemDe: ", stateItem.infoItemDe);
 
   return (
     <>

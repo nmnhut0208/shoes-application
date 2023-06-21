@@ -3,6 +3,7 @@ import { useUserContext } from "~user";
 import { DonHang } from "./DonHang";
 import { PhanCong } from "./PhanCong";
 import ChiTien from "./ChiTien";
+import { ThuTien } from "./ThuTien";
 import GiaoHang from "./GiaoHang";
 import ChamCong from "./ChamCong";
 
@@ -19,6 +20,8 @@ const NghiepVu = () => {
       return <PhanCong />;
     case "Chi tiền":
       return <ChiTien />;
+    case "Thu tiền":
+      return <ThuTien />;
     case "Giao hàng":
       if (userAccess.some((obj) => obj.MAFORM === "F0034" && obj.XEM === 1)) {
         return <GiaoHang />;
