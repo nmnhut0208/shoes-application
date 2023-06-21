@@ -1,60 +1,11 @@
 import { useMemo, useRef, useState, useLayoutEffect } from "react";
 import { useReactToPrint } from "react-to-print";
-import MaterialReactTable from "material-react-table";
 
 import styles from "./InDonHang.module.scss";
 import { INFO_COLS_THO } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
-import { PhanSo } from "~common_tag";
-import { useTableContext, actions_table } from "~table_context";
+import { TableToPrint, SizeColumnInPrint } from "~common_tag";
 import { convertDateForReport } from "~utils/processing_date";
-
-const Table = ({ columns, data }) => {
-  return (
-    <MaterialReactTable
-      muiTablePaperProps={{
-        //customize paper styles
-        sx: {
-          borderRadius: "0",
-          borderLeft: "0.2rem solid rgba(0, 0, 0, 0.9)",
-        },
-      }}
-      muiTableBodyCellProps={{
-        sx: {
-          borderRight: "0.2rem solid rgba(0, 0, 0, 0.9)",
-          borderBottom: "0.2rem solid rgba(0, 0, 0, 0.9)",
-        },
-      }}
-      muiTableHeadCellProps={{
-        sx: {
-          borderRight: "0.2rem solid rgba(0, 0, 0, 0.9)",
-          borderBottom: "0.2rem solid rgba(0, 0, 0, 0.9)",
-        },
-      }}
-      muiTableFooterCellProps={{
-        sx: {
-          borderRight: "0.2rem solid rgba(0, 0, 0, 0.9)",
-          borderBottom: "0.2rem solid rgba(0, 0, 0, 0.9)",
-        },
-      }}
-      muiTableContainerProps={{
-        sx: {
-          border: "none",
-          borderTop: "0.2rem solid rgba(0, 0, 0, 0.9)",
-        },
-      }}
-      enableTopToolbar={false}
-      columns={columns}
-      data={data}
-      // components
-      enableColumnActions={false}
-      enableSorting={false}
-      // enable phân trang
-      enablePagination={false}
-      enableBottomToolbar={false}
-    />
-  );
-};
 
 const COL_INFO_SIZE = [
   { key: 0, name: "SIZE0" },
@@ -64,15 +15,6 @@ const COL_INFO_SIZE = [
   { key: 8, name: "SIZE8" },
   { key: 9, name: "SIZE9" },
 ];
-const SIZE_INFOR_PRINT = ({ list_tuso, list_mauso }) => {
-  return (
-    <div className={styles.group_phanso}>
-      {list_tuso.map((tuso, index) => (
-        <PhanSo tuso={tuso} mauso={list_mauso[index]} />
-      ))}
-    </div>
-  );
-};
 
 const getImageFromMAGIAY = async (MAGIAY) => {
   const response = await fetch(
@@ -96,7 +38,6 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   const [dataPrint, setDataPrint] = useState([]);
   const [listImage, setListImage] = useState([]);
   const [doneGetDiaChi, setDoneGetDiaChi] = useState(false);
-  const [stateTable, dispatchTable] = useTableContext();
   const columns = useMemo(() => {
     return processingInfoColumnTable(INFO_COLS_THO);
   }, []);
@@ -136,7 +77,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
           info["THO"][j]["TONGSO"] = tongso;
           info["THO"][j]["SIZE"] = (
-            <SIZE_INFOR_PRINT list_tuso={top} list_mauso={bottom} />
+            <SizeColumnInPrint list_tuso={top} list_mauso={bottom} />
           );
         }
         ma_giay_checked.push(ma_giay);
@@ -191,7 +132,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                 </tr>
               </table>
             </div>
-            <Table data={info["THO"]} columns={columns} />
+            <TableToPrint data={info["THO"]} columns={columns} />
           </div>
         ))}
     </div>
