@@ -27,7 +27,7 @@ const NghiepVu = () => {
         return <></>;
       }
     case "Chấm công":
-      if (userAccess.some((obj) => obj.MAFORM === "F0034" && obj.XEM === 1)) {
+      if (userAccess.some((obj) => obj.MAFORM === "F0043" && obj.XEM === 1)) {
         return <ChamCong />;
       } else {
         alert("Bạn không có quyền truy cập vào chức năng này!");

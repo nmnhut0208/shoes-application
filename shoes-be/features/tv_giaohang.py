@@ -21,7 +21,7 @@ def read() -> RESPONSE_TVGIAOHANG:
     # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
     # sql = f"SELECT distinct SOPHIEU, NGAYPHIEU, MAKH, TENKH, DIENGIAIPHIEU FROM V_GIAOHANG"
     sql = f"""
-    SELECT distinct SOPHIEU, NGAYPHIEU, CONGNO.MAKH, DMKHACHHANG.TENKH, DIENGIAIPHIEU FROM CONGNO LEFT JOIN (SELECT MAKH, TENKH FROM DMKHACHHANG) AS DMKHACHHANG ON CONGNO.MAKH = DMKHACHHANG.MAKH
+    SELECT distinct SOPHIEU, NGAYPHIEU, CONGNO.MAKH, DMKHACHHANG.TENKH, DMKHACHHANG.DIACHI, DIENGIAIPHIEU FROM CONGNO LEFT JOIN (SELECT MAKH, TENKH, DIACHI FROM DMKHACHHANG) AS DMKHACHHANG ON CONGNO.MAKH = DMKHACHHANG.MAKH
     """
     return TVGH.read_custom(sql)
 
@@ -50,6 +50,16 @@ def read(data: dict):
     ) as DMGIAY ON CONGNO.MAGIAY = DMGIAY.MAGIAY 
     WHERE SODH IN {sodh} AND MAKH = '{makh}' AND SOPHIEU = '{sophieu}'"""
     return TVGH.read_custom(sql)
+
+@router.delete("/tv_giaohang")
+def delete(data: dict):
+    print(data)
+    sophieu = data["SOPHIEU"]
+    makh = data["MAKH"]
+    loaiphieu = "BH"
+    sql = f"""DELETE FROM CONGNO WHERE SOPHIEU = '{sophieu}' AND MAKH = '{makh}' AND LOAIPHIEU = '{loaiphieu}'"""
+    TVGH.execute_custom(sql)
+    return {"status": "success"}
 
 
     # sodh = "(" + ", ".join([f"'{value}'" for value in data["SODH"]]) + ")"

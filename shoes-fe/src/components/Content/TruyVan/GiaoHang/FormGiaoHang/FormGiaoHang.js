@@ -2,6 +2,9 @@ import { useState, useEffect, useMemo } from "react";
 import SubTable from "./SubTable";
 import styles from "./FormGiaoHang.module.scss";
 import { useUserContext, actions } from "~user";
+import { useTableContext, actions_table } from "~table_context";
+import { Modal } from "~common_tag";
+import In from "./In";
 // import { Header } from "antd/es/layout/layout";
 
 const list_key = [
@@ -53,11 +56,13 @@ const COLS_HAVE_SUM_FOOTER = [
   "THANHTIEN",
 ];
 
-const FormGiaoHang = ({ infoKH }) => {
+const FormGiaoHang = ({ infoKH, setShowForm }) => {
   const [userState, userDispatch] = useUserContext();
+  const [stateTable, dispatchTable] = useTableContext();
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
+  const [dataIn, setDataIn] = useState({});
   // const test_makh = "THU";
   // const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
   // const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
@@ -89,6 +94,30 @@ const FormGiaoHang = ({ infoKH }) => {
       .catch((err) => {
         console.log(":error: ", err);
       });
+  };
+
+  const handleIn = () => {
+    const table = dataTableSub.map((item) => {
+      const obj = {
+        MAGIAY: item.MAGIAY,
+        TENGIAY: item.TENGIAY,
+        SOLUONG: item.SOLUONG,
+        DONGIA: item.GIABAN,
+        THANHTIEN: item.THANHTIEN,
+        SODH: item.SODH,
+      };
+      return obj;
+    });
+    console.log("table: ", dataTableSub);
+    setDataIn({
+      MAKH: infoKH.MAKH,
+      TENKH: infoKH.TENKH,
+      DIACHI: infoKH.DIACHI,
+      NGAYPHIEU: infoKH.NGAYPHIEU,
+      SOPHIEU: infoKH.SOPHIEU,
+      table: table,
+    });
+    dispatchTable(actions_table.setModeShowModal(true));
   };
 
   // useEffect(() => {
@@ -180,7 +209,7 @@ const FormGiaoHang = ({ infoKH }) => {
         key: list_key_sub[obj]["key"],
       };
       if (list_key_sub[obj]["key"] === "TENGIAY")
-        info["Footer"] = () => <div>Tổng cộng</div>;
+        info["Footer"] = () => <div>Tổng cộng: </div>;
       if (COLS_HAVE_SUM_FOOTER.includes(list_key_sub[obj]["key"])) {
         let sum_value = dataTableSub.reduce(
           (total, row) => total + row[list_key_sub[obj]["key"]],
@@ -286,11 +315,21 @@ const FormGiaoHang = ({ infoKH }) => {
         // setRowSelection={setRowSelection}
         maxHeight={"26rem"}
       />
+      <Modal>
+        <In data={dataIn} />
+      </Modal>
       <div className={styles.group_button}>
         <div>
           <button onClick={handleSave}>Lưu</button>
           {/* <button>Nhập tiếp</button> */}
-          <button>Đóng</button>
+          <button onClick={handleIn}>In</button>
+          <button
+            onClick={() => {
+              // dispatchTable(actions_table.setModeShowModal(false));
+              setShowForm(false);
+            }}>
+            Đóng
+          </button>
         </div>
       </div>
     </div>

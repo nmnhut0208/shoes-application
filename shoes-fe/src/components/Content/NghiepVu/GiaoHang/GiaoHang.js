@@ -109,6 +109,7 @@ const GiaoHang = () => {
   const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
   const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
   const [infoKH, setInfoKH] = useState({});
+  const maForm = "F0034";
   const [infoForm, setInfoForm] = useState({
     SOPHIEU: "",
     LastestGH: "",
@@ -119,54 +120,62 @@ const GiaoHang = () => {
   console.log("GiaoHang");
 
   const handleSave = () => {
-    const send_data = {
-      data: dataTableSub,
-      makh: infoKH.MAKH,
-      sophieu: infoForm.SOPHIEU,
-      diengiai: infoForm.DIENGIAI,
-      user: userState.userName,
-    };
-    fetch("http://localhost:8000/savegiaohang", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(send_data),
-    })
-      .then((response) => {
-        return response.json();
+    if (
+      userState.userPoolAccess.some(
+        (obj) => obj.MAFORM === maForm && obj.THEM === 1
+      )
+    ) {
+      const send_data = {
+        data: dataTableSub,
+        makh: infoKH.MAKH,
+        sophieu: infoForm.SOPHIEU,
+        diengiai: infoForm.DIENGIAI,
+        user: userState.userName,
+      };
+      fetch("http://localhost:8000/savegiaohang", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(send_data),
       })
-      .then((data) => {
-        console.log("data: ", data);
-        if (data["status"] == "success") {
-          fetch("http://localhost:8000/hethong/giaohang/SOPHIEU", {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ LASTNUMBER: infoForm.LastestGH }),
-          })
-            .then((response) => {
-              return response.json();
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log("data: ", data);
+          if (data["status"] == "success") {
+            fetch("http://localhost:8000/hethong/giaohang/SOPHIEU", {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ LASTNUMBER: infoForm.LastestGH }),
             })
-            .then((data) => {
-              console.log("data: ", data);
-              if (data["status"] == "success") {
-                alert("Lưu thành công");
-              } else {
-                alert("Lưu thất bại");
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          alert("Lưu thất bại");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+              .then((response) => {
+                return response.json();
+              })
+              .then((data) => {
+                console.log("data: ", data);
+                if (data["status"] == "success") {
+                  alert("Lưu thành công");
+                } else {
+                  alert("Lưu thất bại");
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          } else {
+            alert("Lưu thất bại");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      alert("Bạn không có quyền thêm");
+    }
   };
 
   const handleNhapTiep = () => {

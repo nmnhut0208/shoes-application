@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import FormGiaoHang from "./FormGiaoHang/";
-import { Modal } from "~common_tag";
+import Modal from "./Modal";
 import SubTable from "./SubTable";
 import styles from "./GiaoHang.module.scss";
 
@@ -53,13 +53,14 @@ const GiaoHang = () => {
         data={dataTable}
         setShowForm={setShowForm}
         setSendData={setSendData}
+        setDataTable={setDataTable}
         // rowSelection={rowSelection}
         // setRowSelection={setRowSelection}
         maxHeight={"65rem"}
       />
       {showForm && (
-        <Modal>
-          <FormGiaoHang infoKH={sendData} />
+        <Modal setShowForm={setShowForm}>
+          <FormGiaoHang infoKH={sendData} setShowForm={setShowForm} />
         </Modal>
       )}
     </>

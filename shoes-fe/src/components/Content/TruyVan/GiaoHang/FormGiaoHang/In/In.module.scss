@@ -1,0 +1,71 @@
+@import "~common_scss/form.module.scss";
+
+// .print_page {
+//   margin: 1rem 1rem 1rem 1rem;
+
+//   .print_object {
+//     margin-top: 2rem;
+
+//     .info_giay {
+//       @extend .font-setting;
+//       .info_row_giay {
+//         display: flex;
+//         flex-direction: row;
+//         justify-content: space-between;
+//       }
+//       th {
+//         margin-top: auto;
+//         margin-bottom: auto;
+//       }
+//       img {
+//         height: 15rem;
+//         width: 15rem;
+//         object-fit: cover;
+//       }
+//       border: 0.2rem solid rgba(0, 0, 0, 0.3);
+//       // border-bottom: none;
+//     }
+//   }
+// }
+
+// .group_phanso {
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+// }
+// .phan_so {
+//   text-align: center;
+// }
+
+// .tu_so {
+//   border-bottom: solid 1px;
+// }
+
+.container {
+  margin-bottom: 1rem;
+}
+
+.invoice {
+  margin: 0;
+  text-align: center;
+  font-size: 3rem;
+}
+
+.invoice__info {
+  align-self: flex-end;
+}
+
+.invoice__header {
+  display: flex;
+  flex-direction: column; //this will allow flex-end to move item to the right
+  align-items: center;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  margin-top: 1rem;
+}

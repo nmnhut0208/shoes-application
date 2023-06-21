@@ -4,17 +4,21 @@ import MaterialReactTable from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useTableContext, actions_table } from "~table_context";
+import { useUserContext, actions } from "~user";
 
 const SubTable = ({
   columns,
   data,
   setShowForm,
   setSendData,
+  setDataTable,
   //   rowSelection,
   //   setRowSelection,
   maxHeight,
 }) => {
   //   console.log("data: ", data);
+  const [stateUser, dispatchUser] = useUserContext();
+  const maForm = "F0033";
   const [stateTable, dispatchTable] = useTableContext();
 
   return (
@@ -43,15 +47,65 @@ const SubTable = ({
           <Tooltip arrow placement="right" title="Edit">
             <IconButton
               onClick={() => {
-                setShowForm(true);
-                setSendData(row.original);
-                dispatchTable(actions_table.setModeShowModal(true));
-                // console.log("row: ", row.original);
-                // dispatchTable(actions_table.setInforRecordTable(emptyData));
-                // dispatchTable(actions_table.setActionForm("add"));
-                // dispatchTable(actions_table.setModeShowModal(true));
+                if (
+                  stateUser.userPoolAccess.some(
+                    (obj) => obj.MAFORM === maForm && obj.SUA === 1
+                  )
+                ) {
+                  setShowForm(true);
+                  setSendData(row.original);
+                  // dispatchTable(actions_table.setModeShowModal(true));
+                  // console.log("row: ", row.original);
+                  // dispatchTable(actions_table.setInforRecordTable(emptyData));
+                  // dispatchTable(actions_table.setActionForm("add"));
+                  // dispatchTable(actions_table.setModeShowModal(true));
+                } else {
+                  alert("Bạn không có quyền sửa");
+                }
               }}>
               <Edit />
+            </IconButton>
+          </Tooltip>
+          <Tooltip arrow placement="right" title="Delete">
+            <IconButton
+              onClick={() => {
+                console.log("delete: ", row.original);
+                if (
+                  stateUser.userPoolAccess.some(
+                    (obj) => obj.MAFORM === maForm && obj.XOA === 1
+                  )
+                ) {
+                  fetch("http://localhost:8000/tv_giaohang", {
+                    method: "DELETE",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(row.original),
+                  })
+                    .then((res) => res.json())
+                    .then((data) => {
+                      if (data.status === "success") {
+                        fetch("http://localhost:8000/tv_giaohang")
+                          .then((response) => {
+                            return response.json();
+                          })
+                          .then((info) => {
+                            setDataTable(info);
+                          })
+                          .catch((err) => {
+                            console.log(":error: ", err);
+                          });
+                        alert("Xóa thành công");
+                      } else {
+                        alert("Xóa thất bại");
+                      }
+                    })
+                    .catch((error) => {
+                      console.error("Error:", error);
+                    });
+                }
+              }}>
+              <Delete />
             </IconButton>
           </Tooltip>
         </Box>

@@ -44,5 +44,6 @@ def delete(data: dict):
     manv = data["MANVIEN"]
     phieupc = data["SOPHIEU"]
     sql = f"DELETE FROM CHAMCONG WHERE MAKY='{maky}' AND MANVIEN='{manv}' AND PHIEUPC='{phieupc}'"
+    # print(sql)
     TVCC.execute_custom(sql)
     return {"status": "success"}

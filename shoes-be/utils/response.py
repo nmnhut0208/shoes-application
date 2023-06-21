@@ -65,6 +65,7 @@ class RESPONSE_TVGIAOHANG(BaseModel):
     SODH: str
     MAKH: str
     TENKH: str
+    DIACHI: str
     DIENGIAIPHIEU: str
 
 class RESPONSE_TVTHUCHI(BaseModel):

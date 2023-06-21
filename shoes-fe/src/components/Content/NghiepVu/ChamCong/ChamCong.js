@@ -7,6 +7,7 @@ import MaterialReactTable from "material-react-table";
 import { rem_to_px } from "~config/ui";
 import { convertDate } from "~utils/processing_date";
 import moment from "moment";
+import { useUserContext, actions } from "~user";
 
 const list_key = [
   // { key: "STT" },
@@ -125,6 +126,7 @@ const TableMaNVIEN = ({ data, rowSelection, setRowSelection }) => {
 };
 
 const ChamCong = () => {
+  const [userState, userDispatch] = useUserContext();
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
@@ -134,6 +136,7 @@ const ChamCong = () => {
   const [dataTableNhanVien, setDataTableNhanVien] = useState([]);
   const [rowSelectionMaNVIEN, setRowSelectionMaNVIEN] = useState({});
   // const [infoNVIEN, setInfoNVIEN] = useState({});
+  const maForm = "F0043";
   const [infoForm, setInfoForm] = useState({
     MAKY: "",
     TENKY: "",
@@ -159,32 +162,40 @@ const ChamCong = () => {
   console.log("ChamCong", infoForm["MAKY"]);
 
   const handleSave = () => {
-    const send_data = {
-      MAKY: infoForm["MAKY"],
-      MANVIEN: infoForm["MANVIEN"],
-      NGAYPHIEU: infoForm["NGAYPHIEU"],
-      DIENGIAI: infoForm["DIENGIAI"],
-      SOPHIEU: infoForm["SOPHIEU"],
-      data: dataTableSub,
-    };
-    fetch("http://localhost:8000/savechamcong", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(send_data),
-    })
-      .then((response) => {
-        return response.json();
+    if (
+      userState.userPoolAccess.some(
+        (obj) => obj.MAFORM === maForm && obj.THEM === 1
+      )
+    ) {
+      const send_data = {
+        MAKY: infoForm["MAKY"],
+        MANVIEN: infoForm["MANVIEN"],
+        NGAYPHIEU: infoForm["NGAYPHIEU"],
+        DIENGIAI: infoForm["DIENGIAI"],
+        SOPHIEU: infoForm["SOPHIEU"],
+        data: dataTableSub,
+      };
+      fetch("http://localhost:8000/savechamcong", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(send_data),
       })
-      .then((data) => {
-        if (data["status"] === "success") {
-          alert("Lưu thành công");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data["status"] === "success") {
+            alert("Lưu thành công");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      alert("Bạn không có quyền thêm");
+    }
   };
 
   useEffect(() => {

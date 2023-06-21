@@ -54,6 +54,7 @@ const GiaoHang = () => {
         data={dataTable}
         setShowForm={setShowForm}
         setSendData={setSendData}
+        setData={setDataTable}
         // rowSelection={rowSelection}
         // setRowSelection={setRowSelection}
         maxHeight={"65rem"}
