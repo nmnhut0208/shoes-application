@@ -201,7 +201,9 @@ const FormNghiepVuPhanCong = ({
       setListGiayWillPhanCong,
       setFormPhanCong,
       infoPhieu,
-      resetForm
+      resetForm,
+      listMaDongPhanCongAddButWaitSave,
+      setListMaDongPhanCongAddButWaitSave
     );
     setHavedSaveData(false);
     setIsSaveDataNghiepVuPhanCong(false);
@@ -220,9 +222,11 @@ const FormNghiepVuPhanCong = ({
     })
       .then((response) => {
         console.log("response: ", response);
+        alert("Lưu thành công!");
       })
       .catch((error) => {
         console.log("error: ", error);
+        alert("Lỗi! Chưa lưu được!");
       });
 
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);

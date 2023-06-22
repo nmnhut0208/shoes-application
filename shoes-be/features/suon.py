@@ -1,7 +1,10 @@
 from fastapi import APIRouter
+
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from utils.vietnamese import convert_data_to_save_database
+
 
 router = APIRouter()
 
@@ -30,18 +33,19 @@ def read() -> List[RESPONSE_SUON]:
 
 @router.post("/suon")
 def add(data: ITEM_SUON) -> RESPONSE:
-    data = dict(data)
+    data = convert_data_to_save_database(dict(data))
     print(data)
-    col = ", ".join(data.keys())
-    val = ", ".join([f"'{value}'" for value in data.values()])
+    col = ", ".join([k for k, v in data.items() if v is not None])
+    val = ", ".join([v for v in data.values() if v is not None])
     return suon.add(col, val)
 
 
 @router.put("/suon")
 def update(data: ITEM_SUON) -> RESPONSE:
-    data = dict(data)    
-    val = ", ".join([f"{key} = '{value}'" for key, value in data.items()])
-    condition = f"MASUON = '{data['MASUON']}'"
+    data = convert_data_to_save_database(dict(data))  
+    val = ", ".join([f"{k} = {v}" for k, v in data.items() \
+                     if v is not None])
+    condition = f"MASUON = {data['MASUON']}"
     return suon.update(val, condition)
 
 

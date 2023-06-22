@@ -1,12 +1,17 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
+from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime
+
+
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
 from features.hethong import (find_info_primary_key,
                               save_info_primary_key)
-from pydantic import BaseModel
-from typing import Optional
-from datetime import datetime
+from utils.vietnamese import convert_data_to_save_database
+
+
 
 
 class ITEM_PHANCONG(BaseModel):
@@ -32,6 +37,12 @@ class ITEM_PHANCONG(BaseModel):
     MAUQUAI: Optional[str] = None
     MAKY: str
     DIENGIAIDONG: Optional[str] = None
+
+class RESPONSE_PHANCONG_THO:
+    MANVIEN: str
+    TENNVIEN: str
+    SOLUONG: int
+    THANHTIEN: int
 
 
 class RESPONSE_PHANCONG(BaseModel):
@@ -90,32 +101,90 @@ def read() -> List[RESPONSE_PHANCONG]:
     result = phancong.read_custom(sql)
     return result
 
+# TODO: chinh sua de lam Truy Van Phan Cong 
+class RESPONSE_BAOCAO_PHANCONG:
+    SOPHIEU: str 
+    NGAYPHIEU: str
+
+
+@router.get("/phancong/baocao_phancong")
+def baocao_phancong() -> List[RESPONSE_BAOCAO_PHANCONG]:
+    sql = f"""select SOPHIEU, NGAYPHIEU, TENKH, NGAYDH, NGAYGH, 
+                DIENGIAIPHIEU AS DIENGIAI,
+                SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
+                from V_BCDONHANG
+                group by SODH, MAKH, TENKH, NGAYDH, NGAYGH, DIENGIAIPHIEU
+            """
+    result = phancong.read_custom(sql)
+    return result
+
 
 @router.get("/phancong/get_chitietdonhang_dephancong")
 def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
-    print("SODH: ", SODH)
+    print("SODH: ", SODH)              
     sql = f"""select V_KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, 
               HINHANH, madh as MADH, sodh as SODH, 
               ngaydh as NGAYDH, makh as MAKH, diengiaiphieu as DIENGIAIDONG, 
-              tenkh as TENKH, coalesce(MAUDE, '') as MAUDE, 
-              coalesce(MAUGOT, '') as MAUGOT, 
-              coalesce(MAUSUON, '') as MAUSUON,
-              coalesce(MAUCA, '') as MAUCA, 
-              coalesce(MAUQUAI, '') as MAUQUAI, 
+              tenkh as TENKH, 
+              coalesce(MAUDE, '') as MAUDE, TENMAUDE, 
+              coalesce(MAUGOT, '') as MAUGOT, TENMAUGOT,
+              coalesce(MAUSUON, '') as MAUSUON, TENMAUSUON,
+              coalesce(MAUCA, '') as MAUCA, TENMAUCA, 
+              coalesce(MAUQUAI, '') as MAUQUAI, TENMAUQUAI,
               SIZE5-DaphancongSize5 as SIZE5, SIZE0-DaphancongSize0 as SIZE0,
               SIZE6-DaphancongSize6 as SIZE6,SIZE7-DaphancongSize7 as SIZE7,
               SIZE8-DaphancongSize8 as SIZE8,SIZE9-DaphancongSize9 as SIZE9,
               SIZE0 as dhSize0, DaphancongSize0, SIZE5 as dhSize5, DaphancongSize5, 
               SIZE6 as dhSize6, DaphancongSize6, SIZE7 as dhSize7, DaphancongSize7, 
               SIZE8 as dhSize8, DaphancongSize8, SIZE9 as dhSize9, DaphancongSize9
-              from V_KIEMTRAPHANCONG
+              from (
+              SELECT DISTINCT dh.magiay, dh.madh,dh.sodh,dh.ngaydh,dh.makh,
+                    kh.tenkh,dh.diengiaiphieu,
+                    DH.MAUDE, DH.MAUGOT,DH.MAUSUON, 
+                    DH.MAUCA, DH.MAUQUAI,
+                        coalesce(DH.SIZE5, 0) AS SIZE5,
+                        coalesce(DH.SIZE6, 0) AS SIZE6,
+                        coalesce(DH.SIZE7, 0) AS SIZE7,
+                        coalesce(DH.SIZE8, 0) AS SIZE8,
+                        coalesce(DH.SIZE9, 0) AS SIZE9,
+                        coalesce(DH.SIZE0, 0) AS SIZE0,
+                        SUM(coalesce(PC.SIZE5, 0)) AS DaphancongSize5,
+                        SUM(coalesce(PC.SIZE6, 0)) AS DaphancongSize6,
+                        SUM(coalesce(PC.SIZE7, 0)) AS DaphancongSize7,
+                        SUM(coalesce(PC.SIZE8, 0)) AS DaphancongSize8,
+                        SUM(coalesce(PC.SIZE9, 0)) AS DaphancongSize9,
+                        SUM(coalesce(PC.SIZE0, 0)) AS DaphancongSize0
+                    FROM DONHANG DH 
+                    left join PHANCONG as PC 
+                            on DH.SODH = PC.SODH 
+                            AND DH.MAGIAY = PC.MAGIAY 
+                            AND coalesce(DH.MAUDE, '') = coalesce(PC.MAUDE, '')
+                            AND coalesce(DH.MAUSUON, '') = coalesce(PC.MAUSUON, '') 
+                            AND coalesce(DH.MAUCA, '') = coalesce(PC.MAUCA, '') 
+                            AND coalesce(DH.MAUQUAI, '') = coalesce(PC.MAUQUAI, '')
+                    Left Join DMkhachhang kh on kh.makh=dh.makh 
+                    GROUP BY dh.magiay,dh.madh,dh.sodh,dh.ngaydh,dh.makh,
+                    kh.tenkh,dh.diengiaiphieu,DH.MAUDE, DH.MAUGOT,DH.MAUSUON, 
+                    DH.MAUCA, DH.MAUQUAI, DH.SIZE5, DH.SIZE6, DH.SIZE7, DH.SIZE8, 
+                    DH.SIZE9, DH.SIZE0
+              ) as V_KIEMTRAPHANCONG
               left join (select MAGIAY, TENGIAY, HINHANH from DMGIAY) 
               as DMGIAY on DMGIAY.MAGIAY = V_KIEMTRAPHANCONG.magiay
+              left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
+                    as DMMAUDE on MAUDE = DMMAUDE.MAMAU
+              left join (select MAMAU, TENMAU as TENMAUGOT from DMMAU) 
+                    as DMMAUGOT on MAUGOT = DMMAUGOT.MAMAU
+              left join (select MAMAU, TENMAU as TENMAUSUON from DMMAU) 
+                    as DMMAUSUON on MAUSUON = DMMAUSUON.MAMAU
+              left join (select MAMAU, TENMAU as TENMAUCA from DMMAU) 
+                    as DMMAUCA on MAUCA = DMMAUCA.MAMAU
+              left join (select MAMAU, TENMAU as TENMAUQUAI from DMMAU) 
+                    as DMMAUQUAI on MAUQUAI = DMMAUQUAI.MAMAU
               where SODH = '{SODH}'
               and SIZE5 + SIZE6+ SIZE7+SIZE8+SIZE9+SIZE0 > 
               DaphancongSize5 +DaphancongSize6+DaphancongSize7+
               DaphancongSize8+DaphancongSize9+DaphancongSize0
-          """
+            """
     result = phancong.read_custom(sql)
     return result
 
@@ -158,24 +227,16 @@ def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
     day_created = today.strftime("%Y-%m-%d %H:%M:%S")
 
     for i in range(len(data)):
-        _v = []
-        _c = []
         _data = dict(data[i])
         MADONG += 1
         _data["NGAYTAO"] = day_created
         _data["NGAYSUA"] = day_created
         _data["MAPHIEU"] = MAPHIEU
         _data["MADONG"] = f"MD{year}{str(MADONG).zfill(12)}"
-        for k, v in _data.items():
-            if v is not None:
-                _c.append(k)
-                if type(v) is str:
-                    _v.append(f"'{v}'")
-                else:
-                    _v.append(f"{v}")
-
-        _c = ",".join(_c)
-        _v = ",".join(_v)
+        
+        _data = convert_data_to_save_database(_data)
+        _c = ",".join([k for k, v in _data.items() if v is not None])
+        _v = ",".join([v for v in _data.values() if v is not None])
         # phòng trường hợp những record khác nhau có số lượng
         # cột insert khác nhau nên phải insert từng dòng như thế này
         phancong.add(_c, _v)
@@ -195,24 +256,16 @@ def add(data: ITEM_PHANCONG) -> RESPONSE:
     MAPHIEU = f"PC{year}{str(PHIEU).zfill(12)}"
     day_created = today.strftime("%Y-%m-%d %H:%M:%S")
 
-    _v = []
-    _c = []
     _data = dict(data)
     MADONG += 1
     _data["NGAYTAO"] = day_created
     _data["NGAYSUA"] = day_created
     _data["MAPHIEU"] = MAPHIEU
     _data["MADONG"] = f"MD{year}{str(MADONG).zfill(12)}"
-    for k, v in _data.items():
-        if v is not None:
-            _c.append(k)
-            if type(v) is str:
-                 _v.append(f"'{v}'")
-            else:
-                _v.append(f"{v}")
-
-    _c = ",".join(_c)
-    _v = ",".join(_v)
+    
+    _data_save = convert_data_to_save_database(_data)
+    _c = ",".join([k for k, v in _data_save.items() if v is not None])
+    _v = ",".join([v for v in _data_save.values() if v is not None])
     phancong.add(_c, _v)
 
     # lưu lại thông tin mã dòng và mã đơn hàng
@@ -235,11 +288,6 @@ def delete(data: ITEM_PHANCONG) -> RESPONSE:
                 condition.append(f"{key}={value}")
     return phancong.delete(" and ".join(condition))
 
-class RESPONSE_PHANCONG_THO:
-    MANVIEN: str
-    TENNVIEN: str
-    SOLUONG: int
-    THANHTIEN: int
 
 @router.get("/phancong/get_thongtin_thode")
 def read(SOPC: str) -> List[RESPONSE_PHANCONG_THO]:
@@ -263,3 +311,15 @@ def get_thongtin_thoquai(SOPC: str) -> List[RESPONSE_PHANCONG_THO]:
             """
     result = phancong.read_custom(sql)
     return result
+
+
+@router.delete("/phancong/by_list_MADONG/")
+def delete(MADONG: list = Query([])) -> RESPONSE:
+    print("MADONG: ", MADONG)
+    # update status of the MADONGs
+    ds_madong = ""
+    for madong in MADONG:
+        ds_madong += f"'{madong}'," 
+    ds_madong = ds_madong[:-1]
+    condition = f"MADONG in ({ds_madong})"
+    return phancong.delete(condition)

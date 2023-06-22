@@ -1,0 +1,49 @@
+.print_page {
+  margin: 3rem 5rem 1rem 5rem;
+
+  label,
+  input,
+  textarea {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.6rem !important;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  label {
+    display: inline-block;
+    width: 10rem;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.6rem;
+    div:nth-child(2) {
+      margin-left: 1rem;
+    }
+    div:nth-of-type(odd) {
+      input {
+        border: none;
+        width: 30rem;
+      }
+    }
+    div:nth-of-type(even) {
+      input {
+        width: 15rem;
+        border: none;
+      }
+    }
+  }
+  .row:nth-of-type(4) {
+    textarea {
+      width: 56rem;
+      height: auto;
+      border: none;
+      overflow: auto;
+      resize: none;
+    }
+  }
+}

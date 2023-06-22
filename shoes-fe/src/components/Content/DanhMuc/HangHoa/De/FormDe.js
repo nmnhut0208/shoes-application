@@ -2,9 +2,14 @@ import { useState } from "react";
 import clsx from "clsx";
 import styles from "./FormDe.module.scss";
 import { useTableContext, actions_table } from "~table_context";
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 const FormDe = () => {
   const [stateTable, dispatchTable] = useTableContext();
+  const [stateItem, dispatchItem] = useItemsContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   console.log("record form: re-render");
 
@@ -50,6 +55,12 @@ const FormDe = () => {
         actions_table.setInforTable([
           ...stateTable.inforShowTable.infoTable,
           inputForm,
+        ])
+      );
+      dispatchItem(
+        actions_items_context.setInfoDe([
+          ...stateItem.infoItemDe,
+          { label: inputForm["TENDE"], value: inputForm["MADE"] },
         ])
       );
     }

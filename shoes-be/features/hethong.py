@@ -45,111 +45,91 @@ def save_info_primary_key(table, key, year, value):
                     AND KEYSTRING = '{key}{year}'"""
     hethong.execute_custom(sql_insert)
 
-
-@router.get("/hethong/donhang/SODH")
-def find_info_SODH():
+#==============================================================
+def find_info_UI(table_nam, keystring):
     today = datetime.now()
     year = str(today.year)[2:]
     print("year: ", year)
     month = str(today.month).zfill(2)
     sql = f"""select *
             from V1T4444
-            Where TABLENAME='DONHANG'
-            and KEYSTRING = 'DH--{month}/{year}'"""
+            Where TABLENAME='{table_nam}'
+            and KEYSTRING = '{keystring}--{month}/{year}'"""
     data = hethong.read_custom(sql)
     lastnumber = 1
     if len(data) == 0:
-        sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-                    VALUES ('DONHANG', 'DH--{month}/{year}', 0)"""
+        sql_insert = f"""INSERT INTO 
+                         V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
+                         VALUES ('{table_nam}', 
+                         '{keystring}--{month}/{year}', 0)"""
         hethong.execute_custom(sql_insert)
     else:
         lastnumber = data[0]['LASTKEY'] + 1
 
     number_string = str(lastnumber).zfill(4)
-    SODH = f"DH-{number_string}-{month}/{year}"
-    return {"SODH": SODH, "LastestDH": lastnumber}
+    showUI = f"{keystring}-{number_string}-{month}/{year}"
+    return lastnumber, showUI
 
-@router.get("/hethong/giaohang/SOPHIEU")
-def find_info_SOPHIEU():
+
+def save_info_UI(table_name, keystring, value):
     today = datetime.now()
-    year = str(today.year)[2:]
-    print("year: ", year)
     month = str(today.month).zfill(2)
-    sql = f"""select *
-            from V1T4444
-            Where TABLENAME='CONGNO'
-            and KEYSTRING = 'GH--{month}/{year}'"""
-    data = hethong.read_custom(sql)
-    lastnumber = 0
-    if len(data) == 0:
-        sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-                    VALUES ('CONGNO', 'GH--{month}/{year}', {lastnumber})"""
-        hethong.execute_custom(sql_insert)
-        lastnumber += 1
-    else:
-        lastnumber = data[0]['LASTKEY'] + 1
+    year = str(today.year)[2:]
+    sql_insert = f"""UPDATE V1T4444 
+                     SET LASTKEY = {value}
+                     WHERE TABLENAME = '{table_name}'
+                     AND KEYSTRING = '{keystring}--{month}/{year}'"""
+    return hethong.execute_custom(sql_insert)
+#==============================================================
 
-    number_string = str(lastnumber).zfill(4)
-    SOPHIEU = f"GH-{number_string}-{month}/{year}"
-    return {"SOPHIEU": SOPHIEU, "LastestGH": lastnumber}
+
+@router.get("/hethong/donhang/SODH")
+def find_info_SODH():
+    lastnumber, showUI = find_info_UI("DONHANG", "DH")
+    return {"SODH": showUI, "LastestDH": lastnumber}
 
 
 @router.put("/hethong/donhang/SODH")
 def update_info_SODH(data: ITEM_HETHONG) -> RESPONSE:
     sodh = data.LASTNUMBER
-    today = datetime.now()
-    month = str(today.month).zfill(2)
-    year = str(today.year)[2:]
-    sql_insert = f"""UPDATE V1T4444 
-                     SET LASTKEY = {sodh}
-                     WHERE TABLENAME = 'DONHANG'
-                     AND KEYSTRING = 'DH--{month}/{year}'"""
-    return hethong.execute_custom(sql_insert)
+    return save_info_UI("DONHANG", "DH", sodh)
+
+#==============================================================
+
+@router.get("/hethong/giaohang/SOPHIEU")
+def find_info_SOPHIEU():
+    lastnumber, showUI = find_info_UI("CONGNO", "GH")
+    return {"SOPHIEU": showUI, "LastestGH": lastnumber}
+
 
 @router.put("/hethong/giaohang/SOPHIEU")
 def update_info_SOPHIEU(data: ITEM_HETHONG) -> RESPONSE:
     sophieu = data.LASTNUMBER
-    today = datetime.now()
-    month = str(today.month).zfill(2)
-    year = str(today.year)[2:]
-    sql_insert = f"""UPDATE V1T4444 
-                     SET LASTKEY = {sophieu}
-                     WHERE TABLENAME = 'CONGNO'
-                     AND KEYSTRING = 'GH--{month}/{year}'"""
-    return hethong.execute_custom(sql_insert)
+    return save_info_UI("CONGNO", "GH", sophieu)
+
+#==============================================================
 
 @router.get("/hethong/phancong/SOPC")
 def find_info_SOPC():
-    today = datetime.now()
-    year = str(today.year)[2:]
-    print("year: ", year)
-    month = str(today.month).zfill(2)
-    sql = f"""select *
-            from V1T4444
-            Where TABLENAME='PHANCONG'
-            and KEYSTRING = 'PC--{month}/{year}'"""
-    data = hethong.read_custom(sql)
-    lastnumber = 1
-    if len(data) == 0:
-        sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
-                    VALUES ('PHANCONG', 'PC--{month}/{year}', 0)"""
-        hethong.execute_custom(sql_insert)
-    else:
-        lastnumber = data[0]['LASTKEY'] + 1
-
-    number_string = str(lastnumber).zfill(4)
-    SOPC = f"PC-{number_string}-{month}/{year}"
-    return {"SOPC": SOPC, "LastestPC": lastnumber}
+    lastnumber, showUI = find_info_UI("PHANCONG", "PC")
+    return {"SOPC": showUI, "LastestPC": lastnumber}
 
 
 @router.put("/hethong/phancong/SOPC")
 def update_info_SOPC(data: ITEM_HETHONG) -> RESPONSE:
     SOPC = data.LASTNUMBER
-    today = datetime.now()
-    month = str(today.month).zfill(2)
-    year = str(today.year)[2:]
-    sql_insert = f"""UPDATE V1T4444 
-                     SET LASTKEY = {SOPC}
-                     WHERE TABLENAME = 'PHANCONG'
-                     AND KEYSTRING = 'PC--{month}/{year}'"""
-    return hethong.execute_custom(sql_insert)
+    return save_info_UI("PHANCONG", "PC", SOPC)
+
+#==============================================================
+
+@router.get("/hethong/phieuthu/SOPHIEU")
+def find_info_SOPC():
+    lastnumber, showUI = find_info_UI("CONGNO", "PT")
+    return {"SOPHIEU": showUI, "LastestSOPHIEU": lastnumber}
+
+
+@router.put("/hethong/phieuthu/SOPHIEU")
+def update_info_SOPC(data: ITEM_HETHONG) -> RESPONSE:
+    SOPHIEU = data.LASTNUMBER
+    return save_info_UI("CONGNO", "PT", SOPHIEU)
+

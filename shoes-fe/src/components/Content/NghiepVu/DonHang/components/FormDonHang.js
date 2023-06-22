@@ -10,6 +10,7 @@ import TableDonHang from "./TableDonHang";
 import FormGiay from "./FormGiay";
 import FormMau from "./FormMau";
 import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
+import InDonHang from "./InDonHang";
 
 import styles from "./FormDonHang.module.scss";
 import {
@@ -60,6 +61,7 @@ const FormDonHang = ({
     giay: false,
     mau: false,
     dmGiaykh: false,
+    inDonHang: false,
   });
 
   const [showModal, setShowModal] = useState(false);
@@ -122,6 +124,7 @@ const FormDonHang = ({
       giay: true,
       mau: false,
       dmGiaykh: false,
+      inDonHang: false,
     });
     setShowModal(true);
   };
@@ -131,6 +134,7 @@ const FormDonHang = ({
       giay: false,
       mau: true,
       dmGiaykh: false,
+      inDonHang: false,
     });
     setShowModal(true);
   };
@@ -171,6 +175,7 @@ const FormDonHang = ({
       giay: false,
       mau: false,
       dmGiaykh: true,
+      inDonHang: false,
     });
     setShowModal(true);
   };
@@ -197,6 +202,18 @@ const FormDonHang = ({
     }
   }, [dataTable]);
 
+  const handleInDonHang = () => {
+    console.log("handleInDonHang: handleInDonHang");
+    // TODO: handle In DonHang
+    setInfoFormWillShow({
+      giay: false,
+      mau: false,
+      dmGiaykh: false,
+      inDonHang: true,
+    });
+    setShowModal(true);
+  };
+
   const handleDongForm = () => {
     console.log("ne: ", isSavedData);
     if (!isSavedData) {
@@ -205,6 +222,9 @@ const FormDonHang = ({
     }
     if (setShowModalNghiepVuDonHang) setShowModalNghiepVuDonHang(false);
   };
+
+  console.log("infoFormWillShow: ", infoFormWillShow);
+  console.log("dataTable: ", dataTable);
 
   return (
     <>
@@ -306,7 +326,7 @@ const FormDonHang = ({
             <button onClick={handleNhapTiep}>Nhập tiếp</button>
           )}
           {!view && <button onClick={handleSaveDonHang}>Lưu</button>}
-          {permission.IN === 1 && <button>In</button>}
+          {permission.IN === 1 && <button onClick={handleInDonHang}>In</button>}
           <button onClick={handleDongForm}>Đóng</button>
         </div>
       </div>
@@ -342,6 +362,19 @@ const FormDonHang = ({
             MAKH={formInfoDonHang["MAKH"]}
             dataOrigin={dataTable}
             setInfoSelection={setDataTable}
+            setShowModal={setShowModal}
+          />
+        </Modal>
+      )}
+      {infoFormWillShow["inDonHang"] && (
+        <Modal
+          title="In Đơn Hàng"
+          status={showModal}
+          setShowModal={setShowModal}
+        >
+          <InDonHang
+            infoHeader={formInfoDonHang}
+            dataTable={dataTable.slice(0, dataTable.length - 1)}
             setShowModal={setShowModal}
           />
         </Modal>

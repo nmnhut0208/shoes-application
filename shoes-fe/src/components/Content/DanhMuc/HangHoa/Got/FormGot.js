@@ -1,12 +1,17 @@
 import { useState } from "react";
 import styles from "./FormGot.module.scss";
 import { useTableContext, actions_table } from "~table_context";
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 const FormGot = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [view, setView] = useState(
     () => stateTable.inforShowTable.action_row === "view"
   );
+  const [stateItem, dispatchItem] = useItemsContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   const [image_url, setImageURL] = useState("");
   const [image_base64, setImageBase64] = useState(
@@ -38,6 +43,12 @@ const FormGot = () => {
           inputForm,
         ])
       );
+      dispatchItem(
+        actions_items_context.setInfoGot([
+          ...stateItem.infoItemGot,
+          { label: inputForm["TENGOT"], value: inputForm["MAGOT"] },
+        ])
+      );
     }
     console.log("inputForm: ", inputForm);
     fetch("http://localhost:8000/got", {
@@ -47,9 +58,11 @@ const FormGot = () => {
     })
       .then((response) => {
         console.log("response: ", response);
+        alert("Lưu thành công.");
       })
       .catch((error) => {
         console.log("error: ", error);
+        alert("Xảy ra lỗi. Chưa lưu được.");
       });
 
     dispatchTable(actions_table.setModeShowModal(false));

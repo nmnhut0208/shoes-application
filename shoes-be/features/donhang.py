@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Request, Query
 from typing_extensions import Annotated
+from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime
 
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
-
-from pydantic import BaseModel
-from typing import Optional
-from datetime import datetime
+from utils.vietnamese import convert_data_to_save_database
 
 
 class ITEM_DONHANG(BaseModel):
@@ -71,6 +71,16 @@ class RESPONSE_GIAYDONHANG(BaseModel):
     THANHTIEN: Optional[int] = None
     NGAYDH: Optional[str] = None
     NGAYGH: Optional[str] = None
+    DIENGIAIPHIEU: Optional[str] = None
+    DIENGIAIDONG: Optional[str] = None
+    INHIEU: Optional[str] = None
+    # ============================
+    TENMAUDE: str = ""
+    TENMAUGOT: str = ""
+    TENMAUSUON: str = ""
+    TENMAUCA: str = ""
+    TENMAUQUAI: str = ""
+
 
 
 
@@ -85,17 +95,6 @@ class DONHANG(BaseClass):
 donhang = DONHANG()
 
 
-# @router.get("/donhang/{SODH}")
-# def read(SODH: str) -> List[ITEM_DONHANG]:
-#     print("SODH: ", SODH)
-#     sql = f"""select *
-#              from DONHANG
-#              where DONHANG.SODH = '{SODH}'
-#           """
-
-#     result = donhang.read_custom(sql)
-#     return result
-
 class RESPONSE_BAOCAO_DONHANG:
     SODH: str 
     NGAYDH: str
@@ -107,11 +106,14 @@ class RESPONSE_BAOCAO_DONHANG:
 
 @router.get("/donhang/baocao_donhang")
 def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
-    sql = f"""select SODH, MAKH, TENKH, NGAYDH, NGAYGH, 
+    sql = f"""SELECT SODH, DH.MAKH, KH.TENKH, NGAYDH, NGAYGH, 
                 DIENGIAIPHIEU AS DIENGIAI,
                 SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
-                from V_BCDONHANG
-                group by SODH, MAKH, TENKH, NGAYDH, NGAYGH, DIENGIAIPHIEU
+              FROM DONHANG DH
+                LEFT JOIN V_GIAY ON V_GIAY.MAGIAY = DH.MAGIAY
+                LEFT JOIN DMKHACHHANG KH ON KH.MAKH = DH.MAKH
+              group by SODH, DH.MAKH, KH.TENKH, NGAYDH,
+                NGAYGH, DIENGIAIPHIEU
             """
     result = donhang.read_custom(sql)
     return result
@@ -120,12 +122,13 @@ def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
 @router.get("/donhang")
 def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
     print("SODH: ", SODH)
-    sql = f"""SELECT MADONG, SODH, HINHANH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
-                coalesce(MAUDE, '') as MAUDE, 
-                coalesce(MAUGOT, '') AS MAUGOT, 
-                coalesce(MAUSUON, '') AS MAUSUON,
-                coalesce(MAUCA, '') AS MAUCA,
-                coalesce(MAUQUAI, '') AS MAUQUAI ,
+    sql = f"""SELECT DIENGIAIPHIEU,MADONG, SODH, 
+                HINHANH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+                coalesce(MAUDE, '') as MAUDE, TENMAUDE,
+                coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT, 
+                coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
+                coalesce(MAUCA, '') AS MAUCA,TENMAUCA,
+                coalesce(MAUQUAI, '') AS MAUQUAI, TENMAUQUAI,
                 coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH, 
                 V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
                 V_GIAY.TENCA, V_GIAY.TENKH,
@@ -133,16 +136,33 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
                 SIZE9,SIZE8,SIZE0,
                 DONHANG.MAKH,
                 SOLUONG,NGAYDH, NGAYGH,
-                V_GIAY.DONGIA * SOLUONG AS THANHTIEN
-            FROM (select MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
+                V_GIAY.DONGIA * SOLUONG AS THANHTIEN,
+                DIENGIAIDONG, INHIEU
+            FROM (select DIENGIAIPHIEU, MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
                 SIZE9,SIZE8,SIZE0, NGAYDH, NGAYGH,
-                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG
+                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG,
+                DIENGIAIDONG, INHIEU
             from DONHANG 
             WHERE DONHANG.SODH='{SODH}') AS DONHANG
             left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  
             left JOIN (Select MAGIAY, HINHANH from DMGIAY) as DMGIAY
             on DMGIAY.MAGIAY = DONHANG.MAGIAY
+            left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
+                AS DMMAUDE 
+                ON coalesce(DMMAUDE.MAMAU, '') = coalesce(DONHANG.MAUDE, '')
+			left join (select MAMAU, TENMAU as TENMAUGOT from DMMAU) 
+                AS DMMAUGOT 
+                ON coalesce(DMMAUGOT.MAMAU, '') = coalesce(DONHANG.MAUGOT, '')
+			left join (select MAMAU, TENMAU as TENMAUSUON from DMMAU) 
+                AS DMMAUSUON 
+                ON coalesce(DMMAUSUON.MAMAU, '') = coalesce(DONHANG.MAUSUON, '')
+			left join (select MAMAU, TENMAU as TENMAUCA from DMMAU) 
+                AS DMMAUCA 
+                ON coalesce(DMMAUCA.MAMAU, '') = coalesce(DONHANG.MAUCA, '')
+			left join (select MAMAU, TENMAU as TENMAUQUAI from DMMAU) 
+                AS DMMAUQUAI 
+                ON coalesce(DMMAUQUAI.MAMAU, '') = coalesce(DONHANG.MAUQUAI, '')
           """
     result = donhang.read_custom(sql)
     return result
@@ -151,22 +171,37 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
 @router.get("/donhang/khachhang/{MAKH}/giay")
 # lấy tất cả các loại giày của khách hàng MAKH
 def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
-    sql = """SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
-                    coalesce(MAUDE, '') as MAUDE, 
-                    coalesce(MAUGOT, '') AS MAUGOT, 
-                    coalesce(MAUSUON, '') AS MAUSUON,
-                    coalesce(MAUCA, '') AS MAUCA,
-                    coalesce(MAUQUAI, '') AS MAUQUAI ,
+    sql = f"""SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+                    coalesce(MAUDE, '') as MAUDE, TENMAUDE,
+                    coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT,
+                    coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
+                    coalesce(MAUCA, '') AS MAUCA,TENMAUCA,
+                    coalesce(MAUQUAI, '') AS MAUQUAI,TENMAUQUAI,
                     coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH, 
                     V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
                     V_GIAY.TENCA, V_GIAY.TENKH
             FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH 
-                from DONHANG WHERE DONHANG.MAKH='{}') AS DONHANG
-            FULL OUTER JOIN (select * from V_GIAY where V_GIAY.MAKH='{}'
+                from DONHANG WHERE DONHANG.MAKH='{MAKH}') AS DONHANG
+            FULL OUTER JOIN (select * from V_GIAY where V_GIAY.MAKH='{MAKH}'
             and DONGIAQUAI is not null) 
             As V_GIAY on V_GIAY.magiay=DONHANG.magiay
-            """.format(MAKH, MAKH)
+            left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
+                    AS DMMAUDE 
+					ON coalesce(DMMAUDE.MAMAU, '') = coalesce(DONHANG.MAUDE, '')
+			left join (select MAMAU, TENMAU as TENMAUGOT from DMMAU) 
+                    AS DMMAUGOT 
+					ON coalesce(DMMAUGOT.MAMAU, '') = coalesce(DONHANG.MAUGOT, '')
+			left join (select MAMAU, TENMAU as TENMAUSUON from DMMAU) 
+                    AS DMMAUSUON 
+					ON coalesce(DMMAUSUON.MAMAU, '') = coalesce(DONHANG.MAUSUON, '')
+			left join (select MAMAU, TENMAU as TENMAUCA from DMMAU) 
+                    AS DMMAUCA 
+					ON coalesce(DMMAUCA.MAMAU, '') = coalesce(DONHANG.MAUCA, '')
+			left join (select MAMAU, TENMAU as TENMAUQUAI from DMMAU) 
+                    AS DMMAUQUAI 
+					ON coalesce(DMMAUQUAI.MAMAU, '') = coalesce(DONHANG.MAUQUAI, '')
+            """
     
     result = donhang.read_custom(sql)
     return result
@@ -183,7 +218,6 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
                     where SODH = '{data[0].SODH}'"""
     donhang.execute_custom(sql_delete)
 
-
     # find common information
     today = datetime.now()
     year = today.year
@@ -193,24 +227,16 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
     day_created = today.strftime("%Y-%m-%d %H:%M:%S")
 
     for i in range(len(data)):
-        _v = []
-        _c = []
         _data = dict(data[i])
         MADONG += 1
         _data["NGAYTAO"] = day_created
         _data["NGAYSUA"] = day_created
         _data["MADH"] = MADH
         _data["MADONG"] = f"MD{year}{str(MADONG).zfill(12)}"
-        for k, v in _data.items():
-            if v is not None:
-                _c.append(k)
-                if type(v) is str:
-                    _v.append(f"'{v}'")
-                else:
-                    _v.append(f"{v}")
-           
-        _c = ",".join(_c)
-        _v = ",".join(_v)
+
+        _data_save = convert_data_to_save_database(_data)
+        _c = ",".join([k for k, v in _data_save.items() if v is not None])
+        _v = ",".join([v for v in _data_save.values() if v is not None])
         # phòng trường hợp những record khác nhau có số lượng
         # cột insert khác nhau nên phải insert từng dòng như thế này 
         donhang.add(_c, _v) 

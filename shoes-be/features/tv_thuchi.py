@@ -25,7 +25,12 @@ def read() -> RESPONSE_TVTHUCHI:
 def read() -> RESPONSE_TVTHUCHI:
     # return KH.read()
     # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
-    sql = f"SELECT SOPHIEU, NGAYPHIEU, MAKH, TENKH, SODUCUOI, DIENGIAIPHIEU FROM V_CNCHITIET WHERE LOAIPHIEU='PT'"
+    sql = f"""SELECT SOPHIEU, NGAYPHIEU, CONGNO.MAKH, 
+                     TENKH, THANHTIEN AS SODUCUOI, DIENGIAIPHIEU 
+                     FROM CONGNO 
+                     inner join DMKHACHHANG on DMKHACHHANG.MAKH = CONGNO.MAKH
+                     WHERE LOAIPHIEU='PT'
+    """
     return TVTC.read_custom(sql)
 
 @router.get("/tv_chi")

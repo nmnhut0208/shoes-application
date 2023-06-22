@@ -1,46 +1,11 @@
-import { useMemo, useRef, useEffect, useState } from "react";
+import { useMemo, useRef, useState, useLayoutEffect } from "react";
 import { useReactToPrint } from "react-to-print";
-import MaterialReactTable from "material-react-table";
 
 import styles from "./InTongHop.module.scss";
 import { INFO_COLS_THO } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
-import PhanSo from "./PhanSo";
-
-const Table = ({ columns, data }) => {
-  return (
-    <MaterialReactTable
-      muiTablePaperProps={{
-        //customize paper styles
-        sx: {
-          borderRadius: "0",
-          borderLeft: "0.2rem solid rgba(0, 0, 0, 0.3)",
-        },
-      }}
-      muiTableBodyCellProps={{
-        sx: {
-          borderRight: "0.2rem solid rgba(0, 0, 0, 0.3)",
-          borderBottom: "0.2rem solid rgba(0, 0, 0, 0.3)",
-        },
-      }}
-      muiTableHeadCellProps={{
-        sx: {
-          borderRight: "0.2rem solid rgba(0, 0, 0, 0.3)",
-          borderBottom: "0.2rem solid rgba(0, 0, 0, 0.3)",
-        },
-      }}
-      enableTopToolbar={false}
-      columns={columns}
-      data={data}
-      // components
-      enableColumnActions={false}
-      enableSorting={false}
-      // enable phân trang
-      enablePagination={false}
-      enableBottomToolbar={false}
-    />
-  );
-};
+import { TableToPrint, SizeColumnInPrint } from "~common_tag/reports";
+import { useTableContext, actions_table } from "~table_context";
 
 const COL_INFO_SIZE = [
   { key: 0, name: "SIZE0" },
@@ -50,18 +15,10 @@ const COL_INFO_SIZE = [
   { key: 8, name: "SIZE8" },
   { key: 9, name: "SIZE9" },
 ];
-const SIZE_INFOR_PRINT = ({ list_tuso, list_mauso }) => {
-  return (
-    <div className={styles.group_phanso}>
-      {list_tuso.map((tuso, index) => (
-        <PhanSo tuso={tuso} mauso={list_mauso[index]} />
-      ))}
-    </div>
-  );
-};
 
 const InTongHop = ({ sophieu, data }) => {
   const [dataPrint, setDataPrint] = useState([]);
+  const [stateTable, dispatchTable] = useTableContext();
   const columns = useMemo(() => {
     return processingInfoColumnTable(INFO_COLS_THO);
   }, []);
@@ -70,7 +27,7 @@ const InTongHop = ({ sophieu, data }) => {
     content: () => componentRef.current,
     documentTitle: "Thông tin phân công",
   });
-  useEffect(() => {
+  useLayoutEffect(() => {
     let ma_giay_checked = [];
     let info_print = [];
     for (let i = 0; i < data.length; i++) {
@@ -100,11 +57,8 @@ const InTongHop = ({ sophieu, data }) => {
           }
 
           info["THO"][j]["TONGSO"] = tongso;
-
-          info["THO"][j]["SIZE_header"] = top;
-          info["THO"][j]["SIZE_detail"] = bottom;
           info["THO"][j]["SIZE"] = (
-            <SIZE_INFOR_PRINT list_tuso={top} list_mauso={bottom} />
+            <SizeColumnInPrint list_tuso={top} list_mauso={bottom} />
           );
         }
         ma_giay_checked.push(ma_giay);
@@ -114,9 +68,14 @@ const InTongHop = ({ sophieu, data }) => {
     console.log("info_print: ", info_print);
     setDataPrint(info_print);
   }, []);
-  useEffect(() => {
-    if (dataPrint.length > 0) handelPrint();
+
+  useLayoutEffect(() => {
+    if (dataPrint.length > 0) {
+      handelPrint();
+      dispatchTable(actions_table.setModeShowModal(false));
+    }
   }, [dataPrint]);
+
   return (
     <div ref={componentRef} className={styles.print_page}>
       <h1 className={styles.print_header}>Số phiếu: {sophieu}</h1>
@@ -132,7 +91,7 @@ const InTongHop = ({ sophieu, data }) => {
                 </tr>
               </table>
             </div>
-            <Table data={info["THO"]} columns={columns} />
+            <TableToPrint data={info["THO"]} columns={columns} />
           </div>
         ))}
     </div>

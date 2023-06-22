@@ -20,6 +20,12 @@ const PhanCong = () => {
     setListMaDongPhanCongAddButWaitSave,
   ] = useState([]);
 
+  console.log("===================================");
+  console.log(
+    "listMaDongPhanCongAddButWaitSave luc ben PhanCong ne: ",
+    listMaDongPhanCongAddButWaitSave
+  );
+
   const permission = useMemo(() => {
     console.log("stateUser.userPoolAccess ", stateUser.userPoolAccess);
     const phanquyen = stateUser.userPoolAccess.filter(

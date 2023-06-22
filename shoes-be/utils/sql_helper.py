@@ -2,6 +2,8 @@ import pyodbc
 import pandas as pd
 from functools import wraps
 from fastapi import Request, HTTPException
+from utils.vietnamese import convert_vni_to_unicode, check_need_convert
+from datetime import datetime
 
 # conn = pyodbc.connect(
 #     driver="{ODBC Driver 17 for SQL Server}",
@@ -18,19 +20,27 @@ authenticate_User = ["nhutnm123456", "thuntk123456"]
 
 
 def execute_database(sql, action_type='read'):
+    print("sql: ", sql)
     conn = pyodbc.connect(driver='{ODBC Driver 17 for SQL Server}',
                             server="MINH\SQLEXPRESS",
                         #   server="DESKTOP-GT3LP7K\SQLEXPRESS",
                           database="PT",
                           trusted_connection="yes",
-                          mars_connection="yes")
-
-
+                          mars_connection="yes",
+                          unicode_results=True,
+                          CHARSET='UTF8')
     cursor = conn.cursor()
     cursor.execute(sql)
+    s = datetime.now()
     if action_type == 'read':
         data = pd.read_sql(sql, conn)
         conn.close()
+        # convert vni to unicode string 
+        for col in data.columns:
+            if check_need_convert(col):
+                data[col] = data.apply(lambda x: convert_vni_to_unicode(x[col]), axis=1)
+
+        print("time convert to unicode: ", datetime.now()-s)
         return data
     else:
         conn.commit()

@@ -26,9 +26,20 @@ const Modal = ({
               if (!isSaveData) {
                 let text = "Bạn muốn tắt Form mà không lưu thay đổi!";
                 if (window.confirm(text)) {
-                  // TODO: xem list listMaDongPhanCongAddButWaitSave
-                  // khác rỗng ko, nếu khác, xóa những dòng này trong
-                  // bảng Phân Công
+                  if (listMaDongPhanCongAddButWaitSave.length > 0) {
+                    fetch(
+                      "http://localhost:8000/phancong/by_list_MADONG/?MADONG=" +
+                        listMaDongPhanCongAddButWaitSave.join("&MADONG="),
+                      { method: "delete" }
+                    )
+                      .then((response) => {
+                        console.log("response: ", response);
+                      })
+                      .catch((error) => {
+                        console.log("error: ", error);
+                      });
+                  }
+
                   setShowModal(false);
                 }
                 return;
