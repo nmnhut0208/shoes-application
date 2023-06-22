@@ -13,10 +13,11 @@ export const INFO_COLS_THO = [
 ];
 
 export const dictInfoPrint = {
-  header: 70,
-  footer: 116,
+  header: 140,
+  footer: 140,
   content: {
-    gap: 30,
+    gap_in_content: 15,
+    gap_out_contant: 30,
     info_giay_withouimage: 42,
     info_giay_with_image: 155,
     header_table: 41,

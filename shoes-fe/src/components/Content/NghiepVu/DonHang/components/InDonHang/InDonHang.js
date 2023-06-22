@@ -41,10 +41,12 @@ const getInfoBreakPage = (dataPrint, listImage) => {
   console.log("dataPrint: ", dataPrint);
   let pages = [];
   let index = 0;
-  let each_page = {};
+  let each_page = { content: [] };
   const MIN_ROW_MAGIAY_EACHPAGE = 3;
   const SIZE_PAGE_A4 = 790;
   let size_page_remain = SIZE_PAGE_A4;
+  size_page_remain -= dictInfoPrint["header"];
+  size_page_remain -= 30;
 
   const size_each_row_table = dictInfoPrint["content"]["each_row_table"];
 
@@ -67,35 +69,38 @@ const getInfoBreakPage = (dataPrint, listImage) => {
     let size_bottom_Table =
       size_MAGIAY +
       dictInfoPrint["content"]["header_table"] +
-      dictInfoPrint["content"]["gap"];
+      dictInfoPrint["content"]["gap_in_content"];
 
     while (nof_row_visited <= nof_row) {
       console.log("************************");
-      console.log("each_page: ", each_page);
+      console.log("each_page: ", { ...each_page });
       console.log("size_page_remain: ", size_page_remain);
       console.log("index: ", index);
       if (size_page_remain === SIZE_PAGE_A4) {
         console.log("''''''''''''''''''''''''''");
         console.log("start new page");
         if (each_page["content"] && each_page["content"].length > 0) {
-          each_page["margin_bottom"] += 20;
+          // each_page["margin_bottom"] += 20; // margin top
           pages.push({ ...each_page });
+          console.log("pages: ", pages, { ...each_page });
         }
         // start new page
         each_page = {};
         each_page["header"] = 1;
         size_page_remain -= dictInfoPrint["header"];
-        size_page_remain -= dictInfoPrint["footer"];
         each_page["content"] = [];
       }
       if (nof_row_visited === nof_row) break;
       // show content
       while (size_page_remain > 10) {
-        let remain_for_rows = size_page_remain - size_bottom_Table;
+        console.log("................................");
+        let remain_for_rows =
+          size_page_remain -
+          size_bottom_Table -
+          dictInfoPrint["content"]["gap_out_contant"] -
+          dictInfoPrint["footer"];
         console.log("remain_for_rows: ", remain_for_rows);
         if (remain_for_rows < 0) {
-          // TODO: how to restart new page
-          // pages.push({ ...each_page });
           each_page["margin_bottom"] = size_page_remain;
           size_page_remain = SIZE_PAGE_A4;
           break;
@@ -104,26 +109,28 @@ const getInfoBreakPage = (dataPrint, listImage) => {
           remain_for_rows / size_each_row_table
         );
         console.log("nof_row_can_show: ", nof_row_can_show);
+        console.log("nof_row_visited: ", nof_row_visited);
+        console.log("nof_row: ", nof_row);
         if (nof_row_can_show >= nof_row - nof_row_visited) {
           console.log("nof_row_can_show >= nof_row - nof_row_visited");
           // show hết phần còn lại
-          console.log("nof_row_visited: ", nof_row_visited);
-          console.log("nof_row: ", nof_row);
-          console.log("truoc: ", content["TABLE"]);
-          console.log(
-            "table: ",
-            content["TABLE"].slice(nof_row_visited, nof_row)
-          );
           size_page_remain -= (nof_row - nof_row_visited) * size_each_row_table;
           console.log("size_page_remain: ", size_page_remain);
+          console.log("eachpage truoc: ", { ...each_page });
+          console.log("push content into each_page 1");
+          console.log("content: ", content);
+          each_page["content"] = [
+            ...each_page["content"],
+            {
+              MAGIAY: content["MAGIAY"],
+              TENGIAY: content["TENGIAY"],
+              HINHANH: listImage[index],
+              Table: content["TABLE"].slice(nof_row_visited, nof_row),
+            },
+          ];
 
-          each_page["content"].push({
-            MAGIAY: content["MAGIAY"],
-            TENGIAY: content["TENGIAY"],
-            HINHANH: listImage[index],
-            Table: content["TABLE"].slice(nof_row_visited, nof_row),
-          });
           each_page["margin_bottom"] = size_page_remain;
+          console.log("after add: ", { ...each_page });
           nof_row_visited = nof_row;
           if (index === dataPrint.length - 1) {
             // kiểm tra in hết phần tử cuối cùng chưa?
@@ -135,31 +142,39 @@ const getInfoBreakPage = (dataPrint, listImage) => {
           // ko đủ 3 dòng thì cho qua new page
           if (nof_row_can_show >= MIN_ROW_MAGIAY_EACHPAGE) {
             console.log("nof_row_can_show >= MIN_ROW_MAGIAY_EACHPAGE");
-            each_page["content"].push({
-              MAGIAY: content["MAGIAY"],
-              TENGIAY: content["TENGIAY"],
-              HINHANH: listImage[index],
-              Table: content["TABLE"].slice(
-                nof_row_visited,
-                nof_row_visited + MIN_ROW_MAGIAY_EACHPAGE
-              ),
-            });
+            console.log(
+              "nof_row visited: ",
+              nof_row_visited + MIN_ROW_MAGIAY_EACHPAGE
+            );
+            console.log("push content into each_page 2");
+            console.log("eachpage truoc: ", { ...each_page });
+            each_page["content"] = [
+              ...each_page["content"],
+              {
+                MAGIAY: content["MAGIAY"],
+                TENGIAY: content["TENGIAY"],
+                HINHANH: listImage[index],
+                Table: content["TABLE"].slice(
+                  nof_row_visited,
+                  nof_row_visited + MIN_ROW_MAGIAY_EACHPAGE
+                ),
+              },
+            ];
+
+            console.log("after add: ", { ...each_page });
             nof_row_visited += MIN_ROW_MAGIAY_EACHPAGE;
             size_page_remain -= MIN_ROW_MAGIAY_EACHPAGE * size_each_row_table;
             each_page["margin_bottom"] = size_page_remain;
           } else {
             console.log("else cuoi cung");
             // số lượng dòng còn lại sẽ qua trang mới
-            // pages.push({ ...each_page });
             each_page["margin_bottom"] = size_page_remain;
             size_page_remain = SIZE_PAGE_A4;
             break;
           }
         }
       }
-      // size_page_remain = SIZE_PAGE_A4;
     }
-    // pages.push({ ...each_page });
     index += 1;
   }
   return pages;
@@ -257,17 +272,8 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
       {infoDetailsPrint.length > 0 &&
         infoDetailsPrint.map((each_page, index_page) => (
           <div key={index_page}>
-            {/* break page here */}
-            {index_page > 0 && (
-              <div
-                className={styles.footer}
-                style={{
-                  marginBottom: each_page["margin_bottom"],
-                  backgroundColor: "red",
-                }}
-              ></div>
-            )}
-
+            <br />
+            <br />
             <div className={styles.print_header}>
               <h1>Số đơn hàng: {header["SODH"]}</h1>
               <h1>{header["TENKH"]}</h1>
@@ -277,8 +283,8 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
               <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
               <h2>{header["DIACHI"]}</h2>
             </div>
-            <br />
-            <br />
+            {/* <br />
+            <br /> */}
             {each_page &&
               each_page["content"].length > 0 &&
               each_page["content"].map((info, index) => (
@@ -297,11 +303,29 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                   <TableToPrint data={info["Table"]} columns={columns} />
                 </div>
               ))}
+
+            {/* break page here */}
+            {(index_page < infoDetailsPrint.length - 1 ||
+              each_page["margin_bottom"] < 270) && (
+              <div
+                className={styles.footer}
+                style={{
+                  marginBottom: each_page["margin_bottom"],
+                  backgroundColor: "red",
+                }}
+              ></div>
+            )}
+
+            {index_page === infoDetailsPrint.length - 1 &&
+              each_page["margin_bottom"] > 270 && (
+                <>
+                  <br />
+                  <br />
+                </>
+              )}
           </div>
         ))}
 
-      <br />
-      <br />
       <Signature />
     </div>
   );
