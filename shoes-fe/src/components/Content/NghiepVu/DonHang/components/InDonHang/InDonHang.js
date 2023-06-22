@@ -1,8 +1,8 @@
-import { useMemo, useRef, useState, useLayoutEffect } from "react";
+import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 
 import styles from "./InDonHang.module.scss";
-import { INFO_COLS_THO } from "./ConstantVariable";
+import { INFO_COLS_THO, dictInfoPrint } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import {
   TableToPrint,
@@ -37,10 +37,139 @@ const getDiaChiKhachHang = async (MAKH) => {
   return result[0];
 };
 
+const getInfoBreakPage = (dataPrint, listImage) => {
+  console.log("dataPrint: ", dataPrint);
+  let pages = [];
+  let index = 0;
+  let each_page = {};
+  const MIN_ROW_MAGIAY_EACHPAGE = 3;
+  const SIZE_PAGE_A4 = 790;
+  let size_page_remain = SIZE_PAGE_A4;
+
+  const size_each_row_table = dictInfoPrint["content"]["each_row_table"];
+
+  while (index < dataPrint.length) {
+    console.log("=================================");
+    console.log("index: ", index);
+    let nof_row_visited = 0;
+    let content = dataPrint[index];
+    let have_image = Boolean(listImage[index]);
+    let nof_row = content["TABLE"].length;
+
+    console.log("size_page_remain: ", size_page_remain);
+    console.log("have_image: ", have_image);
+    console.log("nof_row_visited: ", nof_row_visited);
+
+    let size_MAGIAY = dictInfoPrint["content"]["info_giay_withouimage"];
+    if (have_image)
+      size_MAGIAY = dictInfoPrint["content"]["info_giay_with_image"];
+
+    let size_bottom_Table =
+      size_MAGIAY +
+      dictInfoPrint["content"]["header_table"] +
+      dictInfoPrint["content"]["gap"];
+
+    while (nof_row_visited <= nof_row) {
+      console.log("************************");
+      console.log("each_page: ", each_page);
+      console.log("size_page_remain: ", size_page_remain);
+      console.log("index: ", index);
+      if (size_page_remain === SIZE_PAGE_A4) {
+        console.log("''''''''''''''''''''''''''");
+        console.log("start new page");
+        if (each_page["content"] && each_page["content"].length > 0) {
+          each_page["margin_bottom"] += 20;
+          pages.push({ ...each_page });
+        }
+        // start new page
+        each_page = {};
+        each_page["header"] = 1;
+        size_page_remain -= dictInfoPrint["header"];
+        size_page_remain -= dictInfoPrint["footer"];
+        each_page["content"] = [];
+      }
+      if (nof_row_visited === nof_row) break;
+      // show content
+      while (size_page_remain > 10) {
+        let remain_for_rows = size_page_remain - size_bottom_Table;
+        console.log("remain_for_rows: ", remain_for_rows);
+        if (remain_for_rows < 0) {
+          // TODO: how to restart new page
+          // pages.push({ ...each_page });
+          each_page["margin_bottom"] = size_page_remain;
+          size_page_remain = SIZE_PAGE_A4;
+          break;
+        }
+        let nof_row_can_show = Math.floor(
+          remain_for_rows / size_each_row_table
+        );
+        console.log("nof_row_can_show: ", nof_row_can_show);
+        if (nof_row_can_show >= nof_row - nof_row_visited) {
+          console.log("nof_row_can_show >= nof_row - nof_row_visited");
+          // show hết phần còn lại
+          console.log("nof_row_visited: ", nof_row_visited);
+          console.log("nof_row: ", nof_row);
+          console.log("truoc: ", content["TABLE"]);
+          console.log(
+            "table: ",
+            content["TABLE"].slice(nof_row_visited, nof_row)
+          );
+          size_page_remain -= (nof_row - nof_row_visited) * size_each_row_table;
+          console.log("size_page_remain: ", size_page_remain);
+
+          each_page["content"].push({
+            MAGIAY: content["MAGIAY"],
+            TENGIAY: content["TENGIAY"],
+            HINHANH: listImage[index],
+            Table: content["TABLE"].slice(nof_row_visited, nof_row),
+          });
+          each_page["margin_bottom"] = size_page_remain;
+          nof_row_visited = nof_row;
+          if (index === dataPrint.length - 1) {
+            // kiểm tra in hết phần tử cuối cùng chưa?
+            size_page_remain = SIZE_PAGE_A4;
+          }
+          break;
+        } else {
+          // show ko hết thì phải đủ ít nhất 3 dòng
+          // ko đủ 3 dòng thì cho qua new page
+          if (nof_row_can_show >= MIN_ROW_MAGIAY_EACHPAGE) {
+            console.log("nof_row_can_show >= MIN_ROW_MAGIAY_EACHPAGE");
+            each_page["content"].push({
+              MAGIAY: content["MAGIAY"],
+              TENGIAY: content["TENGIAY"],
+              HINHANH: listImage[index],
+              Table: content["TABLE"].slice(
+                nof_row_visited,
+                nof_row_visited + MIN_ROW_MAGIAY_EACHPAGE
+              ),
+            });
+            nof_row_visited += MIN_ROW_MAGIAY_EACHPAGE;
+            size_page_remain -= MIN_ROW_MAGIAY_EACHPAGE * size_each_row_table;
+            each_page["margin_bottom"] = size_page_remain;
+          } else {
+            console.log("else cuoi cung");
+            // số lượng dòng còn lại sẽ qua trang mới
+            // pages.push({ ...each_page });
+            each_page["margin_bottom"] = size_page_remain;
+            size_page_remain = SIZE_PAGE_A4;
+            break;
+          }
+        }
+      }
+      // size_page_remain = SIZE_PAGE_A4;
+    }
+    // pages.push({ ...each_page });
+    index += 1;
+  }
+  return pages;
+};
+
 const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   const [header, setHeader] = useState(infoHeader);
   const [dataPrint, setDataPrint] = useState([]);
   const [listImage, setListImage] = useState([]);
+  const [infoDetailsPrint, setInfoDetailsPrint] = useState([]);
   const [doneGetDiaChi, setDoneGetDiaChi] = useState(false);
   const columns = useMemo(() => {
     return processingInfoColumnTable(INFO_COLS_THO);
@@ -62,16 +191,18 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
           TENGIAY: dataTable[i]["TENGIAY"],
         };
         list_promises.push(getImageFromMAGIAY(ma_giay));
-        info["THO"] = dataTable.filter((_data) => _data["MAGIAY"] === ma_giay);
-        for (let j = 0; j < info["THO"].length; j++) {
-          info["THO"][j]["SIZE"] = "";
+        info["TABLE"] = dataTable.filter(
+          (_data) => _data["MAGIAY"] === ma_giay
+        );
+        for (let j = 0; j < info["TABLE"].length; j++) {
+          info["TABLE"][j]["SIZE"] = "";
           let top = [];
           let line = [];
           let bottom = [];
           let tongso = 0;
           for (let k = 0; k < COL_INFO_SIZE.length; k++) {
-            if (info["THO"][j][COL_INFO_SIZE[k].name] > 0) {
-              let value = parseInt(info["THO"][j][COL_INFO_SIZE[k].name]);
+            if (info["TABLE"][j][COL_INFO_SIZE[k].name] > 0) {
+              let value = parseInt(info["TABLE"][j][COL_INFO_SIZE[k].name]);
               top.push(COL_INFO_SIZE[k].key);
               line.push("__");
               bottom.push(value);
@@ -79,8 +210,8 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
             }
           }
 
-          info["THO"][j]["TONGSO"] = tongso;
-          info["THO"][j]["SIZE"] = (
+          info["TABLE"][j]["TONGSO"] = tongso;
+          info["TABLE"][j]["SIZE"] = (
             <SizeColumnInPrint list_tuso={top} list_mauso={bottom} />
           );
         }
@@ -104,39 +235,68 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   // console.log("listImage: ", listImage);
   // console.log("doneGetDiaChi: ", doneGetDiaChi);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (dataPrint.length > 0 && listImage.length > 0 && doneGetDiaChi) {
-      handelPrint();
-      setShowModal(false);
+      let details = getInfoBreakPage(dataPrint, listImage);
+      console.log("details: ", details);
+      setInfoDetailsPrint(details);
     }
   }, [dataPrint, listImage, doneGetDiaChi]);
 
+  console.log("infoDetailsPrint: ", infoDetailsPrint);
+
+  useLayoutEffect(() => {
+    if (infoDetailsPrint.length > 0) {
+      handelPrint();
+      // setShowModal(false);
+    }
+  }, [infoDetailsPrint]);
+
   return (
     <div ref={componentRef} className={styles.print_page}>
-      <div className={styles.print_header}>
-        <h1>Số đơn hàng: {header["SODH"]}</h1>
-        <h1>{header["TENKH"]}</h1>
-      </div>
-      <div className={styles.print_header}>
-        <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
-        <h2>{header["DIACHI"]}</h2>
-      </div>
-      <br />
-      <br />
+      {infoDetailsPrint.length > 0 &&
+        infoDetailsPrint.map((each_page, index_page) => (
+          <div key={index_page}>
+            {/* break page here */}
+            {index_page > 0 && (
+              <div
+                className={styles.footer}
+                style={{
+                  marginBottom: each_page["margin_bottom"],
+                  backgroundColor: "red",
+                }}
+              ></div>
+            )}
 
-      {dataPrint.length > 0 &&
-        dataPrint.map((info, index) => (
-          <div className={styles.print_object} key={index}>
-            <div className={styles.info_giay}>
-              <table style={{ width: "100%" }}>
-                <tr className={styles.info_row_giay}>
-                  <td className={styles.TENGIAY}>{info["TENGIAY"]}</td>
-                  <td>{listImage[index] && <img src={listImage[index]} />}</td>
-                  <td>{info["MAGIAY"]}</td>
-                </tr>
-              </table>
+            <div className={styles.print_header}>
+              <h1>Số đơn hàng: {header["SODH"]}</h1>
+              <h1>{header["TENKH"]}</h1>
             </div>
-            <TableToPrint data={info["THO"]} columns={columns} />
+
+            <div className={styles.print_header}>
+              <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
+              <h2>{header["DIACHI"]}</h2>
+            </div>
+            <br />
+            <br />
+            {each_page &&
+              each_page["content"].length > 0 &&
+              each_page["content"].map((info, index) => (
+                <div className={styles.print_object} key={index}>
+                  <div className={styles.info_giay}>
+                    <table style={{ width: "100%" }}>
+                      <tr className={styles.info_row_giay}>
+                        <td className={styles.TENGIAY}>{info["TENGIAY"]}</td>
+                        <td>
+                          {info["HINHANH"] && <img src={info["HINHANH"]} />}
+                        </td>
+                        <td>{info["MAGIAY"]}</td>
+                      </tr>
+                    </table>
+                  </div>
+                  <TableToPrint data={info["Table"]} columns={columns} />
+                </div>
+              ))}
           </div>
         ))}
 

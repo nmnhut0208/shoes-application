@@ -1,5 +1,11 @@
 @import "~common_scss/form.module.scss";
 
+@media print {
+  footer {
+    page-break-after: always;
+  }
+}
+
 .print_page {
   margin: 1rem 1rem 1rem 1rem;
 

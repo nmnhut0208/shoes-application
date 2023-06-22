@@ -11,3 +11,15 @@ export const INFO_COLS_THO = [
   { header: "THỢ ĐẾ", key: "TENTHODE", width: 10 * rem_to_px },
   { header: "THỢ QUAI", key: "TENTHOQUAI", width: 10 * rem_to_px },
 ];
+
+export const dictInfoPrint = {
+  header: 70,
+  footer: 116,
+  content: {
+    gap: 30,
+    info_giay_withouimage: 42,
+    info_giay_with_image: 155,
+    header_table: 41,
+    each_row_table: 70,
+  },
+};
