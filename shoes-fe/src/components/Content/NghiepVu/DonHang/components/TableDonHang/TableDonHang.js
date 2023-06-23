@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
@@ -114,4 +115,4 @@ const TableDonHang = ({
   );
 };
 
-export default TableDonHang;
+export default memo(TableDonHang);
