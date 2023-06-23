@@ -21,14 +21,10 @@
       @extend .font-setting;
       font-size: 1.6rem;
       margin-bottom: 1rem;
-      background-color: brown;
       .info_row_giay {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        .TENGIAY {
-          width: 40rem;
-        }
       }
 
       img {

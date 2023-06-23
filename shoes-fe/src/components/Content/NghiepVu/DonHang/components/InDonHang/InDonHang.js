@@ -269,11 +269,11 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                   <div className={styles.info_giay}>
                     <table style={{ width: "100%" }}>
                       <tr className={styles.info_row_giay}>
-                        <td className={styles.TENGIAY}>{info["TENGIAY"]}</td>
-                        <td>
-                          {info["HINHANH"] && <img src={info["HINHANH"]} />}
-                        </td>
                         <td>{info["MAGIAY"]}</td>
+                        {info["HINHANH"] && (
+                          <td>{<img src={info["HINHANH"]} />}</td>
+                        )}
+                        <td>{info["TENGIAY"]}</td>
                       </tr>
                     </table>
                   </div>
@@ -281,27 +281,23 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                 </div>
               ))}
 
-            <p>====================================================</p>
             {/* break page here */}
             {(index_page < infoDetailsPrint.length - 1 ||
-              each_page["margin_bottom"] < 200) && (
+              each_page["margin_bottom"] < 150) && (
               <div
                 className={styles.footer}
                 style={{
                   marginBottom: each_page["margin_bottom"],
-                  backgroundColor: "red",
                 }}
               ></div>
             )}
 
             {index_page === infoDetailsPrint.length - 1 &&
-              each_page["margin_bottom"] > 200 && (
+              each_page["margin_bottom"] > 150 && (
                 <>
-                  <br />
                   <br />
                 </>
               )}
-            <p>====================================================</p>
           </div>
         ))}
 
