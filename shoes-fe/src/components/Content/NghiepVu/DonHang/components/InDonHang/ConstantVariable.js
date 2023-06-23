@@ -24,7 +24,7 @@ export const INFO_COLS_THO = [
 export const dictInfoPrint = {
   header: 40,
   margin_header: 30,
-  footer: 140,
+  footer: 150,
   content: {
     gap_in_content: 10,
     gap_out_content: 32,

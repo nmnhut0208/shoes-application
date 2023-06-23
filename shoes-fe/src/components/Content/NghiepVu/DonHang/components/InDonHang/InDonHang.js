@@ -27,16 +27,10 @@ const getInfoBreakPage = (dataPrint, listImage) => {
   const size_each_row_table = dictInfoPrint["content"]["each_row_table"];
 
   while (index < dataPrint.length) {
-    console.log("=================================");
-    console.log("index: ", index);
     let nof_row_visited = 0;
     let content = dataPrint[index];
     let have_image = Boolean(listImage[index]);
     let nof_row = content["TABLE"].length;
-
-    console.log("size_page_remain: ", size_page_remain);
-    console.log("have_image: ", have_image);
-    console.log("nof_row_visited: ", nof_row_visited);
 
     let size_MAGIAY = dictInfoPrint["content"]["info_giay_withouimage"];
     if (have_image)
@@ -48,16 +42,9 @@ const getInfoBreakPage = (dataPrint, listImage) => {
       dictInfoPrint["content"]["gap_in_content"];
 
     while (nof_row_visited <= nof_row) {
-      console.log("************************");
-      console.log("each_page: ", { ...each_page });
-      console.log("size_page_remain: ", size_page_remain);
-      console.log("index: ", index);
       if (size_page_remain === SIZE_PAGE_A4) {
-        console.log("''''''''''''''''''''''''''");
-        console.log("start new page");
         if (each_page["content"] && each_page["content"].length > 0) {
           pages.push({ ...each_page });
-          console.log("pages: ", pages, { ...each_page });
         }
         // start new page
         each_page = {};
@@ -68,14 +55,12 @@ const getInfoBreakPage = (dataPrint, listImage) => {
       if (nof_row_visited === nof_row) break;
       // show content
       while (size_page_remain > 10) {
-        console.log("................................");
         let size_other_MAGIAY =
           size_bottom_Table + dictInfoPrint["content"]["gap_out_content"];
-        let remain_for_rows =
-          size_page_remain - size_other_MAGIAY - dictInfoPrint["footer"];
-        console.log("remain_for_rows: ", remain_for_rows);
+        let remain_for_rows = size_page_remain - size_other_MAGIAY;
+        if (index === dataPrint.length - 1)
+          remain_for_rows -= dictInfoPrint["footer"];
 
-        // if (remain_for_rows < size_each_row_table) {
         if (remain_for_rows < 0) {
           each_page["margin_bottom"] = size_page_remain;
           size_page_remain = SIZE_PAGE_A4;
@@ -84,21 +69,14 @@ const getInfoBreakPage = (dataPrint, listImage) => {
         let nof_row_can_show = Math.floor(
           remain_for_rows / size_each_row_table
         );
-        console.log("nof_row_can_show: ", nof_row_can_show);
-        console.log("nof_row_visited: ", nof_row_visited);
-        console.log("nof_row: ", nof_row);
-        console.log("so dong show: ", nof_row - nof_row_visited);
+
         if (nof_row_can_show >= nof_row - nof_row_visited) {
-          console.log("nof_row_can_show >= nof_row - nof_row_visited");
           // show hết phần còn lại
           size_page_remain =
             size_page_remain -
             (nof_row - nof_row_visited) * size_each_row_table -
             size_other_MAGIAY;
-          console.log("size_page_remain: ", size_page_remain);
-          console.log("eachpage truoc: ", { ...each_page });
-          console.log("push content into each_page 1");
-          console.log("content: ", content);
+
           each_page["content"] = [
             ...each_page["content"],
             {
@@ -110,24 +88,18 @@ const getInfoBreakPage = (dataPrint, listImage) => {
           ];
 
           each_page["margin_bottom"] = size_page_remain;
-          console.log("after add: ", { ...each_page });
           nof_row_visited = nof_row;
           if (index === dataPrint.length - 1) {
             // kiểm tra in hết phần tử cuối cùng chưa?
+            // show hết tấc cả các dòng của phần tử cuối
+            // => xong nhiệm vụ
             size_page_remain = SIZE_PAGE_A4;
           }
           break;
         } else {
-          // show ko hết thì phải đủ ít nhất 3 dòng
-          // ko đủ 3 dòng thì cho qua new page
+          // show ko hết thì phải đủ ít nhất 2 dòng
+          // ko đủ 2 dòng thì cho qua new page
           if (nof_row_can_show >= MIN_ROW_MAGIAY_EACHPAGE) {
-            console.log("nof_row_can_show >= MIN_ROW_MAGIAY_EACHPAGE");
-            console.log(
-              "nof_row visited: ",
-              nof_row_visited + MIN_ROW_MAGIAY_EACHPAGE
-            );
-            console.log("push content into each_page 2");
-            console.log("eachpage truoc: ", { ...each_page });
             each_page["content"] = [
               ...each_page["content"],
               {
@@ -136,20 +108,18 @@ const getInfoBreakPage = (dataPrint, listImage) => {
                 HINHANH: listImage[index],
                 Table: content["TABLE"].slice(
                   nof_row_visited,
-                  nof_row_visited + MIN_ROW_MAGIAY_EACHPAGE
+                  nof_row_visited + nof_row_can_show
                 ),
               },
             ];
 
-            console.log("after add: ", { ...each_page });
-            nof_row_visited += MIN_ROW_MAGIAY_EACHPAGE;
+            nof_row_visited += nof_row_can_show;
             size_page_remain =
               size_page_remain -
-              MIN_ROW_MAGIAY_EACHPAGE * size_each_row_table -
+              nof_row_can_show * size_each_row_table -
               size_other_MAGIAY;
             each_page["margin_bottom"] = size_page_remain;
           } else {
-            console.log("else cuoi cung");
             // số lượng dòng còn lại sẽ qua trang mới
             each_page["margin_bottom"] = size_page_remain;
             size_page_remain = SIZE_PAGE_A4;
@@ -231,7 +201,6 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   useEffect(() => {
     if (dataPrint.length > 0 && listImage.length > 0 && doneGetDiaChi) {
       let details = getInfoBreakPage(dataPrint, listImage);
-      console.log("details: ", details);
       setInfoDetailsPrint(details);
     }
   }, [dataPrint, listImage, doneGetDiaChi]);
@@ -241,7 +210,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   useLayoutEffect(() => {
     if (infoDetailsPrint.length > 0) {
       handelPrint();
-      // setShowModal(false);
+      setShowModal(false);
     }
   }, [infoDetailsPrint]);
 
@@ -283,7 +252,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
             {/* break page here */}
             {(index_page < infoDetailsPrint.length - 1 ||
-              each_page["margin_bottom"] < 150) && (
+              each_page["margin_bottom"] < dictInfoPrint["footer"]) && (
               <div
                 className={styles.footer}
                 style={{
@@ -293,7 +262,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
             )}
 
             {index_page === infoDetailsPrint.length - 1 &&
-              each_page["margin_bottom"] > 150 && (
+              each_page["margin_bottom"] > dictInfoPrint["footer"] && (
                 <>
                   <br />
                 </>
