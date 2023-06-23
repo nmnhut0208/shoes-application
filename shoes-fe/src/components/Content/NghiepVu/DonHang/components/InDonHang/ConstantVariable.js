@@ -1,5 +1,14 @@
 import { rem_to_px } from "~config/ui";
 
+export const COL_INFO_SIZE = [
+  { key: 0, name: "SIZE0" },
+  { key: 5, name: "SIZE5" },
+  { key: 6, name: "SIZE6" },
+  { key: 7, name: "SIZE7" },
+  { key: 8, name: "SIZE8" },
+  { key: 9, name: "SIZE9" },
+];
+
 export const INFO_COLS_THO = [
   { header: "ĐẾ", key: "TENMAUDE", width: 3 * rem_to_px },
   { header: "GÓT", key: "TENMAUGOT", width: 3 * rem_to_px },
@@ -13,14 +22,15 @@ export const INFO_COLS_THO = [
 ];
 
 export const dictInfoPrint = {
-  header: 140,
+  header: 40,
+  margin_header: 30,
   footer: 140,
   content: {
-    gap_in_content: 15,
-    gap_out_contant: 30,
-    info_giay_withouimage: 42,
-    info_giay_with_image: 155,
-    header_table: 41,
-    each_row_table: 70,
+    gap_in_content: 10,
+    gap_out_content: 32,
+    info_giay_withouimage: 20,
+    info_giay_with_image: 160,
+    header_table: 43,
+    each_row_table: 69.3,
   },
 };

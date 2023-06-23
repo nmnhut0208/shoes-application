@@ -1,13 +1,11 @@
 @import "~common_scss/form.module.scss";
 
-@media print {
-  footer {
-    page-break-after: always;
-  }
+.footer {
+  background-color: chartreuse;
 }
 
 .print_page {
-  margin: 1rem 1rem 1rem 1rem;
+  margin: 0rem 1rem 0rem 1rem;
 
   .print_header {
     display: flex;
@@ -23,6 +21,7 @@
       @extend .font-setting;
       font-size: 1.6rem;
       margin-bottom: 1rem;
+      background-color: brown;
       .info_row_giay {
         display: flex;
         flex-direction: row;

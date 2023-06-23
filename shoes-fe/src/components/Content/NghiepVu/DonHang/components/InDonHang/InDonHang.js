@@ -2,7 +2,11 @@ import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 
 import styles from "./InDonHang.module.scss";
-import { INFO_COLS_THO, dictInfoPrint } from "./ConstantVariable";
+import {
+  INFO_COLS_THO,
+  COL_INFO_SIZE,
+  dictInfoPrint,
+} from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import {
   TableToPrint,
@@ -10,44 +14,16 @@ import {
   Signature,
 } from "~common_tag/reports";
 import { convertDateForReport } from "~utils/processing_date";
-
-const COL_INFO_SIZE = [
-  { key: 0, name: "SIZE0" },
-  { key: 5, name: "SIZE5" },
-  { key: 6, name: "SIZE6" },
-  { key: 7, name: "SIZE7" },
-  { key: 8, name: "SIZE8" },
-  { key: 9, name: "SIZE9" },
-];
-
-const getImageFromMAGIAY = async (MAGIAY) => {
-  const response = await fetch(
-    "http://localhost:8000/giay/get_HINHANH?MAGIAY=" + MAGIAY
-  );
-  const result = await response.json();
-  console.log(MAGIAY, result);
-  return result[0]["HINHANH"];
-};
-
-const getDiaChiKhachHang = async (MAKH) => {
-  const response = await fetch(
-    "http://localhost:8000/khachhang/get_details?MAKH=" + MAKH
-  );
-  const result = await response.json();
-  return result[0];
-};
+import { getImageFromMAGIAY, getDiaChiKhachHang } from "./helper";
 
 const getInfoBreakPage = (dataPrint, listImage) => {
-  console.log("dataPrint: ", dataPrint);
   let pages = [];
   let index = 0;
   let each_page = { content: [] };
-  const MIN_ROW_MAGIAY_EACHPAGE = 3;
+  const MIN_ROW_MAGIAY_EACHPAGE = 2;
   const SIZE_PAGE_A4 = 790;
   let size_page_remain = SIZE_PAGE_A4;
-  size_page_remain -= dictInfoPrint["header"];
-  size_page_remain -= 30;
-
+  const margin_header = dictInfoPrint["margin_header"];
   const size_each_row_table = dictInfoPrint["content"]["each_row_table"];
 
   while (index < dataPrint.length) {
@@ -80,26 +56,26 @@ const getInfoBreakPage = (dataPrint, listImage) => {
         console.log("''''''''''''''''''''''''''");
         console.log("start new page");
         if (each_page["content"] && each_page["content"].length > 0) {
-          // each_page["margin_bottom"] += 20; // margin top
           pages.push({ ...each_page });
           console.log("pages: ", pages, { ...each_page });
         }
         // start new page
         each_page = {};
         each_page["header"] = 1;
-        size_page_remain -= dictInfoPrint["header"];
+        size_page_remain -= dictInfoPrint["header"] + margin_header;
         each_page["content"] = [];
       }
       if (nof_row_visited === nof_row) break;
       // show content
       while (size_page_remain > 10) {
         console.log("................................");
+        let size_other_MAGIAY =
+          size_bottom_Table + dictInfoPrint["content"]["gap_out_content"];
         let remain_for_rows =
-          size_page_remain -
-          size_bottom_Table -
-          dictInfoPrint["content"]["gap_out_contant"] -
-          dictInfoPrint["footer"];
+          size_page_remain - size_other_MAGIAY - dictInfoPrint["footer"];
         console.log("remain_for_rows: ", remain_for_rows);
+
+        // if (remain_for_rows < size_each_row_table) {
         if (remain_for_rows < 0) {
           each_page["margin_bottom"] = size_page_remain;
           size_page_remain = SIZE_PAGE_A4;
@@ -111,10 +87,14 @@ const getInfoBreakPage = (dataPrint, listImage) => {
         console.log("nof_row_can_show: ", nof_row_can_show);
         console.log("nof_row_visited: ", nof_row_visited);
         console.log("nof_row: ", nof_row);
+        console.log("so dong show: ", nof_row - nof_row_visited);
         if (nof_row_can_show >= nof_row - nof_row_visited) {
           console.log("nof_row_can_show >= nof_row - nof_row_visited");
           // show hết phần còn lại
-          size_page_remain -= (nof_row - nof_row_visited) * size_each_row_table;
+          size_page_remain =
+            size_page_remain -
+            (nof_row - nof_row_visited) * size_each_row_table -
+            size_other_MAGIAY;
           console.log("size_page_remain: ", size_page_remain);
           console.log("eachpage truoc: ", { ...each_page });
           console.log("push content into each_page 1");
@@ -163,7 +143,10 @@ const getInfoBreakPage = (dataPrint, listImage) => {
 
             console.log("after add: ", { ...each_page });
             nof_row_visited += MIN_ROW_MAGIAY_EACHPAGE;
-            size_page_remain -= MIN_ROW_MAGIAY_EACHPAGE * size_each_row_table;
+            size_page_remain =
+              size_page_remain -
+              MIN_ROW_MAGIAY_EACHPAGE * size_each_row_table -
+              size_other_MAGIAY;
             each_page["margin_bottom"] = size_page_remain;
           } else {
             console.log("else cuoi cung");
@@ -244,11 +227,6 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
     setDataPrint(info_print);
   }, []);
-  // console.log("==============================");
-  // console.log("header: ", header);
-  // console.log("dataPrint: ", dataPrint);
-  // console.log("listImage: ", listImage);
-  // console.log("doneGetDiaChi: ", doneGetDiaChi);
 
   useEffect(() => {
     if (dataPrint.length > 0 && listImage.length > 0 && doneGetDiaChi) {
@@ -283,8 +261,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
               <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
               <h2>{header["DIACHI"]}</h2>
             </div>
-            {/* <br />
-            <br /> */}
+
             {each_page &&
               each_page["content"].length > 0 &&
               each_page["content"].map((info, index) => (
@@ -304,9 +281,10 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                 </div>
               ))}
 
+            <p>====================================================</p>
             {/* break page here */}
             {(index_page < infoDetailsPrint.length - 1 ||
-              each_page["margin_bottom"] < 270) && (
+              each_page["margin_bottom"] < 200) && (
               <div
                 className={styles.footer}
                 style={{
@@ -317,12 +295,13 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
             )}
 
             {index_page === infoDetailsPrint.length - 1 &&
-              each_page["margin_bottom"] > 270 && (
+              each_page["margin_bottom"] > 200 && (
                 <>
                   <br />
                   <br />
                 </>
               )}
+            <p>====================================================</p>
           </div>
         ))}
 
