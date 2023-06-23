@@ -142,7 +142,7 @@ dict_vni_to_unicode = {
 
 dict_unicode_to_vni = {v:k for k, v in dict_vni_to_unicode.items()}
 
-columns_vietnamese = {"TENGIAY", "TENKHO", 
+columns_vietnamese = {"TENGIAY", "TENKHO", "TENMUI", 
                       "TENNVIEN", "TENKH",
                       "TENDE", "TENSUON",
                       "TENCA", "TENQUAI",
@@ -152,7 +152,7 @@ columns_vietnamese = {"TENGIAY", "TENKHO",
                       "TRANGTRIDE", "TRANGTRIQUAI", "INHIEU",
                       "TENMAU", "TENMAUDE", "TENMAUCA",
                       "TENMAUQUAI", "TENMAUSUON",
-                      "TENMAUGOT", 
+                      "TENMAUGOT", "DienGiai", 
                       "TENFORM"}
 
 
