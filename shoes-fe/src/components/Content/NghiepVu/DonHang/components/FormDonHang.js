@@ -37,9 +37,10 @@ const FormDonHang = ({
 
   // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
   // nên đành để thành thêm 1 dòng trống sau dataTable
-  const [dataTable, setDataTable] = useState(() => {
-    return renderDataEmpty(INFO_COLS_DONHANG, 1);
-  });
+  // const [dataTable, setDataTable] = useState(() => {
+  //   return renderDataEmpty(INFO_COLS_DONHANG, 1);
+  // });
+  const [dataTable, setDataTable] = useState([]);
   const [isUpdateFromDataView, setIsUpdateFromDataView] = useState(false);
 
   const [dataMau, setDataMau] = useState([]);
@@ -79,7 +80,8 @@ const FormDonHang = ({
         })
         .then((info) => {
           setIsUpdateFromDataView(true);
-          setDataTable([...info, dataTable[dataTable.length - 1]]);
+          setDataTable(info);
+          // setDataTable([...info, dataTable[dataTable.length - 1]]);
           setFormInfoDonHang({
             SODH: info[0]["SODH"],
             NGAYDH: info[0]["NGAYDH"],
@@ -133,9 +135,10 @@ const FormDonHang = ({
   const handleSaveDonHang = () => {
     if (isSavedData) return;
 
-    let dataDatHang = dataTable.slice(0, dataTable.length - 1);
+    // let dataDatHang = dataTable.slice(0, dataTable.length - 1);
     // remove the last empty line
-    dataDatHang = dataDatHang.filter((data) => data["SOLUONG"] > 0);
+
+    let dataDatHang = dataTable.filter((data) => data["SOLUONG"] > 0);
     if (dataDatHang.length == 0) {
       alert("Bạn chưa đặt hàng hoặc chưa chọn số lượng mỗi loại giày cần đặt!");
       return;
