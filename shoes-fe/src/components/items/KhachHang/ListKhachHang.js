@@ -42,6 +42,11 @@ const ListKhachHang = ({ changeData }) => {
         enableRowSelection
         onRowSelectionChange={setRowSelection}
         state={{ rowSelection }}
+        // scroll to bottom
+        enableRowVirtualization
+        muiTableContainerProps={{
+          sx: { maxHeight: "30rem" },
+        }}
       />
     </div>
   );

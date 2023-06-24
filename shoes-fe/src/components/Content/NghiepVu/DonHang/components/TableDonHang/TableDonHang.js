@@ -52,7 +52,7 @@ const TableDonHang = ({
             handleAddGiay();
           }}
         >
-          <AddCircleIcon />
+          <AddCircleIcon style={{ color: "green" }} fontSize="large" />
         </IconButton>
       </Tooltip>
       <MaterialReactTable

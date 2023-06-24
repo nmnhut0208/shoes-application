@@ -52,6 +52,7 @@ const FormDonHang = ({
     DIENGIAIPHIEU: "",
     NGAYDH: "",
     NGAYGH: "",
+    MAKH: "",
   });
   console.log("formInfoDonHang: ", formInfoDonHang);
   const [lastestDH, setLastestDH] = useState(0);
@@ -154,6 +155,10 @@ const FormDonHang = ({
   };
 
   const handleClickMaGiay = () => {
+    if (formInfoDonHang["MAKH"] === "") {
+      alert("Vui lòng chọn khách hàng!");
+      return;
+    }
     setInfoFormWillShow({
       giay: false,
       mau: false,
