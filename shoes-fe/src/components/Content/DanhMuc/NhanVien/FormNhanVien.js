@@ -80,6 +80,7 @@ const FormNhanVien = () => {
               onChange={(e) => handleChangeInformationForm(e)}
               name="MANVIEN"
               className={styles.item_size_small}
+              readOnly={stateTable.inforShowTable.action_row === "edit"}
             />
           </div>
           <div className={styles.group_first_row}>
@@ -93,12 +94,16 @@ const FormNhanVien = () => {
           </div>
           <div className={styles.group_first_row}>
             <label>Loại nhân viên</label>
-            <input
+            <select
               value={inputForm["LOAINVIEN"]}
               onChange={(e) => handleChangeInformationForm(e)}
               name="LOAINVIEN"
               className={styles.item_size_middle}
-            />
+            >
+              <option value="QL">Quản lý</option>
+              <option value="TD">Thợ đế</option>
+              <option value="TQ">Thợ quai</option>
+            </select>
           </div>
         </div>
         <div className={styles.group_second}>
