@@ -1,5 +1,7 @@
 import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
+import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+import { PDFViewer } from "@react-pdf/renderer";
 
 import styles from "./InDonHang.module.scss";
 import {
@@ -133,6 +135,18 @@ const getInfoBreakPage = (dataPrint, listImage) => {
   return pages;
 };
 
+const styles_print = StyleSheet.create({
+  page: {
+    flexDirection: "row",
+    backgroundColor: "#E4E4E4",
+  },
+  section: {
+    margin: 10,
+    padding: 10,
+    flexGrow: 1,
+  },
+});
+
 const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   const [header, setHeader] = useState(infoHeader);
   const [dataPrint, setDataPrint] = useState([]);
@@ -142,11 +156,12 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   const columns = useMemo(() => {
     return processingInfoColumnTable(INFO_COLS_THO);
   }, []);
-  const componentRef = useRef();
-  const handelPrint = useReactToPrint({
-    content: () => componentRef.current,
-    documentTitle: "Thông tin đơn hàng",
-  });
+  const [client, setClient] = useState(false);
+  // const componentRef = useRef();
+  // const handelPrint = useReactToPrint({
+  //   content: () => componentRef.current,
+  //   documentTitle: "Thông tin đơn hàng",
+  // });
   useLayoutEffect(() => {
     let ma_giay_checked = [];
     let info_print = [];
@@ -207,71 +222,86 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
   console.log("infoDetailsPrint: ", infoDetailsPrint);
 
-  useLayoutEffect(() => {
-    if (infoDetailsPrint.length > 0) {
-      handelPrint();
-      setShowModal(false);
-    }
-  }, [infoDetailsPrint]);
+  // useLayoutEffect(() => {
+  //   if (infoDetailsPrint.length > 0) {
+  //     // handelPrint();
+  //     // setClient(true);
+  //     // setShowModal(false);
+  //   }
+  // }, [infoDetailsPrint]);
 
   return (
-    <div ref={componentRef} className={styles.print_page}>
-      {infoDetailsPrint.length > 0 &&
-        infoDetailsPrint.map((each_page, index_page) => (
-          <div key={index_page}>
-            <br />
-            <br />
-            <div className={styles.print_header}>
-              <h1>Số đơn hàng: {header["SODH"]}</h1>
-              <h1>{header["TENKH"]}</h1>
-            </div>
+    <PDFViewer>
+      <PDF_View
+        columns={columns}
+        header={header}
+        infoDetailsPrint={infoDetailsPrint}
+      />
+    </PDFViewer>
+  );
+};
 
-            <div className={styles.print_header}>
-              <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
-              <h2>{header["DIACHI"]}</h2>
-            </div>
+const PDF_View = ({ columns, header, infoDetailsPrint }) => {
+  return (
+    <Document>
+      <Page size="A4" style={styles_print.page}>
+        {infoDetailsPrint.length > 0 &&
+          infoDetailsPrint.map((each_page, index_page) => (
+            <div key={index_page}>
+              <br />
+              <br />
+              <div className={styles.print_header}>
+                <h1>Số đơn hàng: {header["SODH"]}</h1>
+                <h1>{header["TENKH"]}</h1>
+              </div>
 
-            {each_page &&
-              each_page["content"].length > 0 &&
-              each_page["content"].map((info, index) => (
-                <div className={styles.print_object} key={index}>
-                  <div className={styles.info_giay}>
-                    <table style={{ width: "100%" }}>
-                      <tr className={styles.info_row_giay}>
-                        <td>{info["MAGIAY"]}</td>
-                        {info["HINHANH"] && (
-                          <td>{<img src={info["HINHANH"]} />}</td>
-                        )}
-                        <td>{info["TENGIAY"]}</td>
-                      </tr>
-                    </table>
+              <div className={styles.print_header}>
+                <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
+                <h2>{header["DIACHI"]}</h2>
+              </div>
+
+              {each_page &&
+                each_page["content"].length > 0 &&
+                each_page["content"].map((info, index) => (
+                  <div className={styles.print_object} key={index}>
+                    <div className={styles.info_giay}>
+                      <table style={{ width: "100%" }}>
+                        <tr className={styles.info_row_giay}>
+                          <td>{info["MAGIAY"]}</td>
+                          {info["HINHANH"] && (
+                            <td>{<img src={info["HINHANH"]} />}</td>
+                          )}
+                          <td>{info["TENGIAY"]}</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <TableToPrint data={info["Table"]} columns={columns} />
                   </div>
-                  <TableToPrint data={info["Table"]} columns={columns} />
-                </div>
-              ))}
+                ))}
 
-            {/* break page here */}
-            {(index_page < infoDetailsPrint.length - 1 ||
-              each_page["margin_bottom"] < dictInfoPrint["footer"]) && (
-              <div
-                className={styles.footer}
-                style={{
-                  marginBottom: each_page["margin_bottom"],
-                }}
-              ></div>
-            )}
-
-            {index_page === infoDetailsPrint.length - 1 &&
-              each_page["margin_bottom"] > dictInfoPrint["footer"] && (
-                <>
-                  <br />
-                </>
+              {/* break page here */}
+              {(index_page < infoDetailsPrint.length - 1 ||
+                each_page["margin_bottom"] < dictInfoPrint["footer"]) && (
+                <div
+                  className={styles.footer}
+                  style={{
+                    marginBottom: each_page["margin_bottom"],
+                  }}
+                ></div>
               )}
-          </div>
-        ))}
 
-      <Signature />
-    </div>
+              {index_page === infoDetailsPrint.length - 1 &&
+                each_page["margin_bottom"] > dictInfoPrint["footer"] && (
+                  <>
+                    <br />
+                  </>
+                )}
+            </div>
+          ))}
+
+        <Signature />
+      </Page>
+    </Document>
   );
 };
 
