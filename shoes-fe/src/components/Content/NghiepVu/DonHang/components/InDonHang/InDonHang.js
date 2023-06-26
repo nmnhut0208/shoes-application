@@ -1,7 +1,9 @@
 import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
-import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
-import { PDFViewer } from "@react-pdf/renderer";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+import domtoimage from "dom-to-image";
+import Html2Pdf from "js-html2pdf";
 
 import styles from "./InDonHang.module.scss";
 import {
@@ -135,18 +137,6 @@ const getInfoBreakPage = (dataPrint, listImage) => {
   return pages;
 };
 
-const styles_print = StyleSheet.create({
-  page: {
-    flexDirection: "row",
-    backgroundColor: "#E4E4E4",
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1,
-  },
-});
-
 const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   const [header, setHeader] = useState(infoHeader);
   const [dataPrint, setDataPrint] = useState([]);
@@ -156,12 +146,95 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   const columns = useMemo(() => {
     return processingInfoColumnTable(INFO_COLS_THO);
   }, []);
-  const [client, setClient] = useState(false);
-  // const componentRef = useRef();
-  // const handelPrint = useReactToPrint({
-  //   content: () => componentRef.current,
-  //   documentTitle: "Thông tin đơn hàng",
+  const componentRef = useRef();
+  const handelPrint = useReactToPrint({
+    // https://github.com/airarrazaval/html2pdf
+    onPrintError: (error) => console.log(error),
+    content: () => componentRef.current,
+    removeAfterPrint: true,
+    print: async (printIframe) => {
+      const document = printIframe.contentDocument;
+      if (document) {
+        const html = document.getElementById("print_content");
+        console.log(html);
+        const exporter = new Html2Pdf(html, {
+          margin: 0,
+          filename: "myfile.pdf",
+          image: { type: "PNG", quality: 1 },
+          html2canvas: {
+            scale: 2,
+            logging: true,
+            dpi: 192,
+            letterRendering: true,
+          },
+          jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+        });
+        await exporter.getPdf(true);
+      }
+    },
+  });
+
+  // const pdfRef = useRef();
+  // const downloadPDF = () => {
+  //   const doc = new jsPDF("l", "pt", "a4");
+  //   doc.html(document.querySelector("#print_content"), {
+  //     callback: function (pdf) {
+  //       pdf.save("thu.pdf");
+  //     },
+  //   });
+
+  //===============================================
+  // const input = pdfRef.current;
+  // html2canvas(input).then((canvas) => {
+  //   const imgData = canvas.toDataURL("image/png");
+  //   const pdf = new jsPDF("p", "pt", "a4", true);
+  //   const pdfWidth = pdf.internal.pageSize.getWidth();
+  //   const pdfHeight = pdf.internal.pageSize.getHeight();
+  //   const imgWidth = canvas.width;
+  //   const imgHeight = canvas.height;
+  //   const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+  //   const imgX = (pdfWidth - imgWidth * ratio) / 2;
+  //   const imgY = 30;
+  //   pdf.addImage(
+  //     imgData,
+  //     "PNG",
+  //     imgX,
+  //     imgY,
+  //     imgWidth * ratio,
+  //     imgHeight * ratio
+  //   );
+  //   pdf.save("thu.pdf");
   // });
+
+  //================================================
+  // const input = pdfRef.current;
+  // domtoimage
+  //   .toPng(document.getElementById("print_content"), { quality: 1 })
+  //   .then((dataUrl) => {
+  //     var doc = new jsPDF();
+  //     doc.addImage(dataUrl, "PNG", 0, 0, 943, 1282);
+  //     doc.save("thu.pdf");
+  //   });
+
+  //===========================================
+  // cais nayf toost nhaast naxy giowf
+  // const input = pdfRef.current;
+  //   html2canvas(input)
+  //   .then((canvas) => {
+  //     const img = canvas.toDataURL("image/jpg");
+  //     const pdf = new jsPDF({
+  //       orientation: "p", // landscape
+  //       unit: "pt", // points, pixels won't work properly
+  //       format: [canvas.width, canvas.height], // set needed dimensions for any element
+  //     });
+  //     pdf.addImage(img, "PNG", 0, 0, canvas.width, canvas.height);
+  //     pdf.save("thu.pdf");
+  //   });
+
+  //=============================================
+  // TODO: thu https://www.npmjs.com/package/html-to-image
+  // };
+
   useLayoutEffect(() => {
     let ma_giay_checked = [];
     let info_print = [];
@@ -222,86 +295,72 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
   console.log("infoDetailsPrint: ", infoDetailsPrint);
 
-  // useLayoutEffect(() => {
-  //   if (infoDetailsPrint.length > 0) {
-  //     // handelPrint();
-  //     // setClient(true);
-  //     // setShowModal(false);
-  //   }
-  // }, [infoDetailsPrint]);
+  useLayoutEffect(() => {
+    if (infoDetailsPrint.length > 0) {
+      handelPrint();
+      setShowModal(false);
+      // downloadPDF();
+    }
+  }, [infoDetailsPrint]);
 
   return (
-    <PDFViewer>
-      <PDF_View
-        columns={columns}
-        header={header}
-        infoDetailsPrint={infoDetailsPrint}
-      />
-    </PDFViewer>
-  );
-};
-
-const PDF_View = ({ columns, header, infoDetailsPrint }) => {
-  return (
-    <Document>
-      <Page size="A4" style={styles_print.page}>
-        {infoDetailsPrint.length > 0 &&
-          infoDetailsPrint.map((each_page, index_page) => (
-            <div key={index_page}>
-              <br />
-              <br />
-              <div className={styles.print_header}>
-                <h1>Số đơn hàng: {header["SODH"]}</h1>
-                <h1>{header["TENKH"]}</h1>
-              </div>
-
-              <div className={styles.print_header}>
-                <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
-                <h2>{header["DIACHI"]}</h2>
-              </div>
-
-              {each_page &&
-                each_page["content"].length > 0 &&
-                each_page["content"].map((info, index) => (
-                  <div className={styles.print_object} key={index}>
-                    <div className={styles.info_giay}>
-                      <table style={{ width: "100%" }}>
-                        <tr className={styles.info_row_giay}>
-                          <td>{info["MAGIAY"]}</td>
-                          {info["HINHANH"] && (
-                            <td>{<img src={info["HINHANH"]} />}</td>
-                          )}
-                          <td>{info["TENGIAY"]}</td>
-                        </tr>
-                      </table>
-                    </div>
-                    <TableToPrint data={info["Table"]} columns={columns} />
-                  </div>
-                ))}
-
-              {/* break page here */}
-              {(index_page < infoDetailsPrint.length - 1 ||
-                each_page["margin_bottom"] < dictInfoPrint["footer"]) && (
-                <div
-                  className={styles.footer}
-                  style={{
-                    marginBottom: each_page["margin_bottom"],
-                  }}
-                ></div>
-              )}
-
-              {index_page === infoDetailsPrint.length - 1 &&
-                each_page["margin_bottom"] > dictInfoPrint["footer"] && (
-                  <>
-                    <br />
-                  </>
-                )}
+    <div ref={componentRef} className={styles.print_page} id="print_content">
+      {infoDetailsPrint.length > 0 &&
+        infoDetailsPrint.map((each_page, index_page) => (
+          <div key={index_page}>
+            <br />
+            <br />
+            <div className={styles.print_header}>
+              <h1>Số đơn hàng: {header["SODH"]}</h1>
+              <h1>{header["TENKH"]}</h1>
             </div>
-          ))}
 
-        <Signature />
-      </Page>
-    </Document>
+            <div className={styles.print_header}>
+              <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
+              <h2>{header["DIACHI"]}</h2>
+            </div>
+
+            {each_page &&
+              each_page["content"].length > 0 &&
+              each_page["content"].map((info, index) => (
+                <div className={styles.print_object} key={index}>
+                  <div className={styles.info_giay}>
+                    <table style={{ width: "100%" }}>
+                      <tr className={styles.info_row_giay}>
+                        <td>{info["MAGIAY"]}</td>
+                        {info["HINHANH"] && (
+                          <td>{<img src={info["HINHANH"]} />}</td>
+                        )}
+                        <td>{info["TENGIAY"]}</td>
+                      </tr>
+                    </table>
+                  </div>
+                  <TableToPrint data={info["Table"]} columns={columns} />
+                </div>
+              ))}
+
+            {/* break page here */}
+            {(index_page < infoDetailsPrint.length - 1 ||
+              each_page["margin_bottom"] < dictInfoPrint["footer"]) && (
+              <div
+                className={styles.footer}
+                style={{
+                  marginBottom: each_page["margin_bottom"],
+                }}
+              ></div>
+            )}
+
+            {index_page === infoDetailsPrint.length - 1 &&
+              each_page["margin_bottom"] > dictInfoPrint["footer"] && (
+                <>
+                  <br />
+                </>
+              )}
+          </div>
+        ))}
+
+      <Signature />
+    </div>
   );
 };
 
