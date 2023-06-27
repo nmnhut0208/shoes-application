@@ -80,6 +80,7 @@ const TableMaKY = ({ data, rowSelection, setRowSelection }) => {
         enableRowSelection
         onRowSelectionChange={setRowSelection}
         state={{ rowSelection }}
+        muiTableContainerProps={{ sx: { maxHeight: "400px" } }}
       />
     </div>
   );
@@ -120,6 +121,7 @@ const TableMaNVIEN = ({ data, rowSelection, setRowSelection }) => {
         enableRowSelection
         onRowSelectionChange={setRowSelection}
         state={{ rowSelection }}
+        muiTableContainerProps={{ sx: { maxHeight: "400px" } }}
       />
     </div>
   );
@@ -355,7 +357,8 @@ const ChamCong = () => {
                   rowSelection={rowSelectionMaKY}
                   data={dataTableKY}
                 />
-              }>
+              }
+            >
               <input
                 value={infoForm["MAKY"]}
                 type="text"
@@ -378,7 +381,8 @@ const ChamCong = () => {
                   rowSelection={rowSelectionMaNVIEN}
                   data={dataTableNhanVien}
                 />
-              }>
+              }
+            >
               <input
                 value={infoForm["MANVIEN"]}
                 type="text"

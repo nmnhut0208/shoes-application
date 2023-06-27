@@ -95,6 +95,7 @@ const TableMaKH = ({ data, rowSelection, setRowSelection }) => {
         enableRowSelection
         onRowSelectionChange={setRowSelection}
         state={{ rowSelection }}
+        muiTableContainerProps={{ sx: { maxHeight: "400px" } }}
       />
     </div>
   );
@@ -356,7 +357,8 @@ const GiaoHang = () => {
                   rowSelection={rowSelectionMaKH}
                   setRowSelection={setRowSelectionMaKH}
                 />
-              }>
+              }
+            >
               <input
                 name="MAKH"
                 value={infoKH["MAKH"] ? infoKH["MAKH"] : ""}
