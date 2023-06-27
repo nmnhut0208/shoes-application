@@ -158,14 +158,17 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
         const html = document.getElementById("print_content");
         console.log(html);
         const exporter = new Html2Pdf(html, {
-          margin: 0,
+          margin: 10,
           filename: "myfile.pdf",
           image: { type: "PNG", quality: 1 },
           html2canvas: {
-            scale: 2,
+            scale: 3,
             logging: true,
-            dpi: 192,
+            dpi: 300,
             letterRendering: true,
+            // // quality
+            async: false,
+            imageTimeout: 15000,
           },
           jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
         });
@@ -298,7 +301,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   useLayoutEffect(() => {
     if (infoDetailsPrint.length > 0) {
       handelPrint();
-      setShowModal(false);
+      // setShowModal(false);
       // downloadPDF();
     }
   }, [infoDetailsPrint]);
