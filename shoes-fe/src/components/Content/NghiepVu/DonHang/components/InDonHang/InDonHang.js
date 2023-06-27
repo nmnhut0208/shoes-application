@@ -158,7 +158,9 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
         const html = document.getElementById("print_content");
         console.log(html);
         const exporter = new Html2Pdf(html, {
-          margin: 10,
+          margin: 2,
+          marginLeft: 2,
+          marginBottom: 2,
           filename: "myfile.pdf",
           image: { type: "PNG", quality: 1 },
           html2canvas: {
@@ -176,67 +178,6 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
       }
     },
   });
-
-  // const pdfRef = useRef();
-  // const downloadPDF = () => {
-  //   const doc = new jsPDF("l", "pt", "a4");
-  //   doc.html(document.querySelector("#print_content"), {
-  //     callback: function (pdf) {
-  //       pdf.save("thu.pdf");
-  //     },
-  //   });
-
-  //===============================================
-  // const input = pdfRef.current;
-  // html2canvas(input).then((canvas) => {
-  //   const imgData = canvas.toDataURL("image/png");
-  //   const pdf = new jsPDF("p", "pt", "a4", true);
-  //   const pdfWidth = pdf.internal.pageSize.getWidth();
-  //   const pdfHeight = pdf.internal.pageSize.getHeight();
-  //   const imgWidth = canvas.width;
-  //   const imgHeight = canvas.height;
-  //   const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-  //   const imgX = (pdfWidth - imgWidth * ratio) / 2;
-  //   const imgY = 30;
-  //   pdf.addImage(
-  //     imgData,
-  //     "PNG",
-  //     imgX,
-  //     imgY,
-  //     imgWidth * ratio,
-  //     imgHeight * ratio
-  //   );
-  //   pdf.save("thu.pdf");
-  // });
-
-  //================================================
-  // const input = pdfRef.current;
-  // domtoimage
-  //   .toPng(document.getElementById("print_content"), { quality: 1 })
-  //   .then((dataUrl) => {
-  //     var doc = new jsPDF();
-  //     doc.addImage(dataUrl, "PNG", 0, 0, 943, 1282);
-  //     doc.save("thu.pdf");
-  //   });
-
-  //===========================================
-  // cais nayf toost nhaast naxy giowf
-  // const input = pdfRef.current;
-  //   html2canvas(input)
-  //   .then((canvas) => {
-  //     const img = canvas.toDataURL("image/jpg");
-  //     const pdf = new jsPDF({
-  //       orientation: "p", // landscape
-  //       unit: "pt", // points, pixels won't work properly
-  //       format: [canvas.width, canvas.height], // set needed dimensions for any element
-  //     });
-  //     pdf.addImage(img, "PNG", 0, 0, canvas.width, canvas.height);
-  //     pdf.save("thu.pdf");
-  //   });
-
-  //=============================================
-  // TODO: thu https://www.npmjs.com/package/html-to-image
-  // };
 
   useLayoutEffect(() => {
     let ma_giay_checked = [];
@@ -302,7 +243,6 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
     if (infoDetailsPrint.length > 0) {
       handelPrint();
       // setShowModal(false);
-      // downloadPDF();
     }
   }, [infoDetailsPrint]);
 
