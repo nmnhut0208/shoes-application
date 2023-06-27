@@ -1,7 +1,9 @@
+import { memo } from "react";
 import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const TableDonHang = ({
   columns,
@@ -10,6 +12,7 @@ const TableDonHang = ({
   handleAddGiay,
   readOnly,
 }) => {
+  console.log("data: ", data);
   const handleSaveCell = (cell, value) => {
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
     var row_current = data[cell.row.index];
@@ -17,6 +20,7 @@ const TableDonHang = ({
     // Tính lại số lượng
     var list_size = ["SIZE5", "SIZE6", "SIZE7", "SIZE8", "SIZE9", "SIZE0"];
     if (list_size.includes(cell.column.id)) {
+      if (value === "") value = 0;
       row_current[cell.column.id] = parseInt(value);
 
       var so_luong = 0;
@@ -42,6 +46,15 @@ const TableDonHang = ({
 
   return (
     <div>
+      <Tooltip arrow title="Add">
+        <IconButton
+          onClick={() => {
+            handleAddGiay();
+          }}
+        >
+          <AddCircleIcon style={{ color: "green" }} fontSize="large" />
+        </IconButton>
+      </Tooltip>
       <MaterialReactTable
         enableTopToolbar={false}
         columns={columns}
@@ -59,7 +72,7 @@ const TableDonHang = ({
         // footer sum
         enableStickyFooter
         // edit each cell in row
-        editingMode="cell"
+        editingMode="table"
         enableEditing={!readOnly}
         muiTableBodyCellEditTextFieldProps={({ cell }) => ({
           //onBlur is more efficient, but could use onChange instead
@@ -89,17 +102,6 @@ const TableDonHang = ({
               // "flex-direction": "row",
             }}
           >
-            {row.original["MAGIAY"] === "" && (
-              <Tooltip arrow title="Edit">
-                <IconButton
-                  onClick={() => {
-                    handleAddGiay();
-                  }}
-                >
-                  <Edit />
-                </IconButton>
-              </Tooltip>
-            )}
             {row.original["MAGIAY"] !== "" && (
               <Tooltip arrow title="Delete">
                 <IconButton color="error" onClick={() => handleDeleteRow(row)}>
@@ -114,4 +116,4 @@ const TableDonHang = ({
   );
 };
 
-export default TableDonHang;
+export default memo(TableDonHang);

@@ -20,18 +20,9 @@ const FormDe = () => {
   };
 
   const handleSaveFrom = () => {
+    let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
-      fetch("http://localhost:8000/de", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputForm),
-      })
-        .then((response) => {
-          console.log("response: ", response);
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
+      method = "PUT";
       dispatchTable(
         actions_table.setInforTable(
           stateTable.inforShowTable.infoTable.map((info) =>
@@ -40,17 +31,7 @@ const FormDe = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
-      fetch("http://localhost:8000/de", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputForm),
-      })
-        .then((response) => {
-          console.log("response: ", response);
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
+      method = "POST";
       dispatchTable(
         actions_table.setInforTable([
           ...stateTable.inforShowTable.infoTable,
@@ -64,6 +45,17 @@ const FormDe = () => {
         ])
       );
     }
+    fetch("http://localhost:8000/de", {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inputForm),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
     dispatchTable(actions_table.setModeShowModal(false));
   };
 
@@ -78,6 +70,7 @@ const FormDe = () => {
               onChange={(e) => handleChangeInformationForm(e)}
               name="MADE"
               className={styles.item_size_middle}
+              readOnly={stateTable.inforShowTable.action_row === "edit"}
             />
           </div>
           <div className={styles.group_first_row}>

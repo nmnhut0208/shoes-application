@@ -16,20 +16,9 @@ const FormKhoHang = () => {
   };
 
   const handleSaveFrom = () => {
-    // saveDataBase()
+    let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
-      fetch("http://localhost:8000/khohang", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputForm),
-      })
-        .then((response) => {
-          console.log("response: ", response);
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
-
+      method = "PUT";
       dispatchTable(
         actions_table.setInforTable(
           stateTable.inforShowTable.infoTable.map((info) =>
@@ -38,18 +27,7 @@ const FormKhoHang = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
-      fetch("http://localhost:8000/khohang", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputForm),
-      })
-        .then((response) => {
-          console.log("response: ", response);
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
-
+      method = "POST";
       dispatchTable(
         actions_table.setInforTable([
           ...stateTable.inforShowTable.infoTable,
@@ -57,6 +35,17 @@ const FormKhoHang = () => {
         ])
       );
     }
+    fetch("http://localhost:8000/khohang", {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inputForm),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
     dispatchTable(actions_table.setModeShowModal(false));
   };
 
@@ -71,6 +60,7 @@ const FormKhoHang = () => {
               onChange={(e) => handleChangeInformationForm(e)}
               name="MAKHO"
               className={styles.item_size_middle}
+              readOnly={stateTable.inforShowTable.action_row === "edit"}
             />
           </div>
           <div className={styles.group_first_row}>

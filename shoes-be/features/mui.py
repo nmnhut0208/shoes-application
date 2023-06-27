@@ -2,6 +2,8 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from utils.vietnamese import convert_data_to_save_database
+
 
 router = APIRouter()
 
@@ -21,17 +23,18 @@ def read() -> RESPONSE_MUI:
 
 @router.post("/mui")
 def add(data: ITEM_MUI) -> RESPONSE:
-    data = dict(data)
-    col = ", ".join(data.keys())
-    val = ", ".join([f"'{value}'" for value in data.values()])
+    data = convert_data_to_save_database(dict(data))
+    col = ", ".join([k for k, v in data.items() if v is not None])
+    val = ", ".join([v for v in data.values() if v is not None])
     return M.add(col, val)
 
 
 @router.put("/mui")
 def update(data: ITEM_MUI) -> RESPONSE:
-    data = dict(data)
-    val = ", ".join([f"{key} = '{value}'" for key, value in data.items() if value != None])
-    condition = f"MAMUI = '{data['MAMUI']}'"
+    data = convert_data_to_save_database(dict(data))  
+    val = ", ".join([f"{k} = {v}" for k, v in data.items() \
+                     if v is not None])
+    condition = f"MAMUI = {data['MAMUI']}"
     return M.update(val, condition)
 
 

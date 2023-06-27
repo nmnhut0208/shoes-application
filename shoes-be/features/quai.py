@@ -29,10 +29,11 @@ quai = QUAI()
 
 @router.get("/quai")
 def read() -> List[ITEM_QUAI]:
-    sql = "SELECT MAQUAI, TENQUAI, DONGIA, \
-                COALESCE(GHICHU, '') AS GHICHU, \
-                COALESCE(HINHANH, '') AS HINHANH  \
-            FROM DMQUAI "
+    sql = """SELECT MAQUAI, TENQUAI, DONGIA, 
+                COALESCE(GHICHU, '') AS GHICHU, 
+                COALESCE(HINHANH, '') AS HINHANH  
+            FROM DMQUAI
+            """
     
     return quai.read_custom(sql)
 

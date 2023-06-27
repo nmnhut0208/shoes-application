@@ -5,6 +5,8 @@ from utils.response import *
 from datetime import datetime
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
+from utils.vietnamese import convert_data_to_save_database
+
 
 router = APIRouter()
 
@@ -115,7 +117,9 @@ def read(data: dict):
         typenv = "THOQUAI"
     
     if typenv is not None:
-        sql = f"SELECT * FROM V_CHAMCONG{typenv} where {typenv}='{manvien}' and SOPHIEU IN {phieupc}"
+        sql = f"""SELECT * FROM V_CHAMCONG{typenv} 
+                  where {typenv}='{manvien}' 
+                  and SOPHIEU IN {phieupc}"""
         print(sql)
         return CC.read_custom(sql)
 
@@ -127,7 +131,9 @@ def save(data: dict) -> RESPONSE:
     phieupc = data["SOPHIEU"]
     ngaypc = data["NGAYPHIEU"]
     diengiai = data["DIENGIAI"]
-    sql_delete = f"DELETE FROM CHAMCONG WHERE MAKY='{maky}' AND MANVIEN='{manv}' AND PHIEUPC='{phieupc}'"
+    sql_delete = f"""DELETE FROM CHAMCONG 
+                     WHERE MAKY='{maky}' AND MANVIEN='{manv}' 
+                     AND PHIEUPC='{phieupc}'"""
     CC.execute_custom(sql_delete)
     today = datetime.now()
     year = today.year
@@ -154,15 +160,10 @@ def save(data: dict) -> RESPONSE:
         d_item["mauquai"] = item["MAUQUAI"]
         d_item["NgayPhieu"] = ngaypc
         d_item["DienGiai"] = diengiai
-        for k, v in d_item.items():
-            if v is not None:
-                _c.append(k)
-                if type(v) is str:
-                    _v.append(f"'{v}'")
-                else:
-                    _v.append(f"{v}")
-        _c = ", ".join(_c)
-        _v = ", ".join(_v)
+
+        _data_save = convert_data_to_save_database(d_item)
+        _c = ",".join([k for k, v in _data_save.items() if v is not None])
+        _v = ",".join([v for v in _data_save.values() if v is not None])
         print(_c, "\n", _v)
         CC.add_with_table_name("CHAMCONG", _c, _v)
 

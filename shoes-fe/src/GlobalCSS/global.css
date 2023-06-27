@@ -9,25 +9,31 @@
 
 .MuiTableCell-head {
   border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
-  font-size: 1.4rem !important;
-  font-family: Arial !important;
+  font-size: 1.4rem;
+  /* !important; */
+  font-family: Arial;
+  /* !important; */
 }
 
 .MuiTableCell-body {
   border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
-  font-size: 1.4rem !important;
-  font-family: Arial !important;
+  font-size: 1.4rem;
+  /* !important; */
+  font-family: Arial;
+  /* !important; */
 }
 
 .Mui-TableHeadCell-Content-Labels {
-  margin-top: auto;
-  margin-bottom: auto;
+  /* margin-top: auto;
+  margin-bottom: auto; */
   margin-left: auto;
   margin-right: auto;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  font-size: 1.6rem !important;
-  font-family: Arial !important;
+  /* padding-top: 0.5rem;
+  padding-bottom: 0.5rem; */
+  font-size: 1.6rem;
+  /* !important; */
+  font-family: Arial;
+  /* !important; */
 }
 
 .css-180500e {
@@ -35,15 +41,9 @@
 }
 
 .css-10hburv-MuiTypography-root {
-  font-size: 1.4rem !important;
-  font-family: "Arial" !important;
+  font-size: 1.4rem;
+  /* !important; */
+  font-family: "Arial";
+  /* !important; */
 
 }
-
-/* .MuiTableCell-sizeMedium {
-  overflow: visible !important;
-}
-
-.MuiTableCell-root {
-  min-width: max(calc(var(--col-mrt_row_actions-size) * 3px), 40px) !important;
-} */

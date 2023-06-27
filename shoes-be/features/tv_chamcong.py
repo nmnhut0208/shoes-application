@@ -33,7 +33,8 @@ def read(data: dict):
     phieupc = data["SOPHIEU"]
     sql = f"""
         select CHAMCONG.MAGIAY, DMGIAY.TENGIAY, SOLUONG FROM CHAMCONG 
-        left join (select MAGIAY, TENGIAY from DMGIAY) as DMGIAY ON DMGIAY.MAGIAY = CHAMCONG.MAGIAY
+        left join (select MAGIAY, TENGIAY from DMGIAY) as DMGIAY 
+            ON DMGIAY.MAGIAY = CHAMCONG.MAGIAY
         where MAKY = '{maky}' AND MANVIEN = '{manv}' AND phieupc = '{phieupc}'
     """
     return TVCC.read_custom(sql)
@@ -43,7 +44,9 @@ def delete(data: dict):
     maky = data["MAKY"]
     manv = data["MANVIEN"]
     phieupc = data["SOPHIEU"]
-    sql = f"DELETE FROM CHAMCONG WHERE MAKY='{maky}' AND MANVIEN='{manv}' AND PHIEUPC='{phieupc}'"
+    sql = f"""DELETE FROM CHAMCONG WHERE MAKY='{maky}' 
+              AND MANVIEN='{manv}' AND PHIEUPC='{phieupc}'
+              """
     # print(sql)
     TVCC.execute_custom(sql)
     return {"status": "success"}

@@ -1,10 +1,12 @@
 from fastapi import APIRouter
+from datetime import datetime
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
-from datetime import datetime
+from utils.vietnamese import convert_data_to_save_database
+
 
 
 router = APIRouter()
@@ -27,7 +29,10 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
     # FROM DONHANG \
     # where MAKH = '{makh}' \
     # GROUP BY SODH, MAKH, NGAYDH, NGAYGH, DIENGIAIPHIEU"
-    sql = f"SELECT SODH, NGAYDH, NGAYGH, DIENGIAI AS DIENGIAIDONG, SLDONHANG as SOLUONGCONLAI FROM V_DHGIAOHANG WHERE MAKH = '{makh}' AND SLDONHANG > SLGIAOHANG"
+    sql = f"""SELECT SODH, NGAYDH, NGAYGH, DIENGIAI AS DIENGIAIDONG,
+              SLDONHANG as SOLUONGCONLAI FROM V_DHGIAOHANG 
+              WHERE MAKH = '{makh}' AND SLDONHANG > SLGIAOHANG
+              """
     return GH.read_custom(sql)
 
 
@@ -40,11 +45,15 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
     print(sodh)
     makh = data["makh"]
     sql = f"""SELECT SODH, DONHANG.MAGIAY, TENGIAY, MAUDE, MAUGOT, MAUSUON, MAUCA,
-      MAUQUAI, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 as SOLUONG, 
-       GIABAN, THANHTIEN, DIENGIAIPHIEU AS DIENGIAIDONG FROM DONHANG  left join (
-        SELECT MAGIAY, TENGIAY FROM DMGIAY
-    ) as DMGIAY ON DONHANG.MAGIAY = DMGIAY.MAGIAY 
-    WHERE SODH IN {sodh} AND MAKH = '{makh}'"""
+              MAUQUAI, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, 
+              SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 as SOLUONG, 
+              GIABAN, THANHTIEN, DIENGIAIPHIEU AS DIENGIAIDONG 
+              FROM DONHANG  
+              left join (
+                    SELECT MAGIAY, TENGIAY FROM DMGIAY) as DMGIAY 
+                    ON DONHANG.MAGIAY = DMGIAY.MAGIAY 
+                WHERE SODH IN {sodh} AND MAKH = '{makh}'
+                """
     print(sql)
     return GH.read_custom(sql)
 
@@ -56,7 +65,9 @@ def save(data: dict) -> RESPONSE:
     diengiai = data["diengiai"]
     user = data["user"].lower()
     sql_delete = f"""delete FROM CONGNO
-                    where SOPHIEU = '{sophieu}' and LOAIPHIEU = 'BH' and MAKH = '{makh}'"""
+                    where SOPHIEU = '{sophieu}'
+                    and LOAIPHIEU = 'BH' 
+                    and MAKH = '{makh}'"""
     GH.execute_custom(sql_delete)
     today = datetime.now()
     year = today.year
@@ -82,16 +93,11 @@ def save(data: dict) -> RESPONSE:
         item["NGAYTAO"] = day_created
         item["NGUOISUA"] = user
         item["NGAYSUA"] = day_created
-        for k, v in item.items():
-            if v is not None:
-                _c.append(k)
-                if type(v) is str:
-                    _v.append(f"'{v}'")
-                else:
-                    _v.append(f"{v}")
-        _c = ", ".join(_c)
-        _v = ", ".join(_v)
-        # print(_c, "\n",_v)
+
+        _data_save = convert_data_to_save_database(item)
+        _c = ",".join([k for k, v in _data_save.items() if v is not None])
+        _v = ",".join([v for v in _data_save.values() if v is not None])
+        
         GH.add_with_table_name("CONGNO", _c, _v)
 
     save_info_primary_key("CONGNO", "MD", year, madong)
@@ -99,26 +105,3 @@ def save(data: dict) -> RESPONSE:
 
     return {"status": "success"}
 
-# @router.post("/de")
-# def add(data: ITEM_DE) -> RESPONSE:
-#     data = dict(data)
-#     data["DONGIA"] = int(data["DONGIA"])
-#     # print(data)
-#     col = ", ".join(data.keys())
-#     val = ", ".join([f"'{value}'" for value in data.values()])
-#     return D.add(col, val)
-
-
-# @router.put("/de")
-# def update(data: ITEM_DE) -> RESPONSE:
-#     data = dict(data)
-#     val = ", ".join([f"{key} = '{value}'" for key, value in data.items()])
-#     condition = f"MADE = '{data['MADE']}'"
-#     return D.update(val, condition)
-
-
-# @router.delete("/de")
-# def delete(data: ITEM_DE) -> RESPONSE:
-#     data = dict(data)
-#     condition = f"MADE = '{data['MADE']}'"
-#     return D.delete(condition)
