@@ -1,8 +1,5 @@
 import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
-import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
-import domtoimage from "dom-to-image";
 import Html2Pdf from "js-html2pdf";
 
 import styles from "./InDonHang.module.scss";
