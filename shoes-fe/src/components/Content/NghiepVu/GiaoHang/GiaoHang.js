@@ -1,11 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
+import { Popover } from "antd";
+import moment from "moment";
+import MaterialReactTable from "material-react-table";
+
 import SubTable from "./SubTable";
 import styles from "./GiaoHang.module.scss";
-import { Popover } from "antd";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
-import MaterialReactTable from "material-react-table";
-import { rem_to_px } from "~config/ui";
-import moment from "moment";
+import { rem_to_px, border_text_table_config } from "~config/ui";
+
 import { convertDate } from "~utils/processing_date";
 import { useUserContext, actions } from "~user";
 // import { Header } from "antd/es/layout/layout";
@@ -81,6 +83,7 @@ const TableMaKH = ({ data, rowSelection, setRowSelection }) => {
   return (
     <div style={{ height: "auto" }}>
       <MaterialReactTable
+        {...border_text_table_config}
         enableTopToolbar={false}
         columns={columns_kh}
         data={data}

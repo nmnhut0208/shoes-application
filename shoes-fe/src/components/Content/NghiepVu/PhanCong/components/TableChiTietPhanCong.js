@@ -1,5 +1,6 @@
 import MaterialReactTable from "material-react-table";
 import { memo } from "react";
+import { border_text_table_config } from "~config/ui";
 
 const TableChiTietPhanCong = ({
   columns,
@@ -11,6 +12,7 @@ const TableChiTietPhanCong = ({
   return (
     <div>
       <MaterialReactTable
+        {...border_text_table_config}
         enableTopToolbar={false}
         enableBottomToolbar={false}
         columns={columns}

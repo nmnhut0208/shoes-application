@@ -2,44 +2,11 @@
   font-size: 1.7rem;
 }
 
-
-.MuiTableContainer-root {
-  border: 0.1rem solid rgba(0, 0, 0, 0.5);
-}
-
-.MuiTableCell-head {
-  border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
-  /* font-size: 1.4rem;
-  font-family: Arial; */
-}
-
-.MuiTableCell-body {
-  border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
-  font-size: 1.4rem;
-  /* !important; */
-  font-family: Arial;
-  /* !important; */
-}
-
-.Mui-TableHeadCell-Content-Labels {
-  /* margin-top: auto;
-  margin-bottom: auto; */
-  margin-left: auto;
-  margin-right: auto;
-  /* padding-top: 0.5rem;
-  padding-bottom: 0.5rem; */
-  /* font-size: 1.6rem;
-  font-family: Arial; */
-}
-
 .css-180500e {
   position: relative !important;
 }
 
 .css-10hburv-MuiTypography-root {
   font-size: 1.4rem;
-  /* !important; */
   font-family: "Arial";
-  /* !important; */
-
 }

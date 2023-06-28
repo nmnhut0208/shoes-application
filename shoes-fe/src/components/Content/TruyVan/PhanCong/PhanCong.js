@@ -9,6 +9,7 @@ import { useTableContext, actions_table } from "~table_context";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { FormNghiepVuPhanCong } from "~nghiep_vu/PhanCong/";
 import { INFO_COLS_PHANCONG } from "./ConstantVariable";
+import { border_text_table_config } from "~config/ui";
 
 const Table = ({ columns, data }) => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -20,6 +21,7 @@ const Table = ({ columns, data }) => {
   return (
     <>
       <MaterialReactTable
+        {...border_text_table_config}
         enableTopToolbar={false}
         columns={columns}
         data={data}

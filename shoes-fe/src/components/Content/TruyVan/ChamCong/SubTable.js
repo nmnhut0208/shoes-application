@@ -5,6 +5,7 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useTableContext, actions_table } from "~table_context";
 import { useUserContext, actions } from "~user";
+import { border_text_table_config } from "~config/ui";
 
 const SubTable = ({
   columns,
@@ -23,6 +24,7 @@ const SubTable = ({
 
   return (
     <MaterialReactTable
+      {...border_text_table_config}
       columns={columns}
       data={data}
       components
@@ -62,7 +64,8 @@ const SubTable = ({
                 } else {
                   alert("Bạn không có quyền sửa");
                 }
-              }}>
+              }}
+            >
               <Edit />
             </IconButton>
           </Tooltip>
@@ -105,7 +108,8 @@ const SubTable = ({
                       console.log(err);
                     });
                 }
-              }}>
+              }}
+            >
               <Delete />
             </IconButton>
           </Tooltip>

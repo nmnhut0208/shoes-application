@@ -3,6 +3,7 @@ import { processingInfoColumnTable } from "~utils/processing_data_table";
 import MaterialReactTable from "material-react-table";
 import { COL_KHACHHANG } from "./ConstantVariable";
 import { useItemsContext } from "~items_context";
+import { border_text_table_config } from "~config/ui";
 
 const ListKhachHang = ({ changeData }) => {
   const [data, setData] = useState([]);
@@ -28,6 +29,7 @@ const ListKhachHang = ({ changeData }) => {
   return (
     <div style={{ height: "auto" }}>
       <MaterialReactTable
+        {...border_text_table_config}
         enableTopToolbar={false}
         columns={columns_kh}
         data={data}

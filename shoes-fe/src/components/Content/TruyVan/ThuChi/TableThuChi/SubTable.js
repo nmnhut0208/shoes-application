@@ -4,6 +4,7 @@ import MaterialReactTable from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useTableContext, actions_table } from "~table_context";
+import { border_text_table_config } from "~config/ui";
 
 const SubTable = ({
   columns,
@@ -18,6 +19,7 @@ const SubTable = ({
 
   return (
     <MaterialReactTable
+      {...border_text_table_config}
       columns={columns}
       data={data}
       components

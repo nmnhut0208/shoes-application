@@ -8,6 +8,7 @@ import { useTableContext, actions_table } from "~table_context";
 import { Modal } from "~common_tag";
 import FormChiTien from "./FormChiTien";
 import { FormThuTien } from "~nghiep_vu/ThuTien";
+import { border_text_table_config } from "~config/ui";
 
 const list_key = [
   { header: "Số phiếu", key: "SOPHIEU" },
@@ -83,6 +84,7 @@ const TableThuChi = ({ option }) => {
         maxHeight={"65rem"}
       /> */}
       <MaterialReactTable
+        {...border_text_table_config}
         columns={infoColumns}
         data={dataTable}
         components

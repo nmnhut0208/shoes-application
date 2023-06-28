@@ -5,7 +5,8 @@ import Typography from "@mui/material/Typography";
 import MaterialReactTable from "material-react-table";
 
 import clsx from "clsx";
-import { rem_to_px } from "~config/ui";
+import { rem_to_px, border_text_table_config } from "~config/ui";
+
 import {
   renderDataEmpty,
   processingInfoColumnTable,
@@ -53,6 +54,7 @@ const DetailInfoGiay = ({ data, rowSelection, setRowSelection }) => {
   return (
     <div style={{ height: "auto" }}>
       <MaterialReactTable
+        {...border_text_table_config}
         enableTopToolbar={false}
         columns={columnsSubInfoGiay}
         data={data}

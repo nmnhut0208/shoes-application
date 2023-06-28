@@ -8,6 +8,8 @@ import { useUserContext } from "~user";
 
 import Modal from "./Modal";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
+import { border_text_table_config } from "~config/ui";
+
 import { FormDonHang } from "~nghiep_vu/DonHang/";
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
 
@@ -34,6 +36,7 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
   return (
     <>
       <MaterialReactTable
+        {...border_text_table_config}
         // enableTopToolbar={false}
         columns={columns}
         data={data}

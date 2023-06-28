@@ -5,6 +5,8 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
+import { border_text_table_config } from "~config/ui";
+
 const TableDonHang = ({
   columns,
   data,
@@ -56,6 +58,7 @@ const TableDonHang = ({
         </IconButton>
       </Tooltip>
       <MaterialReactTable
+        {...border_text_table_config}
         enableTopToolbar={false}
         columns={columns}
         data={data}
@@ -87,7 +90,7 @@ const TableDonHang = ({
                 sx={{ fontStyle: "italic", p: "0 1rem" }}
                 variant="body2"
               >
-                Double-Click a Cell to Edit
+                Click a Cell to Edit
               </Typography>
             )}
           </>

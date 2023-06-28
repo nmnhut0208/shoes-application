@@ -5,12 +5,14 @@ import {
   renderDataEmpty,
   processingInfoColumnTable,
 } from "~utils/processing_data_table";
+import { border_text_table_config } from "~config/ui";
 import { INFO_COLS_THO, INFO_COLS_DONHANG } from "./ConstantVariable";
 
 const Table = ({ columns, data, maxHeight }) => {
   return (
     <div>
       <MaterialReactTable
+        {...border_text_table_config}
         enableTopToolbar={false}
         columns={columns}
         data={data}

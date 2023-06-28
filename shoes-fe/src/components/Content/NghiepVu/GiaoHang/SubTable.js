@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
+import { border_text_table_config } from "~config/ui";
 
 const SubTable = ({
   columns,
@@ -14,6 +15,7 @@ const SubTable = ({
 
   return (
     <MaterialReactTable
+      {...border_text_table_config}
       columns={columns}
       data={data}
       enableColumnResizing
