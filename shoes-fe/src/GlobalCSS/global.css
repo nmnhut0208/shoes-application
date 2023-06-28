@@ -9,10 +9,8 @@
 
 .MuiTableCell-head {
   border-right: 0.1rem solid rgba(0, 0, 0, 0.1);
-  font-size: 1.4rem;
-  /* !important; */
-  font-family: Arial;
-  /* !important; */
+  /* font-size: 1.4rem;
+  font-family: Arial; */
 }
 
 .MuiTableCell-body {
@@ -30,10 +28,8 @@
   margin-right: auto;
   /* padding-top: 0.5rem;
   padding-bottom: 0.5rem; */
-  font-size: 1.6rem;
-  /* !important; */
-  font-family: Arial;
-  /* !important; */
+  /* font-size: 1.6rem;
+  font-family: Arial; */
 }
 
 .css-180500e {

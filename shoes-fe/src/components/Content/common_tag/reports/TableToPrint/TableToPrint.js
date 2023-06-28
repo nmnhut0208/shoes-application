@@ -1,5 +1,8 @@
 import MaterialReactTable from "material-react-table";
 
+const fontFamily = "Helvetica";
+// ("Times New Roman");
+
 const TableToPrint = ({ columns, data }) => {
   return (
     <MaterialReactTable
@@ -7,38 +10,27 @@ const TableToPrint = ({ columns, data }) => {
         elevation: 0,
         //customize paper styles
         sx: {
-          //   fontWeight: "520",
-          //   fontSize: "2rem",
-          //   fontFamily: "Times New Roman",
           borderRadius: "0",
           borderLeft: "0.25rem solid rgba(0, 0, 0, 1)",
+        },
+      }}
+      muiTableHeadCellProps={{
+        sx: {
+          fontSize: "2.5rem",
+          padding: "1rem",
+          lineHeight: "2.9rem",
+          fontFamily: "Gill Sans",
+          fontWeight: "900",
+          borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
+          borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
         },
       }}
       muiTableBodyCellProps={{
         sx: {
           // fontWeight: "550",
           fontSize: "2rem",
-          fontFamily: "Times New Roman",
+          fontFamily: fontFamily,
           padding: "0.5rem",
-          borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
-          borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
-        },
-      }}
-      muiTableHeadCellFilterTextFieldProps={{
-        sx: {
-          fontSize: "22px !important",
-          padding: "1rem",
-          fontFamily: "'Times New Roman' !important",
-          fontWeight: "900",
-        },
-      }}
-      muiTableHeadCellProps={{
-        sx: {
-          // fontSize: "22px !important",
-          // padding: "1rem",
-          // fontFamily: "'Times New Roman' !important",
-          // fontWeight: "900",
-          // backgroundColor: "red",
           borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
           borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
         },
@@ -47,7 +39,7 @@ const TableToPrint = ({ columns, data }) => {
         sx: {
           // fontWeight: "550",
           fontSize: "2rem",
-          fontFamily: "Times New Roman",
+          fontFamily: fontFamily,
           borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
           borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
         },
@@ -56,7 +48,7 @@ const TableToPrint = ({ columns, data }) => {
         sx: {
           // fontWeight: "550",
           fontSize: "2rem",
-          fontFamily: "Times New Roman",
+          fontFamily: fontFamily,
           border: "none",
           borderTop: "0.25rem solid rgba(0, 0, 0, 1)",
         },

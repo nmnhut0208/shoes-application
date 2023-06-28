@@ -4,7 +4,7 @@ const Signature = () => {
     <div className={styles.end_page}>
       <div>
         <p>....................., Ngày........tháng........năm..........</p>
-        <p>Người lập</p>
+        <p style={{ fontWeight: "bold" }}>Người lập</p>
       </div>
     </div>
   );

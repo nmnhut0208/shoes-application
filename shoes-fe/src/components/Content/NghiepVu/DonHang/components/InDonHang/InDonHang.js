@@ -17,6 +17,12 @@ import {
 import { convertDateForReport } from "~utils/processing_date";
 import { getImageFromMAGIAY, getDiaChiKhachHang } from "./helper";
 
+const compute_total = (sub_table) => {
+  let sum = 0;
+  for (let i = 0; i < sub_table.length; i++) sum += sub_table[i]["TONGSO"];
+  return sum;
+};
+
 const getInfoBreakPage = (dataPrint, listImage) => {
   let pages = [];
   let index = 0;
@@ -78,13 +84,16 @@ const getInfoBreakPage = (dataPrint, listImage) => {
             (nof_row - nof_row_visited) * size_each_row_table -
             size_other_MAGIAY;
 
+          let sub_table = content["TABLE"].slice(nof_row_visited, nof_row);
+
           each_page["content"] = [
             ...each_page["content"],
             {
               MAGIAY: content["MAGIAY"],
               TENGIAY: content["TENGIAY"],
               HINHANH: listImage[index],
-              Table: content["TABLE"].slice(nof_row_visited, nof_row),
+              Table: sub_table,
+              SL: compute_total(sub_table),
             },
           ];
 
@@ -101,16 +110,18 @@ const getInfoBreakPage = (dataPrint, listImage) => {
           // show ko hết thì phải đủ ít nhất 2 dòng
           // ko đủ 2 dòng thì cho qua new page
           if (nof_row_can_show >= MIN_ROW_MAGIAY_EACHPAGE) {
+            let sub_table = content["TABLE"].slice(
+              nof_row_visited,
+              nof_row_visited + nof_row_can_show
+            );
             each_page["content"] = [
               ...each_page["content"],
               {
                 MAGIAY: content["MAGIAY"],
                 TENGIAY: content["TENGIAY"],
                 HINHANH: listImage[index],
-                Table: content["TABLE"].slice(
-                  nof_row_visited,
-                  nof_row_visited + nof_row_can_show
-                ),
+                Table: sub_table,
+                SL: compute_total(sub_table),
               },
             ];
 
@@ -247,9 +258,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
     <div ref={componentRef} className={styles.print_page} id="print_content">
       {infoDetailsPrint.length > 0 &&
         infoDetailsPrint.map((each_page, index_page) => (
-          <div key={index_page}>
-            <br />
-            <br />
+          <div key={index_page} className={styles.each_page}>
             <div className={styles.print_header}>
               <h1>Số đơn hàng: {header["SODH"]}</h1>
               <h1>{header["TENKH"]}</h1>
@@ -267,11 +276,18 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                   <div className={styles.info_giay}>
                     <table style={{ width: "100%" }}>
                       <tr className={styles.info_row_giay}>
-                        <td>{info["MAGIAY"]}</td>
+                        <td>
+                          <div className={styles.show_content_column}>
+                            <lable>{info["MAGIAY"]}</lable>
+                            <lable style={{ fontWeight: "bold" }}>
+                              SL: {info["SL"]}
+                            </lable>
+                          </div>
+                        </td>
                         {info["HINHANH"] && (
                           <td>{<img src={info["HINHANH"]} />}</td>
                         )}
-                        <td>{info["TENGIAY"]}</td>
+                        <td className={styles.TENGIAY}>{info["TENGIAY"]}</td>
                       </tr>
                     </table>
                   </div>
@@ -279,27 +295,52 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                 </div>
               ))}
 
-            {/* break page here */}
+            {/* {(index_page < infoDetailsPrint.length - 1 ||
+              each_page["margin_bottom"] < dictInfoPrint["footer"]) && (
+              <>
+                <div
+                  className={styles.break_page}
+                  style={{
+                    marginBottom: each_page["margin_bottom"],
+                  }}
+                ></div>
+              </>
+            )} */}
+
+            {index_page === infoDetailsPrint.length - 1 &&
+              each_page["margin_bottom"] > dictInfoPrint["footer"] && (
+                <div>
+                  <br />
+                  <br />
+                </div>
+              )}
+
             {(index_page < infoDetailsPrint.length - 1 ||
               each_page["margin_bottom"] < dictInfoPrint["footer"]) && (
               <div
                 className={styles.footer}
                 style={{
-                  marginBottom: each_page["margin_bottom"],
+                  marginTop: each_page["margin_bottom"] - 40,
                 }}
-              ></div>
+              >
+                {index_page + 1}/{infoDetailsPrint.length}
+              </div>
             )}
-
-            {index_page === infoDetailsPrint.length - 1 &&
-              each_page["margin_bottom"] > dictInfoPrint["footer"] && (
-                <>
-                  <br />
-                </>
-              )}
+            {index_page === infoDetailsPrint.length - 1 && (
+              <>
+                <Signature />
+                <div
+                  className={styles.footer}
+                  style={{
+                    marginTop: each_page["margin_bottom"] - 130,
+                  }}
+                >
+                  {index_page + 1}/{infoDetailsPrint.length}
+                </div>
+              </>
+            )}
           </div>
         ))}
-
-      <Signature />
     </div>
   );
 };

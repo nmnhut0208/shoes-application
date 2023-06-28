@@ -16,21 +16,21 @@ export const INFO_COLS_THO = [
   { header: "CÁ: CÁ DÀI", key: "TENMAUCA", width: 8 * rem_to_px },
   { header: "QUAI", key: "TENMAUQUAI", width: 8 * rem_to_px },
   { header: "SIZE", key: "SIZE", width: 12 * rem_to_px },
-  { header: "SL", key: "TONGSO", width: 1 * rem_to_px },
+  // { header: "SL", key: "TONGSO", width: 1 * rem_to_px },
   { header: "THỢ ĐẾ", key: "TENTHODE", width: 10 * rem_to_px },
   { header: "THỢ QUAI", key: "TENTHOQUAI", width: 10 * rem_to_px },
 ];
 
 export const dictInfoPrint = {
-  header: 40,
+  header: 50,
   margin_header: 30,
   footer: 150,
   content: {
     gap_in_content: 10,
-    gap_out_content: 32,
-    info_giay_withouimage: 20,
+    gap_out_content: 40,
+    info_giay_withouimage: 45,
     info_giay_with_image: 160,
-    header_table: 43,
-    each_row_table: 69.3,
+    header_table: 46,
+    each_row_table: 75,
   },
 };
