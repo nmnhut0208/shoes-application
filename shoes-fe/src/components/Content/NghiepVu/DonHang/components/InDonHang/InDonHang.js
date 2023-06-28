@@ -172,17 +172,15 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
           filename: "myfile.pdf",
           image: { type: "PNG", quality: 1 },
           html2canvas: {
-            scale: 3,
+            scale: 2.5,
             logging: true,
-            dpi: 300,
+            dpi: 100,
             letterRendering: true,
-            // // quality
-            async: false,
-            imageTimeout: 15000,
           },
           jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
         });
         await exporter.getPdf(true);
+        setShowModal(false);
       }
     },
   });
@@ -218,7 +216,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
             }
           }
 
-          info["TABLE"][j]["TONGSO"] = tongso;
+          info["TABLE"][j]["TONGSO"] = parseInt(info["TABLE"][j]["SOLUONG"]); //tongso;
           info["TABLE"][j]["SIZE"] = (
             <SizeColumnInPrint list_tuso={top} list_mauso={bottom} />
           );
@@ -228,7 +226,11 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
       }
     }
     Promise.all([getDiaChiKhachHang(infoHeader["MAKH"])]).then((values) => {
-      setHeader({ ...header, ...values[0] });
+      setHeader({
+        ...header,
+        ...values[0],
+        SL: compute_total(dataTable),
+      });
       setDoneGetDiaChi(true);
     });
     Promise.all(list_promises).then((values) => {
@@ -250,7 +252,6 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   useLayoutEffect(() => {
     if (infoDetailsPrint.length > 0) {
       handelPrint();
-      // setShowModal(false);
     }
   }, [infoDetailsPrint]);
 
@@ -266,7 +267,10 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
             <div className={styles.print_header}>
               <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
-              <h2>{header["DIACHI"]}</h2>
+              <h2>
+                {header["SL"]}
+                {" | " + header["DIACHI"]}
+              </h2>
             </div>
 
             {each_page &&

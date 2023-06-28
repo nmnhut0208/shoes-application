@@ -18,7 +18,7 @@ const TableToPrint = ({ columns, data }) => {
         sx: {
           fontSize: "2.5rem",
           padding: "1rem",
-          lineHeight: "2.9rem",
+          lineHeight: "3rem",
           fontFamily: "Gill Sans",
           fontWeight: "900",
           borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
