@@ -191,6 +191,7 @@ const FormDonHang = ({
   }, [dataTable]);
 
   const handleInDonHang = () => {
+    if (dataTable.length == 0) return;
     console.log("handleInDonHang: handleInDonHang");
     // TODO: handle In DonHang
     setInfoFormWillShow({
@@ -235,13 +236,24 @@ const FormDonHang = ({
       <div className={styles.form}>
         {/* Không hiểu tại sao gộp 2 form lại thì ko nhận extend nên phải tách đỡ ra vầy */}
         <div className={styles.group_button}>
-          <button onClick={handleThemGiay}>Thêm giày</button>
-          <button onClick={handleThemMau}>Thêm màu</button>
-          {permission.THEM === 1 && (
-            <button onClick={handleNhapTiep}>Nhập tiếp</button>
-          )}
-          {!view && <button onClick={handleSaveDonHang}>Lưu</button>}
-          {permission.IN === 1 && <button onClick={handleInDonHang}>In</button>}
+          <button onClick={handleThemGiay} disabled={view}>
+            Thêm giày
+          </button>
+          <button onClick={handleThemMau} disabled={view}>
+            Thêm màu
+          </button>
+          <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
+            Nhập tiếp
+          </button>
+          <button onClick={handleSaveDonHang} disabled={view}>
+            Lưu
+          </button>
+          <button
+            onClick={handleInDonHang}
+            disabled={permission.IN === 0 || dataTable.length == 0}
+          >
+            In
+          </button>
           <button onClick={handleDongForm}>Đóng</button>
         </div>
       </div>
@@ -290,7 +302,7 @@ const FormDonHang = ({
         >
           <InDonHang
             infoHeader={formInfoDonHang}
-            dataTable={dataTable.slice(0, dataTable.length - 1)}
+            dataTable={dataTable}
             setShowModal={setShowModal}
           />
         </Modal>
