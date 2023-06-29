@@ -46,6 +46,7 @@ const PhanCong = () => {
       title="Phân Công - F0037"
       setShowModal={setShowModal}
       isSaveData={isSaveData}
+      isResetPageEmpty={true}
       listMaDongPhanCongAddButWaitSave={listMaDongPhanCongAddButWaitSave}
     >
       <FormNghiepVuPhanCong

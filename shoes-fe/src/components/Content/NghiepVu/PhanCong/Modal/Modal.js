@@ -4,6 +4,7 @@ import { useTaskContext, resetHeader } from "~task";
 const Modal = ({
   title,
   status,
+  isResetPageEmpty,
   isSaveData,
   setShowModal,
   listMaDongPhanCongAddButWaitSave,
@@ -11,7 +12,7 @@ const Modal = ({
 }) => {
   const [stateTask, dispatchTask] = useTaskContext();
   if (!status) {
-    resetHeader(dispatchTask);
+    if (isResetPageEmpty) resetHeader(dispatchTask);
     return null;
   }
   return (

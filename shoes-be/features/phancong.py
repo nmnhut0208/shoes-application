@@ -105,15 +105,36 @@ def read() -> List[RESPONSE_PHANCONG]:
 class RESPONSE_BAOCAO_PHANCONG:
     SOPHIEU: str 
     NGAYPHIEU: str
+    DIENGIAI: str = ""
 
 
 @router.get("/phancong/baocao_phancong")
 def baocao_phancong() -> List[RESPONSE_BAOCAO_PHANCONG]:
-    sql = f"""select SOPHIEU, NGAYPHIEU, TENKH, NGAYDH, NGAYGH, 
-                DIENGIAIPHIEU AS DIENGIAI,
-                SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
-                from V_BCDONHANG
-                group by SODH, MAKH, TENKH, NGAYDH, NGAYGH, DIENGIAIPHIEU
+    sql = f"""select SOPHIEU, NGAYPHIEU,
+                DIENGIAIPHIEU AS DIENGIAI
+                from PHANCONG
+                group by  SOPHIEU, NGAYPHIEU,
+                DIENGIAIPHIEU
+                order by NGAYPHIEU desc
+            """
+    result = phancong.read_custom(sql)
+    return result
+
+
+@router.get("/phancong/get_info_donhang")
+def baocao_phancong(SOPHIEU: str) -> List[dict]:
+    sql = f"""select DONHANG.SODH, NGAYDH,MAKH, 
+                    TENKH, DIENGIAIPHIEU, SOLUONG
+            from
+            (select SODH, SUM(SIZE0+SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
+            from PHANCONG
+            where SOPHIEU = '{SOPHIEU}'
+            group by SODH
+            ) as PHANCONG
+            inner join (select distinct SODH, NGAYDH, MAKH, TENKH, 
+                    DIENGIAIPHIEU from V_DONHANG) 
+                    as DONHANG on DONHANG.SODH = PHANCONG.SODH
+            order by NGAYDH desc
             """
     result = phancong.read_custom(sql)
     return result
@@ -189,19 +210,29 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     return result
 
 
+# @router.get("/phancong")
+# def read(SOPC: str) -> List[RESPONSE_PHANCONG]:
+#     sql = f"""select SOPHIEU, PHANCONG.SODH, NGAYDH, 
+#                     DONHANG.MAKH, DMKHACHHANG.TENKH, 
+#                     PHANCONG.DIENGIAIPHIEU, 
+#                     SUM(PHANCONG.SIZE5 + PHANCONG.SIZE6 + PHANCONG.SIZE7 + 
+#                     PHANCONG.SIZE8+ PHANCONG.SIZE9+PHANCONG.SIZE0) AS SOLUONG
+#               from PHANCONG
+#               left join DONHANG on DONHANG.SODH = PHANCONG.SODH
+#               left join DMKHACHHANG on DMKHACHHANG.MAKH = DONHANG.MAKH
+#               where SOPHIEU = '{SOPC}'
+#               group by SOPHIEU, PHANCONG.SODH, NGAYDH, DONHANG.MAKH, 
+#               DMKHACHHANG.TENKH, PHANCONG.DIENGIAIPHIEU
+#             """
+#     result = phancong.read_custom(sql)
+#     return result
+
+
 @router.get("/phancong")
-def read(SOPC: str) -> List[RESPONSE_PHANCONG]:
-    sql = f"""select SOPHIEU, PHANCONG.SODH, NGAYDH, 
-                    DONHANG.MAKH, DMKHACHHANG.TENKH, 
-                    PHANCONG.DIENGIAIPHIEU, 
-                    SUM(PHANCONG.SIZE5 + PHANCONG.SIZE6 + PHANCONG.SIZE7 + 
-                    PHANCONG.SIZE8+ PHANCONG.SIZE9+PHANCONG.SIZE0) AS SOLUONG
-              from PHANCONG
-              left join DONHANG on DONHANG.SODH = PHANCONG.SODH
-              left join DMKHACHHANG on DMKHACHHANG.MAKH = DONHANG.MAKH
-              where SOPHIEU = '{SOPC}'
-              group by SOPHIEU, PHANCONG.SODH, NGAYDH, DONHANG.MAKH, 
-              DMKHACHHANG.TENKH, PHANCONG.DIENGIAIPHIEU
+def read(SOPHIEU: str) -> List[RESPONSE_PHANCONG]:
+    sql = f"""select *
+              from V_PHANCONG
+              where SOPHIEU = '{SOPHIEU}'
             """
     result = phancong.read_custom(sql)
     return result

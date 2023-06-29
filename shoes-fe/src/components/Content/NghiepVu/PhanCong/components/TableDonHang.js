@@ -13,7 +13,7 @@ const TableDonHang = ({
     <div>
       <MaterialReactTable
         {...border_text_table_config}
-        enableTopToolbar={false}
+        // enableTopToolbar={false}
         enableBottomToolbar={false}
         columns={columns}
         data={data}

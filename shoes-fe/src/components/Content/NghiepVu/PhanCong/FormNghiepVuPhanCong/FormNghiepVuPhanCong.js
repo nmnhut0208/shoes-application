@@ -130,22 +130,60 @@ const FormNghiepVuPhanCong = ({
 
     // case 2: Truy Vấn Phân Công
     if (dataView) {
+      console.log(":dataView: ", dataView);
       // set Form Header
       setInfoPhieu(dataView);
       // query info to show for 2 table
       // chỉnh lại API, query database để lấy những đơn hàng được
       // phân công cho Số phiếu đang muốn xem
 
-      fetch("http://localhost:8000/items_donhang_page_phan_cong_by_so_phieu")
+      fetch("http://localhost:8000/phancong/donhangchuaphancong")
         .then((response) => {
           return response.json();
         })
         .then((info) => {
           setDataDonHang(info);
-          if (info.length > 0)
+          if (info.length > 0) {
             setRowSelectionDonHangToPhanCong({
               0: true,
             });
+            // update setDataDonHangDaPhanCong
+            fetch(
+              "http://localhost:8000/phancong/get_info_donhang?SOPHIEU=" +
+                encodeURIComponent(dataView["SOPHIEU"])
+            )
+              .then((response) => {
+                return response.json();
+              })
+              .then((result) => {
+                console.log("VO CAI CUOI CUNG");
+                const list_DH_chua_PC = info.map((obj, i) => obj.SODH);
+                result = result.filter(
+                  (obj) => !list_DH_chua_PC.includes(obj.SODH)
+                );
+                console.log(result);
+                setListDonHangDonePhanCong(result.map((obj, i) => obj.SODH));
+                setDataDonHangDaPhanCong(result);
+              })
+              .catch((err) => {
+                console.log(":error: ", err);
+              });
+          }
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+
+      // update dataChiTietPhanCong
+      fetch(
+        "http://localhost:8000/phancong?SOPHIEU=" +
+          encodeURIComponent(dataView["SOPHIEU"])
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          setDataChiTietPhanCong(info);
         })
         .catch((err) => {
           console.log(":error: ", err);
