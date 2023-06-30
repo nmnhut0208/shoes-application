@@ -106,15 +106,16 @@ class RESPONSE_BAOCAO_PHANCONG:
     SOPHIEU: str 
     NGAYPHIEU: str
     DIENGIAI: str = ""
+    MAKY: int
 
 
 @router.get("/phancong/baocao_phancong")
 def baocao_phancong() -> List[RESPONSE_BAOCAO_PHANCONG]:
     sql = f"""select SOPHIEU, NGAYPHIEU,
-                DIENGIAIPHIEU AS DIENGIAI
+                DIENGIAIPHIEU AS DIENGIAI, MAKY
                 from PHANCONG
                 group by  SOPHIEU, NGAYPHIEU,
-                DIENGIAIPHIEU
+                DIENGIAIPHIEU, MAKY
                 order by NGAYPHIEU desc
             """
     result = phancong.read_custom(sql)
@@ -277,6 +278,7 @@ def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
     save_info_primary_key("PHANCONG","MD", year, MADONG)
     return 1
 
+
 @router.post("/phancong/add_phancong")
 def add(data: ITEM_PHANCONG) -> RESPONSE:
     # find common information
@@ -302,7 +304,31 @@ def add(data: ITEM_PHANCONG) -> RESPONSE:
     # lưu lại thông tin mã dòng và mã đơn hàng
     save_info_primary_key("PHANCONG","PC", year, PHIEU)
     save_info_primary_key("PHANCONG","MD", year, MADONG)
-    return {"MADONG": _data["MADONG"]}
+    return {"MADONG": _data["MADONG"], "MAPHIEU": _data["MAPHIEU"]}
+
+
+@router.post("/phancong/rollback_delete")
+def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
+    # find common information
+    today = datetime.now()
+    year = today.year
+    day_created = today.strftime("%Y-%m-%d %H:%M:%S")
+
+    for i in range(len(data)):
+        _data = dict(data[i])
+        MADONG += 1
+        _data["NGAYTAO"] = day_created
+        _data["NGAYSUA"] = day_created
+        
+        _data = convert_data_to_save_database(_data)
+        _c = ",".join([k for k, v in _data.items() if v is not None])
+        _v = ",".join([v for v in _data.values() if v is not None])
+        # phòng trường hợp những record khác nhau có số lượng
+        # cột insert khác nhau nên phải insert từng dòng như thế này
+        phancong.add(_c, _v)
+
+    # lưu lại thông tin mã dòng và mã đơn hàng
+    return 1
 
 
 

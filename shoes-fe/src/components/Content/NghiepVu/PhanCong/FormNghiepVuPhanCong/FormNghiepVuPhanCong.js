@@ -42,6 +42,8 @@ const FormNghiepVuPhanCong = ({
   permission,
   listMaDongPhanCongAddButWaitSave,
   setListMaDongPhanCongAddButWaitSave,
+  dataDeleteButWaitSave,
+  setDataDeleteButWaitSave,
 }) => {
   const view = useMemo(() => {
     if (permission && permission.THEM === 0 && permission.SUA === 0)
@@ -241,7 +243,9 @@ const FormNghiepVuPhanCong = ({
       infoPhieu,
       resetForm,
       listMaDongPhanCongAddButWaitSave,
-      setListMaDongPhanCongAddButWaitSave
+      setListMaDongPhanCongAddButWaitSave,
+      dataDeleteButWaitSave,
+      setDataDeleteButWaitSave
     );
     setHavedSaveData(false);
     setIsSaveDataNghiepVuPhanCong(false);
@@ -269,6 +273,7 @@ const FormNghiepVuPhanCong = ({
 
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);
     setListMaDongPhanCongAddButWaitSave([]);
+    setDataDeleteButWaitSave([]);
     setHavedSaveData(true);
     setIsSaveDataNghiepVuPhanCong(true);
   };

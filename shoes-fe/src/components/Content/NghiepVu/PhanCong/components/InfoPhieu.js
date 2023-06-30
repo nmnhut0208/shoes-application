@@ -44,6 +44,7 @@ const InfoPhieu = ({
           value={infoPhieu["SOPHIEU"]}
           onChange={(e) => handleChangeInfoPhieu(e)}
           name="SOPHIEU"
+          readOnly={true}
         />
       </div>
       <div className={styles.pair}>

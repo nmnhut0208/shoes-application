@@ -21,8 +21,11 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
     setListMaDongPhanCongAddButWaitSave,
   ] = useState([]);
 
+  const [dataDeleteButWaitSave, setDataDeleteButWaitSave] = useState([]);
+
   const handleEditRow = () => {
     setListMaDongPhanCongAddButWaitSave([]);
+    setDataDeleteButWaitSave([]);
     setShowModal(true);
   };
   return (
@@ -75,12 +78,15 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
         isResetPageEmpty={false}
         isSaveData={isSaveData}
         listMaDongPhanCongAddButWaitSave={listMaDongPhanCongAddButWaitSave}
+        dataDeleteButWaitSave={dataDeleteButWaitSave}
       >
         <FormNghiepVuPhanCong
           dataView={rowInfo}
           setIsSaveDataNghiepVuPhanCong={setIsSaveData}
           permission={permission}
           listMaDongPhanCongAddButWaitSave={listMaDongPhanCongAddButWaitSave}
+          dataDeleteButWaitSave={dataDeleteButWaitSave}
+          setDataDeleteButWaitSave={setDataDeleteButWaitSave}
           setListMaDongPhanCongAddButWaitSave={
             setListMaDongPhanCongAddButWaitSave
           }

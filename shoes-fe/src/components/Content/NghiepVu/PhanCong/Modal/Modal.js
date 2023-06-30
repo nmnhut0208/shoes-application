@@ -8,6 +8,7 @@ const Modal = ({
   isSaveData,
   setShowModal,
   listMaDongPhanCongAddButWaitSave,
+  dataDeleteButWaitSave,
   children,
 }) => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -41,6 +42,22 @@ const Modal = ({
                       });
                   }
 
+                  if (dataDeleteButWaitSave.length > 0) {
+                    // TODO: rollback for record delete but don't save
+                    fetch("http://localhost:8000/phancong/rollback_delete", {
+                      method: "post",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        dataDeleteButWaitSave,
+                      }),
+                    })
+                      .then((response) => {
+                        return response.json();
+                      })
+                      .catch((error) => {
+                        console.log("error: ", error);
+                      });
+                  }
                   setShowModal(false);
                 }
                 return;

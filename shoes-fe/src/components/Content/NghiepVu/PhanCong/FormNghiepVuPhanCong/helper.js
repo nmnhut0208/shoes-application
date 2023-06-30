@@ -97,7 +97,7 @@ export const processing_button_add = (
         ]);
         setDataChiTietPhanCong([
           ...dataChiTietPhanCong,
-          { ...record, MADONG: data["MADONG"] },
+          { ...record, ...data },
         ]);
       })
       .catch((error) => {
@@ -229,12 +229,19 @@ export const processing_button_delete = (
   infoPhieu,
   resetForm,
   listMaDongPhanCongAddButWaitSave,
-  setListMaDongPhanCongAddButWaitSave
+  setListMaDongPhanCongAddButWaitSave,
+  dataDeleteButWaitSave,
+  setDataDeleteButWaitSave
 ) => {
   if (Object.keys(rowSelectionChiTietPhanCong).length == 0) return;
   let data_delete =
     dataChiTietPhanCong[parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])];
   data_delete = { ...data_delete, ...infoPhieu };
+
+  if (!listMaDongPhanCongAddButWaitSave.includes(data_delete["MADONG"]))
+    // if delete row haven't been saved => dont care
+    // just consider delete row is saved database
+    setDataDeleteButWaitSave([...dataDeleteButWaitSave, data_delete]);
 
   fetch(
     "http://localhost:8000/phancong/by_list_MADONG/?MADONG=" +
