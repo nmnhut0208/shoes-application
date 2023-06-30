@@ -30,6 +30,7 @@ const DonHang = () => {
       title="Đơn hàng - F0032"
       setShowModal={setShowModal}
       isSaveData={isSaveData}
+      isResetPageEmpty={true}
     >
       <FormDonHang
         setShowModalNghiepVuDonHang={setShowModal}

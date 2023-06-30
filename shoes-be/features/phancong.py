@@ -12,8 +12,6 @@ from features.hethong import (find_info_primary_key,
 from utils.vietnamese import convert_data_to_save_database
 
 
-
-
 class ITEM_PHANCONG(BaseModel):
     SOPHIEU: str
     NGAYPHIEU: str 
@@ -211,24 +209,6 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
             """
     result = phancong.read_custom(sql)
     return result
-
-
-# @router.get("/phancong")
-# def read(SOPC: str) -> List[RESPONSE_PHANCONG]:
-#     sql = f"""select SOPHIEU, PHANCONG.SODH, NGAYDH, 
-#                     DONHANG.MAKH, DMKHACHHANG.TENKH, 
-#                     PHANCONG.DIENGIAIPHIEU, 
-#                     SUM(PHANCONG.SIZE5 + PHANCONG.SIZE6 + PHANCONG.SIZE7 + 
-#                     PHANCONG.SIZE8+ PHANCONG.SIZE9+PHANCONG.SIZE0) AS SOLUONG
-#               from PHANCONG
-#               left join DONHANG on DONHANG.SODH = PHANCONG.SODH
-#               left join DMKHACHHANG on DMKHACHHANG.MAKH = DONHANG.MAKH
-#               where SOPHIEU = '{SOPC}'
-#               group by SOPHIEU, PHANCONG.SODH, NGAYDH, DONHANG.MAKH, 
-#               DMKHACHHANG.TENKH, PHANCONG.DIENGIAIPHIEU
-#             """
-#     result = phancong.read_custom(sql)
-#     return result
 
 
 @router.get("/phancong")
