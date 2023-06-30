@@ -327,7 +327,8 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
             onClick={() => {
               // dispatchTable(actions_table.setModeShowModal(false));
               setShowForm(false);
-            }}>
+            }}
+          >
             Đóng
           </button>
         </div>

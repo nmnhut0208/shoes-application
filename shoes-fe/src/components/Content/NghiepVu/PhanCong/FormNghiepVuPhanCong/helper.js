@@ -257,8 +257,10 @@ export const processing_button_delete = (
       setDataChiTietPhanCong([...dataChiTietPhanCong]);
 
       let new_listMADONG = listMaDongPhanCongAddButWaitSave.filter(
-        (data) => data === data_delete["MADONG"]
+        (data) => data !== data_delete["MADONG"]
       );
+
+      console.log("new_listMADONG: ", new_listMADONG);
       setListMaDongPhanCongAddButWaitSave(new_listMADONG);
 
       if (listDonHangDonePhanCong.includes(SoDH_del)) {

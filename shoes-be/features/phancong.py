@@ -17,7 +17,7 @@ from utils.vietnamese import convert_data_to_save_database
 class ITEM_PHANCONG(BaseModel):
     SOPHIEU: str
     NGAYPHIEU: str 
-    DIENGIAIPHIEU: Optional[str] = None
+    DIENGIAIPHIEU: Optional[str] = ""
     SODH: str
     MAGIAY: str
     SIZE5: int
@@ -28,15 +28,18 @@ class ITEM_PHANCONG(BaseModel):
     SIZE0: int
     THODE: str
     THOQUAI: str 
-    NGUOITAO: Optional[str] = None
-    NGUOISUA: Optional[str] = None
-    MAUDE: Optional[str] = None
-    MAUGOT: Optional[str] = None
-    MAUSUON: Optional[str] = None
-    MAUCA: Optional[str] = None
-    MAUQUAI: Optional[str] = None
+    NGUOITAO: Optional[str] = ""
+    NGUOISUA: Optional[str] = ""
+    MAUDE: Optional[str] = ""
+    MAUGOT: Optional[str] = ""
+    MAUSUON: Optional[str] = ""
+    MAUCA: Optional[str] = ""
+    MAUQUAI: Optional[str] = ""
     MAKY: str
-    DIENGIAIDONG: Optional[str] = None
+    DIENGIAIDONG: Optional[str] = ""
+    # 
+    MADONG: Optional[str] = ""
+    MAPHIEU: Optional[str] = ""
 
 class RESPONSE_PHANCONG_THO:
     MANVIEN: str
@@ -49,34 +52,34 @@ class RESPONSE_PHANCONG(BaseModel):
     SODH: str
     NGAYDH: str
     MAKH: str
-    TENKH: Optional[str] = None
-    DIENDAIPHIEU: Optional[str] = None
-    SOLUONG: Optional[str] = None
+    TENKH: Optional[str] = ""
+    DIENDAIPHIEU: Optional[str] = ""
+    SOLUONG: Optional[int] = 0
 
 class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
-    SODH: Optional[str] = None
+    SODH: Optional[str] = ""
     SORTID: str
     MAGIAY: str
     TENGIAY: str
-    MAUDE: Optional[str] = None
-    MAUGOT: Optional[str] = None
-    MAUSUON: Optional[str] = None
-    MAUCA: Optional[str] = None
-    MAUQUAI: Optional[str] = None
+    MAUDE: Optional[str] = ""
+    MAUGOT: Optional[str] = ""
+    MAUSUON: Optional[str] = ""
+    MAUCA: Optional[str] = ""
+    MAUQUAI: Optional[str] = ""
     MAKH: str
     DONGIA: int
-    DONGIAQUAI: Optional[int] = None
-    TENCA: Optional[str] = None
+    DONGIAQUAI: Optional[int] = ""
+    TENCA: Optional[str] = ""
     TENKH: str
     # =============
-    SIZE5: Optional[int] = None
-    SIZE6: Optional[int] = None
-    SIZE7: Optional[int] = None
-    SIZE9: Optional[int] = None
-    SIZE8: Optional[int] = None
-    SIZE0: Optional[int] = None
-    SOLUONG: Optional[int] = None
-    THANHTIEN: Optional[int] = None
+    SIZE5: Optional[int] = 0
+    SIZE6: Optional[int] = 0
+    SIZE7: Optional[int] = 0
+    SIZE9: Optional[int] = 0
+    SIZE8: Optional[int] = 0
+    SIZE0: Optional[int] = 0
+    SOLUONG: Optional[int] = 0
+    THANHTIEN: Optional[int] = 0
     NGAYDH: Optional[str] = None
     NGAYGH: Optional[str] = None
 
@@ -101,18 +104,17 @@ def read() -> List[RESPONSE_PHANCONG]:
     result = phancong.read_custom(sql)
     return result
 
-# TODO: chinh sua de lam Truy Van Phan Cong 
 class RESPONSE_BAOCAO_PHANCONG:
     SOPHIEU: str 
     NGAYPHIEU: str
-    DIENGIAI: str = ""
+    DIENGIAIPHIEU: str = ""
     MAKY: int
 
 
 @router.get("/phancong/baocao_phancong")
 def baocao_phancong() -> List[RESPONSE_BAOCAO_PHANCONG]:
     sql = f"""select SOPHIEU, NGAYPHIEU,
-                DIENGIAIPHIEU AS DIENGIAI, MAKY
+                DIENGIAIPHIEU, MAKY
                 from PHANCONG
                 group by  SOPHIEU, NGAYPHIEU,
                 DIENGIAIPHIEU, MAKY
@@ -153,10 +155,10 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
               coalesce(MAUSUON, '') as MAUSUON, TENMAUSUON,
               coalesce(MAUCA, '') as MAUCA, TENMAUCA, 
               coalesce(MAUQUAI, '') as MAUQUAI, TENMAUQUAI,
-              SIZE5-DaphancongSize5 as SIZE5, SIZE0-DaphancongSize0 as SIZE0,
+              SIZE5-DaphancongSize5 as SIZE5, SIZE0-DaphancongSIZE0 as SIZE0,
               SIZE6-DaphancongSize6 as SIZE6,SIZE7-DaphancongSize7 as SIZE7,
               SIZE8-DaphancongSize8 as SIZE8,SIZE9-DaphancongSize9 as SIZE9,
-              SIZE0 as dhSize0, DaphancongSize0, SIZE5 as dhSize5, DaphancongSize5, 
+              SIZE0 as dhSIZE0, DaphancongSIZE0, SIZE5 as dhSize5, DaphancongSize5, 
               SIZE6 as dhSize6, DaphancongSize6, SIZE7 as dhSize7, DaphancongSize7, 
               SIZE8 as dhSize8, DaphancongSize8, SIZE9 as dhSize9, DaphancongSize9
               from (
@@ -175,7 +177,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
                         SUM(coalesce(PC.SIZE7, 0)) AS DaphancongSize7,
                         SUM(coalesce(PC.SIZE8, 0)) AS DaphancongSize8,
                         SUM(coalesce(PC.SIZE9, 0)) AS DaphancongSize9,
-                        SUM(coalesce(PC.SIZE0, 0)) AS DaphancongSize0
+                        SUM(coalesce(PC.SIZE0, 0)) AS DaphancongSIZE0
                     FROM DONHANG DH 
                     left join PHANCONG as PC 
                             on DH.SODH = PC.SODH 
@@ -205,7 +207,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
               where SODH = '{SODH}'
               and SIZE5 + SIZE6+ SIZE7+SIZE8+SIZE9+SIZE0 > 
               DaphancongSize5 +DaphancongSize6+DaphancongSize7+
-              DaphancongSize8+DaphancongSize9+DaphancongSize0
+              DaphancongSize8+DaphancongSize9+DaphancongSIZE0
             """
     result = phancong.read_custom(sql)
     return result
@@ -231,9 +233,32 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
 
 @router.get("/phancong")
 def read(SOPHIEU: str) -> List[RESPONSE_PHANCONG]:
-    sql = f"""select *
-              from V_PHANCONG
-              where SOPHIEU = '{SOPHIEU}'
+    sql = f"""select MADONG, MAPHIEU, SOPHIEU, NGAYPHIEU,
+                    DIENGIAIPHIEU, SODH, MAGIAY,
+                    SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, THODE,
+                    THOQUAI, DAIN, DIENGIAIDONG, NGAYTAO, NGUOITAO,
+                    NGUOISUA, NGAYSUA, MAUDE, MAUGOT, MAUSUON, MAUCA,
+                    MAUQUAI, Size0 AS SIZE0, MAKY, TENGIAY, TENKH,
+                    TENMAUDE, TENMAUGOT, TENMAUSUON, TENMAUCA, TENMAUQUAI,
+                    TENTHODE, TENTHOQUAI
+                from PHANCONG
+                INNER join (select MAGIAY AS IDGIAY, TENGIAY, TENKH from V_GIAY) 
+                    as DMGIAY on DMGIAY.IDGIAY = PHANCONG.MAGIAY
+                inner join (select MANVIEN, TENNVIEN as TENTHODE from DMNHANVIEN 
+                    where LOAINVIEN='TD') as DMTHODE on DMTHODE.MANVIEN = THODE
+                inner join (select MANVIEN, TENNVIEN AS TENTHOQUAI from DMNHANVIEN 
+                    WHERE LOAINVIEN='TQ') AS DMTHOQUAI ON DMTHOQUAI.MANVIEN = THOQUAI
+                LEFT JOIN (SELECT MAMAU, TENMAU AS TENMAUDE FROM DMMAU)
+                     AS DMMAUDE ON DMMAUDE.MAMAU = MAUDE
+                LEFT JOIN (SELECT MAMAU, TENMAU AS TENMAUGOT FROM DMMAU)
+                    AS DMMAUGOT ON DMMAUGOT.MAMAU = MAUGOT
+                LEFT JOIN (SELECT MAMAU, TENMAU AS TENMAUSUON FROM DMMAU) 
+                    AS DMMAUSUON ON DMMAUSUON.MAMAU = MAUSUON
+                LEFT JOIN (SELECT MAMAU, TENMAU AS TENMAUCA FROM DMMAU) 
+                    AS DMMAUCA ON DMMAUCA.MAMAU = MAUCA
+                LEFT JOIN (SELECT MAMAU, TENMAU AS TENMAUQUAI FROM DMMAU) 
+                    AS DMMAUQUAI ON DMMAUQUAI.MAMAU = MAUQUAI
+                where SOPHIEU = '{SOPHIEU}'
             """
     result = phancong.read_custom(sql)
     return result
@@ -316,7 +341,7 @@ def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
 
     for i in range(len(data)):
         _data = dict(data[i])
-        MADONG += 1
+
         _data["NGAYTAO"] = day_created
         _data["NGAYSUA"] = day_created
         

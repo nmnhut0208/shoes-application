@@ -86,6 +86,8 @@ const FormNghiepVuPhanCong = ({
   console.log("dataDonHangDaPhanCong: ", dataDonHangDaPhanCong);
   console.log("dataChiTietPhanCong:", dataChiTietPhanCong);
 
+  console.log("dataDeleteButWaitSave: ", dataDeleteButWaitSave);
+
   const [rowSelectionChiTietPhanCong, setRowSelectionChiTietPhanCong] =
     useState({});
 
@@ -185,6 +187,7 @@ const FormNghiepVuPhanCong = ({
           return response.json();
         })
         .then((info) => {
+          console.log("setDataChiTietPhanCong: ", info);
           setDataChiTietPhanCong(info);
         })
         .catch((err) => {
