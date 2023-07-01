@@ -6,6 +6,11 @@ const fontFamily = "Helvetica";
 const TableToPrint = ({ columns, data }) => {
   return (
     <MaterialReactTable
+      muiTableProps={{
+        sx: {
+          tableLayout: "fixed",
+        },
+      }}
       muiTablePaperProps={{
         elevation: 0,
         //customize paper styles
