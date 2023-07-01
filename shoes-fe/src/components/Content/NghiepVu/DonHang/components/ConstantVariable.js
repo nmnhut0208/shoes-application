@@ -17,13 +17,13 @@ export const INFO_COLS_DONHANG = [
     header: "Màu đế",
     key: "MAUDE",
     width: 12 * rem_to_px,
-    enableEditing: true,
+    enableEditing: false,
   },
   {
     header: "Màu gót",
     key: "MAUGOT",
     width: 12 * rem_to_px,
-    enableEditing: true,
+    enableEditing: false,
   },
   {
     header: "Màu sườn",

@@ -6,6 +6,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { Delete, Edit } from "@mui/icons-material";
 
 import { Modal } from "~common_tag";
+import { border_text_table_config } from "~config/ui";
 import { useTableContext, actions_table } from "~table_context";
 import { useTaskContext } from "~task";
 import { useUserContext } from "~user";
@@ -191,6 +192,7 @@ const TableContent = () => {
           <MaterialReactTable
             columns={inforShowTable.infoColumnTable}
             data={inforShowTable.infoTable}
+            {...border_text_table_config}
             components
             autoResetPageIndex={false}
             // resize width of each column

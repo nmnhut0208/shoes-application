@@ -4,6 +4,7 @@ import MaterialReactTable from "material-react-table";
 import { COL_GIAY_KHACHHANG } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import styles from "./DanhMucGiayKhachHang.module.scss";
+import { border_text_table_config } from "~config/ui";
 
 const DanhMucGiayKhachHang = ({
   MAKH,
@@ -55,9 +56,10 @@ const DanhMucGiayKhachHang = ({
     }
 
     setInfoSelection([
-      ...dataOrigin.slice(0, -1),
+      ...dataOrigin, //.slice(0, -1),
       ...columns_selected,
-      dataOrigin[dataOrigin.length - 1],
+      // ,
+      // dataOrigin[dataOrigin.length - 1],
     ]);
     setShowModal(false);
   };
@@ -67,6 +69,7 @@ const DanhMucGiayKhachHang = ({
       <MaterialReactTable
         columns={infoColumns}
         data={dataTable}
+        {...border_text_table_config}
         // row selection
         enableRowSelection
         onRowSelectionChange={setRowSelection} //connect internal row selection state to your own

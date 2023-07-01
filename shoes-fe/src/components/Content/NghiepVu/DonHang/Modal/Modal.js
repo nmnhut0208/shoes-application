@@ -1,10 +1,17 @@
 import styles from "./Modal.module.scss";
 import { useTaskContext, resetHeader } from "~task";
 
-const Modal = ({ title, status, isSaveData, setShowModal, children }) => {
+const Modal = ({
+  title,
+  status,
+  isSaveData,
+  setShowModal,
+  isResetPageEmpty,
+  children,
+}) => {
   const [stateTask, dispatchTask] = useTaskContext();
   if (!status) {
-    resetHeader(dispatchTask);
+    if (isResetPageEmpty) resetHeader(dispatchTask);
     return null;
   }
   return (

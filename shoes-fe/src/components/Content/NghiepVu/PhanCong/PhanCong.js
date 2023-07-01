@@ -20,6 +20,8 @@ const PhanCong = () => {
     setListMaDongPhanCongAddButWaitSave,
   ] = useState([]);
 
+  const [dataDeleteButWaitSave, setDataDeleteButWaitSave] = useState([]);
+
   console.log("===================================");
   console.log(
     "listMaDongPhanCongAddButWaitSave luc ben PhanCong ne: ",
@@ -46,7 +48,9 @@ const PhanCong = () => {
       title="Phân Công - F0037"
       setShowModal={setShowModal}
       isSaveData={isSaveData}
+      isResetPageEmpty={true}
       listMaDongPhanCongAddButWaitSave={listMaDongPhanCongAddButWaitSave}
+      dataDeleteButWaitSave={dataDeleteButWaitSave}
     >
       <FormNghiepVuPhanCong
         setIsSaveDataNghiepVuPhanCong={setIsSaveData}
@@ -55,6 +59,8 @@ const PhanCong = () => {
         setListMaDongPhanCongAddButWaitSave={
           setListMaDongPhanCongAddButWaitSave
         }
+        dataDeleteButWaitSave={dataDeleteButWaitSave}
+        setDataDeleteButWaitSave={setDataDeleteButWaitSave}
       />
     </Modal>
   );

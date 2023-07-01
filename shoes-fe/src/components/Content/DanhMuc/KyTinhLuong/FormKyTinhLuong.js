@@ -85,6 +85,7 @@ const FormKyTinhLuong = () => {
               onChange={(e) => handleChangeInformationForm(e)}
               name="MAKY"
               className={styles.item_size_small}
+              readOnly={stateTable.inforShowTable.action_row === "edit"}
             />
           </div>
           <div className={styles.group_first_row}>

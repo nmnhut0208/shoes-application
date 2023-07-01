@@ -17,6 +17,7 @@ const COL_INFO_SIZE = [
 ];
 
 const InTongHop = ({ sophieu, data }) => {
+  console.log("data InTongHop: ", data);
   const [dataPrint, setDataPrint] = useState([]);
   const [stateTable, dispatchTable] = useTableContext();
   const columns = useMemo(() => {

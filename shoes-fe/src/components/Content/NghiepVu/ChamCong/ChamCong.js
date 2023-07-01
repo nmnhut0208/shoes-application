@@ -4,7 +4,7 @@ import styles from "./ChamCong.module.scss";
 import { Popover } from "antd";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import MaterialReactTable from "material-react-table";
-import { rem_to_px } from "~config/ui";
+import { rem_to_px, border_text_table_config } from "~config/ui";
 import { convertDate } from "~utils/processing_date";
 import moment from "moment";
 import { useUserContext, actions } from "~user";
@@ -69,6 +69,7 @@ const TableMaKY = ({ data, rowSelection, setRowSelection }) => {
         enableTopToolbar={false}
         columns={columns_ky}
         data={data}
+        {...border_text_table_config}
         // components
         enableColumnActions={false}
         enableSorting={false}
@@ -110,6 +111,7 @@ const TableMaNVIEN = ({ data, rowSelection, setRowSelection }) => {
         enableTopToolbar={false}
         columns={columns_nvien}
         data={data}
+        {...border_text_table_config}
         // components
         enableColumnActions={false}
         enableSorting={false}
