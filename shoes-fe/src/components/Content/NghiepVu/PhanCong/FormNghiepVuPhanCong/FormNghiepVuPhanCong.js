@@ -329,6 +329,7 @@ const FormNghiepVuPhanCong = ({
         setInfoPhieu={setInfoPhieu}
         setHavedSaveData={setHavedSaveData}
         setIsSaveDataNghiepVuPhanCong={setIsSaveDataNghiepVuPhanCong}
+        view={view}
       />
       <TableDonHang
         columns={infoTableDonHang}

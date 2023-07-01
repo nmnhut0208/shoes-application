@@ -4,6 +4,8 @@ export const processingInfoColumnTable = (list_key) => {
     const info = {
       header: list_key[obj]["header"],
       size: list_key[obj]["width"],
+      minSize: list_key[obj]["width"],
+      maxSize: list_key[obj]["width"],
       accessorKey: list_key[obj]["key"],
       key: list_key[obj]["key"],
     };

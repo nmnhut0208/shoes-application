@@ -209,15 +209,7 @@ export const getListKyTinhLuong = (dispatchItem) => {
       return response.json();
     })
     .then((info) => {
-      let listOptional = info.map(function (ob) {
-        return { label: ob.TENKY, value: ob.MAKY };
-      });
-      dispatchItem(
-        actions_items_context.setInfoKyTinhLuong([
-          { label: "", value: "" },
-          ...listOptional,
-        ])
-      );
+      dispatchItem(actions_items_context.setInfoKyTinhLuong(info));
     })
     .catch((err) => {
       console.log(":error: ", err);

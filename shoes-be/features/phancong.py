@@ -336,19 +336,10 @@ def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
     return 1
 
 
-
 @router.delete("/phancong")
-def delete(data: ITEM_PHANCONG) -> RESPONSE:
-    data = dict(data)
-    print(data)
-    condition = []
-    for key, value in data.items():
-        if value is not None or key in ["NGAYPHIEU"]:
-            if type(value) is str:
-                condition.append(f"{key}='{value}'")
-            else:
-                condition.append(f"{key}={value}")
-    return phancong.delete(" and ".join(condition))
+def delete(SOPHIEU: str) -> RESPONSE:
+    condition = f"SOPHIEU = '{SOPHIEU}'"
+    return phancong.delete(condition)
 
 
 @router.get("/phancong/get_thongtin_thode")
