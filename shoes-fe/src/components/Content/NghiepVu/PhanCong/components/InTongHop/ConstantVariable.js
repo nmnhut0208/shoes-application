@@ -1,7 +1,9 @@
 import { rem_to_px } from "~config/ui";
 
+export const fontSize = "1.7rem";
+
 const font_header = {
-  fontSize: "1.7rem",
+  fontSize: fontSize,
   lineHeight: "2rem",
   fontFamily: "Helvetica", //"Gill Sans",
   fontWeight: "bold",
@@ -48,7 +50,7 @@ export const INFO_COLS_THO = [
 
 //====================================
 const _style_component_cell = {
-  fontSize: "1.7rem",
+  fontSize: fontSize,
   fontFamily: "Helvetica",
   borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
   borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
@@ -73,7 +75,7 @@ export const border_text_table_config = {
   muiTableFooterCellProps: { sx: { ..._style_component_cell } },
   muiTableContainerProps: {
     sx: {
-      fontSize: "1.7rem",
+      fontSize: fontSize,
       fontFamily: "Helvetica",
       border: "none",
       borderTop: "0.25rem solid rgba(0, 0, 0, 1)",

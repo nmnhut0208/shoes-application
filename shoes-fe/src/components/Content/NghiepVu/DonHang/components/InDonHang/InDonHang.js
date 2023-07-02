@@ -1,6 +1,5 @@
 import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
-import Html2Pdf from "js-html2pdf";
 
 import styles from "./InDonHang.module.scss";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
@@ -16,6 +15,7 @@ import {
   COL_INFO_SIZE,
   dictInfoPrint,
   border_text_table_config,
+  fontSize,
 } from "./ConstantVariable";
 
 const compute_total = (sub_table) => {
@@ -160,35 +160,6 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
     content: () => componentRef.current,
     documentTitle: "Thông tin phân công",
   });
-  // const handelPrint = useReactToPrint({
-  //   // https://github.com/airarrazaval/html2pdf
-  //   onPrintError: (error) => console.log(error),
-  //   content: () => componentRef.current,
-  //   removeAfterPrint: true,
-  //   print: async (printIframe) => {
-  //     const document = printIframe.contentDocument;
-  //     if (document) {
-  //       const html = document.getElementById("print_content");
-  //       console.log(html);
-  //       const exporter = new Html2Pdf(html, {
-  //         margin: 2,
-  //         marginLeft: 2,
-  //         marginBottom: 2,
-  //         filename: "myfile.pdf",
-  //         image: { type: "PNG", quality: 1 },
-  //         html2canvas: {
-  //           scale: 2.5,
-  //           logging: true,
-  //           dpi: 100,
-  //           letterRendering: true,
-  //         },
-  //         jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
-  //       });
-  //       await exporter.getPdf(true);
-  //       setShowModal(false);
-  //     }
-  //   },
-  // });
 
   useLayoutEffect(() => {
     let ma_giay_checked = [];
@@ -223,7 +194,11 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
           info["TABLE"][j]["TONGSO"] = parseInt(info["TABLE"][j]["SOLUONG"]); //tongso;
           info["TABLE"][j]["SIZE"] = (
-            <SizeColumnInPrint list_tuso={top} list_mauso={bottom} />
+            <SizeColumnInPrint
+              list_tuso={top}
+              list_mauso={bottom}
+              fontSize={fontSize}
+            />
           );
         }
         ma_giay_checked.push(ma_giay);
@@ -341,7 +316,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
             )}
             {index_page === infoDetailsPrint.length - 1 && (
               <>
-                <Signature />
+                <Signature fontSize={fontSize} />
                 <div
                   className={styles.footer}
                   style={{

@@ -2,7 +2,11 @@ import { useMemo, useRef, useState, useLayoutEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 
 import styles from "./InTongHop.module.scss";
-import { INFO_COLS_THO, border_text_table_config } from "./ConstantVariable";
+import {
+  INFO_COLS_THO,
+  border_text_table_config,
+  fontSize,
+} from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { TableToPrint, SizeColumnInPrint } from "~common_tag/reports";
 import { useTableContext, actions_table } from "~table_context";
@@ -59,7 +63,11 @@ const InTongHop = ({ sophieu, data }) => {
 
           info["THO"][j]["TONGSO"] = tongso;
           info["THO"][j]["SIZE"] = (
-            <SizeColumnInPrint list_tuso={top} list_mauso={bottom} />
+            <SizeColumnInPrint
+              list_tuso={top}
+              list_mauso={bottom}
+              fontSize={fontSize}
+            />
           );
         }
         ma_giay_checked.push(ma_giay);

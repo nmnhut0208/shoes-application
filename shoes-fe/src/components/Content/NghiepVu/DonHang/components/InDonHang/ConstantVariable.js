@@ -20,34 +20,43 @@ export const INFO_COLS_THO = [
   { header: "THỢ QUAI", key: "TENTHOQUAI", width: 3 * rem_to_px },
 ];
 
+//=========================================================
 export const dictInfoPrint = {
-  header: 50,
-  margin_header: 30,
-  footer: 150,
+  header: 60,
+  margin_header: 40,
+  footer: 130,
   content: {
     gap_in_content: 10,
     gap_out_content: 40,
     info_giay_withouimage: 45,
-    info_giay_with_image: 160,
-    header_table: 46,
-    each_row_table: 75,
+    info_giay_with_image: 161,
+    header_table: 36,
+    each_row_table: 57,
   },
 };
 
 //===========================
+export const fontSize = "1.7rem";
+
+const font_header = {
+  fontSize: fontSize,
+  lineHeight: "2rem",
+  fontFamily: "Helvetica", //"Gill Sans",
+  fontWeight: "bold",
+  align: "justify-content",
+  padding: "0 0 0 3px",
+};
+
 const _style_component_cell = {
-  fontSize: "2rem",
+  fontSize: fontSize,
   fontFamily: "Helvetica",
   borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
   borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
+  padding: "0 3px 0 3px",
 };
 
 const _style_component_head = {
-  fontSize: "2.5rem",
-  padding: "1rem",
-  lineHeight: "3rem",
-  fontFamily: "Gill Sans",
-  fontWeight: "900",
+  ...font_header,
   borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
   borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
 };
@@ -64,7 +73,7 @@ export const border_text_table_config = {
   muiTableFooterCellProps: { sx: { ..._style_component_cell } },
   muiTableContainerProps: {
     sx: {
-      fontSize: "2rem",
+      fontSize: fontSize,
       fontFamily: "Helvetica",
       border: "none",
       borderTop: "0.25rem solid rgba(0, 0, 0, 1)",
