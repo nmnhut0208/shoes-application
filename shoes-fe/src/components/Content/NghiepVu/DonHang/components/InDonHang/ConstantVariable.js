@@ -12,13 +12,12 @@ export const COL_INFO_SIZE = [
 export const INFO_COLS_THO = [
   { header: "ĐẾ", key: "TENMAUDE", width: 3 * rem_to_px },
   { header: "GÓT", key: "TENMAUGOT", width: 3 * rem_to_px },
-  { header: "SƯỜN", key: "TENMAUSUON", width: 5 * rem_to_px },
-  { header: "CÁ: CÁ DÀI", key: "TENMAUCA", width: 8 * rem_to_px },
-  { header: "QUAI", key: "TENMAUQUAI", width: 8 * rem_to_px },
-  { header: "SIZE", key: "SIZE", width: 12 * rem_to_px },
-  // { header: "SL", key: "TONGSO", width: 1 * rem_to_px },
-  { header: "THỢ ĐẾ", key: "TENTHODE", width: 10 * rem_to_px },
-  { header: "THỢ QUAI", key: "TENTHOQUAI", width: 10 * rem_to_px },
+  { header: "SƯỜN", key: "TENMAUSUON", width: 3 * rem_to_px },
+  { header: "CÁ: CÁ DÀI", key: "TENMAUCA", width: 3 * rem_to_px },
+  { header: "QUAI", key: "TENMAUQUAI", width: 3 * rem_to_px },
+  { header: "SIZE", key: "SIZE", width: 3 * rem_to_px },
+  { header: "THỢ ĐẾ", key: "TENTHODE", width: 3 * rem_to_px },
+  { header: "THỢ QUAI", key: "TENTHOQUAI", width: 3 * rem_to_px },
 ];
 
 export const dictInfoPrint = {

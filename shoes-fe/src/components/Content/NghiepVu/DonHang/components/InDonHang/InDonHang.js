@@ -157,34 +157,38 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   }, []);
   const componentRef = useRef();
   const handelPrint = useReactToPrint({
-    // https://github.com/airarrazaval/html2pdf
-    onPrintError: (error) => console.log(error),
     content: () => componentRef.current,
-    removeAfterPrint: true,
-    print: async (printIframe) => {
-      const document = printIframe.contentDocument;
-      if (document) {
-        const html = document.getElementById("print_content");
-        console.log(html);
-        const exporter = new Html2Pdf(html, {
-          margin: 2,
-          marginLeft: 2,
-          marginBottom: 2,
-          filename: "myfile.pdf",
-          image: { type: "PNG", quality: 1 },
-          html2canvas: {
-            scale: 2.5,
-            logging: true,
-            dpi: 100,
-            letterRendering: true,
-          },
-          jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
-        });
-        await exporter.getPdf(true);
-        setShowModal(false);
-      }
-    },
+    documentTitle: "Thông tin phân công",
   });
+  // const handelPrint = useReactToPrint({
+  //   // https://github.com/airarrazaval/html2pdf
+  //   onPrintError: (error) => console.log(error),
+  //   content: () => componentRef.current,
+  //   removeAfterPrint: true,
+  //   print: async (printIframe) => {
+  //     const document = printIframe.contentDocument;
+  //     if (document) {
+  //       const html = document.getElementById("print_content");
+  //       console.log(html);
+  //       const exporter = new Html2Pdf(html, {
+  //         margin: 2,
+  //         marginLeft: 2,
+  //         marginBottom: 2,
+  //         filename: "myfile.pdf",
+  //         image: { type: "PNG", quality: 1 },
+  //         html2canvas: {
+  //           scale: 2.5,
+  //           logging: true,
+  //           dpi: 100,
+  //           letterRendering: true,
+  //         },
+  //         jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+  //       });
+  //       await exporter.getPdf(true);
+  //       setShowModal(false);
+  //     }
+  //   },
+  // });
 
   useLayoutEffect(() => {
     let ma_giay_checked = [];

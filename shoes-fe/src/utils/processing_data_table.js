@@ -9,6 +9,10 @@ export const processingInfoColumnTable = (list_key) => {
       accessorKey: list_key[obj]["key"],
       key: list_key[obj]["key"],
     };
+    if (list_key[obj]["header_custorm"])
+      info["header"] = list_key[obj]["header_custorm"];
+    if (list_key[obj]["muiTableBodyCellProps"])
+      info["muiTableBodyCellProps"] = list_key[obj]["muiTableBodyCellProps"];
     infoColumns.push(info);
   }
   return infoColumns;

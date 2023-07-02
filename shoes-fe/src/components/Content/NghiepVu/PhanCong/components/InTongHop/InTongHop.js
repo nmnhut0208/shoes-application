@@ -2,7 +2,7 @@ import { useMemo, useRef, useState, useLayoutEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 
 import styles from "./InTongHop.module.scss";
-import { INFO_COLS_THO } from "./ConstantVariable";
+import { INFO_COLS_THO, border_text_table_config } from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { TableToPrint, SizeColumnInPrint } from "~common_tag/reports";
 import { useTableContext, actions_table } from "~table_context";
@@ -92,7 +92,11 @@ const InTongHop = ({ sophieu, data }) => {
                 </tr>
               </table>
             </div>
-            <TableToPrint data={info["THO"]} columns={columns} />
+            <TableToPrint
+              data={info["THO"]}
+              columns={columns}
+              border_text_table_config={border_text_table_config}
+            />
           </div>
         ))}
     </div>
