@@ -1,23 +1,18 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import clsx from "clsx";
 import moment from "moment";
 
 import styles from "../FormNghiepVuPhanCong/FormNghiepVuPhanCong.module.scss";
 import { convertDate } from "~utils/processing_date";
-import { useItemsContext } from "~items_context";
+import { ItemKyTinhLuong } from "~items";
 
 const InfoPhieu = ({
   infoPhieu,
   setInfoPhieu,
   setHavedSaveData,
   setIsSaveDataNghiepVuPhanCong,
+  view,
 }) => {
-  const [stateItem, dispatchItem] = useItemsContext();
-  const [dataKyTinhLuong, setDataKyTinhLuong] = useState(
-    stateItem.infoItemKyTinhLuong
-  );
-  console.log("stateItem.infoItemKyTinhLuong: ", stateItem.infoItemKyTinhLuong);
-
   const handleChangeInfoPhieu = (e) => {
     const data = { ...infoPhieu };
     data[e.target.name] = e.target.value;
@@ -52,26 +47,22 @@ const InfoPhieu = ({
         <input
           type="date"
           name="NGAYPHIEU"
-          // value={infoPhieu["NGAYPHIEU"]}
           value={convertDate(infoPhieu["NGAYPHIEU"])}
           onChange={(e) => handleChangeFormForTypeDate(e)}
-          // onChange={(e) => handleChangeInfoPhieu(e)}
         />
       </div>
       <div className={styles.pair}>
         <label>Kỳ</label>
-        <select
-          name="MAKY"
-          id="MAKY"
-          value={infoPhieu["MAKY"]}
-          onChange={(e) => handleChangeInfoPhieu(e)}
-        >
-          {dataKyTinhLuong.map((data, index) => (
-            <option value={data["value"]} key={index}>
-              {data["label"]}
-            </option>
-          ))}
-        </select>
+        <ItemKyTinhLuong
+          initValue={{
+            MAKY: infoPhieu["MAKY"],
+          }}
+          changeData={(data) => {
+            setInfoPhieu({ ...infoPhieu, ...data });
+          }}
+          size_input={"7rem"}
+          readOnly={view}
+        />
       </div>
       <div className={styles.pair}>
         <label>Diễn dãi phiếu</label>
@@ -79,6 +70,7 @@ const InfoPhieu = ({
           name="DIENGIAIPHIEU"
           value={infoPhieu["DIENGIAIPHIEU"]}
           onChange={(e) => handleChangeInfoPhieu(e)}
+          readOnly={view}
         />
       </div>
     </div>

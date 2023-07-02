@@ -34,3 +34,41 @@ export const dictInfoPrint = {
     each_row_table: 75,
   },
 };
+
+//===========================
+const _style_component_cell = {
+  fontSize: "2rem",
+  fontFamily: "Helvetica",
+  borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
+  borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
+};
+
+const _style_component_head = {
+  fontSize: "2.5rem",
+  padding: "1rem",
+  lineHeight: "3rem",
+  fontFamily: "Gill Sans",
+  fontWeight: "900",
+  borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
+  borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
+};
+
+export const border_text_table_config = {
+  muiTablePaperProps: {
+    elevation: 0,
+    sx: { borderRadius: "0", borderLeft: "0.25rem solid rgba(0, 0, 0, 1)" },
+  },
+  muiTableHeadCellProps: {
+    sx: { ..._style_component_head },
+  },
+  muiTableBodyCellProps: { sx: { ..._style_component_cell } },
+  muiTableFooterCellProps: { sx: { ..._style_component_cell } },
+  muiTableContainerProps: {
+    sx: {
+      fontSize: "2rem",
+      fontFamily: "Helvetica",
+      border: "none",
+      borderTop: "0.25rem solid rgba(0, 0, 0, 1)",
+    },
+  },
+};

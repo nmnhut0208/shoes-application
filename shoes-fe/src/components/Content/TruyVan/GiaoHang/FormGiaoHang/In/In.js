@@ -8,6 +8,43 @@ import { TableToPrint } from "~common_tag/reports";
 
 const COLS_HAVE_SUM_FOOTER = ["SOLUONG", "THANHTIEN"];
 
+const _style_component_cell = {
+  fontSize: "1.5rem",
+  fontFamily: "Helvetica",
+  borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
+  borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
+};
+
+const _style_component_head = {
+  fontSize: "1.5rem",
+  padding: "1rem",
+  lineHeight: "3rem",
+  fontFamily: "Gill Sans",
+  fontWeight: "900",
+  borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
+  borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
+};
+
+export const border_text_table_config = {
+  muiTablePaperProps: {
+    elevation: 0,
+    sx: { borderRadius: "0", borderLeft: "0.25rem solid rgba(0, 0, 0, 1)" },
+  },
+  muiTableHeadCellProps: {
+    sx: { ..._style_component_head },
+  },
+  muiTableBodyCellProps: { sx: { ..._style_component_cell } },
+  muiTableFooterCellProps: { sx: { ..._style_component_cell } },
+  muiTableContainerProps: {
+    sx: {
+      fontSize: "1.5rem",
+      fontFamily: "Helvetica",
+      border: "none",
+      borderTop: "0.25rem solid rgba(0, 0, 0, 1)",
+    },
+  },
+};
+
 const list_key = [
   { header: "Mã Hàng", key: "MAGIAY", width: 8 * rem_to_px },
   { header: "Tên Hàng", key: "TENGIAY", width: 10 * rem_to_px },
@@ -17,7 +54,7 @@ const list_key = [
   { header: "Số đơn hàng", key: "SODH", width: 6 * rem_to_px },
 ];
 
-const num_div = 5;
+const num_div = 8;
 
 const In = ({ data }) => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -92,25 +129,37 @@ const In = ({ data }) => {
     <div ref={componentRef}>
       {batch_data.map((data_info, index) => (
         <div className={styles.container}>
-          {index !== 0 ? <br /> : <></>}
+          {/* {index !== 0 ? <br /> : <></>}  */}
           <div className={styles.invoice__header}>
             {index === 0 ? <h1 className={styles.invoice}>Hóa Đơn</h1> : <></>}
             {/* <h1 className={styles.invoice}>Hóa Đơn</h1> */}
-            <div className={styles.invoice__info}>
-              <h2>Số: {data["SOPHIEU"]}</h2>
-              <h2>Ngày: {data["NGAYPHIEU"]}</h2>
-            </div>
+            {index !== 0 ? (
+              <div className={styles.invoice__info}>
+                <h2>Số: {data["SOPHIEU"]}</h2>
+                <h2>Ngày: {data["NGAYPHIEU"]}</h2>
+              </div>
+            ) : (
+              <div className={styles.invoice__info_header}>
+                <h2>Số: {data["SOPHIEU"]}</h2>
+                <h2>Ngày: {data["NGAYPHIEU"]}</h2>
+              </div>
+            )}
           </div>
           <h2>Khách Hàng: {data["TENKH"]}</h2>
           <h2>Địa Chỉ: {data["DIACHI"]}</h2>
           <br />
           {index === batch_data.length - 1 ? (
-            <TableToPrint columns={infoColumns_Footer} data={data_info} />
+            <TableToPrint
+              columns={infoColumns_Footer}
+              data={data_info}
+              border_text_table_config={border_text_table_config}
+            />
           ) : (
             <div className={styles.distance_table}>
               <TableToPrint
                 columns={infoColumns}
                 data={data_info}
+                border_text_table_config={border_text_table_config}
                 // className={styles.distance_table}
               />
             </div>

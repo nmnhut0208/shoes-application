@@ -3,11 +3,6 @@ import { useReactToPrint } from "react-to-print";
 import Html2Pdf from "js-html2pdf";
 
 import styles from "./InDonHang.module.scss";
-import {
-  INFO_COLS_THO,
-  COL_INFO_SIZE,
-  dictInfoPrint,
-} from "./ConstantVariable";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import {
   TableToPrint,
@@ -16,6 +11,12 @@ import {
 } from "~common_tag/reports";
 import { convertDateForReport } from "~utils/processing_date";
 import { getImageFromMAGIAY, getDiaChiKhachHang } from "./helper";
+import {
+  INFO_COLS_THO,
+  COL_INFO_SIZE,
+  dictInfoPrint,
+  border_text_table_config,
+} from "./ConstantVariable";
 
 const compute_total = (sub_table) => {
   let sum = 0;
@@ -295,7 +296,11 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                       </tr>
                     </table>
                   </div>
-                  <TableToPrint data={info["Table"]} columns={columns} />
+                  <TableToPrint
+                    data={info["Table"]}
+                    columns={columns}
+                    border_text_table_config={border_text_table_config}
+                  />
                 </div>
               ))}
 

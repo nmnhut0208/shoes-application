@@ -1,7 +1,8 @@
 import MaterialReactTable from "material-react-table";
 import { useMemo, useState, useEffect } from "react";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import { Edit } from "@mui/icons-material";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import { Delete, Edit } from "@mui/icons-material";
 
 import { useUserContext } from "~user";
 
@@ -27,6 +28,19 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
     setListMaDongPhanCongAddButWaitSave([]);
     setDataDeleteButWaitSave([]);
     setShowModal(true);
+  };
+  const handleDeleteRow = (row) => {
+    let url =
+      "http://localhost:8000/phancong?SOPHIEU=" +
+      encodeURIComponent(row["SOPHIEU"]);
+    fetch(url, {
+      method: "DELETE",
+    })
+      .then((res) => console.log("response: ", res))
+      .catch((err) => console.log("error: ", err));
+
+    const newData = data.filter((item) => item.SOPHIEU != row.SOPHIEU);
+    setDataPhanCong(newData);
   };
   return (
     <>
@@ -57,16 +71,45 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
               "align-content": "center",
             }}
           >
-            <Tooltip arrow title="View">
-              <IconButton
-                onClick={() => {
-                  setRowInfo(row.original);
-                  handleEditRow();
-                }}
-              >
-                <Edit />
-              </IconButton>
-            </Tooltip>
+            {permission.SUA === 1 && (
+              <Tooltip arrow title="Edit">
+                <IconButton
+                  onClick={() => {
+                    setRowInfo(row.original);
+                    handleEditRow();
+                  }}
+                >
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            )}
+
+            {permission.XOA === 1 && (
+              <Tooltip arrow placement="right" title="Delete">
+                <IconButton
+                  color="error"
+                  onClick={() => {
+                    handleDeleteRow(row.original);
+                  }}
+                >
+                  <Delete />
+                </IconButton>
+              </Tooltip>
+            )}
+            {permission.XEM === 1 &&
+              permission.THEM === 0 &&
+              permission.SUA === 0 && (
+                <Tooltip arrow placement="right" title="View Detail">
+                  <IconButton
+                    onClick={() => {
+                      setRowInfo(row.original);
+                      handleEditRow();
+                    }}
+                  >
+                    <VisibilityOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
           </Box>
         )}
       />
@@ -150,7 +193,12 @@ const PhanCong = () => {
   return (
     <>
       <h1>Phân công - F0039</h1>
-      <Table columns={columns} data={dataPhanCong} permission={permission} />
+      <Table
+        columns={columns}
+        data={dataPhanCong}
+        setDataPhanCong={setDataPhanCong}
+        permission={permission}
+      />
     </>
   );
 };

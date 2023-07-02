@@ -73,7 +73,7 @@ const InTongHop = ({ sophieu, data }) => {
   useLayoutEffect(() => {
     if (dataPrint.length > 0) {
       handelPrint();
-      dispatchTable(actions_table.setModeShowModal(false));
+      // dispatchTable(actions_table.setModeShowModal(false));
     }
   }, [dataPrint]);
 
