@@ -1,5 +1,14 @@
 import { rem_to_px } from "~config/ui";
 
+export const COL_INFO_SIZE = [
+  { key: 0, name: "SIZE0" },
+  { key: 5, name: "SIZE5" },
+  { key: 6, name: "SIZE6" },
+  { key: 7, name: "SIZE7" },
+  { key: 8, name: "SIZE8" },
+  { key: 9, name: "SIZE9" },
+];
+
 export const fontSize = "1.7rem";
 
 const font_header = {
@@ -80,5 +89,20 @@ export const border_text_table_config = {
       border: "none",
       borderTop: "0.25rem solid rgba(0, 0, 0, 1)",
     },
+  },
+};
+
+//===============================================
+export const dictInfoPrint = {
+  header: 30,
+  margin_header: 40,
+  footer: 30,
+  content: {
+    gap_in_content: 10,
+    gap_out_content: 40,
+    info_giay_withouimage: 45,
+    info_giay_with_image: 161,
+    header_table: 36,
+    each_row_table: 57,
   },
 };
