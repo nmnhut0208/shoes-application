@@ -1,5 +1,4 @@
 export const getImageFromMAGIAY = async (MAGIAY) => {
-  return null;
   const response = await fetch(
     "http://localhost:8000/giay/get_HINHANH?MAGIAY=" + MAGIAY
   );
@@ -60,7 +59,7 @@ export const getInfoBreakPage = (dataPrint, listImage, dictInfoPrint) => {
       }
       if (nof_row_visited === nof_row) break;
       // show content
-      while (size_page_remain > 10) {
+      while (size_page_remain >= 0) {
         let size_other_MAGIAY =
           size_bottom_Table + dictInfoPrint["content"]["gap_out_content"];
         let remain_for_rows = size_page_remain - size_other_MAGIAY;

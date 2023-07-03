@@ -108,6 +108,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
   useLayoutEffect(() => {
     if (infoDetailsPrint.length > 0) {
+      setShowModal(false);
       handelPrint();
     }
   }, [infoDetailsPrint]);

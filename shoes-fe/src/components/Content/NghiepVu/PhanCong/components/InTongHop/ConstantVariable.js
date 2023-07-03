@@ -28,9 +28,9 @@ const textarea_style = {
   padding: "0 0 0 0",
 };
 export const INFO_COLS_THO = [
-  { header: "ĐẾ", key: "TENMAUDE", width: 2.5 * rem_to_px },
-  { header: "GÓT", key: "TENMAUGOT", width: 2.5 * rem_to_px },
-  { header: "SƯỜN", key: "TENMAUSUON", width: 2.5 * rem_to_px },
+  { header: "ĐẾ", key: "TENMAUDE", width: 2.6 * rem_to_px },
+  { header: "GÓT", key: "TENMAUGOT", width: 2.6 * rem_to_px },
+  { header: "SƯỜN", key: "TENMAUSUON", width: 2.6 * rem_to_px },
   {
     header: "CÁ: CÁ DÀI MAY CHỈ",
     key: "TENMAUCA",
@@ -39,7 +39,7 @@ export const INFO_COLS_THO = [
       <textarea value={"CÁ: CÁ DÀI MAY CHỈ"} style={{ ...textarea_style }} />
     ),
   },
-  { header: "QUAI", key: "TENMAUQUAI", width: 2.5 * rem_to_px },
+  { header: "QUAI", key: "TENMAUQUAI", width: 2.6 * rem_to_px },
   { header: "SIZE", key: "SIZE", width: 3.2 * rem_to_px },
   {
     header: "Tổng số",
@@ -52,9 +52,9 @@ export const INFO_COLS_THO = [
       align: "right",
     },
   },
-  { header: "THỢ ĐẾ", key: "TENTHODE", width: 2.5 * rem_to_px },
+  { header: "THỢ ĐẾ", key: "TENTHODE", width: 2.4 * rem_to_px },
   { header: "THỢ QUAI", key: "TENTHOQUAI", width: 2.5 * rem_to_px },
-  { header: "ĐƠN HÀNG", key: "SODH", width: 3.5 * rem_to_px },
+  { header: "ĐƠN HÀNG", key: "SODH", width: 3.1 * rem_to_px },
 ];
 
 //====================================
@@ -63,7 +63,7 @@ const _style_component_cell = {
   fontFamily: "Helvetica",
   borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
   borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
-  padding: "0 3px 0 3px",
+  padding: "0 3px 0 1px",
 };
 
 const _style_component_head = {
@@ -96,13 +96,13 @@ export const border_text_table_config = {
 export const dictInfoPrint = {
   header: 30,
   margin_header: 40,
-  footer: 30,
+  footer: 10, //50,
   content: {
     gap_in_content: 10,
     gap_out_content: 40,
-    info_giay_withouimage: 45,
+    info_giay_withouimage: 36,
     info_giay_with_image: 161,
-    header_table: 36,
-    each_row_table: 57,
+    header_table: 60,
+    each_row_table: 60,
   },
 };
