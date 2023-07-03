@@ -5,8 +5,6 @@ import {
   getInfoBreakPage,
 } from "~nghiep_vu/DonHang/components/InDonHang/helper";
 
-// import { getInfoBreakPage } from "./helper";
-
 import styles from "./InTongHop.module.scss";
 import {
   INFO_COLS_THO,

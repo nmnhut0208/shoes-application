@@ -18,6 +18,40 @@ export const processingInfoColumnTable = (list_key) => {
   return infoColumns;
 };
 
+export const processingInfoColumnTableHaveFooter = (
+  list_key,
+  COLS_HAVE_SUM_FOOTER,
+  data
+) => {
+  const infoColumnsInit = [];
+  for (var obj in list_key) {
+    const info = {
+      header: list_key[obj]["header"],
+      size: list_key[obj]["width"],
+      accessorKey: list_key[obj]["key"],
+      key: list_key[obj]["key"],
+    };
+
+    if (list_key[obj]["key"] === "TENGIAY")
+      info["Footer"] = () => <div>Tổng cộng: </div>;
+    if (COLS_HAVE_SUM_FOOTER.includes(list_key[obj]["key"])) {
+      let sum_value = data["table"].reduce(
+        (total, row) => total + row[list_key[obj]["key"]],
+        0
+      );
+      info["Footer"] = () => (
+        <div style={{ textAlign: "right" }}>{sum_value}</div>
+      );
+    }
+    if (list_key[obj]["header_custorm"])
+      info["header"] = list_key[obj]["header_custorm"];
+    if (list_key[obj]["muiTableBodyCellProps"])
+      info["muiTableBodyCellProps"] = list_key[obj]["muiTableBodyCellProps"];
+    infoColumnsInit.push(info);
+  }
+  return infoColumnsInit;
+};
+
 export const renderDataEmpty = (list_key, number_rows) => {
   const data = [];
   const object_empty = {};

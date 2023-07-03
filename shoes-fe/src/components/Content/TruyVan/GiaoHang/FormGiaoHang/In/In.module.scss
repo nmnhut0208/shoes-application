@@ -42,17 +42,27 @@
 // }
 
 .container {
-  margin-bottom: 1rem;
+  // margin-top: 1rem;
+  // margin-bottom: 1rem;
+  // margin-left: 1rem;
+  // margin-right: 1rem;
+  width: 80rem;
+  padding: 0rem 4rem 0rem 4rem;
 }
 
 .invoice {
-  margin: 0;
+  margin-top: 4rem;
   text-align: center;
   font-size: 3rem;
 }
 
+.invoice__info_header {
+  align-self: flex-end;
+}
+
 .invoice__info {
   align-self: flex-end;
+  margin-top: 4rem;
 }
 
 .invoice__header {
@@ -68,4 +78,9 @@
   margin-left: 5rem;
   margin-right: 5rem;
   margin-top: 1rem;
+  // margin-bottom: 10rem;
+}
+
+.distance_table {
+  margin-bottom: 50rem;
 }

@@ -71,6 +71,7 @@ const SubTable = ({
           </Tooltip>
           <Tooltip arrow placement="right" title="Delete">
             <IconButton
+              color="error"
               onClick={() => {
                 if (
                   stateUser.userPoolAccess.some(
