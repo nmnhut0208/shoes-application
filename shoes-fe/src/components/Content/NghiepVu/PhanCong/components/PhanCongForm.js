@@ -198,6 +198,17 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           />
         </div>
         <div className={styles.pair_info}>
+          <label>Size 1</label>
+          <input
+            name="SIZE1"
+            type="number"
+            min="0"
+            readOnly={form["SIZE1"] !== "" && parseInt(form["SIZE1"]) == 0}
+            value={form["SIZE1"]}
+            onChange={(e) => handleChangeForm(e)}
+          />
+        </div>
+        <div className={styles.pair_info}>
           <label>Size 5</label>
           <input
             name="SIZE5"

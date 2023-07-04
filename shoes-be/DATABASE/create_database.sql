@@ -250,6 +250,7 @@ CREATE TABLE [dbo].[PHANCONG](
 	[SIZE7] [money] NULL,
 	[SIZE8] [money] NULL,
 	[SIZE9] [money] NULL,
+	[SIZE1] [money] NULL,
 	[THODE] [varchar](20) NULL,
 	[THOQUAI] [varchar](20) NULL,
 	[DAIN] [int] NULL,
@@ -337,7 +338,7 @@ CREATE View [dbo].[V_TK_TEMP1]  As
 SELECT 
 G.MAKH, 
 G.TENKH, 
-SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8 + PC.SIZE9 + PC.SIZE0, PC.SIZE1) AS SLGIAOVIEC,
+SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8 + PC.SIZE9 + PC.SIZE0+ PC.SIZE1) AS SLGIAOVIEC,
 0 AS SLGIAOHANG, 
 0 AS TONGTIEN
 FROM PHANCONG PC LEFT JOIN V_GIAY G ON PC.MAGIAY = G.MAGIAY
@@ -519,6 +520,7 @@ CREATE TABLE [dbo].[CONGNO](
 	[MAUCA] [varchar](50) NULL,
 	[MAUQUAI] [varchar](50) NULL,
 	[Size0] [float] NULL,
+	[SIZE1] [float] NULL,
  CONSTRAINT [PK_CONGNO] PRIMARY KEY CLUSTERED 
 (
 	[MAPHIEU] ASC,
@@ -646,6 +648,7 @@ CREATE TABLE [dbo].[DONHANG](
 	[SIZE7] [float] NULL,
 	[SIZE9] [float] NULL,
 	[SIZE8] [float] NULL,
+	[SIZE1] [float] NULL,
 	[GIABAN] [money] NULL,
 	[THANHTIEN] [money] NULL,
 	[DIENGIAIDONG] [varchar](250) NULL,
@@ -1320,6 +1323,10 @@ GO
 /****** Object:  Default [DF__donhang__Size0__531856C7]    Script Date: 04/29/2023 11:37:20 ******/
 ALTER TABLE [dbo].[DONHANG] ADD  CONSTRAINT [DF__donhang__Size0__531856C7]  DEFAULT (0) FOR [Size0]
 GO
+/****** Object:  Default [DF__donhang__Size0__531856C7]    Script Date: 04/29/2023 11:37:20 ******/
+ALTER TABLE [dbo].[DONHANG] ADD  CONSTRAINT [DF__donhang__Size1]  DEFAULT (0) FOR [Size1]
+GO
+
 /****** Object:  Default [DF__donhang__GIALE__55F4C372]    Script Date: 04/29/2023 11:37:20 ******/
 ALTER TABLE [dbo].[DONHANG] ADD  CONSTRAINT [DF__donhang__GIALE__55F4C372]  DEFAULT (0) FOR [GIALE]
 GO

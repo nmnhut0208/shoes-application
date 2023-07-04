@@ -25,5 +25,6 @@ export const INFO_COLS_CHITIET_PHANCONG = [
   { header: "Size 8", key: "SIZE8", width: 7 * rem_to_px },
   { header: "Size 9", key: "SIZE9", width: 7 * rem_to_px },
   { header: "Size 0", key: "SIZE0", width: 7 * rem_to_px },
+  { header: "Size 1", key: "SIZE1", width: 7 * rem_to_px },
   { header: "Tên giày", key: "TENGIAY", width: 15 * rem_to_px },
 ];

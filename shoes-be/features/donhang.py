@@ -25,6 +25,7 @@ class ITEM_DONHANG(BaseModel):
     SIZE9: int
     SIZE8: int
     SIZE0: int
+    SIZE1: int
     GIABAN: int
     THANHTIEN: int
     DIENGIAIDONG: Optional[str] = None
@@ -67,6 +68,7 @@ class RESPONSE_GIAYDONHANG(BaseModel):
     SIZE9: Optional[int] = None
     SIZE8: Optional[int] = None
     SIZE0: Optional[int] = None
+    SIZE1: Optional[int] = None
     SOLUONG: Optional[int] = None
     THANHTIEN: Optional[int] = None
     NGAYDH: Optional[str] = None
@@ -108,7 +110,7 @@ class RESPONSE_BAOCAO_DONHANG:
 def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
     sql = f"""SELECT SODH, DH.MAKH, KH.TENKH, NGAYDH, NGAYGH, 
                 DIENGIAIPHIEU AS DIENGIAI,
-                SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
+                SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE1) as SOLUONG
               FROM DONHANG DH
                 LEFT JOIN V_GIAY ON V_GIAY.MAGIAY = DH.MAGIAY
                 LEFT JOIN DMKHACHHANG KH ON KH.MAKH = DH.MAKH
@@ -133,14 +135,14 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
                 V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
                 V_GIAY.TENCA,
                 SIZE5,SIZE6,SIZE7,
-                SIZE9,SIZE8,SIZE0,
+                SIZE9,SIZE8,SIZE0, SIZE1,
                 SOLUONG,NGAYDH, NGAYGH,
                 V_GIAY.DONGIA * SOLUONG AS THANHTIEN,
                 DIENGIAIDONG, INHIEU
             FROM (select DIENGIAIPHIEU, MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
-                SIZE9,SIZE8,SIZE0, NGAYDH, NGAYGH,
-                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG,
+                SIZE9,SIZE8,SIZE0, SIZE1, NGAYDH, NGAYGH,
+                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0+SIZE1) AS SOLUONG,
                 DIENGIAIDONG, INHIEU
             from DONHANG 
             WHERE DONHANG.SODH='{SODH}') AS DONHANG
