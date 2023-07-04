@@ -23,7 +23,7 @@ const font_header = {
 const textarea_style = {
   ...font_header,
   border: "none",
-  width: "98%",
+  width: "96%",
   resize: "none",
   padding: "0 0 0 0",
 };

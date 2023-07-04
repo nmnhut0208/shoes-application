@@ -145,7 +145,7 @@ def baocao_phancong(SOPHIEU: str) -> List[dict]:
 def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     print("SODH: ", SODH)              
     sql = f"""select V_KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, 
-              HINHANH, madh as MADH, sodh as SODH, 
+              madh as MADH, sodh as SODH, 
               ngaydh as NGAYDH, makh as MAKH, diengiaiphieu as DIENGIAIDONG, 
               tenkh as TENKH, 
               coalesce(MAUDE, '') as MAUDE, TENMAUDE, 
@@ -190,7 +190,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
                     DH.MAUCA, DH.MAUQUAI, DH.SIZE5, DH.SIZE6, DH.SIZE7, DH.SIZE8, 
                     DH.SIZE9, DH.SIZE0
               ) as V_KIEMTRAPHANCONG
-              left join (select MAGIAY, TENGIAY, HINHANH from DMGIAY) 
+              left join (select MAGIAY, TENGIAY from DMGIAY) 
               as DMGIAY on DMGIAY.MAGIAY = V_KIEMTRAPHANCONG.magiay
               left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
                     as DMMAUDE on MAUDE = DMMAUDE.MAMAU

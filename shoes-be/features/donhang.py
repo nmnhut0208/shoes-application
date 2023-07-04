@@ -123,18 +123,17 @@ def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
 def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
     print("SODH: ", SODH)
     sql = f"""SELECT DIENGIAIPHIEU,MADONG, SODH, 
-                HINHANH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+                V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                 coalesce(MAUDE, '') as MAUDE, TENMAUDE,
                 coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT, 
                 coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
                 coalesce(MAUCA, '') AS MAUCA,TENMAUCA,
                 coalesce(MAUQUAI, '') AS MAUQUAI, TENMAUQUAI,
-                coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH, 
+                DONHANG.MAKH, DMKHACHHANG.TENKH, 
                 V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
-                V_GIAY.TENCA, V_GIAY.TENKH,
+                V_GIAY.TENCA,
                 SIZE5,SIZE6,SIZE7,
                 SIZE9,SIZE8,SIZE0,
-                DONHANG.MAKH,
                 SOLUONG,NGAYDH, NGAYGH,
                 V_GIAY.DONGIA * SOLUONG AS THANHTIEN,
                 DIENGIAIDONG, INHIEU
@@ -145,9 +144,8 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
                 DIENGIAIDONG, INHIEU
             from DONHANG 
             WHERE DONHANG.SODH='{SODH}') AS DONHANG
+            inner join DMKHACHHANG on DMKHACHHANG.MAKH = DONHANG.MAKH
             left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  
-            left JOIN (Select MAGIAY, HINHANH from DMGIAY) as DMGIAY
-            on DMGIAY.MAGIAY = DONHANG.MAGIAY
             left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
                 AS DMMAUDE 
                 ON coalesce(DMMAUDE.MAMAU, '') = coalesce(DONHANG.MAUDE, '')
@@ -171,7 +169,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
 @router.get("/donhang/khachhang/{MAKH}/giay")
 # lấy tất cả các loại giày của khách hàng MAKH
 def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
-    sql = f"""SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+    sql = f"""(SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                     coalesce(MAUDE, '') as MAUDE, TENMAUDE,
                     coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT,
                     coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
@@ -183,8 +181,7 @@ def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
             FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH 
                 from DONHANG WHERE DONHANG.MAKH='{MAKH}') AS DONHANG
-            FULL OUTER JOIN (select * from V_GIAY where V_GIAY.MAKH='{MAKH}'
-            and DONGIAQUAI is not null) 
+            left JOIN (select * from V_GIAY where DONGIAQUAI is not null) 
             As V_GIAY on V_GIAY.magiay=DONHANG.magiay
             left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
                     AS DMMAUDE 
@@ -201,7 +198,15 @@ def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
 			left join (select MAMAU, TENMAU as TENMAUQUAI from DMMAU) 
                     AS DMMAUQUAI 
 					ON coalesce(DMMAUQUAI.MAMAU, '') = coalesce(DONHANG.MAUQUAI, '')
-            """
+            )UNION (select SORTID,MAGIAY,TENGIAY,
+                    '' as MAUDE, '' as TENMAUDE,
+                    '' AS MAUGOT, '' as TENMAUGOT,
+                    '' AS MAUSUON,'' as TENMAUSUON,
+                    '' AS MAUCA, '' as TENMAUCA,
+                    '' AS MAUQUAI,'' as TENMAUQUAI,
+                    MAKH, 
+                    DONGIA as GIABAN, DONGIAQUAI, 
+                    TENCA, TENKH from V_GIAY where MAKH='{MAKH}')"""
     
     result = donhang.read_custom(sql)
     return result
