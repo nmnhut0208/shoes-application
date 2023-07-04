@@ -78,7 +78,6 @@ const InTongHop = ({ sophieu, data }) => {
     Promise.all(list_promises).then((values) => {
       setListImage(values);
     });
-    setListImage(list_promises);
     setDataPrint(info_print);
   }, []);
 
@@ -91,6 +90,7 @@ const InTongHop = ({ sophieu, data }) => {
 
   useLayoutEffect(() => {
     if (infoDetailsPrint.length > 0) {
+      console.log("infoDetailsPrint: ", infoDetailsPrint);
       dispatchTable(actions_table.setModeShowModal(false));
       handelPrint();
     }

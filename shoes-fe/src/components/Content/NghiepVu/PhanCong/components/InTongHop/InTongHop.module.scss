@@ -7,17 +7,13 @@
 }
 
 .print_page {
-  padding: 0rem 4rem 0rem 4rem;
-  width: 112rem;
+  padding: 0rem 2rem 0rem 2rem;
+  width: 79.4rem;
   .each_page {
     padding-top: 4rem;
     h1 {
-      font-family: "Arial";
-      font-size: 2.2rem;
-    }
-    h2 {
-      font-family: "Arial";
-      font-size: 2rem;
+      font-family: "Times New Roman";
+      font-size: 1.5rem;
     }
 
     .print_header {
@@ -31,8 +27,8 @@
       margin-top: 4rem;
 
       .info_giay {
-        font-family: "Arial";
-        font-size: 2rem;
+        font-family: "Times New Roman";
+        font-size: 1.4rem;
         margin-bottom: 1rem;
         .TENGIAY {
           font-weight: bold;
@@ -44,8 +40,8 @@
         }
 
         img {
-          height: 15rem;
-          width: 15rem;
+          height: 16rem;
+          width: 16rem;
           object-fit: cover;
         }
       }

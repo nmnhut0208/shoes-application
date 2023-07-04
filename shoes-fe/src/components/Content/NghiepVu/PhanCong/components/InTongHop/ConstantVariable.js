@@ -9,14 +9,14 @@ export const COL_INFO_SIZE = [
   { key: 9, name: "SIZE9" },
 ];
 
-export const fontSize = "1.7rem";
+export const fontSize = "1.4rem";
 
 const font_header = {
   fontSize: fontSize,
-  lineHeight: "2rem",
-  fontFamily: "Helvetica", //"Gill Sans",
+  lineHeight: "1.55rem",
+  fontFamily: "Times New Roman",
   fontWeight: "bold",
-  align: "justify-content",
+  // align: "justify-content",
   padding: "0 0 0 3px",
 };
 
@@ -28,19 +28,19 @@ const textarea_style = {
   padding: "0 0 0 0",
 };
 export const INFO_COLS_THO = [
-  { header: "ĐẾ", key: "TENMAUDE", width: 2.6 * rem_to_px },
-  { header: "GÓT", key: "TENMAUGOT", width: 2.6 * rem_to_px },
-  { header: "SƯỜN", key: "TENMAUSUON", width: 2.6 * rem_to_px },
+  { header: "ĐẾ", key: "TENMAUDE", width: 2.5 * rem_to_px },
+  { header: "GÓT", key: "TENMAUGOT", width: 2.5 * rem_to_px },
+  { header: "SƯỜN", key: "TENMAUSUON", width: 2.5 * rem_to_px },
   {
     header: "CÁ: CÁ DÀI MAY CHỈ",
     key: "TENMAUCA",
-    width: 2.6 * rem_to_px,
+    width: 2.8 * rem_to_px,
     header_custorm: (
       <textarea value={"CÁ: CÁ DÀI MAY CHỈ"} style={{ ...textarea_style }} />
     ),
   },
   { header: "QUAI", key: "TENMAUQUAI", width: 2.6 * rem_to_px },
-  { header: "SIZE", key: "SIZE", width: 3.2 * rem_to_px },
+  { header: "SIZE", key: "SIZE", width: 3.7 * rem_to_px },
   {
     header: "Tổng số",
     key: "TONGSO",
@@ -52,30 +52,29 @@ export const INFO_COLS_THO = [
       align: "right",
     },
   },
-  { header: "THỢ ĐẾ", key: "TENTHODE", width: 2.4 * rem_to_px },
-  { header: "THỢ QUAI", key: "TENTHOQUAI", width: 2.5 * rem_to_px },
-  { header: "ĐƠN HÀNG", key: "SODH", width: 3.1 * rem_to_px },
+  { header: "THỢ ĐẾ", key: "TENTHODE", width: 2.3 * rem_to_px },
+  { header: "THỢ QUAI", key: "TENTHOQUAI", width: 2.4 * rem_to_px },
 ];
 
 //====================================
 const _style_component_cell = {
   fontSize: fontSize,
-  fontFamily: "Helvetica",
-  borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
-  borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
+  fontFamily: "Times New Roman",
+  borderRight: "0.15rem solid rgba(0, 0, 0, 1)",
+  borderBottom: "0.15rem solid rgba(0, 0, 0, 1)",
   padding: "0 3px 0 1px",
 };
 
 const _style_component_head = {
   ...font_header,
-  borderRight: "0.25rem solid rgba(0, 0, 0, 1)",
-  borderBottom: "0.25rem solid rgba(0, 0, 0, 1)",
+  borderRight: "0.15rem solid rgba(0, 0, 0, 1)",
+  borderBottom: "0.15rem solid rgba(0, 0, 0, 1)",
 };
 
 export const border_text_table_config = {
   muiTablePaperProps: {
     elevation: 0,
-    sx: { borderRadius: "0", borderLeft: "0.25rem solid rgba(0, 0, 0, 1)" },
+    sx: { borderRadius: "0", borderLeft: "0.15rem solid rgba(0, 0, 0, 1)" },
   },
   muiTableHeadCellProps: {
     sx: { ..._style_component_head },
@@ -85,9 +84,9 @@ export const border_text_table_config = {
   muiTableContainerProps: {
     sx: {
       fontSize: fontSize,
-      fontFamily: "Helvetica",
+      fontFamily: "Times New Roman",
       border: "none",
-      borderTop: "0.25rem solid rgba(0, 0, 0, 1)",
+      borderTop: "0.15rem solid rgba(0, 0, 0, 1)",
     },
   },
 };

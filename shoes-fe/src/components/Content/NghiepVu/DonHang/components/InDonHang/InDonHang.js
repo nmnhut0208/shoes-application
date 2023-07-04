@@ -108,7 +108,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
   useLayoutEffect(() => {
     if (infoDetailsPrint.length > 0) {
-      setShowModal(false);
+      // setShowModal(false);
       handelPrint();
     }
   }, [infoDetailsPrint]);
@@ -120,15 +120,15 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
           <div key={index_page} className={styles.each_page}>
             <div className={styles.print_header}>
               <h1>Số đơn hàng: {header["SODH"]}</h1>
-              <h1>{header["TENKH"]}</h1>
+              <h1 style={{ fontSize: "2rem !important" }}>{header["TENKH"]}</h1>
             </div>
 
             <div className={styles.print_header}>
-              <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
-              <h2>
+              <h1>Ngày: {convertDateForReport(header["NGAYDH"])}</h1>
+              <h1>
                 {header["SL"]}
                 {" | " + header["DIACHI"]}
-              </h2>
+              </h1>
             </div>
 
             {each_page &&

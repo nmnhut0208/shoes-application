@@ -26,7 +26,7 @@ export const getInfoBreakPage = (dataPrint, listImage, dictInfoPrint) => {
   let index = 0;
   let each_page = { content: [] };
   const MIN_ROW_MAGIAY_EACHPAGE = 2;
-  const SIZE_PAGE_A4 = 790;
+  const SIZE_PAGE_A4 = 1122;
   let size_page_remain = SIZE_PAGE_A4;
   const margin_header = dictInfoPrint["margin_header"];
   const size_each_row_table = dictInfoPrint["content"]["each_row_table"];
