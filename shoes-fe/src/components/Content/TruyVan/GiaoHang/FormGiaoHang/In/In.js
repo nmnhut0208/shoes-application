@@ -9,6 +9,8 @@ import {
   processingInfoColumnTableHaveFooter,
 } from "~utils/processing_data_table";
 
+import { convertDateForReport } from "~utils/processing_date";
+
 const COLS_HAVE_SUM_FOOTER = ["SOLUONG", "THANHTIEN"];
 
 const _style_component_cell = {
@@ -126,12 +128,12 @@ const In = ({ data }) => {
             {index !== 0 ? (
               <div className={styles.invoice__info}>
                 <h2>Số: {data["SOPHIEU"]}</h2>
-                <h2>Ngày: {data["NGAYPHIEU"]}</h2>
+                <h2>Ngày: {convertDateForReport(data["NGAYPHIEU"])}</h2>
               </div>
             ) : (
               <div className={styles.invoice__info_header}>
                 <h2>Số: {data["SOPHIEU"]}</h2>
-                <h2>Ngày: {data["NGAYPHIEU"]}</h2>
+                <h2>Ngày: {convertDateForReport(data["NGAYPHIEU"])}</h2>
               </div>
             )}
           </div>
@@ -174,7 +176,7 @@ const In = ({ data }) => {
           <h1 className={styles.invoice}>Hóa Đơn</h1>
           <div className={styles.invoice__info}>
             <h2>Số: {data["SOPHIEU"]}</h2>
-            <h2>Ngày: {data["NGAYPHIEU"]}</h2>
+            <h2>Ngày: {convertDateForReport(data["NGAYPHIEU"])}</h2>
           </div>
         </div>
 
