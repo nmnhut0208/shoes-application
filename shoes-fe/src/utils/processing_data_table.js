@@ -28,6 +28,8 @@ export const processingInfoColumnTableHaveFooter = (
     const info = {
       header: list_key[obj]["header"],
       size: list_key[obj]["width"],
+      minSize: list_key[obj]["width"],
+      maxSize: list_key[obj]["width"],
       accessorKey: list_key[obj]["key"],
       key: list_key[obj]["key"],
     };
@@ -43,8 +45,11 @@ export const processingInfoColumnTableHaveFooter = (
         <div style={{ textAlign: "right" }}>{sum_value}</div>
       );
     }
+
+    if (list_key[obj]["Cell"]) info["Cell"] = list_key[obj]["Cell"];
     if (list_key[obj]["header_custorm"])
       info["header"] = list_key[obj]["header_custorm"];
+
     if (list_key[obj]["muiTableBodyCellProps"])
       info["muiTableBodyCellProps"] = list_key[obj]["muiTableBodyCellProps"];
     infoColumnsInit.push(info);

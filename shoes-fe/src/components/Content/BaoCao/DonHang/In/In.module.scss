@@ -1,57 +1,28 @@
 @import "~common_scss/form.module.scss";
 
-.show_content_column {
-  display: flex;
-  flex-direction: column;
-  column-gap: 1rem;
-}
-
 .print_page {
-  padding: 0rem 2rem 0rem 2rem;
-  width: 79.4rem;
-  .each_page {
-    padding-top: 4rem;
-    h1 {
-      font-family: "Times New Roman";
+  padding-top: 2rem;
+  padding-left: 2rem;
+  padding-right: 0.5rem;
+  width: 112rem;
+  h1 {
+    font-family: "Times New Roman";
+    font-size: 3rem;
+    text-align: center !important;
+    margin: 1rem;
+  }
+  .info_time {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 1rem;
+    label {
       font-size: 1.5rem;
+      font-family: "Times New Roman", Times, serif;
+      margin-left: 0.5rem;
     }
-
-    .print_header {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      height: fit-content;
-      margin-bottom: 0.5rem;
-    }
-
-    .print_object {
-      margin-top: 4rem;
-
-      .info_giay {
-        font-family: "Times New Roman";
-        font-size: 1.4rem;
-        margin-bottom: 1rem;
-        .TENGIAY {
-          font-weight: bold;
-        }
-        .info_row_giay {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-        }
-
-        img {
-          height: 16rem;
-          width: 16rem;
-          object-fit: cover;
-        }
-      }
+    label:nth-child(odd) {
+      font-weight: bold;
     }
   }
-}
-.footer {
-  font-size: 1.4rem;
-  font-family: "Times New Roman";
-  font-style: italic;
-  text-align: center;
 }

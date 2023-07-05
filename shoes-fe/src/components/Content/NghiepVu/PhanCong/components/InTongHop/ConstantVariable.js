@@ -17,8 +17,7 @@ const font_header = {
   lineHeight: "1.55rem",
   fontFamily: "Times New Roman",
   fontWeight: "bold",
-  // align: "justify-content",
-  padding: "0 0 0 3px",
+  padding: "0px 0 0 3px",
 };
 
 const textarea_style = {
@@ -26,7 +25,7 @@ const textarea_style = {
   border: "none",
   width: "96%",
   resize: "none",
-  padding: "0 0 0 0",
+  padding: "2px 0 2px 0",
 };
 export const INFO_COLS_THO = [
   { header: "ĐẾ", key: "TENMAUDE", width: 2.45 * rem_to_px },

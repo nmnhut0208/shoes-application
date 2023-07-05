@@ -3,7 +3,7 @@ import MaterialReactTable from "material-react-table";
 
 import { useReactToPrint } from "react-to-print";
 import { convertDateForReport } from "~utils/processing_date";
-import { border_text_table_config } from "~config/ui";
+import { border_text_table_config } from "./ConstantVariable";
 import { processingInfoColumnTableHaveFooter } from "~utils/processing_data_table";
 import { INFO_TABLE, LIST_COLS_FOOTER_SUM } from "./ConstantVariable";
 import styles from "./In.module.scss";
@@ -11,6 +11,12 @@ import styles from "./In.module.scss";
 const In = ({ data, setShowModal }) => {
   const [columns, setColumns] = useState([]);
   const [dataTable, setDataTable] = useState([]);
+
+  const componentRef = useRef();
+  const handelPrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: "Đơn hàng",
+  });
 
   useLayoutEffect(() => {
     // call API get database
@@ -36,28 +42,45 @@ const In = ({ data, setShowModal }) => {
       });
   }, []);
 
+  useLayoutEffect(() => {
+    if (dataTable.length > 0) {
+      // setShowModal(false);
+      handelPrint();
+    }
+  }, [dataTable]);
+
   return (
-    <div className={styles.print_page}>
+    <div ref={componentRef} className={styles.print_page}>
       <h1>BÁO CÁO ĐƠN HÀNG</h1>
-      <label>Từ ngày </label>
-      <span>{convertDateForReport(data["DATE_FROM"])} </span>
-      <label>đến ngày</label>
-      <span>{convertDateForReport(data["DATE_TO"])} </span>
+      <div className={styles.info_time}>
+        <label>Từ ngày </label>
+        <label>{convertDateForReport(data["DATE_FROM"])} </label>
+        <label>đến ngày</label>
+        <label>{convertDateForReport(data["DATE_TO"])} </label>
+      </div>
 
       <MaterialReactTable
         columns={columns}
         data={dataTable}
         {...border_text_table_config}
+        muiTableProps={{
+          sx: {
+            tableLayout: "fixed",
+          },
+        }}
         // knmhgk
         enableTopToolbar={false}
-        enablePagination={false}
+        enableColumnActions={false}
+        enableSorting={false}
         // scroll to bottom
-        enableRowVirtualization
-        muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+        // enable phân trang
+        enablePagination={false}
+        enableBottomToolbar={false}
         // group Mã giày
-        enableGrouping
+        enableGrouping={false}
         initialState={{
-          grouping: ["SODH", "NGAYDH", "TENKH", "TENGIAY"],
+          //   grouping: ["SODH", "NGAYDH", "TENKH", "TENGIAY"],
+          grouping: ["SODH"],
           expanded: true,
         }}
       />

@@ -1,4 +1,5 @@
 import { rem_to_px } from "~config/ui";
+import { convertDateForReport } from "~utils/processing_date";
 
 export const LIST_COLS_FOOTER_SUM = [
   "SIZE0",
@@ -12,21 +13,144 @@ export const LIST_COLS_FOOTER_SUM = [
   "THANHTIEN",
 ];
 
+export const fontSize = "1.4rem";
+
+const font_header = {
+  fontSize: fontSize,
+  lineHeight: "1.55rem",
+  fontFamily: "Times New Roman",
+  fontWeight: "bold",
+  padding: "2px 2px 2px 2px",
+};
+
+const _style_component_cell = {
+  fontSize: fontSize,
+  fontFamily: "Times New Roman",
+  borderRight: "0.15rem solid rgba(0, 0, 0, 1)",
+  borderBottom: "0.15rem solid rgba(0, 0, 0, 1)",
+  padding: "2px 2px 2px 2px",
+};
+
+const _style_component_head = {
+  ...font_header,
+  borderRight: "0.15rem solid rgba(0, 0, 0, 1)",
+  borderBottom: "0.15rem solid rgba(0, 0, 0, 1)",
+};
+
+const textarea_style = {
+  ...font_header,
+  border: "none",
+  width: "96%",
+  resize: "none",
+  padding: "2px 0 2px 0",
+};
+
 export const INFO_TABLE = [
-  { header: "Số ĐH", key: "SODH", width: 1.5 * rem_to_px },
-  { header: "Ngày ĐH", key: "NGAYDH", width: 1.5 * rem_to_px },
+  { header: "Số ĐH", key: "SODH", width: 2.5 * rem_to_px },
+  {
+    header: "Ngày ĐH",
+    key: "NGAYDH",
+    width: 1.5 * rem_to_px,
+    Cell: ({ cell }) => convertDateForReport(cell.getValue()),
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
   { header: "Tên Khách Hàng", key: "TENKH", width: 3 * rem_to_px },
-  { header: "Tên Giày", key: "TENGIAY", width: 2.5 * rem_to_px },
-  { header: "Size0", key: "SIZE0", width: 2 * rem_to_px },
-  { header: "Size1", key: "SIZE1", width: 2 * rem_to_px },
-  { header: "Size5", key: "SIZE5", width: 2 * rem_to_px },
-  { header: "Size6", key: "SIZE6", width: 2 * rem_to_px },
-  { header: "Size7", key: "SIZE7", width: 2 * rem_to_px },
-  { header: "Size8", key: "SIZE8", width: 2 * rem_to_px },
-  { header: "Size9", key: "SIZE9", width: 2 * rem_to_px },
-  { header: "Số lượng", key: "SOLUONG", width: 3 * rem_to_px },
-  { header: "Đơn giá", key: "GIABAN", width: 3 * rem_to_px },
-  { header: "Thành tiền", key: "THANHTIEN", width: 3 * rem_to_px },
+  { header: "Tên Giày", key: "TENGIAY", width: 5 * rem_to_px },
+  {
+    header: "Size0",
+    key: "SIZE0",
+    width: 1 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+      width: 1 * rem_to_px,
+    },
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
+  {
+    header: "Size1",
+    key: "SIZE1",
+    width: 1 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
+  {
+    header: "Size5",
+    key: "SIZE5",
+    width: 1 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
+  {
+    header: "Size6",
+    key: "SIZE6",
+    width: 1 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
+  {
+    header: "Size7",
+    key: "SIZE7",
+    width: 1 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
+  {
+    header: "Size8",
+    key: "SIZE8",
+    width: 1 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
+  {
+    header: "Size9",
+    key: "SIZE9",
+    width: 1 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
+  {
+    header: "Số lượng",
+    key: "SOLUONG",
+    width: 1.2 * rem_to_px,
+    header_custorm: (
+      <textarea value={"Số lượng"} style={{ ...textarea_style }} />
+    ),
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
+  {
+    header: "Đơn giá",
+    key: "GIABAN",
+    width: 1 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    header_custorm: (
+      <textarea value={"Đơn giá"} style={{ ...textarea_style }} />
+    ),
+  },
+  {
+    header: "Thành tiền",
+    header_custorm: (
+      <textarea value={"Thành tiền"} style={{ ...textarea_style }} />
+    ),
+    key: "THANHTIEN",
+    width: 1.5 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
 ];
 
 //=========================================================
@@ -45,30 +169,6 @@ export const dictInfoPrint = {
 };
 
 //===========================
-export const fontSize = "1.4rem";
-
-const font_header = {
-  fontSize: fontSize,
-  lineHeight: "1.55rem",
-  fontFamily: "Times New Roman",
-  fontWeight: "bold",
-  align: "justify-content",
-  padding: "2px 2px 2px 2px",
-};
-
-const _style_component_cell = {
-  fontSize: fontSize,
-  fontFamily: "Times New Roman",
-  borderRight: "0.15rem solid rgba(0, 0, 0, 1)",
-  borderBottom: "0.15rem solid rgba(0, 0, 0, 1)",
-  padding: "2px 2px 2px 2px",
-};
-
-const _style_component_head = {
-  ...font_header,
-  borderRight: "0.15rem solid rgba(0, 0, 0, 1)",
-  borderBottom: "0.15rem solid rgba(0, 0, 0, 1)",
-};
 
 export const border_text_table_config = {
   muiTablePaperProps: {
