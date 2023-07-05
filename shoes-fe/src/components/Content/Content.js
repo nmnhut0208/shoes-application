@@ -3,6 +3,7 @@ import HeThong from "./HeThong";
 import DanhMuc from "./DanhMuc";
 import NghiepVu from "./NghiepVu";
 import TruyVan from "./TruyVan/";
+import BaoCao from "./BaoCao";
 
 const Content = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -20,7 +21,7 @@ const Content = () => {
     case "Truy vấn":
       return <TruyVan />;
     case "Báo cáo":
-      return alert("Báo cáo");
+      return <BaoCao />;
     default:
       alert("Chua xu ly ngoai Danh Muc");
   }

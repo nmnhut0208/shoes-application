@@ -11,11 +11,9 @@ const DonHang = () => {
   const [stateUser, dispatchUser] = useUserContext();
 
   const permission = useMemo(() => {
-    console.log("stateUser.userPoolAccess ", stateUser.userPoolAccess);
     const phanquyen = stateUser.userPoolAccess.filter(
       (obj) => obj.MAFORM === MAFORM_DONHANG
     )[0];
-    console.log("phanquyen: ", phanquyen);
     return phanquyen;
   }, []);
   if (permission.THEM === 0) {

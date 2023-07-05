@@ -35,7 +35,7 @@ export const processingInfoColumnTableHaveFooter = (
     if (list_key[obj]["key"] === "TENGIAY")
       info["Footer"] = () => <div>Tổng cộng: </div>;
     if (COLS_HAVE_SUM_FOOTER.includes(list_key[obj]["key"])) {
-      let sum_value = data["table"].reduce(
+      let sum_value = data.reduce(
         (total, row) => total + row[list_key[obj]["key"]],
         0
       );

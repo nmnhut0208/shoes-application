@@ -300,7 +300,6 @@ const FormDonHang = ({
           title="In Đơn Hàng"
           status={showModal}
           setShowModal={setShowModal}
-          // without_close_button={true}
         >
           <InDonHang
             infoHeader={formInfoDonHang}

@@ -28,61 +28,60 @@ class ITEM_DONHANG(BaseModel):
     SIZE1: int
     GIABAN: int
     THANHTIEN: int
-    DIENGIAIDONG: Optional[str] = None
+    DIENGIAIDONG: Optional[str] = ""
     # TODO: edit type of datetime 
-    NGUOITAO: Optional[str] = None
-    # NGAYTAO: Optional[str] = None
-    NGUOISUA: Optional[str] = None
-    # NGAYSUA: Optional[str] = None # TODO: sau nay them nay vao
-    MAUDE: Optional[str] = None
-    MAUGOT: Optional[str] = None
-    MAUSUON: Optional[str] = None
-    MAUCA: Optional[str] = None
-    MAUQUAI: Optional[str] = None
+    NGUOITAO: Optional[str] = ""
+    # NGAYTAO: Optional[str] = ""
+    NGUOISUA: Optional[str] = ""
+    # NGAYSUA: Optional[str] = "" # TODO: sau nay them nay vao
+    MAUDE: Optional[str] = ""
+    MAUGOT: Optional[str] = ""
+    MAUSUON: Optional[str] = ""
+    MAUCA: Optional[str] = ""
+    MAUQUAI: Optional[str] = ""
     DAPHANCONG: Optional[int] = 0
     GIALE: Optional[int] = 0
-    INHIEU: Optional[str] = None
-    TRANGTRI: Optional[str] = None
-    GHICHU: Optional[str] = None
+    INHIEU: Optional[str] = ""
+    TRANGTRI: Optional[str] = ""
+    GHICHU: Optional[str] = ""
 
 class RESPONSE_GIAYDONHANG(BaseModel):
-    SODH: Optional[str] = None
+    SODH: Optional[str] = ""
     SORTID: str
     MAGIAY: str
     TENGIAY: str
-    MAUDE: Optional[str] = None
-    MAUGOT: Optional[str] = None
-    MAUSUON: Optional[str] = None
-    MAUCA: Optional[str] = None
-    MAUQUAI: Optional[str] = None
+    MAUDE: Optional[str] = ""
+    MAUGOT: Optional[str] = ""
+    MAUSUON: Optional[str] = ""
+    MAUCA: Optional[str] = ""
+    MAUQUAI: Optional[str] = ""
     MAKH: str
     DONGIA: int
-    DONGIAQUAI: Optional[int] = None
-    TENCA: Optional[str] = None
+    DONGIAQUAI: Optional[int] = 0
+    TENCA: Optional[str] = ""
     TENKH: str
     # =============
-    MADONG: Optional[int] = None
-    SIZE5: Optional[int] = None
-    SIZE6: Optional[int] = None
-    SIZE7: Optional[int] = None
-    SIZE9: Optional[int] = None
-    SIZE8: Optional[int] = None
-    SIZE0: Optional[int] = None
-    SIZE1: Optional[int] = None
-    SOLUONG: Optional[int] = None
-    THANHTIEN: Optional[int] = None
-    NGAYDH: Optional[str] = None
-    NGAYGH: Optional[str] = None
-    DIENGIAIPHIEU: Optional[str] = None
-    DIENGIAIDONG: Optional[str] = None
-    INHIEU: Optional[str] = None
+    MADONG: Optional[str] = ""
+    SIZE5: Optional[int] = 0
+    SIZE6: Optional[int] = 0
+    SIZE7: Optional[int] = 0
+    SIZE9: Optional[int] = 0
+    SIZE8: Optional[int] = 0
+    SIZE0: Optional[int] = 0
+    SIZE1: Optional[int] = 0
+    SOLUONG: Optional[int] = 0
+    THANHTIEN: Optional[int] = 0
+    NGAYDH: Optional[str] = ""
+    NGAYGH: Optional[str] = ""
+    DIENGIAIPHIEU: Optional[str] = ""
+    DIENGIAIDONG: Optional[str] = ""
+    INHIEU: Optional[str] = ""
     # ============================
     TENMAUDE: str = ""
     TENMAUGOT: str = ""
     TENMAUSUON: str = ""
     TENMAUCA: str = ""
     TENMAUQUAI: str = ""
-
 
 
 
@@ -273,6 +272,27 @@ def update_status_phancong(MADONG: list = Query([]), status: int=0) -> RESPONSE:
 def delete(SODH: str) -> RESPONSE:
     condition = f"SODH = '{SODH}'"
     return donhang.delete(condition)
+
+@router.post("/donhang/get_all_info_donhang")
+# should I change post method to get method??? 
+def read(info_query: dict) -> List[RESPONSE_GIAYDONHANG]:
+    sql = f"""
+            select SODH, NGAYDH, DONHANG.MAKH, TENKH, MAGIAY, TENGIAY, SIZE1, Size0 as SIZE0,
+            SIZE5, SIZE6, SIZE7, SIZE8, SIZE9,
+            (Size0+SIZE1+SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) AS SOLUONG,
+            GIABAN, THANHTIEN
+            from DONHANG
+            INNER JOIN (SELECT MAGIAY AS MA, TENGIAY FROM DMGIAY) AS DMGIAY
+                ON DMGIAY.MA = DONHANG.MAGIAY
+            INNER JOIN DMKHACHHANG ON DMKHACHHANG.MAKH = DONHANG.MAKH
+            WHERE NGAYDH >= '{info_query["DATE_FROM"]}'
+            AND NGAYDH <= '{info_query["DATE_TO"]}'
+            AND DONHANG.MAKH >= '{info_query["KhachHangFrom"]}'
+            AND DONHANG.MAKH <= '{info_query["KhachHangTo"]}'
+            ORDER BY MAKH, NGAYDH
+    """
+    result = donhang.read_custom(sql)
+    return result
 
 
 

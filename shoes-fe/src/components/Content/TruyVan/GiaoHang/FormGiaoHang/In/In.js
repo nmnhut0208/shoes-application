@@ -106,7 +106,7 @@ const In = ({ data }) => {
     return processingInfoColumnTableHaveFooter(
       list_key,
       COLS_HAVE_SUM_FOOTER,
-      data
+      data["table"]
     );
   }, []);
 
