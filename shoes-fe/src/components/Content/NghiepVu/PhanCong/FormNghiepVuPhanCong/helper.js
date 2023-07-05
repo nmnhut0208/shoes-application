@@ -107,10 +107,6 @@ export const processing_button_add = (
   if (is_remain) {
     setFormPhanCong({
       ...remain,
-      THODE: "",
-      TENTHODE: "",
-      THOQUAI: "",
-      TENTHOQUAI: "",
     });
     listGiayWillPhanCong[index] = remain;
     setListGiayWillPhanCong([...listGiayWillPhanCong]);
@@ -122,10 +118,6 @@ export const processing_button_add = (
       setListGiayWillPhanCong([...listGiayWillPhanCong]);
       setFormPhanCong({
         ...listGiayWillPhanCong[0],
-        THODE: "",
-        TENTHODE: "",
-        THOQUAI: "",
-        TENTHOQUAI: "",
       });
     } else {
       // Khi phân công xong thì nhảy qua thằng tiếp theo
@@ -195,10 +187,6 @@ export const updateMaGiayWillPhanCong = (
           if (list_data_will_phancong.length > 0) {
             setFormPhanCong({
               ...list_data_will_phancong[0],
-              THODE: "",
-              TENTHODE: "",
-              THOQUAI: "",
-              TENTHOQUAI: "",
             });
           } else {
             resetForm();

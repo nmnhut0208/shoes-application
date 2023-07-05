@@ -94,7 +94,10 @@ const FormNghiepVuPhanCong = ({
   const resetForm = () => {
     let form_current = formPhanCong;
     for (let key in form_current) {
-      form_current[key] = "";
+      if (!["THODE", "THOQUAI"].includes(key)) {
+        console.log("resetForm: ", key);
+        form_current[key] = "";
+      }
     }
     setFormPhanCong(form_current);
     setHavedSaveData(true);
@@ -351,7 +354,7 @@ const FormNghiepVuPhanCong = ({
         <div className={clsx(styles.button_group, styles.form)}>
           <button onClick={handleClickAdd}>Thêm</button>
           <button onClick={handleClickDelete}>Xóa</button>
-          <button onClick={handleClickDelete}>Sửa</button>
+          {/* <button onClick={handleClickDelete}>Sửa</button> */}
         </div>
       )}
 

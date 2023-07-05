@@ -7,10 +7,7 @@ import MaterialReactTable from "material-react-table";
 import clsx from "clsx";
 import { rem_to_px, border_text_table_config } from "~config/ui";
 
-import {
-  renderDataEmpty,
-  processingInfoColumnTable,
-} from "~utils/processing_data_table";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 import styles from "../FormNghiepVuPhanCong/FormNghiepVuPhanCong.module.scss";
 
 import { ItemThoDe, ItemThoQuai } from "~items";

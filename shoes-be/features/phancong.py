@@ -100,6 +100,7 @@ def read() -> List[RESPONSE_PHANCONG]:
              SLDONHANG-SLPHANCONG as SOLUONG 
              from V_DHPHANCONG
              where SLDONHANG - SLPHANCONG > 0
+             order by NGAYDH desc
              """
     result = phancong.read_custom(sql)
     return result

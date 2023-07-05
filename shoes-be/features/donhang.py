@@ -116,6 +116,7 @@ def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
                 LEFT JOIN DMKHACHHANG KH ON KH.MAKH = DH.MAKH
               group by SODH, DH.MAKH, KH.TENKH, NGAYDH,
                 NGAYGH, DIENGIAIPHIEU
+              order by NGAYDH desc
             """
     result = donhang.read_custom(sql)
     return result

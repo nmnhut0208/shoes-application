@@ -49,6 +49,10 @@ const TableContent = () => {
   }, []);
 
   const handleDeleteRow = (row) => {
+    let text = "Bạn thực sự muốn xóa thông tin này không!";
+    if (!window.confirm(text)) {
+      return;
+    }
     let url = "";
     switch (stateTask.inforCurrentTask.infoDetail) {
       case "Kho hàng":
