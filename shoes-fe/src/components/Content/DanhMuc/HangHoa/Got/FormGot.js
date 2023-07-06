@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styles from "./FormGot.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import {
@@ -6,18 +6,26 @@ import {
   actions as actions_items_context,
 } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
+import { getImageOfDanhMuc } from "~utils/api_get_image";
 
 const FormGot = () => {
   const [stateTable, dispatchTable] = useTableContext();
-  const [view, setView] = useState(
-    () => stateTable.inforShowTable.action_row === "view"
+  const view = useMemo(
+    () => stateTable.inforShowTable.action_row === "view",
+    []
   );
   const [stateItem, dispatchItem] = useItemsContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   const [image_url, setImageURL] = useState("");
-  const [image_base64, setImageBase64] = useState(
-    stateTable.inforShowTable.record["HINHANH"]
-  );
+  const [image_base64, setImageBase64] = useState("");
+
+  useEffect(() => {
+    if (inputForm["MAGOT"] != "" && image_base64 === "") {
+      getImageOfDanhMuc("got", inputForm["MAGOT"], "MAGOT").then((value) =>
+        setImageBase64(value)
+      );
+    }
+  }, []);
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };

@@ -1,13 +1,26 @@
 import { useState } from "react";
 import styles from "./FormMau.module.scss";
 import { FormMauBasic } from "~hang_hoa";
-import { useTableContext, actions_table } from "~table_context";
+import { useItemsContext } from "~items_context";
+import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
 const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
   const [dataForm, setDataForm] = useState({});
-  // const [stateTable, dispatchTable] = useTableContext();
+  const [stateItem, dispatchItem] = useItemsContext();
 
-  const handleSaveFrom = () => {
+  const handleSaveFrom = (event) => {
+    if (dataForm["MAMAU"] == "") {
+      alert("Chưa nhập đủ thông tin!!!");
+      event.preventDefault();
+      return false;
+    }
+    if (
+      checkMaDanhMucExisted(dataForm["MAMAU"], stateItem.infoItemMau, "value")
+    ) {
+      alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+      event.preventDefault();
+      return false;
+    }
     fetch("http://localhost:8000/mau", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -23,7 +36,6 @@ const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
       ...dataMau,
       { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
     ]);
-    // dispatchTable(actions_table.setModeShowModal(false));
     setShowModal(false);
   };
 
@@ -32,9 +44,8 @@ const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
       <FormMauBasic initForm={dataForm} setDataForm={setDataForm} />
 
       <div className={styles.group_button}>
-        <button onClick={handleSaveFrom}>Lưu</button>
+        <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
         <button>Button 2</button>
-        <button onClick={() => setShowModal(false)}>Đóng</button>
       </div>
     </div>
   );

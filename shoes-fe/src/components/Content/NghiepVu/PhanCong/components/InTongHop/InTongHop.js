@@ -1,9 +1,7 @@
 import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
-import {
-  getImageFromMAGIAY,
-  getInfoBreakPage,
-} from "~nghiep_vu/DonHang/components/InDonHang/helper";
+import { getInfoBreakPage } from "~nghiep_vu/DonHang/components/InDonHang/helper";
+import { getImageOfDanhMuc } from "~utils/api_get_image";
 
 import styles from "./InTongHop.module.scss";
 import {
@@ -42,8 +40,7 @@ const InTongHop = ({ sophieu, data }) => {
           MAGIAY: ma_giay,
           TENGIAY: data[i]["TENGIAY"],
         };
-        // list_promises.push(data[i]["HINHANH"]);
-        list_promises.push(getImageFromMAGIAY(ma_giay));
+        list_promises.push(getImageOfDanhMuc("giay", ma_giay, "MAGIAY"));
         info["TABLE"] = data.filter((_data) => _data["MAGIAY"] === ma_giay);
         console.log("info[tho]: ", info["TABLE"]);
         for (let j = 0; j < info["TABLE"].length; j++) {

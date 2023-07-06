@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styles from "./FormQuai.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import {
@@ -7,18 +7,26 @@ import {
 } from "~items_context";
 
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
+import { getImageOfDanhMuc } from "~utils/api_get_image";
 
 const FormQuai = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateItem, dispatchItem] = useItemsContext();
-  const [view, setView] = useState(
-    () => stateTable.inforShowTable.action_row === "view"
+  const view = useMemo(
+    () => stateTable.inforShowTable.action_row === "view",
+    []
   );
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
   const [image_url, setImageURL] = useState("");
-  const [image_base64, setImageBase64] = useState(
-    stateTable.inforShowTable.record["HINHANH"]
-  );
+  const [image_base64, setImageBase64] = useState("");
+
+  useEffect(() => {
+    if (inputForm["MAQUAI"] != "" && image_base64 === "") {
+      getImageOfDanhMuc("quai", inputForm["MAQUAI"], "MAQUAI").then((value) =>
+        setImageBase64(value)
+      );
+    }
+  }, []);
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };

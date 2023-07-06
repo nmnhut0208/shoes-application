@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styles from "./FormSuon.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import {
@@ -7,6 +7,7 @@ import {
 } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { ItemGot, ItemMui } from "~items";
+import { getImageOfDanhMuc } from "~utils/api_get_image";
 
 const FormSuon = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -14,12 +15,19 @@ const FormSuon = () => {
   const [stateItem, dispatchItem] = useItemsContext();
 
   const [image_url, setImageURL] = useState("");
-  const [image_base64, setImageBase64] = useState(
-    stateTable.inforShowTable.record["HINHANH"]
-  );
+  const [image_base64, setImageBase64] = useState("");
 
-  const [view, setView] = useState(
-    () => stateTable.inforShowTable.action_row === "view"
+  useEffect(() => {
+    if (inputForm["MASUON"] != "" && image_base64 === "") {
+      getImageOfDanhMuc("suon", inputForm["MASUON"], "MASUON").then((value) =>
+        setImageBase64(value)
+      );
+    }
+  }, []);
+
+  const view = useMemo(
+    () => stateTable.inforShowTable.action_row === "view",
+    []
   );
 
   const handleChangeInformationForm = (e) => {

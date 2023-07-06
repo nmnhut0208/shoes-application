@@ -9,12 +9,7 @@ import {
   Signature,
 } from "~common_tag/reports";
 import { convertDateForReport } from "~utils/processing_date";
-import {
-  getImageFromMAGIAY,
-  getDiaChiKhachHang,
-  compute_total,
-  getInfoBreakPage,
-} from "./helper";
+import { getDiaChiKhachHang, compute_total, getInfoBreakPage } from "./helper";
 import {
   INFO_COLS_THO,
   COL_INFO_SIZE,
@@ -22,6 +17,7 @@ import {
   border_text_table_config,
   fontSize,
 } from "./ConstantVariable";
+import { getImageOfDanhMuc } from "~utils/api_get_image";
 
 const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   const [header, setHeader] = useState(infoHeader);
@@ -49,7 +45,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
           MAGIAY: ma_giay,
           TENGIAY: dataTable[i]["TENGIAY"],
         };
-        list_promises.push(getImageFromMAGIAY(ma_giay));
+        list_promises.push(getImageOfDanhMuc("giay", ma_giay, "MAGIAY"));
         info["TABLE"] = dataTable.filter(
           (_data) => _data["MAGIAY"] === ma_giay
         );

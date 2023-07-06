@@ -30,8 +30,7 @@ quai = QUAI()
 @router.get("/quai")
 def read() -> List[ITEM_QUAI]:
     sql = """SELECT MAQUAI, TENQUAI, DONGIA, 
-                COALESCE(GHICHU, '') AS GHICHU, 
-                COALESCE(HINHANH, '') AS HINHANH  
+                COALESCE(GHICHU, '') AS GHICHU 
             FROM DMQUAI
             """
     
@@ -60,3 +59,12 @@ def delete(data: ITEM_QUAI) -> RESPONSE:
     data = dict(data)
     condition = f"MAQUAI = '{data['MAQUAI']}'"
     return quai.delete(condition)
+
+@router.get("/quai/get_HINHANH")
+def read(MAQUAI: str) -> dict:
+    sql = f"""select MAQUAI, coalesce(HINHANH, '') as HINHANH
+            from DMQUAI  
+            where MAQUAI='{MAQUAI}'
+            """
+    return quai.read_custom(sql)
+
