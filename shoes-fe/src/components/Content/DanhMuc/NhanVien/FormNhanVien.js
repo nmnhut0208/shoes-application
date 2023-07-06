@@ -1,16 +1,16 @@
 import { useState } from "react";
-import clsx from "clsx";
 import styles from "./FormNhanVien.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import {
   useItemsContext,
   actions as actions_items_context,
 } from "~items_context";
+import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
 const FormNhanVien = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
-  console.log("record form: re-render");
+  console.log("inputForm:", inputForm);
   const [stateItem, dispatchItem] = useItemsContext();
 
   const handleChangeInformationForm = (e) => {
@@ -19,7 +19,12 @@ const FormNhanVien = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = () => {
+  const handleSaveFrom = (event) => {
+    if (inputForm["LOAINVIEN"] == "") {
+      alert("Chọn loại nhân viên!!!");
+      event.preventDefault();
+      return false;
+    }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -31,6 +36,17 @@ const FormNhanVien = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
+      if (
+        checkMaDanhMucExisted(
+          inputForm["MANVIEN"],
+          stateTable.inforShowTable.infoTable,
+          "MANVIEN"
+        )
+      ) {
+        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        event.preventDefault();
+        return false;
+      }
       method = "POST";
       dispatchTable(
         actions_table.setInforTable([
@@ -100,6 +116,7 @@ const FormNhanVien = () => {
               name="LOAINVIEN"
               className={styles.item_size_middle}
             >
+              <option value="">Chọn loại nhân viên</option>
               <option value="QL">Quản lý</option>
               <option value="TD">Thợ đế</option>
               <option value="TQ">Thợ quai</option>
@@ -119,9 +136,8 @@ const FormNhanVien = () => {
         </div>
         <div className={styles.group_button}>
           <div>
-            <button onClick={handleSaveFrom}>Lưu</button>
+            <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
             <button>Nhập tiếp</button>
-            <button>Đóng</button>
           </div>
         </div>
       </form>

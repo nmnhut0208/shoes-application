@@ -1,4 +1,3 @@
-import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
 import FormMui from "./FormMui";
@@ -8,36 +7,16 @@ import {
   cleanupContextTable,
 } from "~table_context";
 
+import { rem_to_px } from "~config/ui";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
+
 const list_key = [
-  // { key: "STT", width: "7rem" },
-  { header: "Mã Mũi", key: "MAMUI", width: "21rem" },
-  { header: "Tên Mũi", key: "TENMUI", width: "21rem" },
-  { header: "Ghi chú", key: "GHICHU", width: "21rem" },
+  { header: "Mã Mũi", key: "MAMUI", width: 5 * rem_to_px },
+  { header: "Tên Mũi", key: "TENMUI", width: 10 * rem_to_px },
+  { header: "Ghi chú", key: "GHICHU", width: 20 * rem_to_px },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
-
-console.log(infoColumns);
-
-// infoColumns.push({
-//   title: "Action",
-//   key: "action",
-//   render: (_, record) => (
-//     <Space size="middle">
-//       <a>Invite {record.name}</a>
-//       <a>Delete</a>
-//     </Space>
-//   ),
-// });
+const infoColumns = processingInfoColumnTable(list_key, false);
 
 const Mui = () => {
   const [renderUI, setRenderUI] = useState(false);
@@ -66,7 +45,11 @@ const Mui = () => {
     };
   }, []);
 
-  return <>{renderUI && <TableContent />}</>;
+  return (
+    <>
+      {renderUI && <TableContent info_other_column={{ action: 24, stt: 10 }} />}
+    </>
+  );
 };
 
 export default Mui;

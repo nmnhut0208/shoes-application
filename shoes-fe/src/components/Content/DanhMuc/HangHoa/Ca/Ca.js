@@ -1,4 +1,3 @@
-import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
 import FormCa from "./FormCa";
@@ -7,39 +6,18 @@ import {
   actions_table,
   cleanupContextTable,
 } from "~table_context";
+import { rem_to_px } from "~config/ui";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 
 const list_key = [
-  // { key: "STT", width: "7rem" },
-  { header: "Mã Cá", key: "MACA", width: "100px" },
-  { header: "Tên Cá", key: "TENCA", width: "100px" },
-  { header: "Mã Mũi", key: "MAMUI", width: "100px" },
-  { header: "Tên Mũi", key: "TENMUI", width: "100px" },
-  { header: "Ghi chú", key: "GHICHU", width: "100px" },
+  { header: "Mã Cá", key: "MACA", width: 5 * rem_to_px },
+  { header: "Tên Cá", key: "TENCA", width: 10 * rem_to_px },
+  // { header: "Mã Mũi", key: "MAMUI", width: 3 * rem_to_px },
+  // { header: "Tên Mũi", key: "TENMUI", width: 5 * rem_to_px },
+  { header: "Ghi chú", key: "GHICHU", width: 10 * rem_to_px },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
-
-console.log(infoColumns);
-
-// infoColumns.push({
-//   title: "Action",
-//   key: "action",
-//   render: (_, record) => (
-//     <Space size="middle">
-//       <a>Invite {record.name}</a>
-//       <a>Delete</a>
-//     </Space>
-//   ),
-// });
+const infoColumns = processingInfoColumnTable(list_key, false);
 
 const Ca = () => {
   const [renderUI, setRenderUI] = useState(false);
@@ -65,7 +43,11 @@ const Ca = () => {
     };
   }, []);
 
-  return <>{renderUI && <TableContent />}</>;
+  return (
+    <>
+      {renderUI && <TableContent info_other_column={{ action: 24, stt: 10 }} />}
+    </>
+  );
 };
 
 export default Ca;

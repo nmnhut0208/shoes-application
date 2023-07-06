@@ -5,6 +5,7 @@ import {
   useItemsContext,
   actions as actions_items_context,
 } from "~items_context";
+import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
 const FormKhachHang = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -17,7 +18,7 @@ const FormKhachHang = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = () => {
+  const handleSaveFrom = (event) => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -29,6 +30,17 @@ const FormKhachHang = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
+      if (
+        checkMaDanhMucExisted(
+          inputForm["MAKH"],
+          stateTable.inforShowTable.infoTable,
+          "MAKH"
+        )
+      ) {
+        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        event.preventDefault();
+        return false;
+      }
       method = "POST";
       dispatchTable(
         actions_table.setInforTable([
@@ -136,9 +148,8 @@ const FormKhachHang = () => {
       </div>
 
       <div className={styles.button_container}>
-        <button onClick={handleSaveFrom}>Lưu</button>
+        <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
         <button>Button 2</button>
-        <button>Đóng</button>
       </div>
     </div>
   );

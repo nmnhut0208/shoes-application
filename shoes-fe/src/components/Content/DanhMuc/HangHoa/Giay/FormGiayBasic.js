@@ -35,9 +35,9 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
       let part_number = "";
       let part_character = "";
       if (SortID && SortID.length > 0) {
-        part_number = "0000" + SortID.replace(/[^0-9]/g, "");
+        part_number = "000" + SortID.replace(/[^0-9]/g, "");
         part_number = part_number.slice(
-          part_number.length - 4,
+          part_number.length - 3,
           part_number.length
         );
         part_character = SortID.replace(/[^a-zA-Z]/g, "");

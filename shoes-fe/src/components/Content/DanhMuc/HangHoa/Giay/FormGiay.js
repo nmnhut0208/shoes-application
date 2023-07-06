@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useTableContext, actions_table } from "~table_context";
 import FormGiayBasic from "./FormGiayBasic";
 import styles from "./FormGiayBasic.module.scss";
+import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
 const FormGiay = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [dataForm, setDataForm] = useState(stateTable.inforShowTable.record);
 
-  const handleSaveFrom = () => {
+  const handleSaveFrom = (event) => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -19,6 +20,17 @@ const FormGiay = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
+      if (
+        checkMaDanhMucExisted(
+          dataForm["MAGIAY"],
+          stateTable.inforShowTable.infoTable,
+          "MAGIAY"
+        )
+      ) {
+        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        event.preventDefault();
+        return false;
+      }
       method = "POST";
       dispatchTable(
         actions_table.setInforTable([
@@ -61,18 +73,17 @@ const FormGiay = () => {
 
       <div className={styles.group_button}>
         <div>
-          <button>Button first</button>
+          <button>Nhân bản</button>
           <button>Second first</button>
         </div>
 
         <div>
           {stateTable.inforShowTable.action_row !== "view" && (
-            <button onClick={handleSaveFrom}>Lưu</button>
+            <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
           )}
           {stateTable.inforShowTable.action_row !== "view" && (
             <button onClick={handleNhapTiep}>Nhập tiếp</button>
           )}
-          {/* <button>Đóng</button> */}
         </div>
       </div>
     </>

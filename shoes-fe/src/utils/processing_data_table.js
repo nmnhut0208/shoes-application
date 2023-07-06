@@ -1,14 +1,16 @@
-export const processingInfoColumnTable = (list_key) => {
+export const processingInfoColumnTable = (list_key, setMinMax = true) => {
   const infoColumns = [];
   for (var obj in list_key) {
     const info = {
       header: list_key[obj]["header"],
       size: list_key[obj]["width"],
-      minSize: list_key[obj]["width"],
-      maxSize: list_key[obj]["width"],
       accessorKey: list_key[obj]["key"],
       key: list_key[obj]["key"],
     };
+    if (setMinMax) {
+      info["minSize"] = list_key[obj]["width"];
+      info["maxSize"] = list_key[obj]["width"];
+    }
     if (list_key[obj]["header_custorm"])
       info["header"] = list_key[obj]["header_custorm"];
     if (list_key[obj]["muiTableBodyCellProps"])
@@ -21,18 +23,21 @@ export const processingInfoColumnTable = (list_key) => {
 export const processingInfoColumnTableHaveFooter = (
   list_key,
   COLS_HAVE_SUM_FOOTER,
-  data
+  data,
+  setMinMax = true
 ) => {
   const infoColumnsInit = [];
   for (var obj in list_key) {
     const info = {
       header: list_key[obj]["header"],
       size: list_key[obj]["width"],
-      minSize: list_key[obj]["width"],
-      maxSize: list_key[obj]["width"],
       accessorKey: list_key[obj]["key"],
       key: list_key[obj]["key"],
     };
+    if (setMinMax) {
+      info["minSize"] = list_key[obj]["width"];
+      info["maxSize"] = list_key[obj]["width"];
+    }
 
     if (list_key[obj]["key"] === "TENGIAY")
       info["Footer"] = () => <div>Tổng cộng: </div>;

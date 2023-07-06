@@ -6,6 +6,8 @@ import {
   actions as actions_items_context,
 } from "~items_context";
 
+import { checkMaDanhMucExisted } from "~danh_muc/helper";
+
 const FormQuai = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateItem, dispatchItem] = useItemsContext();
@@ -24,7 +26,12 @@ const FormQuai = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = () => {
+  const handleSaveFrom = (event) => {
+    if (inputForm["DONGIA"] == "") {
+      alert("Nhập đơn giá quai!!!");
+      event.preventDefault();
+      return false;
+    }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -36,6 +43,17 @@ const FormQuai = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
+      if (
+        checkMaDanhMucExisted(
+          inputForm["MAQUAI"],
+          stateTable.inforShowTable.infoTable,
+          "MAQUAI"
+        )
+      ) {
+        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        event.preventDefault();
+        return false;
+      }
       method = "POST";
       dispatchTable(
         actions_table.setInforTable([
@@ -50,7 +68,6 @@ const FormQuai = () => {
         ])
       );
     }
-    console.log("inputForm: ", inputForm);
     fetch("http://localhost:8000/quai", {
       method: method,
       headers: { "Content-Type": "application/json" },
@@ -149,9 +166,10 @@ const FormQuai = () => {
       </div>
 
       <div className={styles.button_container}>
-        {!view && <button onClick={handleSaveFrom}>Lưu</button>}
+        {!view && (
+          <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
+        )}
         <button>Button 2</button>
-        <button>Đóng</button>
       </div>
     </div>
   );

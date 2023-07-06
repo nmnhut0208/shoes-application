@@ -1,11 +1,11 @@
 import { useState } from "react";
-import clsx from "clsx";
 import styles from "./FormMui.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import {
   useItemsContext,
   actions as actions_items_context,
 } from "~items_context";
+import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
 const FormMui = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -19,7 +19,7 @@ const FormMui = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = () => {
+  const handleSaveFrom = (event) => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -31,6 +31,17 @@ const FormMui = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
+      if (
+        checkMaDanhMucExisted(
+          inputForm["MAMUI"],
+          stateTable.inforShowTable.infoTable,
+          "MAMUI"
+        )
+      ) {
+        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        event.preventDefault();
+        return false;
+      }
       method = "POST";
       dispatchTable(
         actions_table.setInforTable([
@@ -94,9 +105,8 @@ const FormMui = () => {
         </div>
         <div className={styles.group_button}>
           <div>
-            <button onClick={handleSaveFrom}>Lưu</button>
+            <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
             <button>Nhập tiếp</button>
-            <button>Đóng</button>
           </div>
         </div>
       </form>

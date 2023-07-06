@@ -21,6 +21,7 @@ module.exports = {
       ),
 
       "~nghiep_vu": path.resolve(__dirname, "src/components/Content/NghiepVu"),
+      "~danh_muc": path.resolve(__dirname, "src/components/Content/DanhMuc"),
       "~utils": path.resolve(__dirname, "src/utils/"),
       "~config": path.resolve(__dirname, "src/config/"),
       "~items": path.resolve(__dirname, "src/components/items"),

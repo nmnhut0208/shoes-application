@@ -1,13 +1,11 @@
 import { useState } from "react";
-import clsx from "clsx";
 import styles from "./FormKhoHang.module.scss";
 import { useTableContext, actions_table } from "~table_context";
+import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
 const FormKhoHang = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
-  console.log("record form: re-render");
-  // console.log("inputForm: ", inputForm);
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -15,7 +13,7 @@ const FormKhoHang = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = () => {
+  const handleSaveFrom = (event) => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -27,6 +25,17 @@ const FormKhoHang = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
+      if (
+        checkMaDanhMucExisted(
+          inputForm["MAKHO"],
+          stateTable.inforShowTable.infoTable,
+          "MAKHO"
+        )
+      ) {
+        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        event.preventDefault();
+        return false;
+      }
       method = "POST";
       dispatchTable(
         actions_table.setInforTable([
@@ -83,9 +92,8 @@ const FormKhoHang = () => {
           </div>
           <div className={styles.group_button}>
             <div>
-              <button onClick={handleSaveFrom}>Lưu</button>
+              <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
               <button>Nhập tiếp</button>
-              <button>Đóng</button>
             </div>
           </div>
         </div>

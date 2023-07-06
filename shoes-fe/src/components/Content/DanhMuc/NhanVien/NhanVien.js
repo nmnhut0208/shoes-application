@@ -7,38 +7,17 @@ import {
   actions_table,
   cleanupContextTable,
 } from "~table_context";
+import { rem_to_px } from "~config/ui";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 
 const list_key = [
-  // { key: "STT", width: "7rem" },
-  { header: "Mã nhân viên", key: "MANVIEN", width: "21rem" },
-  { header: "Tên nhân viên", key: "TENNVIEN", width: "21rem" },
-  { header: "Loại nhân viên", key: "LOAINVIEN", width: "21rem" },
-  { header: "Ghi chú", key: "GHICHU", width: "21rem" },
+  { header: "Mã nhân viên", key: "MANVIEN", width: 5 * rem_to_px },
+  { header: "Tên nhân viên", key: "TENNVIEN", width: 8 * rem_to_px },
+  { header: "Loại nhân viên", key: "LOAINVIEN", width: 5 * rem_to_px },
+  { header: "Ghi chú", key: "GHICHU", width: 10 * rem_to_px },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
-
-console.log(infoColumns);
-
-// infoColumns.push({
-//   title: "Action",
-//   key: "action",
-//   render: (_, record) => (
-//     <Space size="middle">
-//       <a>Invite {record.name}</a>
-//       <a>Delete</a>
-//     </Space>
-//   ),
-// });
+const infoColumns = processingInfoColumnTable(list_key, false);
 
 const NhanVien = () => {
   const [renderUI, setRenderUI] = useState(false);

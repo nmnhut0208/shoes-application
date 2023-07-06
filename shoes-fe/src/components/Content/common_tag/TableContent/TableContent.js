@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import MaterialReactTable from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -17,7 +17,11 @@ import {
 
 const listFormHaveViewDetail = ["F0024", "F0020", "F0013", "F0018"];
 
-const TableContent = () => {
+const TableContent = ({ info_other_column }) => {
+  const [actionSttInfo, setActionSttInfo] = useState(() => {
+    if (info_other_column) return info_other_column;
+    else return { action: 30, stt: 15 };
+  });
   const [stateTable, dispatchTable] = useTableContext();
   const [stateTask, dispatchTask] = useTaskContext();
   const [stateUser, dispatchUser] = useUserContext();
@@ -197,6 +201,13 @@ const TableContent = () => {
             columns={inforShowTable.infoColumnTable}
             data={inforShowTable.infoTable}
             {...border_text_table_config}
+            // start
+            muiTableProps={{
+              sx: {
+                tableLayout: "fixed",
+              },
+            }}
+            // end
             components
             autoResetPageIndex={false}
             // resize width of each column
@@ -205,16 +216,24 @@ const TableContent = () => {
             enableEditing={showActionColumn}
             displayColumnDefOptions={{
               "mrt-row-actions": {
-                size: 130, //set custom width
+                size: actionSttInfo["action"], //set custom width
+                minSize: 24,
                 muiTableHeadCellProps: {
                   align: "center", //change head cell props
                 },
                 enableResizing: true,
               },
               "mrt-row-numbers": {
-                size: 60,
+                size: actionSttInfo["stt"],
+                minSize: 12,
                 enableColumnOrdering: true, //turn on some features that are usually off
                 enableResizing: true,
+                muiTableHeadCellProps: {
+                  align: "right",
+                },
+                muiTableBodyCellProps: {
+                  align: "right",
+                },
               },
             }}
             renderRowActions={({ row, table }) => (

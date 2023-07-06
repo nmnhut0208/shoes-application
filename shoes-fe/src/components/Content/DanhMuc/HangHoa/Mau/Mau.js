@@ -7,23 +7,15 @@ import {
   cleanupContextTable,
 } from "~table_context";
 import { rem_to_px } from "~config/ui";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 
 const list_key = [
-  { header: "Mã màu", key: "MAMAU", width: 21 * rem_to_px },
+  { header: "Mã màu", key: "MAMAU", width: 5 * rem_to_px },
   { header: "Tên màu", key: "TENMAU", width: 10 * rem_to_px },
-  { header: "Ghi chú", key: "GHICHU", width: 40 * rem_to_px },
+  { header: "Ghi chú", key: "GHICHU", width: 20 * rem_to_px },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    size: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
+const infoColumns = processingInfoColumnTable(list_key, false);
 
 const Mau = () => {
   const [renderUI, setRenderUI] = useState(false);
@@ -55,6 +47,10 @@ const Mau = () => {
     };
   }, []);
 
-  return <>{renderUI && <TableContent />}</>;
+  return (
+    <>
+      {renderUI && <TableContent info_other_column={{ action: 24, stt: 10 }} />}
+    </>
+  );
 };
 export default Mau;
