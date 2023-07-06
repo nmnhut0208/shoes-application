@@ -1,13 +1,26 @@
 import { useState } from "react";
 import { FormGiayBasic } from "~hang_hoa";
 import styles from "./FormGiay.module.scss";
-import { useTableContext, actions_table } from "~table_context";
 
 const FormGiay = ({ setShowModal }) => {
   const [dataForm, setDataForm] = useState({});
-  // const [stateTable, dispatchTable] = useTableContext();
 
-  const handleSaveFrom = () => {
+  const handleSaveFrom = async (event) => {
+    if (dataForm["MAGIAY"] == "") {
+      alert("Chưa nhập đủ thông tin!");
+      event.preventDefault();
+      return false;
+    }
+    const response = await fetch(
+      "http://localhost:8000/giay/check_MAGIAY_existed?MAGIAY=" +
+        dataForm["MAGIAY"]
+    );
+    const result = await response.json();
+    if (result[dataForm["MAGIAY"]]) {
+      alert("Mã giày đã tồn tại");
+      event.preventDefault();
+      return false;
+    }
     fetch("http://localhost:8000/giay", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -19,7 +32,6 @@ const FormGiay = ({ setShowModal }) => {
       .catch((error) => {
         console.log("error: ", error);
       });
-    // dispatchTable(actions_table.setModeShowModal(false));
     setShowModal(false);
   };
 
@@ -38,14 +50,13 @@ const FormGiay = ({ setShowModal }) => {
       <div className={styles.form}>
         <div className={styles.group_button}>
           <div>
-            <button>Button first</button>
+            <button>Nhân bản</button>
             <button>Second first</button>
           </div>
 
           <div>
-            <button onClick={handleSaveFrom}>Lưu</button>
+            <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
             <button onClick={handleNhapTiep}>Nhập tiếp</button>
-            {/* <button>Đóng</button> */}
           </div>
         </div>
       </div>

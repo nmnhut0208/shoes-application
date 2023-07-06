@@ -42,6 +42,7 @@ const DanhMucGiayKhachHang = ({
         const info = {
           ...dataTable[key],
           SIZE0: 0,
+          SIZE1: 0,
           SIZE5: 0,
           SIZE6: 0,
           SIZE7: 0,

@@ -236,25 +236,27 @@ const FormDonHang = ({
       <div className={styles.form}>
         {/* Không hiểu tại sao gộp 2 form lại thì ko nhận extend nên phải tách đỡ ra vầy */}
         <div className={styles.group_button}>
-          <button onClick={handleThemGiay} disabled={view}>
-            Thêm giày
-          </button>
-          <button onClick={handleThemMau} disabled={view}>
-            Thêm màu
-          </button>
-          <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
-            Nhập tiếp
-          </button>
-          <button onClick={handleSaveDonHang} disabled={view}>
-            Lưu
-          </button>
           <button
             onClick={handleInDonHang}
             disabled={permission.IN === 0 || dataTable.length == 0}
           >
             In
           </button>
-          <button onClick={handleDongForm}>Đóng</button>
+
+          <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
+            Nhập tiếp
+          </button>
+          <button onClick={handleSaveDonHang} disabled={view}>
+            Lưu
+          </button>
+          <button onClick={handleThemGiay} disabled={view}>
+            Thêm giày
+          </button>
+          <button onClick={handleThemMau} disabled={view}>
+            Thêm màu
+          </button>
+
+          {/* <button onClick={handleDongForm}>Đóng</button> */}
         </div>
       </div>
       {infoFormWillShow["giay"] && (
@@ -298,7 +300,6 @@ const FormDonHang = ({
           title="In Đơn Hàng"
           status={showModal}
           setShowModal={setShowModal}
-          without_close_button={true}
         >
           <InDonHang
             infoHeader={formInfoDonHang}

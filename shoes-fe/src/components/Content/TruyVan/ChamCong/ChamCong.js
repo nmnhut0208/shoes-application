@@ -48,7 +48,7 @@ const GiaoHang = () => {
 
   return (
     <>
-      <header className={styles.header_table}>Phiếu Giao hàng - F0033</header>
+      <header className={styles.header_table}>Chấm công</header>
       <SubTable
         columns={infoColumns}
         data={dataTable}

@@ -20,7 +20,15 @@ const TableDonHang = ({
     var row_current = data[cell.row.index];
     // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
     // Tính lại số lượng
-    var list_size = ["SIZE5", "SIZE6", "SIZE7", "SIZE8", "SIZE9", "SIZE0"];
+    var list_size = [
+      "SIZE5",
+      "SIZE6",
+      "SIZE7",
+      "SIZE8",
+      "SIZE9",
+      "SIZE0",
+      "SIZE1",
+    ];
     if (list_size.includes(cell.column.id)) {
       if (value === "") value = 0;
       row_current[cell.column.id] = parseInt(value);

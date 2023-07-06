@@ -1,12 +1,13 @@
 import moment from "moment";
 import { useState } from "react";
-import clsx from "clsx";
 import styles from "./FormKyTinhLuong.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import {
   useItemsContext,
   actions as actions_items_context,
 } from "~items_context";
+import { checkMaDanhMucExisted } from "~danh_muc/helper";
+import { convertDate } from "~utils/processing_date";
 
 const FormKyTinhLuong = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -29,11 +30,7 @@ const FormKyTinhLuong = () => {
     setInputForm(data);
   };
 
-  const convertDate = (date) => {
-    return moment(date, "DD-MM-YYYY").format("YYYY-MM-DD");
-  };
-
-  const handleSaveFrom = () => {
+  const handleSaveFrom = (event) => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -45,6 +42,17 @@ const FormKyTinhLuong = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
+      if (
+        checkMaDanhMucExisted(
+          inputForm["MAKY"],
+          stateTable.inforShowTable.infoTable,
+          "MAKY"
+        )
+      ) {
+        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        event.preventDefault();
+        return false;
+      }
       method = "POST";
       dispatchTable(
         actions_table.setInforTable([
@@ -120,9 +128,8 @@ const FormKyTinhLuong = () => {
         </div>
         <div className={styles.group_button}>
           <div>
-            <button onClick={handleSaveFrom}>Lưu</button>
+            <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
             <button>Nhập tiếp</button>
-            <button>Đóng</button>
           </div>
         </div>
       </form>

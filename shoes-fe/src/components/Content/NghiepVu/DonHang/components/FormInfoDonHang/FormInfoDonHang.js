@@ -62,7 +62,7 @@ const FormInfoDonHang = ({
             />
           </div>
         </div>
-        <input
+        {/* <input
           type="checkbox"
           name="Giá lẻ"
           // value="true"
@@ -73,7 +73,7 @@ const FormInfoDonHang = ({
         />
         <span for="Giá lẻ" className={styles.span_for_checkbox}>
           Giá lẻ
-        </span>
+        </span> */}
       </div>
       <div className={styles.group_item}>
         <div className={styles.item_column}>

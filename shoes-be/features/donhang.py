@@ -25,62 +25,63 @@ class ITEM_DONHANG(BaseModel):
     SIZE9: int
     SIZE8: int
     SIZE0: int
+    SIZE1: int
     GIABAN: int
     THANHTIEN: int
-    DIENGIAIDONG: Optional[str] = None
+    DIENGIAIDONG: Optional[str] = ""
     # TODO: edit type of datetime 
-    NGUOITAO: Optional[str] = None
-    # NGAYTAO: Optional[str] = None
-    NGUOISUA: Optional[str] = None
-    # NGAYSUA: Optional[str] = None # TODO: sau nay them nay vao
-    MAUDE: Optional[str] = None
-    MAUGOT: Optional[str] = None
-    MAUSUON: Optional[str] = None
-    MAUCA: Optional[str] = None
-    MAUQUAI: Optional[str] = None
+    NGUOITAO: Optional[str] = ""
+    # NGAYTAO: Optional[str] = ""
+    NGUOISUA: Optional[str] = ""
+    # NGAYSUA: Optional[str] = "" # TODO: sau nay them nay vao
+    MAUDE: Optional[str] = ""
+    MAUGOT: Optional[str] = ""
+    MAUSUON: Optional[str] = ""
+    MAUCA: Optional[str] = ""
+    MAUQUAI: Optional[str] = ""
     DAPHANCONG: Optional[int] = 0
     GIALE: Optional[int] = 0
-    INHIEU: Optional[str] = None
-    TRANGTRI: Optional[str] = None
-    GHICHU: Optional[str] = None
+    INHIEU: Optional[str] = ""
+    TRANGTRI: Optional[str] = ""
+    GHICHU: Optional[str] = ""
 
 class RESPONSE_GIAYDONHANG(BaseModel):
-    SODH: Optional[str] = None
+    SODH: Optional[str] = ""
     SORTID: str
     MAGIAY: str
     TENGIAY: str
-    MAUDE: Optional[str] = None
-    MAUGOT: Optional[str] = None
-    MAUSUON: Optional[str] = None
-    MAUCA: Optional[str] = None
-    MAUQUAI: Optional[str] = None
+    MAUDE: Optional[str] = ""
+    MAUGOT: Optional[str] = ""
+    MAUSUON: Optional[str] = ""
+    MAUCA: Optional[str] = ""
+    MAUQUAI: Optional[str] = ""
     MAKH: str
     DONGIA: int
-    DONGIAQUAI: Optional[int] = None
-    TENCA: Optional[str] = None
+    DONGIAQUAI: Optional[int] = 0
+    TENCA: Optional[str] = ""
     TENKH: str
     # =============
-    MADONG: Optional[int] = None
-    SIZE5: Optional[int] = None
-    SIZE6: Optional[int] = None
-    SIZE7: Optional[int] = None
-    SIZE9: Optional[int] = None
-    SIZE8: Optional[int] = None
-    SIZE0: Optional[int] = None
-    SOLUONG: Optional[int] = None
-    THANHTIEN: Optional[int] = None
-    NGAYDH: Optional[str] = None
-    NGAYGH: Optional[str] = None
-    DIENGIAIPHIEU: Optional[str] = None
-    DIENGIAIDONG: Optional[str] = None
-    INHIEU: Optional[str] = None
+    MADONG: Optional[str] = ""
+    SIZE5: Optional[int] = 0
+    SIZE6: Optional[int] = 0
+    SIZE7: Optional[int] = 0
+    SIZE9: Optional[int] = 0
+    SIZE8: Optional[int] = 0
+    SIZE0: Optional[int] = 0
+    SIZE1: Optional[int] = 0
+    SOLUONG: Optional[int] = 0
+    THANHTIEN: Optional[int] = 0
+    NGAYDH: Optional[str] = ""
+    NGAYGH: Optional[str] = ""
+    DIENGIAIPHIEU: Optional[str] = ""
+    DIENGIAIDONG: Optional[str] = ""
+    INHIEU: Optional[str] = ""
     # ============================
     TENMAUDE: str = ""
     TENMAUGOT: str = ""
     TENMAUSUON: str = ""
     TENMAUCA: str = ""
     TENMAUQUAI: str = ""
-
 
 
 
@@ -108,12 +109,13 @@ class RESPONSE_BAOCAO_DONHANG:
 def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
     sql = f"""SELECT SODH, DH.MAKH, KH.TENKH, NGAYDH, NGAYGH, 
                 DIENGIAIPHIEU AS DIENGIAI,
-                SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
+                SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE1) as SOLUONG
               FROM DONHANG DH
                 LEFT JOIN V_GIAY ON V_GIAY.MAGIAY = DH.MAGIAY
                 LEFT JOIN DMKHACHHANG KH ON KH.MAKH = DH.MAKH
               group by SODH, DH.MAKH, KH.TENKH, NGAYDH,
                 NGAYGH, DIENGIAIPHIEU
+              order by NGAYDH desc
             """
     result = donhang.read_custom(sql)
     return result
@@ -123,31 +125,29 @@ def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
 def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
     print("SODH: ", SODH)
     sql = f"""SELECT DIENGIAIPHIEU,MADONG, SODH, 
-                HINHANH, V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+                V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                 coalesce(MAUDE, '') as MAUDE, TENMAUDE,
                 coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT, 
                 coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
                 coalesce(MAUCA, '') AS MAUCA,TENMAUCA,
                 coalesce(MAUQUAI, '') AS MAUQUAI, TENMAUQUAI,
-                coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH, 
+                DONHANG.MAKH, DMKHACHHANG.TENKH, 
                 V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
-                V_GIAY.TENCA, V_GIAY.TENKH,
+                V_GIAY.TENCA,
                 SIZE5,SIZE6,SIZE7,
-                SIZE9,SIZE8,SIZE0,
-                DONHANG.MAKH,
+                SIZE9,SIZE8,SIZE0, SIZE1,
                 SOLUONG,NGAYDH, NGAYGH,
                 V_GIAY.DONGIA * SOLUONG AS THANHTIEN,
                 DIENGIAIDONG, INHIEU
             FROM (select DIENGIAIPHIEU, MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
-                SIZE9,SIZE8,SIZE0, NGAYDH, NGAYGH,
-                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0) AS SOLUONG,
+                SIZE9,SIZE8,SIZE0, SIZE1, NGAYDH, NGAYGH,
+                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0+SIZE1) AS SOLUONG,
                 DIENGIAIDONG, INHIEU
             from DONHANG 
             WHERE DONHANG.SODH='{SODH}') AS DONHANG
+            inner join DMKHACHHANG on DMKHACHHANG.MAKH = DONHANG.MAKH
             left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  
-            left JOIN (Select MAGIAY, HINHANH from DMGIAY) as DMGIAY
-            on DMGIAY.MAGIAY = DONHANG.MAGIAY
             left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
                 AS DMMAUDE 
                 ON coalesce(DMMAUDE.MAMAU, '') = coalesce(DONHANG.MAUDE, '')
@@ -171,7 +171,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
 @router.get("/donhang/khachhang/{MAKH}/giay")
 # lấy tất cả các loại giày của khách hàng MAKH
 def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
-    sql = f"""SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+    sql = f"""(SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                     coalesce(MAUDE, '') as MAUDE, TENMAUDE,
                     coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT,
                     coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
@@ -183,8 +183,7 @@ def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
             FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH 
                 from DONHANG WHERE DONHANG.MAKH='{MAKH}') AS DONHANG
-            FULL OUTER JOIN (select * from V_GIAY where V_GIAY.MAKH='{MAKH}'
-            and DONGIAQUAI is not null) 
+            left JOIN (select * from V_GIAY where DONGIAQUAI is not null) 
             As V_GIAY on V_GIAY.magiay=DONHANG.magiay
             left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
                     AS DMMAUDE 
@@ -201,7 +200,15 @@ def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
 			left join (select MAMAU, TENMAU as TENMAUQUAI from DMMAU) 
                     AS DMMAUQUAI 
 					ON coalesce(DMMAUQUAI.MAMAU, '') = coalesce(DONHANG.MAUQUAI, '')
-            """
+            )UNION (select SORTID,MAGIAY,TENGIAY,
+                    '' as MAUDE, '' as TENMAUDE,
+                    '' AS MAUGOT, '' as TENMAUGOT,
+                    '' AS MAUSUON,'' as TENMAUSUON,
+                    '' AS MAUCA, '' as TENMAUCA,
+                    '' AS MAUQUAI,'' as TENMAUQUAI,
+                    MAKH, 
+                    DONGIA as GIABAN, DONGIAQUAI, 
+                    TENCA, TENKH from V_GIAY where MAKH='{MAKH}')"""
     
     result = donhang.read_custom(sql)
     return result
@@ -265,6 +272,27 @@ def update_status_phancong(MADONG: list = Query([]), status: int=0) -> RESPONSE:
 def delete(SODH: str) -> RESPONSE:
     condition = f"SODH = '{SODH}'"
     return donhang.delete(condition)
+
+@router.post("/donhang/get_all_info_donhang")
+# should I change post method to get method??? 
+def read(info_query: dict) -> List[RESPONSE_GIAYDONHANG]:
+    sql = f"""
+            select SODH, NGAYDH, DONHANG.MAKH, TENKH, MAGIAY, TENGIAY, SIZE1, Size0 as SIZE0,
+            SIZE5, SIZE6, SIZE7, SIZE8, SIZE9,
+            (Size0+SIZE1+SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) AS SOLUONG,
+            GIABAN, THANHTIEN
+            from DONHANG
+            INNER JOIN (SELECT MAGIAY AS MA, TENGIAY FROM DMGIAY) AS DMGIAY
+                ON DMGIAY.MA = DONHANG.MAGIAY
+            INNER JOIN DMKHACHHANG ON DMKHACHHANG.MAKH = DONHANG.MAKH
+            WHERE NGAYDH >= '{info_query["DATE_FROM"]}'
+            AND NGAYDH <= '{info_query["DATE_TO"]}'
+            AND DONHANG.MAKH >= '{info_query["KhachHangFrom"]}'
+            AND DONHANG.MAKH <= '{info_query["KhachHangTo"]}'
+            ORDER BY MAKH, NGAYDH
+    """
+    result = donhang.read_custom(sql)
+    return result
 
 
 

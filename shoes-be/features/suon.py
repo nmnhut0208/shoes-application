@@ -20,8 +20,7 @@ suon = SUON()
 @router.get("/suon")
 def read() -> List[RESPONSE_SUON]:
     sql = """SELECT MASUON, TENSUON, DMGOT.MAGOT, TENGOT, 
-                DMMUI.MAMUI, TENMUI, COALESCE(GHICHU, '') AS GHICHU, 
-                COALESCE(HINHANH, '') AS HINHANH 
+                DMMUI.MAMUI, TENMUI, COALESCE(GHICHU, '') AS GHICHU
              FROM DMSUON 
              left join(select MAGOT, TENGOT FROM DMGOT) AS DMGOT 
                 on DMGOT.MAGOT = DMSUON.MAGOT 
@@ -54,3 +53,12 @@ def delete(data: ITEM_SUON) -> RESPONSE:
     data = dict(data)
     condition = f"MASUON = '{data['MASUON']}'"
     return suon.delete(condition)
+
+@router.get("/suon/get_HINHANH")
+def read(MASUON: str) -> dict:
+    sql = f"""select MASUON, coalesce(HINHANH, '') as HINHANH
+            from DMSUON  
+            where MASUON='{MASUON}'
+            """
+    return suon.read_custom(sql)
+

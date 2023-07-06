@@ -16,9 +16,9 @@ class ITEM_GIAY(BaseModel):
     MASUON: str
     MACA: str
     MAQUAI: str
-    GHICHU: Optional[str] = None
+    GHICHU: Optional[str] = ""
     DONGIA: int 
-    MAMAU: Optional[str] = None
+    MAMAU: Optional[str] = ""
     MAKH: str
     SortID: str
     GIATRANGTRI: Optional[int] = 0
@@ -27,30 +27,30 @@ class ITEM_GIAY(BaseModel):
     GIATANTRANG: Optional[int] = 0
     GIANHANCONG: Optional[int] = 0
     GIAKEO: Optional[int] = 0
-    TRANGTRIDE: Optional[str] = None
-    GHICHUDE: Optional[str] = None
-    TRANGTRIQUAI: Optional[str] = None
-    GHICHUQUAI: Optional[str] = None
-    HINHANH: Optional[str] = None
+    TRANGTRIDE: Optional[str] = ""
+    GHICHUDE: Optional[str] = ""
+    TRANGTRIQUAI: Optional[str] = ""
+    GHICHUQUAI: Optional[str] = ""
+    HINHANH: Optional[str] = ""
 
 
 class RESPONSE_GIAY(BaseModel):
     MAGIAY: str
     TENGIAY: str
     MADE: str
-    TENDE: Optional[str] = None
+    TENDE: Optional[str] = ""
     MASUON: str
-    TENSUON: Optional[str] = None
+    TENSUON: Optional[str] = ""
     MACA: str
-    TENCA: Optional[str] = None
+    TENCA: Optional[str] = ""
     MAQUAI: str
-    TENQUAI: Optional[str] = None
-    GHICHU: Optional[str] = None
+    TENQUAI: Optional[str] = ""
+    GHICHU: Optional[str] = ""
     DONGIA: int
-    MAMAU: Optional[str] = None
-    TENMAU: Optional[str] = None
+    MAMAU: Optional[str] = ""
+    TENMAU: Optional[str] = ""
     MAKH: str
-    TENKH: Optional[str] = None
+    TENKH: Optional[str] = ""
     SortID: str
     GIATRANGTRI: Optional[int] = 0
     GIASUON: Optional[int] = 0
@@ -58,11 +58,11 @@ class RESPONSE_GIAY(BaseModel):
     GIATANTRANG: Optional[int] = 0
     GIANHANCONG: Optional[int] = 0
     GIAKEO: Optional[int] = 0
-    TRANGTRIDE: Optional[str] = None
-    GHICHUDE: Optional[str] = None
-    TRANGTRIQUAI: Optional[str] = None
-    GHICHUQUAI: Optional[str] = None
-    HINHANH: Optional[str] = None
+    TRANGTRIDE: Optional[str] = ""
+    GHICHUDE: Optional[str] = ""
+    TRANGTRIQUAI: Optional[str] = ""
+    GHICHUQUAI: Optional[str] = ""
+    HINHANH: Optional[str] = ""
 
 
 router = APIRouter()
@@ -84,7 +84,7 @@ def read() -> List[RESPONSE_GIAY]:
                 DMGIAY.MAMAU, TENMAU, DMGIAY.MAKH, TENKH, SortID,
                 GIATRANGTRI,GIASUON, GIAGOT, GIATANTRANG, 
                 GIANHANCONG, GIAKEO,TRANGTRIDE, GHICHUDE, 
-                TRANGTRIQUAI, GHICHUQUAI, HINHANH 
+                TRANGTRIQUAI, GHICHUQUAI 
             from DMGIAY  
             LEFT JOIN(select MADE, TENDE FROM DMDE) AS DMDE 
                      ON DMGIAY.MADE = DMDE.MADE 
@@ -133,3 +133,15 @@ def delete(data: ITEM_GIAY) -> RESPONSE:
     data = dict(data)
     condition = f"MAGIAY = '{data['MAGIAY']}'"
     return giay.delete(condition)
+
+@router.get("/giay/check_MAGIAY_existed")
+def read(MAGIAY: str) -> dict:
+    sql = f"""select MAGIAY
+            from DMGIAY  
+            where MAGIAY='{MAGIAY}'
+            """
+    result = giay.read_custom(sql)
+    if len(result) == 0:
+        return {MAGIAY: False}
+    else:
+        return {MAGIAY: True}

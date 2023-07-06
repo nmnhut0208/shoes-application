@@ -21,6 +21,10 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
     setShowModal(true);
   };
   const handleDeleteRow = (row) => {
+    let text = "Bạn thực sự muốn xóa thông tin này không!";
+    if (!window.confirm(text)) {
+      return;
+    }
     let url =
       "http://localhost:8000/donhang?SODH=" + encodeURIComponent(row["SODH"]);
     fetch(url, {

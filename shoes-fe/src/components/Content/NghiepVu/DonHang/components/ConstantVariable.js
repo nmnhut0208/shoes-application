@@ -49,6 +49,7 @@ export const INFO_COLS_DONHANG = [
   { header: "Size 8", key: "SIZE8", width: 8 * rem_to_px, enableEditing: true },
   { header: "Size 9", key: "SIZE9", width: 8 * rem_to_px, enableEditing: true },
   { header: "Size 0", key: "SIZE0", width: 8 * rem_to_px, enableEditing: true },
+  { header: "Size 1", key: "SIZE1", width: 8 * rem_to_px, enableEditing: true },
   {
     header: "Số lượng",
     key: "SOLUONG",

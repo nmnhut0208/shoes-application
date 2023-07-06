@@ -27,8 +27,9 @@ got = GOT()
 
 @router.get("/got")
 def read() -> List[ITEM_GOT]:
-    sql = "SELECT * \
-        FROM DMGOT "
+    sql = """SELECT MAGOT, TENGOT, GHICHU  
+        FROM DMGOT 
+        """
     return got.read_custom(sql)
 
 
@@ -55,3 +56,11 @@ def delete(data: ITEM_GOT) -> RESPONSE:
     data = dict(data)
     condition = f"MAGOT = '{data['MAGOT']}'"
     return got.delete(condition)
+
+@router.get("/got/get_HINHANH")
+def read(MAGOT: str) -> dict:
+    sql = f"""select MAGOT, coalesce(HINHANH, '') as HINHANH
+            from DMGOT  
+            where MAGOT='{MAGOT}'
+            """
+    return got.read_custom(sql)

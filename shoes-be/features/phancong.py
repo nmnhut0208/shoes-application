@@ -24,6 +24,7 @@ class ITEM_PHANCONG(BaseModel):
     SIZE9: int
     SIZE8: int
     SIZE0: int
+    SIZE1: int
     THODE: str
     THOQUAI: str 
     NGUOITAO: Optional[str] = ""
@@ -76,6 +77,7 @@ class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
     SIZE9: Optional[int] = 0
     SIZE8: Optional[int] = 0
     SIZE0: Optional[int] = 0
+    SIZE1: Optional[int] = 0
     SOLUONG: Optional[int] = 0
     THANHTIEN: Optional[int] = 0
     NGAYDH: Optional[str] = None
@@ -98,6 +100,7 @@ def read() -> List[RESPONSE_PHANCONG]:
              SLDONHANG-SLPHANCONG as SOLUONG 
              from V_DHPHANCONG
              where SLDONHANG - SLPHANCONG > 0
+             order by NGAYDH desc
              """
     result = phancong.read_custom(sql)
     return result
@@ -127,7 +130,7 @@ def baocao_phancong(SOPHIEU: str) -> List[dict]:
     sql = f"""select DONHANG.SODH, NGAYDH,MAKH, 
                     TENKH, DIENGIAIPHIEU, SOLUONG
             from
-            (select SODH, SUM(SIZE0+SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
+            (select SODH, SUM(SIZE0+SIZE1+SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
             from PHANCONG
             where SOPHIEU = '{SOPHIEU}'
             group by SODH
@@ -145,7 +148,7 @@ def baocao_phancong(SOPHIEU: str) -> List[dict]:
 def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     print("SODH: ", SODH)              
     sql = f"""select V_KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, 
-              HINHANH, madh as MADH, sodh as SODH, 
+              madh as MADH, sodh as SODH, 
               ngaydh as NGAYDH, makh as MAKH, diengiaiphieu as DIENGIAIDONG, 
               tenkh as TENKH, 
               coalesce(MAUDE, '') as MAUDE, TENMAUDE, 
@@ -154,9 +157,11 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
               coalesce(MAUCA, '') as MAUCA, TENMAUCA, 
               coalesce(MAUQUAI, '') as MAUQUAI, TENMAUQUAI,
               SIZE5-DaphancongSize5 as SIZE5, SIZE0-DaphancongSIZE0 as SIZE0,
+              SIZE1-DaphancongSIZE1 as SIZE1,
               SIZE6-DaphancongSize6 as SIZE6,SIZE7-DaphancongSize7 as SIZE7,
               SIZE8-DaphancongSize8 as SIZE8,SIZE9-DaphancongSize9 as SIZE9,
-              SIZE0 as dhSIZE0, DaphancongSIZE0, SIZE5 as dhSize5, DaphancongSize5, 
+              SIZE0 as dhSIZE0, DaphancongSIZE0, SIZE1 as dhSIZE1, DaphancongSIZE1,
+              SIZE5 as dhSize5, DaphancongSize5, 
               SIZE6 as dhSize6, DaphancongSize6, SIZE7 as dhSize7, DaphancongSize7, 
               SIZE8 as dhSize8, DaphancongSize8, SIZE9 as dhSize9, DaphancongSize9
               from (
@@ -170,12 +175,14 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
                         coalesce(DH.SIZE8, 0) AS SIZE8,
                         coalesce(DH.SIZE9, 0) AS SIZE9,
                         coalesce(DH.SIZE0, 0) AS SIZE0,
+                        coalesce(DH.SIZE1, 0) AS SIZE1,
                         SUM(coalesce(PC.SIZE5, 0)) AS DaphancongSize5,
                         SUM(coalesce(PC.SIZE6, 0)) AS DaphancongSize6,
                         SUM(coalesce(PC.SIZE7, 0)) AS DaphancongSize7,
                         SUM(coalesce(PC.SIZE8, 0)) AS DaphancongSize8,
                         SUM(coalesce(PC.SIZE9, 0)) AS DaphancongSize9,
-                        SUM(coalesce(PC.SIZE0, 0)) AS DaphancongSIZE0
+                        SUM(coalesce(PC.SIZE0, 0)) AS DaphancongSIZE0,
+                        SUM(coalesce(PC.SIZE1, 0)) AS DaphancongSIZE1
                     FROM DONHANG DH 
                     left join PHANCONG as PC 
                             on DH.SODH = PC.SODH 
@@ -188,9 +195,9 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
                     GROUP BY dh.magiay,dh.madh,dh.sodh,dh.ngaydh,dh.makh,
                     kh.tenkh,dh.diengiaiphieu,DH.MAUDE, DH.MAUGOT,DH.MAUSUON, 
                     DH.MAUCA, DH.MAUQUAI, DH.SIZE5, DH.SIZE6, DH.SIZE7, DH.SIZE8, 
-                    DH.SIZE9, DH.SIZE0
+                    DH.SIZE9, DH.SIZE0, DH.SIZE1
               ) as V_KIEMTRAPHANCONG
-              left join (select MAGIAY, TENGIAY, HINHANH from DMGIAY) 
+              left join (select MAGIAY, TENGIAY from DMGIAY) 
               as DMGIAY on DMGIAY.MAGIAY = V_KIEMTRAPHANCONG.magiay
               left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
                     as DMMAUDE on MAUDE = DMMAUDE.MAMAU
@@ -203,9 +210,9 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
               left join (select MAMAU, TENMAU as TENMAUQUAI from DMMAU) 
                     as DMMAUQUAI on MAUQUAI = DMMAUQUAI.MAMAU
               where SODH = '{SODH}'
-              and SIZE5 + SIZE6+ SIZE7+SIZE8+SIZE9+SIZE0 > 
+              and SIZE5 + SIZE6+ SIZE7+SIZE8+SIZE9+SIZE0 +SIZE1> 
               DaphancongSize5 +DaphancongSize6+DaphancongSize7+
-              DaphancongSize8+DaphancongSize9+DaphancongSIZE0
+              DaphancongSize8+DaphancongSize9+DaphancongSIZE0+DaphancongSIZE1
             """
     result = phancong.read_custom(sql)
     return result
@@ -218,7 +225,7 @@ def read(SOPHIEU: str) -> List[RESPONSE_PHANCONG]:
                     SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, THODE,
                     THOQUAI, DAIN, DIENGIAIDONG, NGAYTAO, NGUOITAO,
                     NGUOISUA, NGAYSUA, MAUDE, MAUGOT, MAUSUON, MAUCA,
-                    MAUQUAI, Size0 AS SIZE0, MAKY, TENGIAY, TENKH,
+                    MAUQUAI, Size0 AS SIZE0, SIZE1, MAKY, TENGIAY, TENKH,
                     TENMAUDE, TENMAUGOT, TENMAUSUON, TENMAUCA, TENMAUQUAI,
                     TENTHODE, TENTHOQUAI
                 from PHANCONG

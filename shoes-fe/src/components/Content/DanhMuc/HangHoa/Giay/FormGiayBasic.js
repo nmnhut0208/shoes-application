@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import clsx from "clsx";
 import styles from "./FormGiayBasic.module.scss";
 import {
@@ -9,20 +9,23 @@ import {
   ItemQuai,
   ItemMau,
 } from "~items";
+import { getImageOfDanhMuc } from "~utils/api_get_image";
 
 let list_info_generator_MAGIAY = ["MAKH", "SortID", "MASUON"];
 
 const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
   const [form, setForm] = useState(() => initForm);
-  const [readOnly, setReadOnly] = useState(() => {
-    return mode === "edit";
-  });
-  console.log("form: ", form);
+  const readOnly = useMemo(() => mode === "edit", []);
   const [image_base64, setImageBase64] = useState("");
   const [image_url, setImageURL] = useState("");
+
   useEffect(() => {
+    if (initForm["MAGIAY"] != "" && image_base64 === "") {
+      getImageOfDanhMuc("giay", initForm["MAGIAY"], "MAGIAY").then((value) =>
+        setImageBase64(value)
+      );
+    }
     setForm(initForm);
-    setImageBase64(initForm["HINHANH"]);
   }, [initForm]);
 
   const handleChangeInformationForm = (dict_data) => {
@@ -35,9 +38,9 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
       let part_number = "";
       let part_character = "";
       if (SortID && SortID.length > 0) {
-        part_number = "0000" + SortID.replace(/[^0-9]/g, "");
+        part_number = "000" + SortID.replace(/[^0-9]/g, "");
         part_number = part_number.slice(
-          part_number.length - 4,
+          part_number.length - 3,
           part_number.length
         );
         part_character = SortID.replace(/[^a-zA-Z]/g, "");

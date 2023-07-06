@@ -1,5 +1,4 @@
 import { useState } from "react";
-import clsx from "clsx";
 import styles from "./FormCa.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import {
@@ -7,11 +6,12 @@ import {
   actions as actions_items_context,
 } from "~items_context";
 
+import { checkMaDanhMucExisted } from "~danh_muc/helper";
+
 const FormCa = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateItem, dispatchItem] = useItemsContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
-  console.log("record form: re-render");
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -19,7 +19,7 @@ const FormCa = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = () => {
+  const handleSaveFrom = (event) => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -31,6 +31,17 @@ const FormCa = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
+      if (
+        checkMaDanhMucExisted(
+          inputForm["MACA"],
+          stateTable.inforShowTable.infoTable,
+          "MACA"
+        )
+      ) {
+        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        event.preventDefault();
+        return false;
+      }
       method = "POST";
       dispatchTable(
         actions_table.setInforTable([
@@ -94,9 +105,8 @@ const FormCa = () => {
         </div>
         <div className={styles.group_button}>
           <div>
-            <button onClick={handleSaveFrom}>Lưu</button>
+            <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
             <button>Nhập tiếp</button>
-            <button>Đóng</button>
           </div>
         </div>
       </form>

@@ -30,6 +30,10 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
     setShowModal(true);
   };
   const handleDeleteRow = (row) => {
+    let text = "Bạn thực sự muốn xóa thông tin này không!";
+    if (!window.confirm(text)) {
+      return;
+    }
     let url =
       "http://localhost:8000/phancong?SOPHIEU=" +
       encodeURIComponent(row["SOPHIEU"]);

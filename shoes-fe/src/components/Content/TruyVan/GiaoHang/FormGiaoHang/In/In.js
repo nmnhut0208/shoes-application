@@ -1,10 +1,15 @@
 import { useReactToPrint } from "react-to-print";
 import { useRef, useLayoutEffect, useMemo } from "react";
 import { useTableContext, actions_table } from "~table_context";
-// import MaterialReactTable from "material-react-table";
 import { rem_to_px } from "~config/ui";
 import styles from "./In.module.scss";
 import { TableToPrint } from "~common_tag/reports";
+import {
+  processingInfoColumnTable,
+  processingInfoColumnTableHaveFooter,
+} from "~utils/processing_data_table";
+
+import { convertDateForReport } from "~utils/processing_date";
 
 const COLS_HAVE_SUM_FOOTER = ["SOLUONG", "THANHTIEN"];
 
@@ -48,9 +53,30 @@ export const border_text_table_config = {
 const list_key = [
   { header: "Mã Hàng", key: "MAGIAY", width: 8 * rem_to_px },
   { header: "Tên Hàng", key: "TENGIAY", width: 10 * rem_to_px },
-  { header: "SL", key: "SOLUONG", width: 2 * rem_to_px },
-  { header: "Đơn giá", key: "DONGIA", width: 4 * rem_to_px },
-  { header: "Thành tiền", key: "THANHTIEN", width: 5 * rem_to_px },
+  {
+    header: "SL",
+    key: "SOLUONG",
+    width: 2 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
+  {
+    header: "Đơn giá",
+    key: "DONGIA",
+    width: 4 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
+  {
+    header: "Thành tiền",
+    key: "THANHTIEN",
+    width: 5 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+  },
   { header: "Số đơn hàng", key: "SODH", width: 6 * rem_to_px },
 ];
 
@@ -75,49 +101,15 @@ const In = ({ data }) => {
   }, []);
 
   const infoColumns = useMemo(() => {
-    const infoColumnsInit = [];
-    for (var obj in list_key) {
-      const info = {
-        header: list_key[obj]["header"],
-        size: list_key[obj]["width"],
-        accessorKey: list_key[obj]["key"],
-        key: list_key[obj]["key"],
-      };
-      // if (list_key[obj]["key"] === "TENGIAY")
-      //   info["Footer"] = () => <div>Tổng cộng: </div>;
-      // if (COLS_HAVE_SUM_FOOTER.includes(list_key[obj]["key"])) {
-      //   let sum_value = data["table"].reduce(
-      //     (total, row) => total + row[list_key[obj]["key"]],
-      //     0
-      //   );
-      //   info["Footer"] = () => <div>{sum_value}</div>;
-      // }
-      infoColumnsInit.push(info);
-    }
-    return infoColumnsInit;
+    return processingInfoColumnTable(list_key);
   }, []);
 
   const infoColumns_Footer = useMemo(() => {
-    const infoColumnsInit = [];
-    for (var obj in list_key) {
-      const info = {
-        header: list_key[obj]["header"],
-        size: list_key[obj]["width"],
-        accessorKey: list_key[obj]["key"],
-        key: list_key[obj]["key"],
-      };
-      if (list_key[obj]["key"] === "TENGIAY")
-        info["Footer"] = () => <div>Tổng cộng: </div>;
-      if (COLS_HAVE_SUM_FOOTER.includes(list_key[obj]["key"])) {
-        let sum_value = data["table"].reduce(
-          (total, row) => total + row[list_key[obj]["key"]],
-          0
-        );
-        info["Footer"] = () => <div>{sum_value}</div>;
-      }
-      infoColumnsInit.push(info);
-    }
-    return infoColumnsInit;
+    return processingInfoColumnTableHaveFooter(
+      list_key,
+      COLS_HAVE_SUM_FOOTER,
+      data["table"]
+    );
   }, []);
 
   console.log("columns: ", data["table"].length);
@@ -136,12 +128,12 @@ const In = ({ data }) => {
             {index !== 0 ? (
               <div className={styles.invoice__info}>
                 <h2>Số: {data["SOPHIEU"]}</h2>
-                <h2>Ngày: {data["NGAYPHIEU"]}</h2>
+                <h2>Ngày: {convertDateForReport(data["NGAYPHIEU"])}</h2>
               </div>
             ) : (
               <div className={styles.invoice__info_header}>
                 <h2>Số: {data["SOPHIEU"]}</h2>
-                <h2>Ngày: {data["NGAYPHIEU"]}</h2>
+                <h2>Ngày: {convertDateForReport(data["NGAYPHIEU"])}</h2>
               </div>
             )}
           </div>
@@ -184,7 +176,7 @@ const In = ({ data }) => {
           <h1 className={styles.invoice}>Hóa Đơn</h1>
           <div className={styles.invoice__info}>
             <h2>Số: {data["SOPHIEU"]}</h2>
-            <h2>Ngày: {data["NGAYPHIEU"]}</h2>
+            <h2>Ngày: {convertDateForReport(data["NGAYPHIEU"])}</h2>
           </div>
         </div>
 

@@ -1,4 +1,3 @@
-import { Space } from "antd";
 import { useEffect, useState } from "react";
 import { TableContent } from "~common_tag";
 import FormKyTinhLuong from "./FormKyTinhLuong";
@@ -7,38 +6,17 @@ import {
   actions_table,
   cleanupContextTable,
 } from "~table_context";
+import { rem_to_px } from "~config/ui";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 
 const list_key = [
-  // { key: "STT", width: "7rem" },
-  { header: "Mã kỳ", key: "MAKY", width: "21rem" },
-  { header: "Tên kỳ", key: "TENKY", width: "21rem" },
-  { header: "Từ ngày", key: "TUNGAY", width: "21rem" },
-  { header: "Đến ngày", key: "DENNGAY", width: "21rem" },
+  { header: "Mã kỳ", key: "MAKY", width: 3 * rem_to_px },
+  { header: "Tên kỳ", key: "TENKY", width: 5 * rem_to_px },
+  { header: "Từ ngày", key: "TUNGAY", width: 10 * rem_to_px },
+  { header: "Đến ngày", key: "DENNGAY", width: 10 * rem_to_px },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
-
-console.log(infoColumns);
-
-// infoColumns.push({
-//   title: "Action",
-//   key: "action",
-//   render: (_, record) => (
-//     <Space size="middle">
-//       <a>Invite {record.name}</a>
-//       <a>Delete</a>
-//     </Space>
-//   ),
-// });
+const infoColumns = processingInfoColumnTable(list_key, false);
 
 const KyTinhLuong = () => {
   const [renderUI, setRenderUI] = useState(false);
@@ -64,7 +42,11 @@ const KyTinhLuong = () => {
     };
   }, []);
 
-  return <>{renderUI && <TableContent />}</>;
+  return (
+    <>
+      {renderUI && <TableContent info_other_column={{ action: 24, stt: 10 }} />}
+    </>
+  );
 };
 
 export default KyTinhLuong;

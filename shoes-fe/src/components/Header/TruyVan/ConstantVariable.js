@@ -27,8 +27,8 @@ export const itemsTruyVan = [
     key: "Chấm công",
     label: "Chấm công",
   },
-  {
-    key: "Dập lườn",
-    label: "Dập lườn",
-  },
+  // {
+  //   key: "Dập lườn",
+  //   label: "Dập lườn",
+  // },
 ];

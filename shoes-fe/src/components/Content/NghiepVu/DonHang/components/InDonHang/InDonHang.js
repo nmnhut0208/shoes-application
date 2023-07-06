@@ -1,6 +1,5 @@
 import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
-import Html2Pdf from "js-html2pdf";
 
 import styles from "./InDonHang.module.scss";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
@@ -10,141 +9,15 @@ import {
   Signature,
 } from "~common_tag/reports";
 import { convertDateForReport } from "~utils/processing_date";
-import { getImageFromMAGIAY, getDiaChiKhachHang } from "./helper";
+import { getDiaChiKhachHang, compute_total, getInfoBreakPage } from "./helper";
 import {
   INFO_COLS_THO,
   COL_INFO_SIZE,
   dictInfoPrint,
   border_text_table_config,
+  fontSize,
 } from "./ConstantVariable";
-
-const compute_total = (sub_table) => {
-  let sum = 0;
-  for (let i = 0; i < sub_table.length; i++) sum += sub_table[i]["TONGSO"];
-  return sum;
-};
-
-const getInfoBreakPage = (dataPrint, listImage) => {
-  let pages = [];
-  let index = 0;
-  let each_page = { content: [] };
-  const MIN_ROW_MAGIAY_EACHPAGE = 2;
-  const SIZE_PAGE_A4 = 790;
-  let size_page_remain = SIZE_PAGE_A4;
-  const margin_header = dictInfoPrint["margin_header"];
-  const size_each_row_table = dictInfoPrint["content"]["each_row_table"];
-
-  while (index < dataPrint.length) {
-    let nof_row_visited = 0;
-    let content = dataPrint[index];
-    let have_image = Boolean(listImage[index]);
-    let nof_row = content["TABLE"].length;
-
-    let size_MAGIAY = dictInfoPrint["content"]["info_giay_withouimage"];
-    if (have_image)
-      size_MAGIAY = dictInfoPrint["content"]["info_giay_with_image"];
-
-    let size_bottom_Table =
-      size_MAGIAY +
-      dictInfoPrint["content"]["header_table"] +
-      dictInfoPrint["content"]["gap_in_content"];
-
-    while (nof_row_visited <= nof_row) {
-      if (size_page_remain === SIZE_PAGE_A4) {
-        if (each_page["content"] && each_page["content"].length > 0) {
-          pages.push({ ...each_page });
-        }
-        // start new page
-        each_page = {};
-        each_page["header"] = 1;
-        size_page_remain -= dictInfoPrint["header"] + margin_header;
-        each_page["content"] = [];
-      }
-      if (nof_row_visited === nof_row) break;
-      // show content
-      while (size_page_remain > 10) {
-        let size_other_MAGIAY =
-          size_bottom_Table + dictInfoPrint["content"]["gap_out_content"];
-        let remain_for_rows = size_page_remain - size_other_MAGIAY;
-        if (index === dataPrint.length - 1)
-          remain_for_rows -= dictInfoPrint["footer"];
-
-        if (remain_for_rows < 0) {
-          each_page["margin_bottom"] = size_page_remain;
-          size_page_remain = SIZE_PAGE_A4;
-          break;
-        }
-        let nof_row_can_show = Math.floor(
-          remain_for_rows / size_each_row_table
-        );
-
-        if (nof_row_can_show >= nof_row - nof_row_visited) {
-          // show hết phần còn lại
-          size_page_remain =
-            size_page_remain -
-            (nof_row - nof_row_visited) * size_each_row_table -
-            size_other_MAGIAY;
-
-          let sub_table = content["TABLE"].slice(nof_row_visited, nof_row);
-
-          each_page["content"] = [
-            ...each_page["content"],
-            {
-              MAGIAY: content["MAGIAY"],
-              TENGIAY: content["TENGIAY"],
-              HINHANH: listImage[index],
-              Table: sub_table,
-              SL: compute_total(sub_table),
-            },
-          ];
-
-          each_page["margin_bottom"] = size_page_remain;
-          nof_row_visited = nof_row;
-          if (index === dataPrint.length - 1) {
-            // kiểm tra in hết phần tử cuối cùng chưa?
-            // show hết tấc cả các dòng của phần tử cuối
-            // => xong nhiệm vụ
-            size_page_remain = SIZE_PAGE_A4;
-          }
-          break;
-        } else {
-          // show ko hết thì phải đủ ít nhất 2 dòng
-          // ko đủ 2 dòng thì cho qua new page
-          if (nof_row_can_show >= MIN_ROW_MAGIAY_EACHPAGE) {
-            let sub_table = content["TABLE"].slice(
-              nof_row_visited,
-              nof_row_visited + nof_row_can_show
-            );
-            each_page["content"] = [
-              ...each_page["content"],
-              {
-                MAGIAY: content["MAGIAY"],
-                TENGIAY: content["TENGIAY"],
-                HINHANH: listImage[index],
-                Table: sub_table,
-                SL: compute_total(sub_table),
-              },
-            ];
-
-            nof_row_visited += nof_row_can_show;
-            size_page_remain =
-              size_page_remain -
-              nof_row_can_show * size_each_row_table -
-              size_other_MAGIAY;
-            each_page["margin_bottom"] = size_page_remain;
-          } else {
-            // số lượng dòng còn lại sẽ qua trang mới
-            each_page["margin_bottom"] = size_page_remain;
-            size_page_remain = SIZE_PAGE_A4;
-            break;
-          }
-        }
-      }
-    }
-    index += 1;
-  }
-  return pages;
-};
+import { getImageOfDanhMuc } from "~utils/api_get_image";
 
 const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   const [header, setHeader] = useState(infoHeader);
@@ -157,33 +30,8 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   }, []);
   const componentRef = useRef();
   const handelPrint = useReactToPrint({
-    // https://github.com/airarrazaval/html2pdf
-    onPrintError: (error) => console.log(error),
     content: () => componentRef.current,
-    removeAfterPrint: true,
-    print: async (printIframe) => {
-      const document = printIframe.contentDocument;
-      if (document) {
-        const html = document.getElementById("print_content");
-        console.log(html);
-        const exporter = new Html2Pdf(html, {
-          margin: 2,
-          marginLeft: 2,
-          marginBottom: 2,
-          filename: "myfile.pdf",
-          image: { type: "PNG", quality: 1 },
-          html2canvas: {
-            scale: 2.5,
-            logging: true,
-            dpi: 100,
-            letterRendering: true,
-          },
-          jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
-        });
-        await exporter.getPdf(true);
-        setShowModal(false);
-      }
-    },
+    documentTitle: "Thông tin phân công",
   });
 
   useLayoutEffect(() => {
@@ -197,7 +45,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
           MAGIAY: ma_giay,
           TENGIAY: dataTable[i]["TENGIAY"],
         };
-        list_promises.push(getImageFromMAGIAY(ma_giay));
+        list_promises.push(getImageOfDanhMuc("giay", ma_giay, "MAGIAY"));
         info["TABLE"] = dataTable.filter(
           (_data) => _data["MAGIAY"] === ma_giay
         );
@@ -219,7 +67,11 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
           info["TABLE"][j]["TONGSO"] = parseInt(info["TABLE"][j]["SOLUONG"]); //tongso;
           info["TABLE"][j]["SIZE"] = (
-            <SizeColumnInPrint list_tuso={top} list_mauso={bottom} />
+            <SizeColumnInPrint
+              list_tuso={top}
+              list_mauso={bottom}
+              fontSize={fontSize}
+            />
           );
         }
         ma_giay_checked.push(ma_giay);
@@ -243,7 +95,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
   useEffect(() => {
     if (dataPrint.length > 0 && listImage.length > 0 && doneGetDiaChi) {
-      let details = getInfoBreakPage(dataPrint, listImage);
+      let details = getInfoBreakPage(dataPrint, listImage, dictInfoPrint);
       setInfoDetailsPrint(details);
     }
   }, [dataPrint, listImage, doneGetDiaChi]);
@@ -252,6 +104,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
   useLayoutEffect(() => {
     if (infoDetailsPrint.length > 0) {
+      // setShowModal(false);
       handelPrint();
     }
   }, [infoDetailsPrint]);
@@ -263,15 +116,15 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
           <div key={index_page} className={styles.each_page}>
             <div className={styles.print_header}>
               <h1>Số đơn hàng: {header["SODH"]}</h1>
-              <h1>{header["TENKH"]}</h1>
+              <h1 style={{ fontSize: "2rem !important" }}>{header["TENKH"]}</h1>
             </div>
 
             <div className={styles.print_header}>
-              <h2>Ngày: {convertDateForReport(header["NGAYDH"])}</h2>
-              <h2>
+              <h1>Ngày: {convertDateForReport(header["NGAYDH"])}</h1>
+              <h1>
                 {header["SL"]}
                 {" | " + header["DIACHI"]}
-              </h2>
+              </h1>
             </div>
 
             {each_page &&
@@ -304,26 +157,6 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                 </div>
               ))}
 
-            {/* {(index_page < infoDetailsPrint.length - 1 ||
-              each_page["margin_bottom"] < dictInfoPrint["footer"]) && (
-              <>
-                <div
-                  className={styles.break_page}
-                  style={{
-                    marginBottom: each_page["margin_bottom"],
-                  }}
-                ></div>
-              </>
-            )} */}
-
-            {index_page === infoDetailsPrint.length - 1 &&
-              each_page["margin_bottom"] > dictInfoPrint["footer"] && (
-                <div>
-                  <br />
-                  <br />
-                </div>
-              )}
-
             {(index_page < infoDetailsPrint.length - 1 ||
               each_page["margin_bottom"] < dictInfoPrint["footer"]) && (
               <div
@@ -335,9 +168,16 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                 {index_page + 1}/{infoDetailsPrint.length}
               </div>
             )}
+
             {index_page === infoDetailsPrint.length - 1 && (
               <>
-                <Signature />
+                {each_page["margin_bottom"] > dictInfoPrint["footer"] && (
+                  <div>
+                    <br />
+                    <br />
+                  </div>
+                )}
+                <Signature fontSize={fontSize} />
                 <div
                   className={styles.footer}
                   style={{

@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styles from "./FormSuon.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import {
   useItemsContext,
   actions as actions_items_context,
 } from "~items_context";
-
+import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { ItemGot, ItemMui } from "~items";
+import { getImageOfDanhMuc } from "~utils/api_get_image";
 
 const FormSuon = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -14,12 +15,19 @@ const FormSuon = () => {
   const [stateItem, dispatchItem] = useItemsContext();
 
   const [image_url, setImageURL] = useState("");
-  const [image_base64, setImageBase64] = useState(
-    stateTable.inforShowTable.record["HINHANH"]
-  );
+  const [image_base64, setImageBase64] = useState("");
 
-  const [view, setView] = useState(
-    () => stateTable.inforShowTable.action_row === "view"
+  useEffect(() => {
+    if (inputForm["MASUON"] != "" && image_base64 === "") {
+      getImageOfDanhMuc("suon", inputForm["MASUON"], "MASUON").then((value) =>
+        setImageBase64(value)
+      );
+    }
+  }, []);
+
+  const view = useMemo(
+    () => stateTable.inforShowTable.action_row === "view",
+    []
   );
 
   const handleChangeInformationForm = (e) => {
@@ -28,7 +36,7 @@ const FormSuon = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = () => {
+  const handleSaveFrom = (event) => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -40,6 +48,17 @@ const FormSuon = () => {
         )
       );
     } else if (stateTable.inforShowTable.action_row === "add") {
+      if (
+        checkMaDanhMucExisted(
+          inputForm["MASUON"],
+          stateTable.inforShowTable.infoTable,
+          "MASUON"
+        )
+      ) {
+        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        event.preventDefault();
+        return false;
+      }
       method = "POST";
       dispatchTable(
         actions_table.setInforTable([
@@ -182,9 +201,10 @@ const FormSuon = () => {
       </div>
 
       <div className={styles.button_container}>
-        {!view && <button onClick={handleSaveFrom}>Lưu</button>}
+        {!view && (
+          <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
+        )}
         <button>Button 2</button>
-        <button>Đóng</button>
       </div>
     </div>
   );

@@ -7,31 +7,23 @@ import {
   cleanupContextTable,
 } from "~table_context";
 import { rem_to_px } from "~config/ui";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 
 const list_key = [
-  { header: "Mã giày", key: "MAGIAY", width: 21 * rem_to_px },
-  { header: "Đơn giá", key: "DONGIA", width: 10 * rem_to_px },
-  { header: "Tên giày", key: "TENGIAY", width: 40 * rem_to_px },
-  { header: "Mã đế", key: "MADE", width: 10 * rem_to_px },
-  { header: "Tên đế", key: "TENDE", width: 20 * rem_to_px },
-  { header: "Mã sườn", key: "MASUON", width: 10 * rem_to_px },
-  { header: "Tên sườn", key: "TENSUON", width: 20 * rem_to_px },
-  { header: "Mã cá", key: "MACA", width: 10 * rem_to_px },
-  { header: "Tên cá", key: "TENCA", width: 20 * rem_to_px },
-  { header: "Mã quai", key: "MAQUAI", width: 10 * rem_to_px },
-  { header: "Tên quai", key: "TENQUAI", width: 20 * rem_to_px },
+  { header: "Mã giày", key: "MAGIAY", width: 7 * rem_to_px },
+  { header: "Đơn giá", key: "DONGIA", width: 3 * rem_to_px },
+  { header: "Tên giày", key: "TENGIAY", width: 10 * rem_to_px },
+  { header: "Mã đế", key: "MADE", width: 2 * rem_to_px },
+  { header: "Tên đế", key: "TENDE", width: 4 * rem_to_px },
+  { header: "Mã sườn", key: "MASUON", width: 3 * rem_to_px },
+  { header: "Tên sườn", key: "TENSUON", width: 5 * rem_to_px },
+  { header: "Mã cá", key: "MACA", width: 3 * rem_to_px },
+  { header: "Tên cá", key: "TENCA", width: 5 * rem_to_px },
+  { header: "Mã quai", key: "MAQUAI", width: 3 * rem_to_px },
+  { header: "Tên quai", key: "TENQUAI", width: 8 * rem_to_px },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    size: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
+const infoColumns = processingInfoColumnTable(list_key, false);
 
 const Giay = () => {
   const [renderUI, setRenderUI] = useState(false);
@@ -61,6 +53,10 @@ const Giay = () => {
     };
   }, []);
 
-  return <>{renderUI && <TableContent />}</>;
+  return (
+    <>
+      {renderUI && <TableContent info_other_column={{ action: 26, stt: 12 }} />}
+    </>
+  );
 };
 export default Giay;

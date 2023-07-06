@@ -7,10 +7,7 @@ import MaterialReactTable from "material-react-table";
 import clsx from "clsx";
 import { rem_to_px, border_text_table_config } from "~config/ui";
 
-import {
-  renderDataEmpty,
-  processingInfoColumnTable,
-} from "~utils/processing_data_table";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 import styles from "../FormNghiepVuPhanCong/FormNghiepVuPhanCong.module.scss";
 
 import { ItemThoDe, ItemThoQuai } from "~items";
@@ -194,6 +191,17 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             min="0"
             readOnly={form["SIZE0"] !== "" && parseInt(form["SIZE0"]) == 0}
             value={form["SIZE0"]}
+            onChange={(e) => handleChangeForm(e)}
+          />
+        </div>
+        <div className={styles.pair_info}>
+          <label>Size 1</label>
+          <input
+            name="SIZE1"
+            type="number"
+            min="0"
+            readOnly={form["SIZE1"] !== "" && parseInt(form["SIZE1"]) == 0}
+            value={form["SIZE1"]}
             onChange={(e) => handleChangeForm(e)}
           />
         </div>
