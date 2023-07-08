@@ -18,7 +18,7 @@ const FormKhachHang = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = (event) => {
+  const handleSaveFrom = () => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -38,7 +38,6 @@ const FormKhachHang = () => {
         )
       ) {
         alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
-        event.preventDefault();
         return false;
       }
       method = "POST";
@@ -148,7 +147,7 @@ const FormKhachHang = () => {
       </div>
 
       <div className={styles.button_container}>
-        <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
+        <button onClick={handleSaveFrom}>Lưu</button>
         <button>Button 2</button>
       </div>
     </div>

@@ -25,6 +25,7 @@ def execute_database(sql, action_type='read'):
                         #   server="MINH\SQLEXPRESS",
                             server="DESKTOP-GT3LP7K\SQLEXPRESS",
                           database="PT",
+                        # database="PTBigAllYear",
                           trusted_connection="yes",
                           mars_connection="yes",
                           unicode_results=True,

@@ -8,17 +8,15 @@ const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
   const [dataForm, setDataForm] = useState({});
   const [stateItem, dispatchItem] = useItemsContext();
 
-  const handleSaveFrom = (event) => {
+  const handleSaveFrom = () => {
     if (dataForm["MAMAU"] == "") {
       alert("Chưa nhập đủ thông tin!!!");
-      event.preventDefault();
       return false;
     }
     if (
       checkMaDanhMucExisted(dataForm["MAMAU"], stateItem.infoItemMau, "value")
     ) {
       alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
-      event.preventDefault();
       return false;
     }
     fetch("http://localhost:8000/mau", {
@@ -44,7 +42,7 @@ const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
       <FormMauBasic initForm={dataForm} setDataForm={setDataForm} />
 
       <div className={styles.group_button}>
-        <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
+        <button onClick={handleSaveFrom}>Lưu</button>
         <button>Button 2</button>
       </div>
     </div>

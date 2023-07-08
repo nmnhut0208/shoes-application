@@ -16,7 +16,7 @@ const FormGiay = () => {
     setIsSaveData(false);
   }, [dataForm]);
 
-  const handleSaveFrom = (event) => {
+  const handleSaveFrom = () => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -36,7 +36,6 @@ const FormGiay = () => {
         )
       ) {
         alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
-        event.preventDefault();
         return false;
       }
       method = "POST";
@@ -75,10 +74,10 @@ const FormGiay = () => {
     setDataForm(form_emty);
   };
 
-  const handleNhanBan = (event) => {
+  const handleNhanBan = () => {
     let text = "Lưu thông tin hiện tại trước khi nhân bản!";
     if (window.confirm(text)) {
-      handleSaveFrom(event);
+      handleSaveFrom();
     }
     dispatchTable(actions_table.setActionForm("add"));
   };
@@ -98,13 +97,13 @@ const FormGiay = () => {
 
       <div className={styles.group_button}>
         <div>
-          <button onClick={(event) => handleNhanBan(event)}>Nhân bản</button>
+          <button onClick={handleNhanBan}>Nhân bản</button>
           <button>Second first</button>
         </div>
 
         <div>
           {stateTable.inforShowTable.action_row !== "view" && (
-            <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
+            <button onClick={handleSaveFrom}>Lưu</button>
           )}
           {stateTable.inforShowTable.action_row !== "view" && (
             <button onClick={handleNhapTiep}>Nhập tiếp</button>
