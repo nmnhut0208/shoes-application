@@ -1,7 +1,9 @@
 @import "~common_scss/form.module.scss";
 
 .group_button {
-  @extend .flex_row_space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   margin-bottom: var(--margin-bottom-config);
   button:not(:first-child) {
     margin-left: 0.5rem;

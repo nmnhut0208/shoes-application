@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTableContext, actions_table } from "~table_context";
 import FormGiayBasic from "./FormGiayBasic";
 import styles from "./FormGiayBasic.module.scss";
@@ -6,7 +6,15 @@ import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
 const FormGiay = () => {
   const [stateTable, dispatchTable] = useTableContext();
-  const [dataForm, setDataForm] = useState(stateTable.inforShowTable.record);
+  const [isSaveData, setIsSaveData] = useState(true);
+  const [dataForm, setDataForm] = useState(() => {
+    setIsSaveData(true);
+    return stateTable.inforShowTable.record;
+  });
+
+  useEffect(() => {
+    setIsSaveData(false);
+  }, [dataForm]);
 
   const handleSaveFrom = (event) => {
     let method = "";
@@ -47,11 +55,15 @@ const FormGiay = () => {
     })
       .then((response) => {
         console.log("response: ", response);
+        alert("Lưu thông tin thành công!");
       })
       .catch((error) => {
         console.log("error: ", error);
+        alert("Xảy ra lỗi, chưa lưu được thông tin!");
       });
-    dispatchTable(actions_table.setModeShowModal(false));
+
+    // Không tắt form => để user thực hiện các hành động khác
+    // dispatchTable(actions_table.setModeShowModal(false));
   };
 
   const handleNhapTiep = () => {
@@ -63,17 +75,30 @@ const FormGiay = () => {
     setDataForm(form_emty);
   };
 
+  const handleNhanBan = (event) => {
+    let text = "Lưu thông tin hiện tại trước khi nhân bản!";
+    if (window.confirm(text)) {
+      handleSaveFrom(event);
+    }
+    dispatchTable(actions_table.setActionForm("add"));
+  };
+
+  console.log(
+    "stateTable.inforShowTable.action_row: ",
+    stateTable.inforShowTable.action_row
+  );
+
   return (
     <>
       <FormGiayBasic
-        initForm={dataForm}
+        form={dataForm}
         setDataForm={setDataForm}
         mode={stateTable.inforShowTable.action_row}
       />
 
       <div className={styles.group_button}>
         <div>
-          <button>Nhân bản</button>
+          <button onClick={(event) => handleNhanBan(event)}>Nhân bản</button>
           <button>Second first</button>
         </div>
 

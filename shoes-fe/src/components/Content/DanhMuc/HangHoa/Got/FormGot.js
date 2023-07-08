@@ -21,9 +21,10 @@ const FormGot = () => {
 
   useEffect(() => {
     if (inputForm["MAGOT"] != "" && image_base64 === "") {
-      getImageOfDanhMuc("got", inputForm["MAGOT"], "MAGOT").then((value) =>
-        setImageBase64(value)
-      );
+      getImageOfDanhMuc("got", inputForm["MAGOT"], "MAGOT").then((value) => {
+        setImageBase64(value);
+        setInputForm({ ...inputForm, HINHANH: value });
+      });
     }
   }, []);
 

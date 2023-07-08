@@ -22,9 +22,10 @@ const FormQuai = () => {
 
   useEffect(() => {
     if (inputForm["MAQUAI"] != "" && image_base64 === "") {
-      getImageOfDanhMuc("quai", inputForm["MAQUAI"], "MAQUAI").then((value) =>
-        setImageBase64(value)
-      );
+      getImageOfDanhMuc("quai", inputForm["MAQUAI"], "MAQUAI").then((value) => {
+        setImageBase64(value);
+        setInputForm({ ...inputForm, HINHANH: value });
+      });
     }
   }, []);
 

@@ -14,14 +14,14 @@ export const updateColumnsInformations = (
 ) => {
   const infoColumnsInit = [];
 
-  for (var obj in INFO_COLS_DONHANG) {
-    let key = INFO_COLS_DONHANG[obj]["key"];
+  for (let index in INFO_COLS_DONHANG) {
+    let key = INFO_COLS_DONHANG[index]["key"];
     var info = {
-      header: INFO_COLS_DONHANG[obj]["header"],
-      size: INFO_COLS_DONHANG[obj]["width"],
-      accessorKey: INFO_COLS_DONHANG[obj]["key"],
-      enableEditing: INFO_COLS_DONHANG[obj]["enableEditing"],
-      key: INFO_COLS_DONHANG[obj]["key"].toLowerCase(),
+      header: INFO_COLS_DONHANG[index]["header"],
+      size: INFO_COLS_DONHANG[index]["width"],
+      accessorKey: INFO_COLS_DONHANG[index]["key"],
+      enableEditing: INFO_COLS_DONHANG[index]["enableEditing"],
+      key: INFO_COLS_DONHANG[index]["key"].toLowerCase(),
     };
 
     if (COLS_HAVE_SELECT_INPUT.includes(key)) {

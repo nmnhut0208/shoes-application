@@ -1,20 +1,20 @@
 export const processingInfoColumnTable = (list_key, setMinMax = true) => {
   const infoColumns = [];
-  for (var obj in list_key) {
+  for (let index in list_key) {
     const info = {
-      header: list_key[obj]["header"],
-      size: list_key[obj]["width"],
-      accessorKey: list_key[obj]["key"],
-      key: list_key[obj]["key"],
+      header: list_key[index]["header"],
+      size: list_key[index]["width"],
+      accessorKey: list_key[index]["key"],
+      key: list_key[index]["key"],
     };
     if (setMinMax) {
-      info["minSize"] = list_key[obj]["width"];
-      info["maxSize"] = list_key[obj]["width"];
+      info["minSize"] = list_key[index]["width"];
+      info["maxSize"] = list_key[index]["width"];
     }
-    if (list_key[obj]["header_custorm"])
-      info["header"] = list_key[obj]["header_custorm"];
-    if (list_key[obj]["muiTableBodyCellProps"])
-      info["muiTableBodyCellProps"] = list_key[obj]["muiTableBodyCellProps"];
+    if (list_key[index]["header_custorm"])
+      info["header"] = list_key[index]["header_custorm"];
+    if (list_key[index]["muiTableBodyCellProps"])
+      info["muiTableBodyCellProps"] = list_key[index]["muiTableBodyCellProps"];
     infoColumns.push(info);
   }
   return infoColumns;
@@ -27,23 +27,23 @@ export const processingInfoColumnTableHaveFooter = (
   setMinMax = true
 ) => {
   const infoColumnsInit = [];
-  for (var obj in list_key) {
+  for (let index in list_key) {
     const info = {
-      header: list_key[obj]["header"],
-      size: list_key[obj]["width"],
-      accessorKey: list_key[obj]["key"],
-      key: list_key[obj]["key"],
+      header: list_key[index]["header"],
+      size: list_key[index]["width"],
+      accessorKey: list_key[index]["key"],
+      key: list_key[index]["key"],
     };
     if (setMinMax) {
-      info["minSize"] = list_key[obj]["width"];
-      info["maxSize"] = list_key[obj]["width"];
+      info["minSize"] = list_key[index]["width"];
+      info["maxSize"] = list_key[index]["width"];
     }
 
-    if (list_key[obj]["key"] === "TENGIAY")
+    if (list_key[index]["key"] === "TENGIAY")
       info["Footer"] = () => <div>Tổng cộng: </div>;
-    if (COLS_HAVE_SUM_FOOTER.includes(list_key[obj]["key"])) {
+    if (COLS_HAVE_SUM_FOOTER.includes(list_key[index]["key"])) {
       let sum_value = data.reduce(
-        (total, row) => total + row[list_key[obj]["key"]],
+        (total, row) => total + row[list_key[index]["key"]],
         0
       );
       info["Footer"] = () => (
@@ -51,12 +51,12 @@ export const processingInfoColumnTableHaveFooter = (
       );
     }
 
-    if (list_key[obj]["Cell"]) info["Cell"] = list_key[obj]["Cell"];
-    if (list_key[obj]["header_custorm"])
-      info["header"] = list_key[obj]["header_custorm"];
+    if (list_key[index]["Cell"]) info["Cell"] = list_key[index]["Cell"];
+    if (list_key[index]["header_custorm"])
+      info["header"] = list_key[index]["header_custorm"];
 
-    if (list_key[obj]["muiTableBodyCellProps"])
-      info["muiTableBodyCellProps"] = list_key[obj]["muiTableBodyCellProps"];
+    if (list_key[index]["muiTableBodyCellProps"])
+      info["muiTableBodyCellProps"] = list_key[index]["muiTableBodyCellProps"];
     infoColumnsInit.push(info);
   }
   return infoColumnsInit;
@@ -65,10 +65,10 @@ export const processingInfoColumnTableHaveFooter = (
 export const renderDataEmpty = (list_key, number_rows) => {
   const data = [];
   const object_empty = {};
-  for (var i = 0; i < list_key.length; i++) {
+  for (let i = 0; i < list_key.length; i++) {
     object_empty[list_key[i]["key"]] = "";
   }
-  for (var i = 0; i < number_rows; i++) {
+  for (let i = 0; i < number_rows; i++) {
     data.push(object_empty);
   }
 

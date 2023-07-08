@@ -37,7 +37,7 @@ const DanhMucGiayKhachHang = ({
 
   const handleSubmit = () => {
     const columns_selected = [];
-    for (var key in rowSelection) {
+    for (let key in rowSelection) {
       if (!isNaN(key)) {
         const info = {
           ...dataTable[key],

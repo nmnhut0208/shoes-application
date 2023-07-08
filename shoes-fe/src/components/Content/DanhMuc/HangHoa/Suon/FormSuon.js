@@ -19,9 +19,10 @@ const FormSuon = () => {
 
   useEffect(() => {
     if (inputForm["MASUON"] != "" && image_base64 === "") {
-      getImageOfDanhMuc("suon", inputForm["MASUON"], "MASUON").then((value) =>
-        setImageBase64(value)
-      );
+      getImageOfDanhMuc("suon", inputForm["MASUON"], "MASUON").then((value) => {
+        setImageBase64(value);
+        setInputForm({ ...inputForm, HINHANH: value });
+      });
     }
   }, []);
 

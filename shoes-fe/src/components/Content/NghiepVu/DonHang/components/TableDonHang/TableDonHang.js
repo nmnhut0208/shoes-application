@@ -34,7 +34,7 @@ const TableDonHang = ({
       row_current[cell.column.id] = parseInt(value);
 
       var so_luong = 0;
-      for (var i = 0; i < list_size.length; i++) {
+      for (let i = 0; i < list_size.length; i++) {
         so_luong += row_current[list_size[i]];
       }
       row_current["SOLUONG"] = so_luong;

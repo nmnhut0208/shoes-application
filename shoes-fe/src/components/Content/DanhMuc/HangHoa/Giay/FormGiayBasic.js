@@ -11,22 +11,21 @@ import {
 } from "~items";
 import { getImageOfDanhMuc } from "~utils/api_get_image";
 
-let list_info_generator_MAGIAY = ["MAKH", "SortID", "MASUON"];
+let list_info_generator_MAGIAY = ["MAKH", "SortID", "MASUON", "MAQUAI"];
 
-const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
-  const [form, setForm] = useState(() => initForm);
-  const readOnly = useMemo(() => mode === "edit", []);
+const FormGiayBasic = ({ form, setDataForm, mode }) => {
+  const readOnly = useMemo(() => mode === "edit", [mode]);
   const [image_base64, setImageBase64] = useState("");
   const [image_url, setImageURL] = useState("");
 
   useEffect(() => {
-    if (initForm["MAGIAY"] != "" && image_base64 === "") {
-      getImageOfDanhMuc("giay", initForm["MAGIAY"], "MAGIAY").then((value) =>
-        setImageBase64(value)
-      );
+    if (form["MAGIAY"] != "" && image_base64 === "") {
+      getImageOfDanhMuc("giay", form["MAGIAY"], "MAGIAY").then((value) => {
+        setImageBase64(value);
+        setDataForm({ ...form, HINHANH: value });
+      });
     }
-    setForm(initForm);
-  }, [initForm]);
+  }, []);
 
   const handleChangeInformationForm = (dict_data) => {
     const data = { ...form, ...dict_data };
@@ -34,6 +33,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
     if (list_info_generator_MAGIAY.includes(name)) {
       let MAKH = data["MAKH"];
       let MASUON = data["MASUON"];
+      data["SortID"] = data["MAQUAI"];
       let SortID = data["SortID"];
       let part_number = "";
       let part_character = "";
@@ -50,7 +50,6 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
       }
       data["MAGIAY"] = part_character + part_number + "-" + MAKH + "-" + MASUON;
     }
-    setForm(data);
     setDataForm(data);
   };
 
@@ -92,7 +91,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
               <label>Mã tham chiếu</label>
               <input
                 name="SortID"
-                readOnly={readOnly}
+                readOnly={true}
                 value={form["SortID"]}
                 onChange={(e) =>
                   handleChangeInformationForm({ SortID: e.target.value })
@@ -193,6 +192,7 @@ const FormGiayBasic = ({ initForm, setDataForm, mode }) => {
             <div className={styles.group_second_row__left}>
               <label>Mã quai</label>
               <ItemQuai
+                readOnly={readOnly}
                 initValue={{ value: form["MAQUAI"], label: form["TENQUAI"] }}
                 changeData={(dict_data) => {
                   handleChangeInformationForm({
