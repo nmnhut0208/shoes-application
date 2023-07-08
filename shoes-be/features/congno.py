@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
-from datetime import datetime
+from datetime import datetime, timedelta
 from utils.vietnamese import convert_data_to_save_database
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
@@ -73,3 +73,15 @@ def update(data: ITEM_PHIEUTHU) -> RESPONSE:
 def delete(SOPHIEU: str) -> RESPONSE:
     condition = f"SOPHIEU = '{SOPHIEU}'"
     return congno.delete(condition)
+
+@router.get("/congno/get_congno_khachhang")
+def read(MAKH: str, DATE: str) -> RESPONSE:
+    date_care = datetime.strptime(DATE, "%Y-%m-%d %H:%M:%S") + timedelta(days=-1)
+    sql = f"""
+            select SUM(THANHTIENQD) as TONGNO
+            from V_TONGHOP
+            where MAKH='{MAKH}'
+            and NGAYPHIEU <= '{date_care}'
+        """
+    return congno.read_custom(sql)
+

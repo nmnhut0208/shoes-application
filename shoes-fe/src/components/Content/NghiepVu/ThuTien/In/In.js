@@ -1,21 +1,32 @@
-import { useMemo, useRef, useState, useLayoutEffect } from "react";
+import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import { Signature } from "~common_tag/reports";
 import { convertDateForReport } from "~utils/processing_date";
+import { getNoKhachHangUntilDate } from "~utils/api_get_congno";
 
 import styles from "./In.module.scss";
 
 const In = ({ data, setShowModal }) => {
   console.log("data: ", data);
-  const [tongNo, setTongNo] = useState(0);
+  const [tongNo, setTongNo] = useState("");
   const componentRef = useRef();
   const handelPrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: "Thông tin thu tiền",
   });
+
+  useEffect(() => {
+    Promise.all([getNoKhachHangUntilDate(data["MAKH"], data["NGAYPHIEU"])])
+      .then((values) => setTongNo(values[0]))
+      .catch((err) => setTongNo(null));
+  }, [data]);
+
   useLayoutEffect(() => {
-    handelPrint();
-  }, []);
+    if (tongNo != "") {
+      setShowModal(false);
+      handelPrint();
+    }
+  }, [tongNo]);
   return (
     <div ref={componentRef} className={styles.print_page}>
       <h1>PHIẾU THU TIỀN</h1>
@@ -39,7 +50,7 @@ const In = ({ data, setShowModal }) => {
         </div>
         <div>
           <label>Nợ cũ:</label>
-          <input input={data["NGAYPHIEU"]} />
+          <input value={tongNo} />
         </div>
       </div>
 
@@ -50,7 +61,7 @@ const In = ({ data, setShowModal }) => {
         </div>
         <div>
           <label>Tổng nợ:</label>
-          <input value={tongNo} />
+          <input value={tongNo - data["THANHTIEN"]} />
         </div>
       </div>
 

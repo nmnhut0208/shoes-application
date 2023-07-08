@@ -55,6 +55,9 @@ const FormThuTien = ({ dataView, type_action }) => {
       // load data from dataView
       setForm({
         ...dataView,
+        NGAYPHIEU: moment(dataView["NGAYPHIEU"], "YYYY-MM-DD").format(
+          "YYYY-MM-DD HH:mm:ss"
+        ),
         THANHTIEN: dataView["SODUCUOI"],
         NGUOITAO: stateUser.userName,
         NGUOISUA: stateUser.userName,
