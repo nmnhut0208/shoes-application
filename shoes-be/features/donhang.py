@@ -50,18 +50,18 @@ class RESPONSE_GIAYDONHANG(BaseModel):
     SORTID: str
     MAGIAY: str
     TENGIAY: str
-    MAUDE: Optional[str] = ""
-    MAUGOT: Optional[str] = ""
-    MAUSUON: Optional[str] = ""
-    MAUCA: Optional[str] = ""
-    MAUQUAI: Optional[str] = ""
+    MAUDE: Optional[str] = None
+    MAUGOT: Optional[str] = None
+    MAUSUON: Optional[str] = None
+    MAUCA: Optional[str] = None
+    MAUQUAI: Optional[str] = None
     MAKH: str
     DONGIA: int
     DONGIAQUAI: Optional[int] = 0
-    TENCA: Optional[str] = ""
+    TENCA: Optional[str] = None
     TENKH: str
     # =============
-    MADONG: Optional[str] = ""
+    MADONG: Optional[str] = None
     SIZE5: Optional[int] = 0
     SIZE6: Optional[int] = 0
     SIZE7: Optional[int] = 0
@@ -73,9 +73,9 @@ class RESPONSE_GIAYDONHANG(BaseModel):
     THANHTIEN: Optional[int] = 0
     NGAYDH: Optional[str] = ""
     NGAYGH: Optional[str] = ""
-    DIENGIAIPHIEU: Optional[str] = ""
-    DIENGIAIDONG: Optional[str] = ""
-    INHIEU: Optional[str] = ""
+    DIENGIAIPHIEU: Optional[str] = None
+    DIENGIAIDONG: Optional[str] = None
+    INHIEU: Optional[str] = None
     # ============================
     TENMAUDE: str = ""
     TENMAUGOT: str = ""

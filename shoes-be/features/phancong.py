@@ -29,13 +29,13 @@ class ITEM_PHANCONG(BaseModel):
     THOQUAI: str 
     NGUOITAO: Optional[str] = ""
     NGUOISUA: Optional[str] = ""
-    MAUDE: Optional[str] = ""
-    MAUGOT: Optional[str] = ""
-    MAUSUON: Optional[str] = ""
-    MAUCA: Optional[str] = ""
-    MAUQUAI: Optional[str] = ""
+    MAUDE: Optional[str] = None
+    MAUGOT: Optional[str] = None
+    MAUSUON: Optional[str] = None
+    MAUCA: Optional[str] = None
+    MAUQUAI: Optional[str] = None
     MAKY: str
-    DIENGIAIDONG: Optional[str] = ""
+    DIENGIAIDONG: Optional[str] = None
     # 
     MADONG: Optional[str] = ""
     MAPHIEU: Optional[str] = ""
@@ -60,14 +60,14 @@ class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
     SORTID: str
     MAGIAY: str
     TENGIAY: str
-    MAUDE: Optional[str] = ""
-    MAUGOT: Optional[str] = ""
-    MAUSUON: Optional[str] = ""
-    MAUCA: Optional[str] = ""
-    MAUQUAI: Optional[str] = ""
+    MAUDE: Optional[str] = None
+    MAUGOT: Optional[str] = None
+    MAUSUON: Optional[str] = None
+    MAUCA: Optional[str] = None
+    MAUQUAI: Optional[str] = None
     MAKH: str
     DONGIA: int
-    DONGIAQUAI: Optional[int] = ""
+    DONGIAQUAI: Optional[int] = None
     TENCA: Optional[str] = ""
     TENKH: str
     # =============

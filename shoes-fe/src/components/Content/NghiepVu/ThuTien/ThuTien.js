@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import ModalMain from "./ModalMain";
 import { useUserContext } from "~user";
 import FormThuTien from "./FormThuTien";
@@ -7,6 +7,7 @@ const MAFORM_THUTIEN = "F0036";
 
 const ThuTien = () => {
   const [stateUser, dispatchUser] = useUserContext();
+  const [showModal, setShowModal] = useState(true);
 
   const permission = useMemo(() => {
     const phanquyen = stateUser.userPoolAccess.filter(
@@ -21,7 +22,12 @@ const ThuTien = () => {
 
   return (
     <>
-      <ModalMain title="Thu Tiền">
+      <ModalMain
+        title="Thu Tiền"
+        status={showModal}
+        setShowModal={setShowModal}
+        isResetPageEmpty={true}
+      >
         <FormThuTien type_action="add" />
       </ModalMain>
     </>

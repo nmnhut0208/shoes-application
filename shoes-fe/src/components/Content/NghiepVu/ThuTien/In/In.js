@@ -16,7 +16,9 @@ const In = ({ data, setShowModal }) => {
   });
 
   useEffect(() => {
-    Promise.all([getNoKhachHangUntilDate(data["MAKH"], data["NGAYPHIEU"])])
+    Promise.all([
+      getNoKhachHangUntilDate(data["SOPHIEU"], data["MAKH"], data["NGAYPHIEU"]),
+    ])
       .then((values) => setTongNo(values[0]))
       .catch((err) => setTongNo(null));
   }, [data]);

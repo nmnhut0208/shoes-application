@@ -9,14 +9,15 @@ export const _style_component_table = {
   fontFamily: "Arial",
   borderRight: "0.1rem solid rgba(0, 0, 0, 0.1)",
   borderBottom: "0.1rem solid rgba(0, 0, 0, 0.1)",
+  padding: "5px 5px 5px 5px",
 };
 
 export const border_text_table_config = {
   muiTablePaperProps: { sx: { ..._style_component_table } },
   muiTableHeadCellProps: {
-    sx: { ..._style_component_table, fontSize: "1.6rem", lineHeight: "2rem" },
+    sx: { ..._style_component_table, fontSize: "1.5rem", lineHeight: "2rem" },
   },
-  muiTableBodyCellProps: { sx: { ..._style_component_table } },
+  muiTableBodyCellProps: { minSize: 12, sx: { ..._style_component_table } },
   muiTableFooterCellProps: { sx: { ..._style_component_table } },
   muiTableContainerProps: {
     sx: {

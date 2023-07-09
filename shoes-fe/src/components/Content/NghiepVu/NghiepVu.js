@@ -2,7 +2,7 @@ import { useTaskContext } from "~task";
 import { useUserContext } from "~user";
 import { DonHang } from "./DonHang";
 import { PhanCong } from "./PhanCong";
-import ChiTien from "./ChiTien";
+// import ChiTien from "./ChiTien";
 import { ThuTien } from "./ThuTien";
 import GiaoHang from "./GiaoHang";
 import ChamCong from "./ChamCong";
@@ -18,8 +18,8 @@ const NghiepVu = () => {
       return <DonHang />;
     case "Phân công":
       return <PhanCong />;
-    case "Chi tiền":
-      return <ChiTien />;
+    // case "Chi tiền":
+    //   return <ChiTien />;
     case "Thu tiền":
       return <ThuTien />;
     case "Giao hàng":

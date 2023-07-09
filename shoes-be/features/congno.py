@@ -75,14 +75,27 @@ def delete(SOPHIEU: str) -> RESPONSE:
     return congno.delete(condition)
 
 @router.get("/congno/get_congno_manykhachhang")
-def read(MAKH_FROM: str, MAKH_TO: str, DATE_TO: str, DATE_FROM: str=None) -> RESPONSE:
-    date_care_to = datetime.strptime(DATE_TO, "%Y-%m-%d %H:%M:%S") + timedelta(days=-1)
+def read(MAKH_FROM: str, MAKH_TO: str, DATE_TO: str, DATE_FROM: str) -> RESPONSE:
     sql = f"""
-            select SUM(THANHTIENQD) as TONGNO
+            select MAKH, SUM(THANHTIENQD) as TONGNO
             from V_TONGHOP
             where MAKH <= '{MAKH_TO}'
             and MAKH >= '{MAKH_FROM}'
-            and NGAYPHIEU <= '{date_care_to}'
+            and NGAYPHIEU <= '{DATE_TO}'
+            and NGAYPHIEU >= '{DATE_FROM}'
+            group by MAKH
+        """
+    print("sql: ", sql)
+    return congno.read_custom(sql)
+
+@router.get("/congno/get_congno_khachhang")
+def read(SOPHIEU: str, MAKH: str, DATE_TO: str, DATE_FROM: str=None) -> RESPONSE:
+    sql = f"""
+            select SUM(THANHTIENQD) as TONGNO
+            from V_TONGHOP
+            where MAKH = '{MAKH}'
+            and SOPHIEU != '{SOPHIEU}'
+            and NGAYPHIEU <= '{DATE_TO}'
         """
     if DATE_FROM is not None:
         sql += f""" and NGAYPHIEU >= '{DATE_FROM}'
@@ -90,18 +103,14 @@ def read(MAKH_FROM: str, MAKH_TO: str, DATE_TO: str, DATE_FROM: str=None) -> RES
     print("sql: ", sql)
     return congno.read_custom(sql)
 
-@router.get("/congno/get_congno_khachhang")
-def read(MAKH: str, DATE_TO: str, DATE_FROM: str=None) -> RESPONSE:
-    date_care_to = datetime.strptime(DATE_TO, "%Y-%m-%d %H:%M:%S") + timedelta(days=-1)
-    sql = f"""
-            select SUM(THANHTIENQD) as TONGNO
-            from V_TONGHOP
-            where MAKH = '{MAKH}'
-            and NGAYPHIEU <= '{date_care_to}'
-        """
-    if DATE_FROM is not None:
-        sql += f""" and NGAYPHIEU >= '{DATE_FROM}'
-                """
-    print("sql: ", sql)
+
+@router.get("/congno/truyvan_thu")
+def read() -> RESPONSE_TVTHUCHI:
+    sql = f"""SELECT SOPHIEU, NGAYPHIEU, CONGNO.MAKH, 
+                     TENKH, THANHTIEN AS SODUCUOI, DIENGIAIPHIEU 
+                     FROM CONGNO 
+                     inner join DMKHACHHANG on DMKHACHHANG.MAKH = CONGNO.MAKH
+                     WHERE LOAIPHIEU='PT'
+    """
     return congno.read_custom(sql)
 
