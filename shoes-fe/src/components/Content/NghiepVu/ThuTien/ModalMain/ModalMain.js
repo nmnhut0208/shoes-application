@@ -8,10 +8,10 @@ const ModalMain = ({
   title,
   children,
 }) => {
+  const [stateTask, dispatchTask] = useTaskContext();
   if (!status) {
     return null;
   }
-  const [stateTask, dispatchTask] = useTaskContext();
 
   return (
     <div className={styles.modal}>
