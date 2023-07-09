@@ -7,15 +7,13 @@ import { Delete, Edit } from "@mui/icons-material";
 import { useUserContext } from "~user";
 
 import { processingInfoColumnTable } from "~utils/processing_data_table";
-import { border_text_table_config } from "~config/ui";
 
-import { FormThuTien } from "~nghiep_vu/ThuTien/";
-import { INFO_COLS_DONHANG } from "./ConstantVariable";
+import { FormThuTien, ModalMain } from "~nghiep_vu/ThuTien/";
+import { COLUMNS } from "./ConstantVariable";
+import { border_text_table_config } from "~config/ui";
 
 const Table = ({ columns, data, setData, permission }) => {
   const [rowInfo, setRowInfo] = useState({});
-
-  const [isSaveData, setIsSaveData] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const handleCheckDonHang = () => {
     setShowModal(true);
@@ -40,11 +38,16 @@ const Table = ({ columns, data, setData, permission }) => {
     <>
       <MaterialReactTable
         {...border_text_table_config}
+        // muiTableProps={{
+        //   sx: {
+        //     tableLayout: "fixed",
+        //   },
+        // }}
         // enableTopToolbar={false}
         columns={columns}
         data={data}
         // components
-        enableColumnActions={false}
+        enableColumnActions={true}
         enableSorting={false}
         // enable phân trang
         enablePagination={false}
@@ -58,6 +61,30 @@ const Table = ({ columns, data, setData, permission }) => {
         enableRowNumbers
         // add action in row
         enableRowActions={true}
+        //
+        displayColumnDefOptions={{
+          "mrt-row-actions": {
+            size: 40, //set custom width
+            minSize: 24,
+            muiTableHeadCellProps: {
+              align: "center", //change head cell props
+            },
+            enableResizing: true,
+          },
+          "mrt-row-numbers": {
+            size: 30,
+            minSize: 12,
+            enableColumnOrdering: true, //turn on some features that are usually off
+            enableResizing: true,
+            muiTableHeadCellProps: {
+              align: "right",
+            },
+            muiTableBodyCellProps: {
+              align: "right",
+            },
+          },
+        }}
+        //
         renderRowActions={({ row, table }) => (
           <Box
             sx={{
@@ -107,24 +134,24 @@ const Table = ({ columns, data, setData, permission }) => {
         )}
       />
 
-      <Modal
+      <ModalMain
         status={showModal}
         title="Phiếu Thu - F0036"
         setShowModal={setShowModal}
         isResetPageEmpty={false}
       >
         <FormThuTien dataView={rowInfo} type_action="edit" />
-      </Modal>
+      </ModalMain>
     </>
   );
 };
 
 const MAFORM_TRUYVAN_PHIEUTHU = "F0035";
 
-const DonHang = () => {
+const ThuTien = () => {
   const [data, setData] = useState([]);
-  const column_donhang = useMemo(() => {
-    return processingInfoColumnTable(INFO_COLS_DONHANG);
+  const column = useMemo(() => {
+    return processingInfoColumnTable(COLUMNS);
   }, []);
   const [stateUser, dispatchUser] = useUserContext();
 
@@ -152,12 +179,12 @@ const DonHang = () => {
   }, []);
 
   if (permission.XEM + permission.SUA + permission.XOA + permission.IN === 0) {
-    alert(stateUser.userName + " không có quyền xem Truy Vấn Đơn Hàng");
+    alert(stateUser.userName + " không có quyền xem Truy Vấn Phiếu Thu");
     return <></>;
   }
   return (
     <Table
-      columns={column_donhang}
+      columns={column}
       data={data}
       setData={setData}
       permission={permission}
@@ -165,4 +192,4 @@ const DonHang = () => {
   );
 };
 
-export default DonHang;
+export default ThuTien;
