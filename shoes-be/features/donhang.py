@@ -289,7 +289,7 @@ def read(info_query: dict) -> List[RESPONSE_GIAYDONHANG]:
             AND NGAYDH <= '{info_query["DATE_TO"]}'
             AND DONHANG.MAKH >= '{info_query["KhachHangFrom"]}'
             AND DONHANG.MAKH <= '{info_query["KhachHangTo"]}'
-            ORDER BY MAKH, NGAYDH
+            ORDER BY SODH, NGAYDH, MAKH
     """
     result = donhang.read_custom(sql)
     return result

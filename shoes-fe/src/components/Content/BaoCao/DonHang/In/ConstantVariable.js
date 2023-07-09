@@ -50,7 +50,7 @@ export const INFO_TABLE = [
   {
     header: "Ngày ĐH",
     key: "NGAYDH",
-    width: 1.5 * rem_to_px,
+    width: 1 * rem_to_px,
     Cell: ({ cell }) => convertDateForReport(cell.getValue()),
     muiTableBodyCellProps: {
       align: "right",

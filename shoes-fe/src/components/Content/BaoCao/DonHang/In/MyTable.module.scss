@@ -1,0 +1,23 @@
+.my_table {
+  table,
+  td,
+  th {
+    border: 1px solid;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    font-size: 1.4rem;
+    padding: 3px 2px 3px 2px;
+  }
+  td {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.4rem;
+    padding: 3px 2px 3px 2px;
+  }
+}

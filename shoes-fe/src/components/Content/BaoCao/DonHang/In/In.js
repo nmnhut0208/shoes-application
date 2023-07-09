@@ -7,6 +7,7 @@ import { border_text_table_config } from "./ConstantVariable";
 import { processingInfoColumnTableHaveFooter } from "~utils/processing_data_table";
 import { INFO_TABLE, LIST_COLS_FOOTER_SUM } from "./ConstantVariable";
 import styles from "./In.module.scss";
+import MyTable from "./MyTable";
 
 const In = ({ data, setShowModal }) => {
   const [columns, setColumns] = useState([]);
@@ -59,7 +60,9 @@ const In = ({ data, setShowModal }) => {
         <label>{convertDateForReport(data["DATE_TO"])} </label>
       </div>
 
-      <MaterialReactTable
+      <MyTable columns={columns} data={dataTable} />
+
+      {/* <MaterialReactTable
         columns={columns}
         data={dataTable}
         {...border_text_table_config}
@@ -83,7 +86,7 @@ const In = ({ data, setShowModal }) => {
           grouping: ["SODH"],
           expanded: true,
         }}
-      />
+      /> */}
     </div>
   );
 };

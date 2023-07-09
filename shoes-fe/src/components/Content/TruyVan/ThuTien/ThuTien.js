@@ -24,26 +24,27 @@ const Table = ({ columns, data, setData, permission }) => {
       return;
     }
     let url =
-      "http://localhost:8000/donhang?SODH=" + encodeURIComponent(row["SODH"]);
+      "http://localhost:8000/congno/phieuthu?SOPHIEU=" +
+      encodeURIComponent(row["SOPHIEU"]);
     fetch(url, {
       method: "DELETE",
     })
       .then((res) => console.log("response: ", res))
       .catch((err) => console.log("error: ", err));
 
-    const newData = data.filter((item) => item.SODH != row.SODH);
+    const newData = data.filter((item) => item.SOPHIEU != row.SOPHIEU);
     setData(newData);
   };
   return (
     <>
       <MaterialReactTable
         {...border_text_table_config}
-        // muiTableProps={{
-        //   sx: {
-        //     tableLayout: "fixed",
-        //   },
-        // }}
-        // enableTopToolbar={false}
+        muiTableProps={{
+          sx: {
+            tableLayout: "fixed",
+          },
+        }}
+        enableTopToolbar={true}
         columns={columns}
         data={data}
         // components
