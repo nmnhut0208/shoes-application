@@ -25,7 +25,7 @@ for (var obj in list_key) {
   infoColumns.push(info);
 }
 
-const FormChamCong = ({ infoForm, setData }) => {
+const FormChamCong = ({ infoForm, setData, setShowForm }) => {
   const [dataTable, setDataTable] = useState([]);
 
   console.log("ChamCong", infoForm["MAKY"]);
@@ -59,6 +59,7 @@ const FormChamCong = ({ infoForm, setData }) => {
               console.log(err);
             });
           alert("Xóa thành công");
+          setShowForm(false);
         } else {
           alert("Xóa thất bại");
         }
@@ -163,7 +164,7 @@ const FormChamCong = ({ infoForm, setData }) => {
       <div className={styles.group_button}>
         <div>
           <button onClick={handleDelete}>Xóa</button>
-          <button>Đóng</button>
+          {/* <button>Đóng</button> */}
         </div>
       </div>
     </div>

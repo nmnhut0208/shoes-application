@@ -53,3 +53,20 @@ def delete(data: ITEM_KYTINHLUONG) -> RESPONSE:
     data = dict(data)
     condition = f"MAKY = '{data['MAKY']}'"
     return KTL.delete(condition)
+
+@router.get("/update_tenky")
+def update_tenky() -> RESPONSE:
+    cur_sql = f"SELECT MAKY, TENKY FROM DMKYTINHLUONG"
+    cur_ktl = KTL.read_custom(cur_sql)
+    tbn = "DMKYTINHLUONG"
+    # update new year for TENKY 
+    for item in cur_ktl:
+        tenky = item["TENKY"]
+        tenky = tenky.split("/")
+        new_year = datetime.now().year
+        new_tenky = f"{tenky[0]}/{new_year}"
+        val = f"TENKY = '{new_tenky}'"
+        condition = f"MAKY = '{item['MAKY']}'"
+        KTL.update(val, condition)
+    return {"status": "success"}
+

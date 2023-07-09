@@ -30,7 +30,7 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
     # where MAKH = '{makh}' \
     # GROUP BY SODH, MAKH, NGAYDH, NGAYGH, DIENGIAIPHIEU"
     sql = f"""SELECT SODH, NGAYDH, NGAYGH, DIENGIAI AS DIENGIAIDONG,
-              SLDONHANG as SOLUONGCONLAI FROM V_DHGIAOHANG 
+              SLDONHANG - SLGIAOHANG as SOLUONGCONLAI FROM V_DHGIAOHANG 
               WHERE MAKH = '{makh}' AND SLDONHANG > SLGIAOHANG
               """
     return GH.read_custom(sql)
@@ -44,15 +44,32 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
     sodh = "(" + ", ".join([f"'{value}'" for value in data["sodh"]]) + ")"
     print(sodh)
     makh = data["makh"]
-    sql = f"""SELECT SODH, DONHANG.MAGIAY, TENGIAY, MAUDE, MAUGOT, MAUSUON, MAUCA,
-              MAUQUAI, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, 
-              SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 as SOLUONG, 
-              GIABAN, THANHTIEN, DIENGIAIPHIEU AS DIENGIAIDONG 
-              FROM DONHANG  
-              left join (
-                    SELECT MAGIAY, TENGIAY FROM DMGIAY) as DMGIAY 
-                    ON DONHANG.MAGIAY = DMGIAY.MAGIAY 
-                WHERE SODH IN {sodh} AND MAKH = '{makh}'
+    sql = f"""SELECT SODH, THONGKE.MAGIAY, DMGIAY.TENGIAY, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, SIZE1, MAUDE, MAUGOT, MAUSUON, MAUCA, MAUQUAI,
+                SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 as SOLUONG, THONGKE.GIABAN, (SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0) * THONGKE.GIABAN AS THANHTIEN,
+                THONGKE.DIENGIAIPHIEU AS DIENGIAIDONG
+                FROM 
+                (
+                select DONHANG.SODH, DONHANG.MAGIAY, coalesce(DONHANG.SIZE5, 0) - SUM(coalesce(CONGNO.SIZE5, 0)) AS SIZE5, 
+                coalesce(DONHANG.SIZE6, 0) - SUM(coalesce(CONGNO.SIZE6, 0)) AS SIZE6, coalesce(DONHANG.SIZE7, 0) - SUM(coalesce(CONGNO.SIZE7, 0)) AS SIZE7, 
+                coalesce(DONHANG.SIZE8, 0) - SUM(coalesce(CONGNO.SIZE8, 0)) AS SIZE8, coalesce(DONHANG.SIZE9, 0) - SUM(coalesce(CONGNO.SIZE9, 0)) AS SIZE9, 
+                coalesce(DONHANG.SIZE0, 0) - SUM(coalesce(CONGNO.SIZE0, 0)) AS SIZE0, coalesce(DONHANG.SIZE1, 0) - SUM(coalesce(CONGNO.SIZE1, 0)) AS SIZE1, 
+                DONHANG.MAUDE, DONHANG.MAUGOT, DONHANG.MAUSUON, DONHANG.MAUCA, DONHANG.MAUQUAI,
+                DONHANG.GIABAN, DONHANG.THANHTIEN, DONHANG.DIENGIAIPHIEU
+                from DONHANG
+                LEFT JOIN CONGNO ON DONHANG.SODH = CONGNO.SODH 
+                AND DONHANG.MAGIAY = CONGNO.MAGIAY 
+                AND coalesce(DONHANG.MAUDE, '') = coalesce(CONGNO.MAUDE, '')
+                AND coalesce(DONHANG.MAUSUON, '') = coalesce(CONGNO.MAUSUON, '') 
+                AND coalesce(DONHANG.MAUCA, '') = coalesce(CONGNO.MAUCA, '') 
+                AND coalesce(DONHANG.MAUQUAI, '') = coalesce(CONGNO.MAUQUAI, '')
+                AND coalesce(DONHANG.MAUGOT, '') = coalesce(CONGNO.MAUGOT, '')
+                WHERE DONHANG.SODH IN {sodh}
+                GROUP BY DONHANG.SODH, DONHANG.MAGIAY, DONHANG.MAUDE, DONHANG.MAUGOT, DONHANG.MAUSUON, DONHANG.MAUCA, DONHANG.MAUQUAI,
+                DONHANG.SIZE5, DONHANG.SIZE6, DONHANG.SIZE7, DONHANG.SIZE8, DONHANG.SIZE9, DONHANG.SIZE0, DONHANG.SIZE1,
+                DONHANG.GIABAN, DONHANG.THANHTIEN, DONHANG.DIENGIAIPHIEU
+                ) AS THONGKE
+                left join (SELECT MAGIAY, TENGIAY FROM DMGIAY) as DMGIAY ON THONGKE.MAGIAY = DMGIAY.MAGIAY
+                WHERE SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + SIZE1 > 0
                 """
     print(sql)
     return GH.read_custom(sql)

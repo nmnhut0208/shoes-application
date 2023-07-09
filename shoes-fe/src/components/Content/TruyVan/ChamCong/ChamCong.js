@@ -4,6 +4,10 @@ import { Modal } from "~common_tag";
 import SubTable from "./SubTable";
 import styles from "./ChamCong.module.scss";
 import FormChamCong from "./FormChamCong/FormChamCong";
+import { IconButton, Tooltip } from "@mui/material";
+import { Delete } from "@mui/icons-material";
+import { ModalDelelete } from "./Modal";
+import FormDelete from "./FormDelete";
 
 const list_key = [
   { header: "Mã kỳ", key: "MAKY" },
@@ -29,9 +33,15 @@ const GiaoHang = () => {
   const [dataTable, setDataTable] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [sendData, setSendData] = useState({});
+  const [showModal, setShowModal] = useState(false);
   //   const [rowSelection, setRowSelection] = useState({});
 
   console.log("GiaoHang");
+
+  const handleDelete = () => {
+    console.log("handleDelete");
+    setShowModal(true);
+  };
 
   useEffect(() => {
     fetch("http://localhost:8000/tv_chamcong")
@@ -44,11 +54,20 @@ const GiaoHang = () => {
       .catch((err) => {
         console.log(":error: ", err);
       });
-  }, []);
+  }, [showModal]);
 
   return (
     <>
       <header className={styles.header_table}>Chấm công</header>
+      <Tooltip arrow title="Add">
+        <IconButton
+          onClick={() => {
+            handleDelete();
+          }}
+        >
+          <Delete style={{ color: "red" }} fontSize="large" />
+        </IconButton>
+      </Tooltip>
       <SubTable
         columns={infoColumns}
         data={dataTable}
@@ -61,8 +80,17 @@ const GiaoHang = () => {
       />
       {showForm && (
         <Modal>
-          <FormChamCong infoForm={sendData} setData={setDataTable} />
+          <FormChamCong
+            infoForm={sendData}
+            setData={setDataTable}
+            setShowForm={setShowForm}
+          />
         </Modal>
+      )}
+      {showModal && (
+        <ModalDelelete setShowForm={setShowModal}>
+          <FormDelete setShowModal={setShowModal} />
+        </ModalDelelete>
       )}
     </>
   );

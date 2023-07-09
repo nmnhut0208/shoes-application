@@ -13,11 +13,31 @@ import { useUserContext, actions } from "~user";
 // import { Header } from "antd/es/layout/layout";
 
 const list_key = [
-  { header: "Số đơn hàng", key: "SODH", width: "10rem" },
-  { header: "Ngày đơn hàng", key: "NGAYDH", width: "10rem" },
-  { header: "Ngày giao hàng", key: "NGAYGH", width: "10rem" },
-  { header: "Diễn giải", key: "DIENGIAIDONG", width: "10rem" },
-  { header: "Số lượng còn lại", key: "SOLUONGCONLAI", width: "10rem" },
+  { header: "Số đơn hàng", key: "SODH", width: "10rem", enableEditing: false },
+  {
+    header: "Ngày đơn hàng",
+    key: "NGAYDH",
+    width: "10rem",
+    enableEditing: false,
+  },
+  {
+    header: "Ngày giao hàng",
+    key: "NGAYGH",
+    width: "10rem",
+    enableEditing: false,
+  },
+  {
+    header: "Diễn giải",
+    key: "DIENGIAIDONG",
+    width: "10rem",
+    enableEditing: false,
+  },
+  {
+    header: "Số lượng còn lại",
+    key: "SOLUONGCONLAI",
+    width: "10rem",
+    enableEditing: false,
+  },
 ];
 
 const infoColumns = [];
@@ -27,28 +47,39 @@ for (var obj in list_key) {
     width: list_key[obj]["width"],
     accessorKey: list_key[obj]["key"],
     key: list_key[obj]["key"],
+    enableEditing: list_key[obj]["enableEditing"],
   };
   infoColumns.push(info);
 }
 
 const list_key_sub = [
-  { header: "Mã Giày", key: "MAGIAY", width: "10rem" },
-  { header: "Tên Giày", key: "TENGIAY", width: "10rem" },
-  { header: "Màu Đế", key: "MAUDE", width: "10rem" },
-  { header: "Màu Gót", key: "MAUGOT", width: "10rem" },
-  { header: "Màu Sườn", key: "MAUSUON", width: "10rem" },
-  { header: "Màu Cá", key: "MAUCA", width: "10rem" },
-  { header: "Màu Quai", key: "MAUQUAI", width: "10rem" },
-  { header: "Size 5", key: "SIZE5", width: "10rem" },
-  { header: "Size 6", key: "SIZE6", width: "10rem" },
-  { header: "Size 7", key: "SIZE7", width: "10rem" },
-  { header: "Size 8", key: "SIZE8", width: "10rem" },
-  { header: "Size 9", key: "SIZE9", width: "10rem" },
-  { header: "Size 0", key: "SIZE0", width: "10rem" },
-  { header: "Số lượng", key: "SOLUONG", width: "10rem" },
-  { header: "Giá bán", key: "GIABAN", width: "10rem" },
-  { header: "Thành tiền", key: "THANHTIEN", width: "10rem" },
-  { header: "Diễn giải", key: "DIENGIAIDONG", width: "10rem" },
+  { header: "Mã Giày", key: "MAGIAY", width: "10rem", enableEditing: false },
+  { header: "Tên Giày", key: "TENGIAY", width: "10rem", enableEditing: false },
+  { header: "Màu Đế", key: "MAUDE", width: "10rem", enableEditing: false },
+  { header: "Màu Gót", key: "MAUGOT", width: "10rem", enableEditing: false },
+  { header: "Màu Sườn", key: "MAUSUON", width: "10rem", enableEditing: false },
+  { header: "Màu Cá", key: "MAUCA", width: "10rem", enableEditing: false },
+  { header: "Màu Quai", key: "MAUQUAI", width: "10rem", enableEditing: false },
+  { header: "Size 5", key: "SIZE5", width: "10rem", enableEditing: true },
+  { header: "Size 6", key: "SIZE6", width: "10rem", enableEditing: true },
+  { header: "Size 7", key: "SIZE7", width: "10rem", enableEditing: true },
+  { header: "Size 8", key: "SIZE8", width: "10rem", enableEditing: true },
+  { header: "Size 9", key: "SIZE9", width: "10rem", enableEditing: true },
+  { header: "Size 0", key: "SIZE0", width: "10rem", enableEditing: true },
+  { header: "Số lượng", key: "SOLUONG", width: "10rem", enableEditing: false },
+  { header: "Giá bán", key: "GIABAN", width: "10rem", enableEditing: false },
+  {
+    header: "Thành tiền",
+    key: "THANHTIEN",
+    width: "10rem",
+    enableEditing: false,
+  },
+  {
+    header: "Diễn giải",
+    key: "DIENGIAIDONG",
+    width: "10rem",
+    enableEditing: false,
+  },
 ];
 
 const COLS_HAVE_SUM_FOOTER = [
@@ -109,6 +140,7 @@ const GiaoHang = () => {
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
+  const [rowSelectionSub, setRowSelectionSub] = useState({});
   // const test_makh = "THU";
   const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
   const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
@@ -121,16 +153,22 @@ const GiaoHang = () => {
     NGAYPHIEU: "",
   });
 
-  console.log("GiaoHang");
-
   const handleSave = () => {
     if (
       userState.userPoolAccess.some(
         (obj) => obj.MAFORM === maForm && obj.THEM === 1
       )
     ) {
+      const keys = Object.keys(rowSelectionSub);
+      const data = [];
+      for (var i = 0; i < keys.length; i++) {
+        if (rowSelectionSub[keys[i]] === true) {
+          data.push(dataTableSub[keys[i]]);
+        }
+      }
+
       const send_data = {
-        data: dataTableSub,
+        data: data,
         makh: infoKH.MAKH,
         sophieu: infoForm.SOPHIEU,
         diengiai: infoForm.DIENGIAI,
@@ -306,6 +344,7 @@ const GiaoHang = () => {
         width: list_key_sub[obj]["width"],
         accessorKey: list_key_sub[obj]["key"],
         key: list_key_sub[obj]["key"],
+        enableEditing: list_key_sub[obj]["enableEditing"],
       };
       if (list_key_sub[obj]["key"] === "TENGIAY")
         info["Footer"] = () => <div>Tổng cộng</div>;
@@ -422,9 +461,10 @@ const GiaoHang = () => {
       <SubTable
         columns={infoColumnsSub}
         data={dataTableSub}
-        rowSelection={{}}
-        flag_rowSelection={false}
-        // setRowSelection={setRowSelection}
+        setDataTable={setDataTableSub}
+        rowSelection={rowSelectionSub}
+        flag_rowSelection={true}
+        setRowSelection={setRowSelectionSub}
         maxHeight={"26rem"}
       />
       <div className={styles.group_button}>
