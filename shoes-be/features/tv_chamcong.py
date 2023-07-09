@@ -22,6 +22,7 @@ def read():
     sql = f"""
         select MAKY, MANVIEN, phieupc as SOPHIEU, NgayPhieu as NGAYPHIEU, SUM(SOLUONG) as SOLUONG, DienGiai AS DIENGIAI FROM CHAMCONG
         GROUP BY MAKY, phieupc, NgayPhieu, MANVIEN, DienGiai
+        order by MAKY, MANVIEN, NgayPhieu 
     """
     # print(sql)
     return TVCC.read_custom(sql)
@@ -47,6 +48,22 @@ def delete(data: dict):
     sql = f"""DELETE FROM CHAMCONG WHERE MAKY='{maky}' 
               AND MANVIEN='{manv}' AND PHIEUPC='{phieupc}'
               """
+    # print(sql)
+    TVCC.execute_custom(sql)
+    return {"status": "success"}
+
+@router.get("/get_ky")
+def read():
+    sql = f"""
+        select distinct MAKY FROM CHAMCONG order by MAKY
+    """
+    # print(sql)
+    return TVCC.read_custom(sql)
+
+@router.delete("/delete_ky")
+def delete(data: dict):
+    maky = data["MAKY"]
+    sql = f"""DELETE FROM CHAMCONG WHERE MAKY='{maky}' """
     # print(sql)
     TVCC.execute_custom(sql)
     return {"status": "success"}

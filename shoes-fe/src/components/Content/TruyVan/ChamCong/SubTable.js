@@ -34,6 +34,8 @@ const SubTable = ({
       enableColumnActions={false}
       enableSorting={false}
       enableSelectAll={false}
+      enableGrouping
+      initialState={{ grouping: ["MAKY"], expanded: true }}
       //   enableRowSelection
       //   getRowId={(row) => row.userId}
       //   onRowSelectionChange={setRowSelection} //connect internal row selection state to your own

@@ -8,6 +8,8 @@ import {
 } from "~table_context";
 import { rem_to_px } from "~config/ui";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
+import { IconButton, Tooltip } from "@mui/material";
+import { Edit } from "@mui/icons-material";
 
 const list_key = [
   { header: "Mã kỳ", key: "MAKY", width: 3 * rem_to_px },
@@ -21,6 +23,25 @@ const infoColumns = processingInfoColumnTable(list_key, false);
 const KyTinhLuong = () => {
   const [renderUI, setRenderUI] = useState(false);
   const [stateTable, dispatchTable] = useTableContext();
+  const [count, setCount] = useState(0);
+
+  const handleUpdate = () => {
+    fetch("http://localhost:8000/update_tenky")
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        if (info["status"] === "success") {
+          alert("Update thành công");
+          setCount(count + 1);
+        } else {
+          alert("Update thất bại");
+        }
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+  };
 
   useEffect(() => {
     dispatchTable(actions_table.setTitleModal("Kỳ tính lương - F0040"));
@@ -40,10 +61,19 @@ const KyTinhLuong = () => {
     return () => {
       cleanupContextTable(dispatchTable);
     };
-  }, []);
+  }, [count]);
 
   return (
     <>
+      <Tooltip arrow title="Update">
+        <IconButton
+          onClick={() => {
+            handleUpdate();
+          }}
+        >
+          <Edit style={{ color: "green" }} fontSize="large" />
+        </IconButton>
+      </Tooltip>
       {renderUI && <TableContent info_other_column={{ action: 24, stt: 10 }} />}
     </>
   );
