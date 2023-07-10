@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
 import MaterialReactTable from "material-react-table";
+import Html2Pdf from "js-html2pdf";
 
 import { useReactToPrint } from "react-to-print";
 import { convertDateForReport } from "~utils/processing_date";
@@ -51,7 +52,7 @@ const In = ({ data, setShowModal }) => {
   }, [dataTable]);
 
   return (
-    <div ref={componentRef} className={styles.print_page}>
+    <div ref={componentRef} className={styles.print_page} id="print_content">
       <h1>BÁO CÁO ĐƠN HÀNG</h1>
       <div className={styles.info_time}>
         <label>Từ ngày </label>
@@ -60,7 +61,7 @@ const In = ({ data, setShowModal }) => {
         <label>{convertDateForReport(data["DATE_TO"])} </label>
       </div>
 
-      <MyTable columns={columns} data={dataTable} />
+      <MyTable columns={INFO_TABLE} data={dataTable} />
 
       {/* <MaterialReactTable
         columns={columns}

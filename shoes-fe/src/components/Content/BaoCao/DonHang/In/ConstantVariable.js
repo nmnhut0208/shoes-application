@@ -46,18 +46,29 @@ const textarea_style = {
 };
 
 export const INFO_TABLE = [
-  { header: "Số ĐH", key: "SODH", width: 2.5 * rem_to_px },
+  { header: "Số ĐH", key: "SODH", width: 2.5 * rem_to_px, textAlign: "left" },
   {
     header: "Ngày ĐH",
     key: "NGAYDH",
-    width: 1 * rem_to_px,
+    width: 0.5 * rem_to_px,
     Cell: ({ cell }) => convertDateForReport(cell.getValue()),
     muiTableBodyCellProps: {
       align: "right",
     },
+    textAlign: "left",
   },
-  { header: "Tên Khách Hàng", key: "TENKH", width: 3 * rem_to_px },
-  { header: "Tên Giày", key: "TENGIAY", width: 5 * rem_to_px },
+  {
+    header: "Tên Khách Hàng",
+    key: "TENKH",
+    width: 3 * rem_to_px,
+    textAlign: "left",
+  },
+  {
+    header: "Tên Giày",
+    key: "TENGIAY",
+    width: 5 * rem_to_px,
+    textAlign: "left",
+  },
   {
     header: "Size0",
     key: "SIZE0",
@@ -69,6 +80,7 @@ export const INFO_TABLE = [
     muiTableBodyCellProps: {
       align: "right",
     },
+    textAlign: "right",
   },
   {
     header: "Size1",
@@ -77,6 +89,7 @@ export const INFO_TABLE = [
     muiTableBodyCellProps: {
       align: "right",
     },
+    textAlign: "right",
   },
   {
     header: "Size5",
@@ -85,6 +98,7 @@ export const INFO_TABLE = [
     muiTableBodyCellProps: {
       align: "right",
     },
+    textAlign: "right",
   },
   {
     header: "Size6",
@@ -93,6 +107,7 @@ export const INFO_TABLE = [
     muiTableBodyCellProps: {
       align: "right",
     },
+    textAlign: "right",
   },
   {
     header: "Size7",
@@ -101,6 +116,7 @@ export const INFO_TABLE = [
     muiTableBodyCellProps: {
       align: "right",
     },
+    textAlign: "right",
   },
   {
     header: "Size8",
@@ -109,6 +125,7 @@ export const INFO_TABLE = [
     muiTableBodyCellProps: {
       align: "right",
     },
+    textAlign: "right",
   },
   {
     header: "Size9",
@@ -117,6 +134,7 @@ export const INFO_TABLE = [
     muiTableBodyCellProps: {
       align: "right",
     },
+    textAlign: "right",
   },
   {
     header: "Số lượng",
@@ -128,6 +146,7 @@ export const INFO_TABLE = [
     muiTableBodyCellProps: {
       align: "right",
     },
+    textAlign: "right",
   },
   {
     header: "Đơn giá",
@@ -139,6 +158,7 @@ export const INFO_TABLE = [
     header_custorm: (
       <textarea value={"Đơn giá"} style={{ ...textarea_style }} />
     ),
+    textAlign: "right",
   },
   {
     header: "Thành tiền",
@@ -150,6 +170,7 @@ export const INFO_TABLE = [
     muiTableBodyCellProps: {
       align: "right",
     },
+    textAlign: "right",
   },
 ];
 
