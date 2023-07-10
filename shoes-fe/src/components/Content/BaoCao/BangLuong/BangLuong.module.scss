@@ -1,0 +1,41 @@
+@import "~common_scss/form.module.scss";
+
+.page {
+  margin-top: 1rem;
+  label {
+    margin-right: 0.1rem;
+    max-width: fit-content;
+  }
+  fieldset {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(16, 16, 16, 0.2);
+    width: 60rem;
+  }
+  .group_ratio {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 6rem;
+
+    padding: 1rem;
+
+    input[type="radio"] {
+      vertical-align: middle;
+    }
+    label {
+      vertical-align: middle;
+      margin-right: 0.3rem;
+    }
+    label:after {
+      content: "";
+    }
+  }
+
+  .group_button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+}

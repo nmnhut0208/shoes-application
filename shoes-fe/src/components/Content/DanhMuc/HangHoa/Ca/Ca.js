@@ -12,8 +12,6 @@ import { processingInfoColumnTable } from "~utils/processing_data_table";
 const list_key = [
   { header: "Mã Cá", key: "MACA", width: 5 * rem_to_px },
   { header: "Tên Cá", key: "TENCA", width: 10 * rem_to_px },
-  // { header: "Mã Mũi", key: "MAMUI", width: 3 * rem_to_px },
-  // { header: "Tên Mũi", key: "TENMUI", width: 5 * rem_to_px },
   { header: "Ghi chú", key: "GHICHU", width: 10 * rem_to_px },
 ];
 

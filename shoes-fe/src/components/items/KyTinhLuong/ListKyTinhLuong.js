@@ -17,6 +17,7 @@ const ListKyTinhLuong = ({ changeData }) => {
     if (keys.length > 0) {
       changeData({
         MAKY: data[keys[0]]["MAKY"],
+        TENKY: data[keys[0]]["TENKY"],
       });
     }
   }, [rowSelection]);
