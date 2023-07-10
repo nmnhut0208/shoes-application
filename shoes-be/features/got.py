@@ -11,8 +11,8 @@ from utils.vietnamese import convert_data_to_save_database
 class ITEM_GOT(BaseModel):
     MAGOT: str
     TENGOT: str
-    HINHANH: Optional[str] = ""
-    GHICHU: Optional[str] = ""
+    HINHANH: Optional[str] = None
+    GHICHU: Optional[str] = None
 
 router = APIRouter()
 

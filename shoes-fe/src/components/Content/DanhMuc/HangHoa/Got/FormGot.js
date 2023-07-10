@@ -21,9 +21,10 @@ const FormGot = () => {
 
   useEffect(() => {
     if (inputForm["MAGOT"] != "" && image_base64 === "") {
-      getImageOfDanhMuc("got", inputForm["MAGOT"], "MAGOT").then((value) =>
-        setImageBase64(value)
-      );
+      getImageOfDanhMuc("got", inputForm["MAGOT"], "MAGOT").then((value) => {
+        setImageBase64(value);
+        setInputForm({ ...inputForm, HINHANH: value });
+      });
     }
   }, []);
 
@@ -33,7 +34,7 @@ const FormGot = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = (event) => {
+  const handleSaveFrom = () => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -53,7 +54,6 @@ const FormGot = () => {
         )
       ) {
         alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
-        event.preventDefault();
         return false;
       }
       method = "POST";
@@ -159,9 +159,7 @@ const FormGot = () => {
       </div>
 
       <div className={styles.button_container}>
-        {!view && (
-          <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
-        )}
+        {!view && <button onClick={handleSaveFrom}>Lưu</button>}
         <button>Button 2</button>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTableContext, actions_table } from "~table_context";
 import FormGiayBasic from "./FormGiayBasic";
 import styles from "./FormGiayBasic.module.scss";
@@ -6,9 +6,17 @@ import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
 const FormGiay = () => {
   const [stateTable, dispatchTable] = useTableContext();
-  const [dataForm, setDataForm] = useState(stateTable.inforShowTable.record);
+  const [isSaveData, setIsSaveData] = useState(true);
+  const [dataForm, setDataForm] = useState(() => {
+    setIsSaveData(true);
+    return stateTable.inforShowTable.record;
+  });
 
-  const handleSaveFrom = (event) => {
+  useEffect(() => {
+    setIsSaveData(false);
+  }, [dataForm]);
+
+  const handleSaveFrom = () => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -28,7 +36,6 @@ const FormGiay = () => {
         )
       ) {
         alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
-        event.preventDefault();
         return false;
       }
       method = "POST";
@@ -47,11 +54,15 @@ const FormGiay = () => {
     })
       .then((response) => {
         console.log("response: ", response);
+        alert("Lưu thông tin thành công!");
       })
       .catch((error) => {
         console.log("error: ", error);
+        alert("Xảy ra lỗi, chưa lưu được thông tin!");
       });
-    dispatchTable(actions_table.setModeShowModal(false));
+
+    // Không tắt form => để user thực hiện các hành động khác
+    // dispatchTable(actions_table.setModeShowModal(false));
   };
 
   const handleNhapTiep = () => {
@@ -63,23 +74,36 @@ const FormGiay = () => {
     setDataForm(form_emty);
   };
 
+  const handleNhanBan = () => {
+    let text = "Lưu thông tin hiện tại trước khi nhân bản!";
+    if (window.confirm(text)) {
+      handleSaveFrom();
+    }
+    dispatchTable(actions_table.setActionForm("add"));
+  };
+
+  console.log(
+    "stateTable.inforShowTable.action_row: ",
+    stateTable.inforShowTable.action_row
+  );
+
   return (
     <>
       <FormGiayBasic
-        initForm={dataForm}
+        form={dataForm}
         setDataForm={setDataForm}
         mode={stateTable.inforShowTable.action_row}
       />
 
       <div className={styles.group_button}>
         <div>
-          <button>Nhân bản</button>
+          <button onClick={handleNhanBan}>Nhân bản</button>
           <button>Second first</button>
         </div>
 
         <div>
           {stateTable.inforShowTable.action_row !== "view" && (
-            <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
+            <button onClick={handleSaveFrom}>Lưu</button>
           )}
           {stateTable.inforShowTable.action_row !== "view" && (
             <button onClick={handleNhapTiep}>Nhập tiếp</button>

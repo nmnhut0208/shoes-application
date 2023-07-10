@@ -32,7 +32,7 @@ for (var obj in list_key) {
 
 const url_data = {
   option1: "http://localhost:8000/tv_thuchi",
-  option2: "http://localhost:8000/tv_thu",
+  option2: "http://localhost:8000/congno/truyvan_thu",
   option3: "http://localhost:8000/tv_chi",
 };
 

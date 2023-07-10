@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FormGiayBasic } from "~hang_hoa";
 import styles from "./FormGiay.module.scss";
 
 const FormGiay = ({ setShowModal }) => {
   const [dataForm, setDataForm] = useState({});
 
-  const handleSaveFrom = async (event) => {
+  const handleSaveFrom = async () => {
     if (dataForm["MAGIAY"] == "") {
       alert("Chưa nhập đủ thông tin!");
-      event.preventDefault();
       return false;
     }
     const response = await fetch(
@@ -18,7 +17,6 @@ const FormGiay = ({ setShowModal }) => {
     const result = await response.json();
     if (result[dataForm["MAGIAY"]]) {
       alert("Mã giày đã tồn tại");
-      event.preventDefault();
       return false;
     }
     fetch("http://localhost:8000/giay", {
@@ -46,16 +44,16 @@ const FormGiay = ({ setShowModal }) => {
 
   return (
     <>
-      <FormGiayBasic initForm={dataForm} setDataForm={setDataForm} />
+      <FormGiayBasic form={dataForm} setDataForm={setDataForm} mode="add" />
       <div className={styles.form}>
         <div className={styles.group_button}>
-          <div>
-            <button>Nhân bản</button>
+          {/* <div>
+            <button onClick={handleNhanBan}>Nhân bản</button>
             <button>Second first</button>
-          </div>
+          </div> */}
 
           <div>
-            <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
+            <button onClick={handleSaveFrom}>Lưu</button>
             <button onClick={handleNhapTiep}>Nhập tiếp</button>
           </div>
         </div>

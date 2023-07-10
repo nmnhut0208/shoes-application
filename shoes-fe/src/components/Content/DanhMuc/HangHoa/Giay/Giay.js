@@ -6,22 +6,8 @@ import {
   actions_table,
   cleanupContextTable,
 } from "~table_context";
-import { rem_to_px } from "~config/ui";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
-
-const list_key = [
-  { header: "Mã giày", key: "MAGIAY", width: 7 * rem_to_px },
-  { header: "Đơn giá", key: "DONGIA", width: 3 * rem_to_px },
-  { header: "Tên giày", key: "TENGIAY", width: 10 * rem_to_px },
-  { header: "Mã đế", key: "MADE", width: 2 * rem_to_px },
-  { header: "Tên đế", key: "TENDE", width: 4 * rem_to_px },
-  { header: "Mã sườn", key: "MASUON", width: 3 * rem_to_px },
-  { header: "Tên sườn", key: "TENSUON", width: 5 * rem_to_px },
-  { header: "Mã cá", key: "MACA", width: 3 * rem_to_px },
-  { header: "Tên cá", key: "TENCA", width: 5 * rem_to_px },
-  { header: "Mã quai", key: "MAQUAI", width: 3 * rem_to_px },
-  { header: "Tên quai", key: "TENQUAI", width: 8 * rem_to_px },
-];
+import { list_key } from "./ConstantVariale";
 
 const infoColumns = processingInfoColumnTable(list_key, false);
 

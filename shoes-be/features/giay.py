@@ -16,9 +16,9 @@ class ITEM_GIAY(BaseModel):
     MASUON: str
     MACA: str
     MAQUAI: str
-    GHICHU: Optional[str] = ""
+    GHICHU: Optional[str] = None
     DONGIA: int 
-    MAMAU: Optional[str] = ""
+    MAMAU: Optional[str] = None
     MAKH: str
     SortID: str
     GIATRANGTRI: Optional[int] = 0
@@ -27,11 +27,11 @@ class ITEM_GIAY(BaseModel):
     GIATANTRANG: Optional[int] = 0
     GIANHANCONG: Optional[int] = 0
     GIAKEO: Optional[int] = 0
-    TRANGTRIDE: Optional[str] = ""
-    GHICHUDE: Optional[str] = ""
-    TRANGTRIQUAI: Optional[str] = ""
-    GHICHUQUAI: Optional[str] = ""
-    HINHANH: Optional[str] = ""
+    TRANGTRIDE: Optional[str] = None
+    GHICHUDE: Optional[str] = None
+    TRANGTRIQUAI: Optional[str] = None
+    GHICHUQUAI: Optional[str] = None
+    HINHANH: Optional[str] = None
 
 
 class RESPONSE_GIAY(BaseModel):
@@ -45,12 +45,12 @@ class RESPONSE_GIAY(BaseModel):
     TENCA: Optional[str] = ""
     MAQUAI: str
     TENQUAI: Optional[str] = ""
-    GHICHU: Optional[str] = ""
+    GHICHU: Optional[str] = None
     DONGIA: int
-    MAMAU: Optional[str] = ""
+    MAMAU: Optional[str] = None
     TENMAU: Optional[str] = ""
     MAKH: str
-    TENKH: Optional[str] = ""
+    TENKH: Optional[str] = None
     SortID: str
     GIATRANGTRI: Optional[int] = 0
     GIASUON: Optional[int] = 0
@@ -58,11 +58,11 @@ class RESPONSE_GIAY(BaseModel):
     GIATANTRANG: Optional[int] = 0
     GIANHANCONG: Optional[int] = 0
     GIAKEO: Optional[int] = 0
-    TRANGTRIDE: Optional[str] = ""
-    GHICHUDE: Optional[str] = ""
-    TRANGTRIQUAI: Optional[str] = ""
-    GHICHUQUAI: Optional[str] = ""
-    HINHANH: Optional[str] = ""
+    TRANGTRIDE: Optional[str] = None
+    GHICHUDE: Optional[str] = None
+    TRANGTRIQUAI: Optional[str] = None
+    GHICHUQUAI: Optional[str] = None
+    HINHANH: Optional[str] = None
 
 
 router = APIRouter()

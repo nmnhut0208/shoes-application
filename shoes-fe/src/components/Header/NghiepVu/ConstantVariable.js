@@ -19,10 +19,10 @@ export const itemsNghiepVu = [
     key: "Thu tiền",
     label: "Thu tiền",
   },
-  {
-    key: "Chi tiền",
-    label: "Chi tiền",
-  },
+  // {
+  //   key: "Chi tiền",
+  //   label: "Chi tiền",
+  // },
   {
     key: "Phân công",
     label: "Phân công",

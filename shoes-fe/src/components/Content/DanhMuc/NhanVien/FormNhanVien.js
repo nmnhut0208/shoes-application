@@ -19,10 +19,9 @@ const FormNhanVien = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = (event) => {
+  const handleSaveFrom = () => {
     if (inputForm["LOAINVIEN"] == "") {
       alert("Chọn loại nhân viên!!!");
-      event.preventDefault();
       return false;
     }
     let method = "";
@@ -44,7 +43,6 @@ const FormNhanVien = () => {
         )
       ) {
         alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
-        event.preventDefault();
         return false;
       }
       method = "POST";
@@ -87,60 +85,58 @@ const FormNhanVien = () => {
 
   return (
     <div className={styles.form}>
-      <form>
-        <div className={styles.group_first}>
-          <div className={styles.group_first_row}>
-            <label>Mã nhân viên</label>
-            <input
-              value={inputForm["MANVIEN"]}
-              onChange={(e) => handleChangeInformationForm(e)}
-              name="MANVIEN"
-              className={styles.item_size_small}
-              readOnly={stateTable.inforShowTable.action_row === "edit"}
-            />
-          </div>
-          <div className={styles.group_first_row}>
-            <label>Tên nhân viên</label>
-            <input
-              value={inputForm["TENNVIEN"]}
-              onChange={(e) => handleChangeInformationForm(e)}
-              name="TENNVIEN"
-              className={styles.item_size_big}
-            />
-          </div>
-          <div className={styles.group_first_row}>
-            <label>Loại nhân viên</label>
-            <select
-              value={inputForm["LOAINVIEN"]}
-              onChange={(e) => handleChangeInformationForm(e)}
-              name="LOAINVIEN"
-              className={styles.item_size_middle}
-            >
-              <option value="">Chọn loại nhân viên</option>
-              <option value="QL">Quản lý</option>
-              <option value="TD">Thợ đế</option>
-              <option value="TQ">Thợ quai</option>
-            </select>
-          </div>
+      <div className={styles.group_first}>
+        <div className={styles.group_first_row}>
+          <label>Mã nhân viên</label>
+          <input
+            value={inputForm["MANVIEN"]}
+            onChange={(e) => handleChangeInformationForm(e)}
+            name="MANVIEN"
+            className={styles.item_size_small}
+            readOnly={stateTable.inforShowTable.action_row === "edit"}
+          />
         </div>
-        <div className={styles.group_second}>
-          <div className={styles.group_second_row}>
-            <label>Ghi chú</label>
-            <textarea
-              value={inputForm["GHICHU"]}
-              onChange={(e) => handleChangeInformationForm(e)}
-              name="GHICHU"
-              className={styles.item_size_big}
-            />
-          </div>
+        <div className={styles.group_first_row}>
+          <label>Tên nhân viên</label>
+          <input
+            value={inputForm["TENNVIEN"]}
+            onChange={(e) => handleChangeInformationForm(e)}
+            name="TENNVIEN"
+            className={styles.item_size_big}
+          />
         </div>
-        <div className={styles.group_button}>
-          <div>
-            <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
-            <button>Nhập tiếp</button>
-          </div>
+        <div className={styles.group_first_row}>
+          <label>Loại nhân viên</label>
+          <select
+            value={inputForm["LOAINVIEN"]}
+            onChange={(e) => handleChangeInformationForm(e)}
+            name="LOAINVIEN"
+            className={styles.item_size_middle}
+          >
+            <option value="">Chọn loại nhân viên</option>
+            <option value="QL">Quản lý</option>
+            <option value="TD">Thợ đế</option>
+            <option value="TQ">Thợ quai</option>
+          </select>
         </div>
-      </form>
+      </div>
+      <div className={styles.group_second}>
+        <div className={styles.group_second_row}>
+          <label>Ghi chú</label>
+          <textarea
+            value={inputForm["GHICHU"]}
+            onChange={(e) => handleChangeInformationForm(e)}
+            name="GHICHU"
+            className={styles.item_size_big}
+          />
+        </div>
+      </div>
+      <div className={styles.group_button}>
+        <div>
+          <button onClick={handleSaveFrom}>Lưu</button>
+          <button>Nhập tiếp</button>
+        </div>
+      </div>
     </div>
   );
 };

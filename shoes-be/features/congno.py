@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
-from datetime import datetime
+from datetime import datetime, timedelta
 from utils.vietnamese import convert_data_to_save_database
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
@@ -73,3 +73,44 @@ def update(data: ITEM_PHIEUTHU) -> RESPONSE:
 def delete(SOPHIEU: str) -> RESPONSE:
     condition = f"SOPHIEU = '{SOPHIEU}'"
     return congno.delete(condition)
+
+@router.get("/congno/get_congno_manykhachhang")
+def read(MAKH_FROM: str, MAKH_TO: str, DATE_TO: str, DATE_FROM: str) -> RESPONSE:
+    sql = f"""
+            select MAKH, SUM(THANHTIENQD) as TONGNO
+            from V_TONGHOP
+            where MAKH <= '{MAKH_TO}'
+            and MAKH >= '{MAKH_FROM}'
+            and NGAYPHIEU <= '{DATE_TO}'
+            and NGAYPHIEU >= '{DATE_FROM}'
+            group by MAKH
+        """
+    print("sql: ", sql)
+    return congno.read_custom(sql)
+
+@router.get("/congno/get_congno_khachhang")
+def read(SOPHIEU: str, MAKH: str, DATE_TO: str, DATE_FROM: str=None) -> RESPONSE:
+    sql = f"""
+            select SUM(THANHTIENQD) as TONGNO
+            from V_TONGHOP
+            where MAKH = '{MAKH}'
+            and SOPHIEU != '{SOPHIEU}'
+            and NGAYPHIEU <= '{DATE_TO}'
+        """
+    if DATE_FROM is not None:
+        sql += f""" and NGAYPHIEU >= '{DATE_FROM}'
+                """
+    print("sql: ", sql)
+    return congno.read_custom(sql)
+
+
+@router.get("/congno/truyvan_thu")
+def read() -> RESPONSE_TVTHUCHI:
+    sql = f"""SELECT SOPHIEU, NGAYPHIEU, CONGNO.MAKH, 
+                     TENKH, THANHTIEN AS SODUCUOI, DIENGIAIPHIEU 
+                     FROM CONGNO 
+                     inner join DMKHACHHANG on DMKHACHHANG.MAKH = CONGNO.MAKH
+                     WHERE LOAIPHIEU='PT'
+    """
+    return congno.read_custom(sql)
+

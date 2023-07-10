@@ -12,8 +12,8 @@ class ITEM_QUAI(BaseModel):
     MAQUAI: str
     TENQUAI: str
     DONGIA: int
-    HINHANH: Optional[str] = ""
-    GHICHU: Optional[str] = ""
+    HINHANH: Optional[str] = None
+    GHICHU: Optional[str] = None
 
 
 router = APIRouter()

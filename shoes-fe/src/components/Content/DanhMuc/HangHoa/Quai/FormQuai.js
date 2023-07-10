@@ -22,9 +22,10 @@ const FormQuai = () => {
 
   useEffect(() => {
     if (inputForm["MAQUAI"] != "" && image_base64 === "") {
-      getImageOfDanhMuc("quai", inputForm["MAQUAI"], "MAQUAI").then((value) =>
-        setImageBase64(value)
-      );
+      getImageOfDanhMuc("quai", inputForm["MAQUAI"], "MAQUAI").then((value) => {
+        setImageBase64(value);
+        setInputForm({ ...inputForm, HINHANH: value });
+      });
     }
   }, []);
 
@@ -34,10 +35,9 @@ const FormQuai = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = (event) => {
+  const handleSaveFrom = () => {
     if (inputForm["DONGIA"] == "") {
       alert("Nhập đơn giá quai!!!");
-      event.preventDefault();
       return false;
     }
     let method = "";
@@ -59,7 +59,6 @@ const FormQuai = () => {
         )
       ) {
         alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
-        event.preventDefault();
         return false;
       }
       method = "POST";
@@ -174,9 +173,7 @@ const FormQuai = () => {
       </div>
 
       <div className={styles.button_container}>
-        {!view && (
-          <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
-        )}
+        {!view && <button onClick={handleSaveFrom}>Lưu</button>}
         <button>Button 2</button>
       </div>
     </div>

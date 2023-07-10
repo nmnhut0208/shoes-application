@@ -13,7 +13,7 @@ const FormMau = () => {
   const [dataForm, setDataForm] = useState(stateTable.inforShowTable.record);
   const [stateItem, dispatchItem] = useItemsContext();
 
-  const handleSaveFrom = (event) => {
+  const handleSaveFrom = () => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -33,7 +33,6 @@ const FormMau = () => {
         )
       ) {
         alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
-        event.preventDefault();
         return false;
       }
       method = "POST";
@@ -75,7 +74,7 @@ const FormMau = () => {
       />
 
       <div className={styles.button_container}>
-        <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
+        <button onClick={handleSaveFrom}>Lưu</button>
         <button>Button 2</button>
       </div>
     </div>

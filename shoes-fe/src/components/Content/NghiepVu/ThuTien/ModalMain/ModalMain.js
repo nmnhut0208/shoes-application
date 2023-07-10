@@ -1,8 +1,17 @@
 import styles from "./ModalMain.module.scss";
 import { useTaskContext, resetHeader } from "~task";
 
-const ModalMain = ({ title, children }) => {
+const ModalMain = ({
+  status,
+  setShowModal,
+  isResetPageEmpty,
+  title,
+  children,
+}) => {
   const [stateTask, dispatchTask] = useTaskContext();
+  if (!status) {
+    return null;
+  }
 
   return (
     <div className={styles.modal}>
@@ -13,7 +22,8 @@ const ModalMain = ({ title, children }) => {
           <button
             className={styles.button_close_modal}
             onClick={() => {
-              resetHeader(dispatchTask);
+              if (isResetPageEmpty) resetHeader(dispatchTask);
+              else setShowModal(false);
             }}
           >
             X

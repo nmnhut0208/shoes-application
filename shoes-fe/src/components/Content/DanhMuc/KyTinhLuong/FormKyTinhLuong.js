@@ -30,7 +30,7 @@ const FormKyTinhLuong = () => {
     setInputForm(data);
   };
 
-  const handleSaveFrom = (event) => {
+  const handleSaveFrom = () => {
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -50,7 +50,6 @@ const FormKyTinhLuong = () => {
         )
       ) {
         alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
-        event.preventDefault();
         return false;
       }
       method = "POST";
@@ -84,55 +83,53 @@ const FormKyTinhLuong = () => {
 
   return (
     <div className={styles.form}>
-      <form>
-        <div className={styles.group_first}>
-          <div className={styles.group_first_row}>
-            <label>Mã kỳ</label>
-            <input
-              value={inputForm["MAKY"]}
-              onChange={(e) => handleChangeInformationForm(e)}
-              name="MAKY"
-              className={styles.item_size_small}
-              readOnly={stateTable.inforShowTable.action_row === "edit"}
-            />
-          </div>
-          <div className={styles.group_first_row}>
-            <label>Tên kỳ</label>
-            <input
-              value={inputForm["TENKY"]}
-              onChange={(e) => handleChangeInformationForm(e)}
-              name="TENKY"
-              className={styles.item_size_big}
-            />
-          </div>
+      <div className={styles.group_first}>
+        <div className={styles.group_first_row}>
+          <label>Mã kỳ</label>
+          <input
+            value={inputForm["MAKY"]}
+            onChange={(e) => handleChangeInformationForm(e)}
+            name="MAKY"
+            className={styles.item_size_small}
+            readOnly={stateTable.inforShowTable.action_row === "edit"}
+          />
         </div>
-        <div className={styles.group_second}>
-          <div className={styles.group_second_row}>
-            <label>Từ ngày </label>
-            <input
-              value={convertDate(inputForm["TUNGAY"])}
-              type="date"
-              name="TUNGAY"
-              onChange={(e) => handleChangeInformationDateForm(e)}
-            />
-          </div>
-          <div className={styles.group_second_row}>
-            <label>Đến ngày</label>
-            <input
-              value={convertDate(inputForm["DENNGAY"])}
-              type="date"
-              name="DENNGAY"
-              onChange={(e) => handleChangeInformationDateForm(e)}
-            />
-          </div>
+        <div className={styles.group_first_row}>
+          <label>Tên kỳ</label>
+          <input
+            value={inputForm["TENKY"]}
+            onChange={(e) => handleChangeInformationForm(e)}
+            name="TENKY"
+            className={styles.item_size_big}
+          />
         </div>
-        <div className={styles.group_button}>
-          <div>
-            <button onClick={(event) => handleSaveFrom(event)}>Lưu</button>
-            <button>Nhập tiếp</button>
-          </div>
+      </div>
+      <div className={styles.group_second}>
+        <div className={styles.group_second_row}>
+          <label>Từ ngày </label>
+          <input
+            value={convertDate(inputForm["TUNGAY"])}
+            type="date"
+            name="TUNGAY"
+            onChange={(e) => handleChangeInformationDateForm(e)}
+          />
         </div>
-      </form>
+        <div className={styles.group_second_row}>
+          <label>Đến ngày</label>
+          <input
+            value={convertDate(inputForm["DENNGAY"])}
+            type="date"
+            name="DENNGAY"
+            onChange={(e) => handleChangeInformationDateForm(e)}
+          />
+        </div>
+      </div>
+      <div className={styles.group_button}>
+        <div>
+          <button onClick={handleSaveFrom}>Lưu</button>
+          <button>Nhập tiếp</button>
+        </div>
+      </div>
     </div>
   );
 };
