@@ -15,6 +15,8 @@ const listHaveFooter = [
   "THANHTIEN",
 ];
 
+const LIST_FORMAT_NUMBER = ["DONGIA", "THANHTIEN"];
+
 const MyTable = ({ columns, data }) => {
   const footer = useMemo(() => {
     let _footer = {};
@@ -33,7 +35,7 @@ const MyTable = ({ columns, data }) => {
 
   return (
     <div className={styles.my_table}>
-      <table width="1095px">
+      <table style={{ width: "1095px" }}>
         <tr>
           {columns.map((col) => {
             return <th style={{ width: col["width"] }}>{col["header"]}</th>;
@@ -45,6 +47,9 @@ const MyTable = ({ columns, data }) => {
               {columns.map((col) => {
                 let value = _data[col["key"]];
                 let name_col = col["key"];
+                if (value && LIST_FORMAT_NUMBER.includes(name_col)) {
+                  value = parseFloat(value).toLocaleString("en");
+                }
                 if (index > 0 && listGroupBy.includes(name_col)) {
                   let old_dh = true;
                   for (let i in listGroupBy) {
@@ -72,6 +77,7 @@ const MyTable = ({ columns, data }) => {
               if (col["key"] === "TENGIAY") return <th>Tổng cộng</th>;
               else value = "";
             }
+            if (value != "") value = parseFloat(value).toLocaleString("en");
             return <th style={{ textAlign: "right" }}>{value}</th>;
           })}
         </tr>

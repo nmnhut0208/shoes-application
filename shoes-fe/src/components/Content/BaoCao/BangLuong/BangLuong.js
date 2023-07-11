@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { Modal } from "~nghiep_vu/DonHang";
 import { ItemKyTinhLuong } from "~items";
 import styles from "./BangLuong.module.scss";
+import In from "./In";
 
 const BangLuong = () => {
   const [statusModal, setStatusModal] = useState(true);
@@ -79,6 +80,16 @@ const BangLuong = () => {
           <button onClick={handlePrint}>In Tổng Hợp</button>
         </div>
       </div>
+
+      <Modal
+        title="In thông tin lương tổng hợp"
+        status={statusModalIn}
+        isSaveData={true}
+        setShowModal={setStatusModalIn}
+        isResetPageEmpty={false}
+      >
+        <In data={form} setShowModal={setStatusModalIn} />
+      </Modal>
     </Modal>
   );
 };
