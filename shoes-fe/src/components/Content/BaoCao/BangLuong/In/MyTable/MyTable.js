@@ -1,4 +1,5 @@
 import styles from "./MyTable.module.scss";
+
 const LIST_FORMAT_NUMBER = ["DONGIA", "THANHTIEN"];
 
 const MyTable = ({ columns, data, width }) => {

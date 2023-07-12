@@ -10,7 +10,7 @@ import { INFO_TABLE, LIST_COLS_FOOTER_SUM } from "./ConstantVariable";
 import styles from "./In.module.scss";
 import MyTable from "./MyTable";
 
-const In = ({ data, setShowModal }) => {
+const In = ({ data, setShowModal, stylePrint }) => {
   const [columns, setColumns] = useState([]);
   const [dataTable, setDataTable] = useState([]);
 
@@ -47,12 +47,17 @@ const In = ({ data, setShowModal }) => {
   useLayoutEffect(() => {
     if (dataTable.length > 0) {
       // setShowModal(false);
-      handelPrint();
+      if (Object.keys(stylePrint).length == 0) handelPrint();
     }
   }, [dataTable]);
 
   return (
-    <div ref={componentRef} className={styles.print_page} id="print_content">
+    <div
+      ref={componentRef}
+      className={styles.print_page}
+      id="print_content"
+      style={{ ...stylePrint }}
+    >
       <h1>BÁO CÁO ĐƠN HÀNG</h1>
       <div className={styles.info_time}>
         <label>Từ ngày </label>

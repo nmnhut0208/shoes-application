@@ -45,9 +45,9 @@ const ListKyTinhLuong = ({ changeData }) => {
         onRowSelectionChange={setRowSelection}
         state={{ rowSelection }}
         // scroll to bottom
-        enableRowVirtualization
+        // enableRowVirtualization
         muiTableContainerProps={{
-          sx: { maxHeight: "30rem" },
+          sx: { height: "30rem" },
         }}
       />
     </div>

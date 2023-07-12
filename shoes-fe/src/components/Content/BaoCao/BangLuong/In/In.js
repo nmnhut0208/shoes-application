@@ -1,8 +1,6 @@
 import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
-
+import Html2Pdf from "js-html2pdf";
 import { useReactToPrint } from "react-to-print";
-import { convertDateForReport } from "~utils/processing_date";
-import { processingInfoColumnTable } from "~utils/processing_data_table";
 import {
   INFO_TABLE,
   dictInfoPrint,
@@ -40,7 +38,7 @@ const compute_footer_SOLUONG = (data) => {
   return footer_info;
 };
 
-const In = ({ data, setShowModal }) => {
+const In = ({ data, setShowModal, stylePrint }) => {
   const [columns, setColumns] = useState([]);
   const [dataTable, setDataTable] = useState([]);
   const [infoEachEmployer, setInfoEachEmployer] = useState([]);
@@ -48,7 +46,8 @@ const In = ({ data, setShowModal }) => {
   const componentRef = useRef();
   const handelPrint = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: "Đơn hàng",
+    documentTitle: "Bảng lương",
+    removeAfterPrint: true,
   });
 
   useLayoutEffect(() => {
@@ -110,12 +109,17 @@ const In = ({ data, setShowModal }) => {
   useLayoutEffect(() => {
     if (infoEachEmployer.length > 0) {
       // setShowModal(false);
-      handelPrint();
+      if (Object.keys(stylePrint).length == 0) handelPrint();
     }
   }, [infoEachEmployer]);
 
   return (
-    <div ref={componentRef} className={styles.print_page} id="print_content">
+    <div
+      ref={componentRef}
+      className={styles.print_page}
+      id="print_content"
+      style={{ ...stylePrint }}
+    >
       {infoEachEmployer.length > 0 &&
         infoEachEmployer.map((page, index) => {
           return (

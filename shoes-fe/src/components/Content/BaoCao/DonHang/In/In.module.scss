@@ -1,7 +1,12 @@
 @import "~common_scss/form.module.scss";
 
+@page {
+  size: A4;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 .print_page {
-  padding-top: 2rem;
   padding-left: 2rem;
   padding-right: 0.5rem;
   width: 112rem;

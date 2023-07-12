@@ -8,11 +8,23 @@ import In from "./In";
 const BangLuong = () => {
   const [statusModal, setStatusModal] = useState(true);
   const [statusModalIn, setStatusModalIn] = useState(false);
+  const [stylePrint, setStylePrint] = useState({});
 
   const [form, setForm] = useState({ MAKY: "", TENKY: "", TYPE: "ALL" });
   console.log(form);
 
   const handlePrint = () => {
+    setStylePrint({});
+    setStatusModalIn(true);
+  };
+
+  const handleView = () => {
+    setStylePrint({
+      "scroll-behavior": "smooth",
+      "overflow-y": "overlay",
+      "overflow-x": "hidden",
+      height: "600px",
+    });
     setStatusModalIn(true);
   };
   return (
@@ -77,6 +89,7 @@ const BangLuong = () => {
         </fieldset>
 
         <div className={styles.group_button}>
+          <button onClick={handleView}>Xem Thông Tin</button>
           <button onClick={handlePrint}>In Tổng Hợp</button>
         </div>
       </div>
@@ -88,7 +101,11 @@ const BangLuong = () => {
         setShowModal={setStatusModalIn}
         isResetPageEmpty={false}
       >
-        <In data={form} setShowModal={setStatusModalIn} />
+        <In
+          data={form}
+          setShowModal={setStatusModalIn}
+          stylePrint={stylePrint}
+        />
       </Modal>
     </Modal>
   );
