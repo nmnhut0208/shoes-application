@@ -47,20 +47,30 @@ export const processing_button_add = (
   listMaDongPhanCongAddButWaitSave,
   setListMaDongPhanCongAddButWaitSave
 ) => {
-  if (infoPhieu["MAKY"] === "") {
+  if (infoPhieu["MAKY"] == "") {
     alert("Chọn kỳ tính lương.");
     return;
   }
-  if (formPhanCong["MAGIAY"] === "") return;
+  let list_key_form = Object.keys(formPhanCong);
+  console.log("formPhanCong bi gia vay troi: ", formPhanCong);
+  if (!list_key_form.includes("MAGIAY") || formPhanCong["MAGIAY"] == "") return;
 
-  if (formPhanCong["THODE"] === "" || formPhanCong["THOQUAI"] === "") {
+  if (
+    !list_key_form.includes("THODE") ||
+    !list_key_form.includes("THOQUAI") ||
+    formPhanCong["THODE"] == "" ||
+    formPhanCong["THOQUAI"] == ""
+  ) {
     alert("Chọn thợ đế và thợ quai để phân công");
     return;
   }
   let remain = { ...formPhanCong };
   const record = { ...formPhanCong };
   for (let key in record) {
-    if (key.includes("SIZE")) record[key] = parseInt(record[key]);
+    if (key.includes("SIZE")) {
+      if (record[key] == "") record[key] = 0;
+      else record[key] = parseInt(record[key]);
+    }
   }
 
   let index = listGiayWillPhanCong.findIndex(
@@ -75,13 +85,16 @@ export const processing_button_add = (
   let nof_giay_phan_cong = 0;
   for (let key in remain) {
     if (key.includes("SIZE")) {
+      if (formPhanCong[key] == "") formPhanCong[key] = 0;
       nof_giay_phan_cong += parseInt(formPhanCong[key]);
       remain[key] =
         listGiayWillPhanCong[index][key] - parseInt(formPhanCong[key]);
       if (remain[key] > 0) is_remain = true;
     }
   }
+  console.log("nof_giay_phan_cong: ", nof_giay_phan_cong);
   if (nof_giay_phan_cong > 0) {
+    console.log("add ne: ", JSON.stringify({ ...record, ...infoPhieu }));
     fetch("http://localhost:8000/phancong/add_phancong", {
       method: "post",
       headers: { "Content-Type": "application/json" },

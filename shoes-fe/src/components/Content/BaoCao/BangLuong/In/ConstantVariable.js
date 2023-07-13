@@ -1,38 +1,9 @@
 import { rem_to_px } from "~config/ui";
 
 export const LIST_COLS_FOOTER_SUM = ["SOLUONG", "THANHTIEN"];
+export const LIST_FORMAT_NUMBER = ["DONGIA", "THANHTIEN"];
 
 export const fontSize = "1.4rem";
-
-const font_header = {
-  fontSize: fontSize,
-  lineHeight: "1.55rem",
-  fontFamily: "Times New Roman",
-  fontWeight: "bold",
-  padding: "2px 2px 2px 2px",
-};
-
-const _style_component_cell = {
-  fontSize: fontSize,
-  fontFamily: "Times New Roman",
-  borderRight: "0.15rem solid rgba(0, 0, 0, 1)",
-  borderBottom: "0.15rem solid rgba(0, 0, 0, 1)",
-  padding: "2px 2px 2px 2px",
-};
-
-const _style_component_head = {
-  ...font_header,
-  borderRight: "0.15rem solid rgba(0, 0, 0, 1)",
-  borderBottom: "0.15rem solid rgba(0, 0, 0, 1)",
-};
-
-const textarea_style = {
-  ...font_header,
-  border: "none",
-  width: "96%",
-  resize: "none",
-  padding: "2px 0 2px 0",
-};
 
 export const INFO_TABLE = [
   {
@@ -84,17 +55,6 @@ export const INFO_TABLE = [
     width: 16.5 * rem_to_px,
   },
 ];
-
-//=========================================================
-export const dictInfoPrint = {
-  header: 100,
-  footer: 20,
-  content: {
-    gap_out_content: 10,
-    header_table: 36,
-    each_row_table: 57,
-  },
-};
 
 //===========================================================
 

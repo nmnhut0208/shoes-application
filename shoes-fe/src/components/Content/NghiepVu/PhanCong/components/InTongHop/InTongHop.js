@@ -37,16 +37,17 @@ const InTongHop = ({ sophieu, data }) => {
         for (let j = 0; j < info["TABLE"].length; j++) {
           info["TABLE"][j]["SIZE"] = "";
           let top = [];
-          let line = [];
           let bottom = [];
           let tongso = 0;
           for (let k = 0; k < COL_INFO_SIZE.length; k++) {
             if (info["TABLE"][j][COL_INFO_SIZE[k].name] > 0) {
               let value = parseInt(info["TABLE"][j][COL_INFO_SIZE[k].name]);
               top.push(COL_INFO_SIZE[k].key);
-              line.push("__");
               bottom.push(value);
               tongso += value;
+            } else {
+              top.push("");
+              bottom.push("");
             }
           }
           info["TABLE"][j]["TONGSO"] = tongso;

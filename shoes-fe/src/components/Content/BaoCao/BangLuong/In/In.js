@@ -1,13 +1,13 @@
-import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
-import Html2Pdf from "js-html2pdf";
+import { useRef, useState, useLayoutEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import {
   INFO_TABLE,
-  dictInfoPrint,
   INFO_TABLE_FOOTER,
+  LIST_FORMAT_NUMBER,
 } from "./ConstantVariable";
 import styles from "./In.module.scss";
-import MyTable from "./MyTable";
+// import MyTable from "./MyTable";
+import { TableToPrint } from "~common_tag/reports";
 
 const groupbyFunction = (data, key) => {
   let list_key = [];
@@ -39,7 +39,6 @@ const compute_footer_SOLUONG = (data) => {
 };
 
 const In = ({ data, setShowModal, stylePrint }) => {
-  const [columns, setColumns] = useState([]);
   const [dataTable, setDataTable] = useState([]);
   const [infoEachEmployer, setInfoEachEmployer] = useState([]);
 
@@ -66,15 +65,12 @@ const In = ({ data, setShowModal, stylePrint }) => {
 
   useLayoutEffect(() => {
     if (dataTable.length > 0) {
-      const heightA4 = 1122 - dictInfoPrint["header"];
       const groupByEmployer = groupbyFunction(dataTable, "MANVIEN");
       const groupByDONGIA = groupbyFunction(dataTable, "DONGIA");
       const footer = compute_footer_SOLUONG(groupByDONGIA);
       console.log("footer: ", footer);
 
       let all_pages = [];
-      const size_header_table = dictInfoPrint["content"]["header_table"];
-      const size_each_line = dictInfoPrint["content"]["each_row_table"];
       for (let key in groupByEmployer) {
         let page = { MANVIEN: key };
 
@@ -89,16 +85,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
         page["table"] = [...groupByEmployer[key], end_line];
         const dongia_group = groupbyFunction(groupByEmployer[key], "DONGIA");
         page["footer"] = compute_footer_SOLUONG(dongia_group);
-        // Compute margin
-        let size_table_detail =
-          size_header_table + page["table"].length * size_each_line;
-        let size_table_overview =
-          size_header_table + page["footer"].length * size_each_line;
 
-        let add_margin =
-          heightA4 - size_table_detail - size_table_overview - 10;
-
-        page["margin-bottom"] = add_margin;
         all_pages.push(page);
       }
       console.log("all_pages: ", all_pages);
@@ -127,16 +114,22 @@ const In = ({ data, setShowModal, stylePrint }) => {
               <h1>BẢNG LƯƠNG</h1>
               <h2>{data["TENKY"]}</h2>
               <h2>Tên thợ: {page["table"][0]["TENNVIEN"]}</h2>
-              <MyTable
+              <TableToPrint
                 columns={INFO_TABLE}
                 data={page["table"]}
                 width="1040px"
+                listHaveFooterSum={INFO_TABLE_FOOTER}
+                LIST_FORMAT_NUMBER={LIST_FORMAT_NUMBER}
+                Col_Name_Footer="MAGIAY"
               />
               <br />
-              <MyTable
+              <TableToPrint
                 columns={INFO_TABLE_FOOTER}
                 data={page["footer"]}
                 width={"200px"}
+                listHaveFooterSum={["SOLUONG"]}
+                LIST_FORMAT_NUMBER={["SOLUONG", "DONGIA"]}
+                Col_Name_Footer="DONGIA"
               />
 
               {index !== infoEachEmployer.length - 1 && (

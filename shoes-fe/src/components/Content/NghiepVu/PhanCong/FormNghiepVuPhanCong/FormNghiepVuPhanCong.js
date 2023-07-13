@@ -59,7 +59,7 @@ const FormNghiepVuPhanCong = ({
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
-  const [havedSaveData, setHavedSaveData] = useState(false);
+  const [havedSaveData, setHavedSaveData] = useState(true);
   // lưu những đơn hàng đã phân công xong
   // để sửa lý logic khi người dùng chỉnh sửa phân công
 
@@ -100,8 +100,6 @@ const FormNghiepVuPhanCong = ({
       }
     }
     setFormPhanCong(form_current);
-    setHavedSaveData(true);
-    setIsSaveDataNghiepVuPhanCong(true);
   };
 
   useEffect(() => {
@@ -197,6 +195,8 @@ const FormNghiepVuPhanCong = ({
           console.log(":error: ", err);
         });
 
+      setHavedSaveData(true);
+
       // query thông tin show bảng thứ 2
     }
 
@@ -256,12 +256,19 @@ const FormNghiepVuPhanCong = ({
     setHavedSaveData(false);
     setIsSaveDataNghiepVuPhanCong(false);
   };
+
+  console.log("================================");
+  console.log("havedSaveData: ", havedSaveData);
+  console.log("================================");
+
   const handleClickSave = () => {
+    console.log("save thong tin phan cong chua qua doan if");
     if (havedSaveData) return;
     let dataSave = dataChiTietPhanCong;
     for (let i = 0; i < dataSave.length; i++) {
       dataSave[i] = { ...dataSave[i], ...infoPhieu };
     }
+    console.log("save thong tin phan cong");
     console.log("JSON.stringify(dataSave): ", JSON.stringify(dataSave));
     fetch("http://localhost:8000/phancong", {
       method: "post",

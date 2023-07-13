@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
+import { useMemo, useRef, useState, useLayoutEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 
 import styles from "./InDonHang.module.scss";
@@ -10,12 +10,7 @@ import {
 } from "~common_tag/reports";
 import { convertDateForReport } from "~utils/processing_date";
 import { getDiaChiKhachHang, compute_total } from "./helper";
-import {
-  INFO_COLS_THO,
-  COL_INFO_SIZE,
-  border_text_table_config,
-  fontSize,
-} from "./ConstantVariable";
+import { INFO_COLS_THO, COL_INFO_SIZE, fontSize } from "./ConstantVariable";
 import { getImageOfDanhMuc } from "~utils/api_get_image";
 
 const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
@@ -134,14 +129,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                   </tr>
                 </table>
               </div>
-              <TableToPrint
-                // data={info["TABLE"]}
-                // columns={columns}
-                // border_text_table_config={border_text_table_config}
-                columns={INFO_COLS_THO}
-                data={info["TABLE"]}
-                // LIST_FORMAT_NUMBER={[]}
-              />
+              <TableToPrint columns={INFO_COLS_THO} data={info["TABLE"]} />
             </div>
           ))}
         <br />
