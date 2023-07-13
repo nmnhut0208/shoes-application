@@ -106,17 +106,29 @@ class RESPONSE_BAOCAO_DONHANG:
     SOLUONG: int 
 
 @router.get("/donhang/baocao_donhang")
-def baocao_donhang() -> List[RESPONSE_BAOCAO_DONHANG]:
+def baocao_donhang(YEAR: str=None) -> List[RESPONSE_BAOCAO_DONHANG]:
+    condition_year = ""
+    if YEAR is not None:
+        condition_year = f"""where NGAYDH >= '{YEAR}-01-01'
+                             and NGAYDH <= '{YEAR}-12-31'
+                             """
+    else:
+        care_year = datetime.today().year
+        condition_year = f"""where NGAYDH >= '{care_year}-01-01'
+                        """
+
     sql = f"""SELECT SODH, DH.MAKH, KH.TENKH, NGAYDH, NGAYGH, 
                 DIENGIAIPHIEU AS DIENGIAI,
                 SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE1) as SOLUONG
               FROM DONHANG DH
                 LEFT JOIN V_GIAY ON V_GIAY.MAGIAY = DH.MAGIAY
                 LEFT JOIN DMKHACHHANG KH ON KH.MAKH = DH.MAKH
+             {condition_year}
               group by SODH, DH.MAKH, KH.TENKH, NGAYDH,
                 NGAYGH, DIENGIAIPHIEU
               order by NGAYDH desc
             """
+    print("sql: ", sql)
     result = donhang.read_custom(sql)
     return result
 

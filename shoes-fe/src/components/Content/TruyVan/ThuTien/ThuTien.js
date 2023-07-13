@@ -12,6 +12,9 @@ import { FormThuTien, ModalMain } from "~nghiep_vu/ThuTien/";
 import { COLUMNS } from "./ConstantVariable";
 import { border_text_table_config } from "~config/ui";
 
+import styles from "./ThuTien.module.scss";
+import clsx from "clsx";
+
 const Table = ({ columns, data, setData, permission }) => {
   const [rowInfo, setRowInfo] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -149,8 +152,29 @@ const Table = ({ columns, data, setData, permission }) => {
 
 const MAFORM_TRUYVAN_PHIEUTHU = "F0035";
 
+const updateInfo = (permission, year, setData) => {
+  if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
+    let url = "http://localhost:8000/congno/truyvan_thu";
+    if (year != "" && year > 2020) {
+      url += "?YEAR=" + year;
+    }
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        setData(info);
+        console.log("info: ", info);
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+  }
+};
+
 const ThuTien = () => {
   const [data, setData] = useState([]);
+  const [year, setYear] = useState("");
   const column = useMemo(() => {
     return processingInfoColumnTable(COLUMNS);
   }, []);
@@ -164,32 +188,38 @@ const ThuTien = () => {
   }, []);
 
   useEffect(() => {
-    if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
-      fetch("http://localhost:8000/congno/truyvan_thu")
-        .then((response) => {
-          return response.json();
-        })
-        .then((info) => {
-          setData(info);
-          console.log("info: ", info);
-        })
-        .catch((err) => {
-          console.log(":error: ", err);
-        });
-    }
+    updateInfo(permission, year, setData);
   }, []);
 
   if (permission.XEM + permission.SUA + permission.XOA + permission.IN === 0) {
     alert(stateUser.userName + " không có quyền xem Truy Vấn Phiếu Thu");
     return <></>;
   }
+  const handleTruyVan = () => {
+    if (year === "") return;
+    updateInfo(permission, year, setData);
+  };
   return (
-    <Table
-      columns={column}
-      data={data}
-      setData={setData}
-      permission={permission}
-    />
+    <>
+      <h1>Thu Tiền</h1>
+      <div className={clsx(styles.form, styles.info_query)}>
+        <label>Xem dữ liệu năm</label>
+        <input
+          type="number"
+          min="2020"
+          step="1"
+          value={year}
+          onChange={(e) => setYear(parseInt(e.target.value))}
+        />
+        <button onClick={handleTruyVan}>Truy Vấn</button>
+      </div>
+      <Table
+        columns={column}
+        data={data}
+        setData={setData}
+        permission={permission}
+      />
+    </>
   );
 };
 

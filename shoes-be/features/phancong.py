@@ -113,10 +113,21 @@ class RESPONSE_BAOCAO_PHANCONG:
 
 
 @router.get("/phancong/baocao_phancong")
-def baocao_phancong() -> List[RESPONSE_BAOCAO_PHANCONG]:
+def baocao_phancong(YEAR: str=None) -> List[RESPONSE_BAOCAO_PHANCONG]:
+    condition_year = ""
+    if YEAR is not None:
+        condition_year = f"""where NGAYPHIEU >= '{YEAR}-01-01'
+                             and NGAYPHIEU <= '{YEAR}-12-31'
+                             """
+    else:
+        care_year = datetime.today().year
+        condition_year = f"""where NGAYPHIEU >= '{care_year}-01-01'
+                        """
+        
     sql = f"""select SOPHIEU, NGAYPHIEU,
                 DIENGIAIPHIEU, MAKY
                 from PHANCONG
+                {condition_year}
                 group by  SOPHIEU, NGAYPHIEU,
                 DIENGIAIPHIEU, MAKY
                 order by NGAYPHIEU desc
