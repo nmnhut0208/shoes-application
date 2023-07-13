@@ -35,7 +35,7 @@ const MyTable = ({ columns, data }) => {
 
   return (
     <div className={styles.my_table}>
-      <table style={{ width: "1095px" }}>
+      <table>
         <tr>
           {columns.map((col) => {
             return <th style={{ width: col["width"] }}>{col["header"]}</th>;
@@ -64,7 +64,13 @@ const MyTable = ({ columns, data }) => {
                 }
                 if (name_col === "NGAYDH" && value != "")
                   value = convertDateForReport(value);
-                return <td style={{ textAlign: col["textAlign"] }}>{value}</td>;
+                return (
+                  <td
+                    style={{ width: col["width"], textAlign: col["textAlign"] }}
+                  >
+                    {value}
+                  </td>
+                );
               })}
             </tr>
           );
@@ -74,11 +80,16 @@ const MyTable = ({ columns, data }) => {
             let value = footer[col["key"]];
             console.log("value: ", value);
             if (value === undefined) {
-              if (col["key"] === "TENGIAY") return <th>Tổng cộng</th>;
+              if (col["key"] === "TENGIAY")
+                return <th style={{ width: col["width"] }}>Tổng cộng</th>;
               else value = "";
             }
             if (value != "") value = parseFloat(value).toLocaleString("en");
-            return <th style={{ textAlign: "right" }}>{value}</th>;
+            return (
+              <th style={{ width: col["width"], textAlign: "right" }}>
+                {value}
+              </th>
+            );
           })}
         </tr>
       </table>

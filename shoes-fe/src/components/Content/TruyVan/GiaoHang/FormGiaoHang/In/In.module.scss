@@ -1,68 +1,21 @@
 @import "~common_scss/form.module.scss";
 
-// .print_page {
-//   margin: 1rem 1rem 1rem 1rem;
+@page {
+  size: A4;
+  margin: 2rem;
+}
 
-//   .print_object {
-//     margin-top: 2rem;
-
-//     .info_giay {
-//       @extend .font-setting;
-//       .info_row_giay {
-//         display: flex;
-//         flex-direction: row;
-//         justify-content: space-between;
-//       }
-//       th {
-//         margin-top: auto;
-//         margin-bottom: auto;
-//       }
-//       img {
-//         height: 15rem;
-//         width: 15rem;
-//         object-fit: cover;
-//       }
-//       border: 0.2rem solid rgba(0, 0, 0, 0.3);
-//       // border-bottom: none;
-//     }
-//   }
-// }
-
-// .group_phanso {
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-between;
-// }
-// .phan_so {
-//   text-align: center;
-// }
-
-// .tu_so {
-//   border-bottom: solid 1px;
-// }
-
-.container {
-  // margin-top: 1rem;
-  // margin-bottom: 1rem;
-  // margin-left: 1rem;
-  // margin-right: 1rem;
-  width: 80rem;
-  padding: 0rem 4rem 0rem 4rem;
+.print_page {
+  width: 79rem;
 }
 
 .invoice {
-  margin-top: 4rem;
   text-align: center;
   font-size: 3rem;
 }
 
 .invoice__info_header {
   align-self: flex-end;
-}
-
-.invoice__info {
-  align-self: flex-end;
-  margin-top: 4rem;
 }
 
 .invoice__header {
@@ -78,9 +31,5 @@
   margin-left: 5rem;
   margin-right: 5rem;
   margin-top: 1rem;
-  // margin-bottom: 10rem;
-}
-
-.distance_table {
-  margin-bottom: 50rem;
+  break-inside: avoid;
 }

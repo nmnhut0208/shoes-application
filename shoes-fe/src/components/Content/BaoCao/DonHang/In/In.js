@@ -1,17 +1,12 @@
-import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
-import MaterialReactTable from "material-react-table";
-import Html2Pdf from "js-html2pdf";
+import { useRef, useState, useLayoutEffect } from "react";
 
 import { useReactToPrint } from "react-to-print";
 import { convertDateForReport } from "~utils/processing_date";
-import { border_text_table_config } from "./ConstantVariable";
-import { processingInfoColumnTableHaveFooter } from "~utils/processing_data_table";
-import { INFO_TABLE, LIST_COLS_FOOTER_SUM } from "./ConstantVariable";
+import { INFO_TABLE } from "./ConstantVariable";
 import styles from "./In.module.scss";
 import MyTable from "./MyTable";
 
 const In = ({ data, setShowModal, stylePrint }) => {
-  const [columns, setColumns] = useState([]);
   const [dataTable, setDataTable] = useState([]);
 
   const componentRef = useRef();
@@ -30,13 +25,6 @@ const In = ({ data, setShowModal, stylePrint }) => {
       .then((response) => response.json())
       .then((info) => {
         console.log("info: ", info);
-        let info_columns = processingInfoColumnTableHaveFooter(
-          INFO_TABLE,
-          LIST_COLS_FOOTER_SUM,
-          info
-        );
-        console.log("info_columns: ", info_columns);
-        setColumns(info_columns);
         setDataTable(info);
       })
       .catch((error) => {
@@ -67,32 +55,6 @@ const In = ({ data, setShowModal, stylePrint }) => {
       </div>
 
       <MyTable columns={INFO_TABLE} data={dataTable} />
-
-      {/* <MaterialReactTable
-        columns={columns}
-        data={dataTable}
-        {...border_text_table_config}
-        muiTableProps={{
-          sx: {
-            tableLayout: "fixed",
-          },
-        }}
-        // knmhgk
-        enableTopToolbar={false}
-        enableColumnActions={false}
-        enableSorting={false}
-        // scroll to bottom
-        // enable phân trang
-        enablePagination={false}
-        enableBottomToolbar={false}
-        // group Mã giày
-        enableGrouping={false}
-        initialState={{
-          //   grouping: ["SODH", "NGAYDH", "TENKH", "TENGIAY"],
-          grouping: ["SODH"],
-          expanded: true,
-        }}
-      /> */}
     </div>
   );
 };

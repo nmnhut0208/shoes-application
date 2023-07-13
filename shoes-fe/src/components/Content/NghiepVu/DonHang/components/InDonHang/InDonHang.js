@@ -9,11 +9,10 @@ import {
   Signature,
 } from "~common_tag/reports";
 import { convertDateForReport } from "~utils/processing_date";
-import { getDiaChiKhachHang, compute_total, getInfoBreakPage } from "./helper";
+import { getDiaChiKhachHang, compute_total } from "./helper";
 import {
   INFO_COLS_THO,
   COL_INFO_SIZE,
-  dictInfoPrint,
   border_text_table_config,
   fontSize,
 } from "./ConstantVariable";
@@ -23,7 +22,6 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   const [header, setHeader] = useState(infoHeader);
   const [dataPrint, setDataPrint] = useState([]);
   const [listImage, setListImage] = useState([]);
-  const [infoDetailsPrint, setInfoDetailsPrint] = useState([]);
   const [doneGetDiaChi, setDoneGetDiaChi] = useState(false);
   const columns = useMemo(() => {
     return processingInfoColumnTable(INFO_COLS_THO);
@@ -49,6 +47,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
         info["TABLE"] = dataTable.filter(
           (_data) => _data["MAGIAY"] === ma_giay
         );
+        info["SL"] = compute_total(info["TABLE"]);
         for (let j = 0; j < info["TABLE"].length; j++) {
           info["TABLE"][j]["SIZE"] = "";
           let top = [];
@@ -64,8 +63,6 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
               tongso += value;
             }
           }
-
-          info["TABLE"][j]["TONGSO"] = parseInt(info["TABLE"][j]["SOLUONG"]); //tongso;
           info["TABLE"][j]["SIZE"] = (
             <SizeColumnInPrint
               list_tuso={top}
@@ -93,103 +90,63 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
     setDataPrint(info_print);
   }, []);
 
-  useEffect(() => {
-    if (dataPrint.length > 0 && listImage.length > 0 && doneGetDiaChi) {
-      let details = getInfoBreakPage(dataPrint, listImage, dictInfoPrint);
-      setInfoDetailsPrint(details);
-    }
-  }, [dataPrint, listImage, doneGetDiaChi]);
-
-  console.log("infoDetailsPrint: ", infoDetailsPrint);
-
   useLayoutEffect(() => {
-    if (infoDetailsPrint.length > 0) {
+    if (dataPrint.length > 0 && listImage.length > 0 && doneGetDiaChi) {
       // setShowModal(false);
       handelPrint();
     }
-  }, [infoDetailsPrint]);
+  }, [dataPrint, listImage, doneGetDiaChi]);
+
+  console.log("dataPrint: ", dataPrint);
 
   return (
     <div ref={componentRef} className={styles.print_page} id="print_content">
-      {infoDetailsPrint.length > 0 &&
-        infoDetailsPrint.map((each_page, index_page) => (
-          <div key={index_page} className={styles.each_page}>
-            <div className={styles.print_header}>
-              <h1>Số đơn hàng: {header["SODH"]}</h1>
-              <h1 style={{ fontSize: "2rem !important" }}>{header["TENKH"]}</h1>
-            </div>
-
-            <div className={styles.print_header}>
-              <h1>Ngày: {convertDateForReport(header["NGAYDH"])}</h1>
-              <h1>
-                {header["SL"]}
-                {" | " + header["DIACHI"]}
-              </h1>
-            </div>
-
-            {each_page &&
-              each_page["content"].length > 0 &&
-              each_page["content"].map((info, index) => (
-                <div className={styles.print_object} key={index}>
-                  <div className={styles.info_giay}>
-                    <table style={{ width: "100%" }}>
-                      <tr className={styles.info_row_giay}>
-                        <td>
-                          <div className={styles.show_content_column}>
-                            <lable>{info["MAGIAY"]}</lable>
-                            <lable style={{ fontWeight: "bold" }}>
-                              SL: {info["SL"]}
-                            </lable>
-                          </div>
-                        </td>
-                        {info["HINHANH"] && (
-                          <td>{<img src={info["HINHANH"]} />}</td>
-                        )}
-                        <td className={styles.TENGIAY}>{info["TENGIAY"]}</td>
-                      </tr>
-                    </table>
-                  </div>
-                  <TableToPrint
-                    data={info["Table"]}
-                    columns={columns}
-                    border_text_table_config={border_text_table_config}
-                  />
-                </div>
-              ))}
-
-            {(index_page < infoDetailsPrint.length - 1 ||
-              each_page["margin_bottom"] < dictInfoPrint["footer"]) && (
-              <div
-                className={styles.footer}
-                style={{
-                  marginTop: each_page["margin_bottom"] - 40,
-                }}
-              >
-                {index_page + 1}/{infoDetailsPrint.length}
+      <div className={styles.each_page}>
+        <div className={styles.print_header}>
+          <h1>Số đơn hàng: {header["SODH"]}</h1>
+          <h1 style={{ fontSize: "2rem !important" }}>{header["TENKH"]}</h1>
+        </div>
+        <div className={styles.print_header}>
+          <h1>Ngày: {convertDateForReport(header["NGAYDH"])}</h1>
+          <h1>
+            {header["SL"]}
+            {" | " + header["DIACHI"]}
+          </h1>
+        </div>
+        {dataPrint.length > 0 &&
+          dataPrint.map((info, index) => (
+            <div className={styles.print_object} key={index}>
+              <div className={styles.info_giay}>
+                <table style={{ width: "100%" }}>
+                  <tr className={styles.info_row_giay}>
+                    <td>
+                      <div className={styles.show_content_column}>
+                        <lable>{info["MAGIAY"]}</lable>
+                        <lable style={{ fontWeight: "bold" }}>
+                          SL: {info["SL"]}
+                        </lable>
+                      </div>
+                    </td>
+                    {listImage[index] && (
+                      <td>{<img src={listImage[index]} />}</td>
+                    )}
+                    <td className={styles.TENGIAY}>{info["TENGIAY"]}</td>
+                  </tr>
+                </table>
               </div>
-            )}
-
-            {index_page === infoDetailsPrint.length - 1 && (
-              <>
-                {each_page["margin_bottom"] > dictInfoPrint["footer"] && (
-                  <div>
-                    <br />
-                    <br />
-                  </div>
-                )}
-                <Signature fontSize={fontSize} />
-                <div
-                  className={styles.footer}
-                  style={{
-                    marginTop: each_page["margin_bottom"] - 130,
-                  }}
-                >
-                  {index_page + 1}/{infoDetailsPrint.length}
-                </div>
-              </>
-            )}
-          </div>
-        ))}
+              <TableToPrint
+                // data={info["TABLE"]}
+                // columns={columns}
+                // border_text_table_config={border_text_table_config}
+                columns={INFO_COLS_THO}
+                data={info["TABLE"]}
+                // LIST_FORMAT_NUMBER={[]}
+              />
+            </div>
+          ))}
+        <br />
+        <Signature fontSize={fontSize} />
+      </div>
     </div>
   );
 };

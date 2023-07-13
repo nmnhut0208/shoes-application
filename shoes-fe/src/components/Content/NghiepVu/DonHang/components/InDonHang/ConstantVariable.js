@@ -20,22 +20,6 @@ export const INFO_COLS_THO = [
   { header: "THỢ ĐẾ", key: "TENTHODE", width: 3 * rem_to_px },
   { header: "THỢ QUAI", key: "TENTHOQUAI", width: 3 * rem_to_px },
 ];
-
-//=========================================================
-export const dictInfoPrint = {
-  header: 60,
-  margin_header: 40,
-  footer: 130,
-  content: {
-    gap_in_content: 10,
-    gap_out_content: 40,
-    info_giay_withouimage: 45,
-    info_giay_with_image: 161,
-    header_table: 36,
-    each_row_table: 57,
-  },
-};
-
 //===========================
 export const fontSize = "1.4rem";
 
@@ -65,19 +49,21 @@ const _style_component_head = {
 export const border_text_table_config = {
   muiTablePaperProps: {
     elevation: 0,
-    sx: { borderRadius: "0", borderLeft: "0.15rem solid rgba(0, 0, 0, 1)" },
+    sx: { borderRadius: "0", borderLeft: "0.2rem solid rgba(0, 0, 0, 1)" },
   },
   muiTableHeadCellProps: {
     sx: { ..._style_component_head },
   },
-  muiTableBodyCellProps: { sx: { ..._style_component_cell } },
+  muiTableBodyCellProps: {
+    sx: { ..._style_component_cell },
+  },
   muiTableFooterCellProps: { sx: { ..._style_component_cell } },
   muiTableContainerProps: {
     sx: {
       fontSize: fontSize,
       fontFamily: "Times New Roman",
       border: "none",
-      borderTop: "0.15rem solid rgba(0, 0, 0, 1)",
+      borderTop: "0.2rem solid rgba(0, 0, 0, 1)",
     },
   },
 };
