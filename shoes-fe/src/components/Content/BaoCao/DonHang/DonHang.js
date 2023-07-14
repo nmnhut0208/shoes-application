@@ -11,6 +11,8 @@ const DonHang = () => {
   const [statusModal, setStatusModal] = useState(true);
   const [statusModalIn, setStatusModalIn] = useState(false);
   const [stateItem, dispatchItem] = useItemsContext();
+  const [stylePrint, setStylePrint] = useState({});
+
   const [form, setForm] = useState({
     KhachHangFrom: stateItem.infoItemKhachHang[0]["MAKH"],
     KhachHangTo:
@@ -29,6 +31,18 @@ const DonHang = () => {
   console.log("form: ", form);
 
   const handlePrint = () => {
+    setStylePrint({});
+    setStatusModalIn(true);
+  };
+
+  const handleView = () => {
+    setStylePrint({
+      "scroll-behavior": "smooth",
+      "overflow-y": "overlay",
+      "overflow-x": "hidden",
+      height: "600px",
+      width: "120rem",
+    });
     setStatusModalIn(true);
   };
 
@@ -99,6 +113,7 @@ const DonHang = () => {
           </div>
           <div className={styles.group_button}>
             <button onClick={handlePrint}>In</button>
+            <button onClick={handleView}>Xem</button>
           </div>
         </div>
 
@@ -109,7 +124,11 @@ const DonHang = () => {
           setShowModal={setStatusModalIn}
           isResetPageEmpty={false}
         >
-          <In data={form} setShowModal={setStatusModalIn} />
+          <In
+            data={form}
+            setShowModal={setStatusModalIn}
+            stylePrint={stylePrint}
+          />
         </Modal>
       </Modal>
     </>

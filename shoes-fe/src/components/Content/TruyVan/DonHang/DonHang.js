@@ -11,12 +11,15 @@ import { border_text_table_config } from "~config/ui";
 
 import { FormDonHang, Modal } from "~nghiep_vu/DonHang/";
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
+import styles from "./DonHang.module.scss";
+import clsx from "clsx";
 
 const Table = ({ columns, data, setDataDonHang, permission }) => {
   const [rowInfo, setRowInfo] = useState({});
 
   const [isSaveData, setIsSaveData] = useState(true);
   const [showModal, setShowModal] = useState(false);
+
   const handleCheckDonHang = () => {
     setShowModal(true);
   };
@@ -127,11 +130,32 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
 
 const MAFORM_TRUYVAN_DONHANG = "F0031";
 
+const updateInfo = (permission, year, setDataDonHang) => {
+  if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
+    let url = "http://localhost:8000/donhang/baocao_donhang";
+    if (year != "" && year > 2020) {
+      url += "?YEAR=" + year;
+    }
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        setDataDonHang(info);
+        console.log("info: ", info);
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+  }
+};
+
 const DonHang = () => {
   const [dataDonHang, setDataDonHang] = useState([]);
   const column_donhang = useMemo(() => {
     return processingInfoColumnTable(INFO_COLS_DONHANG);
   }, []);
+  const [year, setYear] = useState("");
   const [stateUser, dispatchUser] = useUserContext();
 
   const permission = useMemo(() => {
@@ -142,32 +166,37 @@ const DonHang = () => {
   }, []);
 
   useEffect(() => {
-    if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
-      fetch("http://localhost:8000/donhang/baocao_donhang")
-        .then((response) => {
-          return response.json();
-        })
-        .then((info) => {
-          setDataDonHang(info);
-          console.log("info: ", info);
-        })
-        .catch((err) => {
-          console.log(":error: ", err);
-        });
-    }
+    updateInfo(permission, year, setDataDonHang);
   }, []);
 
   if (permission.XEM + permission.SUA + permission.XOA + permission.IN === 0) {
     alert(stateUser.userName + " không có quyền xem Truy Vấn Đơn Hàng");
     return <></>;
   }
+  const handleTruyVan = () => {
+    if (year === "") return;
+    updateInfo(permission, year, setDataDonHang);
+  };
   return (
-    <Table
-      columns={column_donhang}
-      data={dataDonHang}
-      setDataDonHang={setDataDonHang}
-      permission={permission}
-    />
+    <>
+      <div className={clsx(styles.form, styles.info_query)}>
+        <label>Xem dữ liệu năm</label>
+        <input
+          type="number"
+          min="2020"
+          step="1"
+          value={year}
+          onChange={(e) => setYear(parseInt(e.target.value))}
+        />
+        <button onClick={handleTruyVan}>Truy Vấn</button>
+      </div>
+      <Table
+        columns={column_donhang}
+        data={dataDonHang}
+        setDataDonHang={setDataDonHang}
+        permission={permission}
+      />
+    </>
   );
 };
 

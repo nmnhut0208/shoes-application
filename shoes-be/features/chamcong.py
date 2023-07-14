@@ -170,3 +170,28 @@ def save(data: dict) -> RESPONSE:
     save_info_primary_key("CHAMCONG", "MD", year, madong)
     save_info_primary_key("CHAMCONG", "CC", year, cc)
     return {"status": "success"}
+
+
+@router.get("/chamcong/salary_compute")
+def reasalary_computed(MAKY: str, TYPE: str) -> List[dict]:
+    LOAINVIEN = ""
+    if TYPE == "TQ":
+        LOAINVIEN = "and MALOAINV='TQ'"
+    elif TYPE == "TD":
+        LOAINVIEN = "and MALOAINV='TD'"
+    else:
+        pass
+    sql = f"""
+        select MANVIEN, TENNVIEN, MaGiay as MAGIAY, SOLUONG,
+        DONGIA, SOLUONG * DONGIA as THANHTIEN,
+        PHIEUPC, DIENGIAIPHIEU, MADE, MAQUAI
+        from V_CHAMCONG
+        where MaKy = '{MAKY}'
+        -- and MANVIEN='LINH' -- delete this line
+        {LOAINVIEN}
+        order by MANVIEN, PHIEUPC
+    """
+    result = CC.read_custom(sql)
+    return result
+
+

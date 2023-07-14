@@ -1,0 +1,32 @@
+.my_table {
+  table,
+  td,
+  th {
+    border: 1px solid;
+  }
+  tr {
+    break-inside: avoid;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+  th {
+    font-family: "Times New Roman";
+    font-weight: bold;
+    font-size: 1.85rem;
+    padding: 7px 3px 3px 3px;
+    // những dòng dưới để tìm kích thước đúng cho dễ
+    // overflow: hidden;
+    // display: inline-block;
+    // word-break: break-word;
+  }
+  td {
+    font-family: "Times New Roman";
+    font-size: 1.85rem;
+    padding: 7px 3px 3px 3px;
+    // overflow: hidden;
+    // display: inline-block;
+    // word-break: break-word;
+  }
+}

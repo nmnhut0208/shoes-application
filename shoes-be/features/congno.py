@@ -105,13 +105,24 @@ def read(SOPHIEU: str, MAKH: str, DATE_TO: str, DATE_FROM: str=None) -> RESPONSE
 
 
 @router.get("/congno/truyvan_thu")
-def read() -> RESPONSE_TVTHUCHI:
+def read(YEAR: str=None) -> RESPONSE_TVTHUCHI:
+    condition_year = ""
+    if YEAR is not None:
+        condition_year = f"""and NGAYPHIEU >= '{YEAR}-01-01'
+                             and NGAYPHIEU <= '{YEAR}-12-31'
+                             """
+    else:
+        care_year = datetime.today().year
+        condition_year = f"""and NGAYPHIEU >= '{care_year}-01-01'
+                        """
     sql = f"""SELECT SOPHIEU, NGAYPHIEU, CONGNO.MAKH, 
                      TENKH, THANHTIEN AS SODUCUOI, DIENGIAIPHIEU 
                      FROM CONGNO 
                      inner join DMKHACHHANG on DMKHACHHANG.MAKH = CONGNO.MAKH
                      WHERE LOAIPHIEU='PT'
-    """
+                     {condition_year}
+                    order by NGAYPHIEU desc
+                    """
     return congno.read_custom(sql)
 
 @router.post("/congno_tonghop")
