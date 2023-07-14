@@ -1,0 +1,41 @@
+@import "~common_scss/form.module.scss";
+
+.print_page {
+  padding-top: 2rem;
+  padding-left: 2rem;
+  padding-right: 0.5rem;
+  width: 112rem;
+  h1 {
+    font-family: "Times New Roman";
+    font-size: 3rem;
+    text-align: center !important;
+    margin: 1rem;
+  }
+  .info_time {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 1rem;
+    label {
+      font-size: 1.5rem;
+      font-family: "Times New Roman", Times, serif;
+      margin-left: 0.5rem;
+    }
+    label:nth-child(odd) {
+      font-weight: bold;
+    }
+  }
+}
+
+.btn {
+  margin-top: 3rem;
+  width: 10rem;
+  height: 3rem;
+  // right
+  align-self: flex-end;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}

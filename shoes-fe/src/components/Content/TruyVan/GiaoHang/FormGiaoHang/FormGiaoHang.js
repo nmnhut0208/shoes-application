@@ -63,6 +63,7 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
   const [dataTableSub, setDataTableSub] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
   const [dataIn, setDataIn] = useState({});
+  const [flag, setFlag] = useState(false);
   // const test_makh = "THU";
   // const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
   // const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
@@ -117,7 +118,48 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
       SOPHIEU: infoKH.SOPHIEU,
       table: table,
     });
+    setFlag(false);
     dispatchTable(actions_table.setModeShowModal(true));
+  };
+
+  const handleInCongNo = () => {
+    const table = dataTableSub.map((item) => {
+      const obj = {
+        MAGIAY: item.MAGIAY,
+        TENGIAY: item.TENGIAY,
+        SOLUONG: item.SOLUONG,
+        DONGIA: item.GIABAN,
+        THANHTIEN: item.THANHTIEN,
+        SODH: item.SODH,
+      };
+      return obj;
+    });
+    const SOPHIEU = infoKH.SOPHIEU;
+    const MAKH = infoKH.MAKH;
+    const DATE = infoKH.NGAYPHIEU;
+    fetch(
+      `http://localhost:8000/congno/get_congno_khachhang?SOPHIEU=${SOPHIEU}&MAKH=${MAKH}&DATE_TO=${DATE}`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log("tong no : ", data[0]["TONGNO"]);
+        setDataIn({
+          CONGNO: data[0]["TONGNO"],
+          MAKH: infoKH.MAKH,
+          TENKH: infoKH.TENKH,
+          DIACHI: infoKH.DIACHI,
+          NGAYPHIEU: infoKH.NGAYPHIEU,
+          SOPHIEU: infoKH.SOPHIEU,
+          table: table,
+        });
+        setFlag(true);
+        dispatchTable(actions_table.setModeShowModal(true));
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
   };
 
   // useEffect(() => {
@@ -316,13 +358,14 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
         maxHeight={"26rem"}
       />
       <Modal>
-        <In data={dataIn} />
+        <In data={dataIn} flag={flag} />
       </Modal>
       <div className={styles.group_button}>
         <div>
           <button onClick={handleSave}>Lưu</button>
           {/* <button>Nhập tiếp</button> */}
           <button onClick={handleIn}>In</button>
+          <button onClick={handleInCongNo}>In Công Nợ</button>
           <button
             onClick={() => {
               // dispatchTable(actions_table.setModeShowModal(false));

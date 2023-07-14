@@ -91,7 +91,7 @@ def read(MAKH_FROM: str, MAKH_TO: str, DATE_TO: str, DATE_FROM: str) -> RESPONSE
 @router.get("/congno/get_congno_khachhang")
 def read(SOPHIEU: str, MAKH: str, DATE_TO: str, DATE_FROM: str=None) -> RESPONSE:
     sql = f"""
-            select SUM(THANHTIENQD) as TONGNO
+            select coalesce(SUM(THANHTIENQD), 0) as TONGNO
             from V_TONGHOP
             where MAKH = '{MAKH}'
             and SOPHIEU != '{SOPHIEU}'
@@ -113,4 +113,55 @@ def read() -> RESPONSE_TVTHUCHI:
                      WHERE LOAIPHIEU='PT'
     """
     return congno.read_custom(sql)
+
+@router.post("/congno_tonghop")
+def add(data: dict):
+    makh_from = data["KhachHangFrom"]
+    makh_to = data["KhachHangTo"]
+    date_from = data["DATE_FROM"]
+    date_to = data["DATE_TO"]
+
+    sql_tongno = f"""
+                select V_TONGHOP.MAKH, DMKHACHHANG.TENKH, SUM(THANHTIENQD) as TONGNO
+                from V_TONGHOP
+                LEFT JOIN DMKHACHHANG ON V_TONGHOP.MAKH = DMKHACHHANG.MAKH
+                where V_TONGHOP.MAKH <= '{makh_to}'
+                and V_TONGHOP.MAKH >= '{makh_from}'
+                and NGAYPHIEU < '{date_from}'
+                group by V_TONGHOP.MAKH, DMKHACHHANG.TENKH
+                """
+    df_tongno = congno.read_custom_congno(sql_tongno)
+    
+    sql_tongmua = f"""
+                select V_TONGHOP.MAKH, DMKHACHHANG.TENKH, SUM(THANHTIENQD) AS TONGMUA
+                from V_TONGHOP
+                LEFT JOIN DMKHACHHANG ON V_TONGHOP.MAKH = DMKHACHHANG.MAKH
+                where LOAIPHIEU='BH'
+                and V_TONGHOP.MAKH <= '{makh_to}'
+                and V_TONGHOP.MAKH >= '{makh_from}'
+                and NGAYPHIEU <= '{date_to}'
+                and NGAYPHIEU >= '{date_from}'
+                group by V_TONGHOP.MAKH, DMKHACHHANG.TENKH
+                """
+    df_tongmua = congno.read_custom_congno(sql_tongmua)
+
+    sql_tongtra = f"""
+                select V_TONGHOP.MAKH, DMKHACHHANG.TENKH, SUM(THANHTIENQD) * -1 AS TONGTRA
+                from V_TONGHOP
+                LEFT JOIN DMKHACHHANG ON V_TONGHOP.MAKH = DMKHACHHANG.MAKH
+                where LOAIPHIEU='PT'
+                and V_TONGHOP.MAKH <= '{makh_to}'
+                and V_TONGHOP.MAKH >= '{makh_from}'
+                and NGAYPHIEU <= '{date_to}'
+                and NGAYPHIEU >= '{date_from}'
+                group by V_TONGHOP.MAKH, DMKHACHHANG.TENKH
+                """
+    df_tongtra = congno.read_custom_congno(sql_tongtra)
+
+    df_tongno = df_tongno.merge(df_tongmua, how="outer", on=["MAKH", "TENKH"])
+    df_tongno = df_tongno.merge(df_tongtra, how="outer", on=["MAKH", "TENKH"])
+    df_tongno = df_tongno.fillna(0)
+    df_tongno["CONGNO"] = df_tongno["TONGNO"] + df_tongno["TONGMUA"] - df_tongno["TONGTRA"]
+    print(df_tongno)
+    return df_tongno.to_dict(orient="records")
 

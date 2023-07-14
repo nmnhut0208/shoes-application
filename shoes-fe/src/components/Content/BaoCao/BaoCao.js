@@ -1,6 +1,7 @@
 import { useTaskContext } from "~task";
 
 import DonHang from "./DonHang";
+import CongNo from "./CongNo";
 
 const BaoCao = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -8,6 +9,8 @@ const BaoCao = () => {
   switch (inforCurrentTask.infoDetail) {
     case "Đơn hàng":
       return <DonHang />;
+    case "Công nợ":
+      return <CongNo />;
   }
   return <></>;
 };

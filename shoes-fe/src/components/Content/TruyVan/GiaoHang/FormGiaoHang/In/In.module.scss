@@ -71,6 +71,17 @@
   align-items: center;
 }
 
+.congno {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  // align-self: flex-end;
+}
+
+.congno_left {
+  align-self: flex-end;
+}
+
 .footer {
   display: flex;
   flex-direction: row;

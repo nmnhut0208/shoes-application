@@ -14,6 +14,9 @@ class BaseClass:
         df = read_sql_custom(sql)
         return df.to_dict(orient="records")
     
+    def read_custom_congno(self, sql: str):
+        return read_sql_custom(sql)
+    
     def execute_custom(self, sql: str):
         execute_custom(sql)
         return {"status": "success"}

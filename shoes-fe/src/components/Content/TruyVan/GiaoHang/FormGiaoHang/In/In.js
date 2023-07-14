@@ -82,7 +82,7 @@ const list_key = [
 
 const num_div = 8;
 
-const In = ({ data }) => {
+const In = ({ data, flag }) => {
   const [stateTable, dispatchTable] = useTableContext();
   const handelPrint = useReactToPrint({
     content: () => componentRef.current,
@@ -112,7 +112,14 @@ const In = ({ data }) => {
     );
   }, []);
 
-  console.log("columns: ", data["table"].length);
+  const sum_value = useMemo(() => {
+    return data["table"].reduce((sum, item) => {
+      return sum + item["THANHTIEN"];
+    }, 0);
+  }, []);
+
+  // console.log("columns: ", data["table"].length);
+  console.log("flag: ", data);
   useLayoutEffect(() => {
     dispatchTable(actions_table.setModeShowModal(false));
     handelPrint();
@@ -157,6 +164,14 @@ const In = ({ data }) => {
             </div>
           )}
           {/* <Table columns={infoColumns} data={data_info} />; */}
+          {index === batch_data.length - 1 && flag && (
+            <div className={styles.congno}>
+              <h2 className={styles.congno_left}>Nợ cũ: {data["CONGNO"]}</h2>
+              <h2 className={styles.congno_left}>
+                Tổng nợ: {data["CONGNO"] + sum_value}
+              </h2>
+            </div>
+          )}
           {index === batch_data.length - 1 ? (
             <div className={styles.footer}>
               <h2>Người nhận hàng</h2>
