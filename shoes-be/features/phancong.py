@@ -95,12 +95,23 @@ phancong = PHANCONG()
 
 @router.get("/phancong/donhangchuaphancong")
 def read() -> List[RESPONSE_PHANCONG]:
-    sql = """select madh as MADH, sodh as SODH, ngaydh as NGAYDH, 
-             makh as MAKH, diengiaiphieu as DIENDAIPHIEU, tenkh as TENKH,
-             SLDONHANG-SLPHANCONG as SOLUONG 
-             from V_DHPHANCONG
-             where SLDONHANG - SLPHANCONG > 0
-             order by NGAYDH desc
+    sql = """select SODH, NGAYDH, MAKH, DIENGIAIPHIEU, TENKH, 
+                SLDONHANG-SLPHANCONG as SOLUONG
+                from (SELECT DISTINCT dh.madh as MADH,
+                dh.sodh as SODH,dh.ngaydh as NGAYDH,
+                dh.makh as MAKH,dh.diengiaiphieu as DIENGIAIPHIEU,kh.tenkh as TENKH,
+                ISNULL(SUM(DH.SIZE5 + DH.SIZE6 + DH.SIZE7 + DH.SIZE8 +DH.SIZE9 + 
+                DH.SIZE0 + coalesce(DH.SIZE1, 0)),0) 
+                AS SLDONHANG,
+                ISNULL((SELECT SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + 
+                PC.SIZE8  + PC.SIZE9 + PC.SIZE0 + coalesce(PC.SIZE1, 0)) 
+                FROM PHANCONG PC WHERE DH.SODH = PC.SODH),0) 
+                AS SLPHANCONG
+            FROM DONHANG DH Left Join DMkhachhang kh on kh.makh=dh.makh 
+            GROUP BY dh.madh,dh.sodh,dh.ngaydh,dh.makh,kh.tenkh,dh.diengiaiphieu) 
+            as DHCHUAPHANCONG
+            where SLDONHANG - SLPHANCONG > 0
+            order by NGAYDH desc
              """
     result = phancong.read_custom(sql)
     return result
@@ -141,7 +152,8 @@ def baocao_phancong(SOPHIEU: str) -> List[dict]:
     sql = f"""select DONHANG.SODH, NGAYDH,MAKH, 
                     TENKH, DIENGIAIPHIEU, SOLUONG
             from
-            (select SODH, SUM(SIZE0+SIZE1+SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
+            (select SODH, SUM(SIZE0+coalesce(SIZE1, 0)+SIZE5
+            +SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
             from PHANCONG
             where SOPHIEU = '{SOPHIEU}'
             group by SODH
@@ -158,7 +170,7 @@ def baocao_phancong(SOPHIEU: str) -> List[dict]:
 @router.get("/phancong/get_chitietdonhang_dephancong")
 def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
     print("SODH: ", SODH)              
-    sql = f"""select V_KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, 
+    sql = f"""select KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, 
               madh as MADH, sodh as SODH, 
               ngaydh as NGAYDH, makh as MAKH, diengiaiphieu as DIENGIAIDONG, 
               tenkh as TENKH, 
@@ -168,11 +180,11 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
               coalesce(MAUCA, '') as MAUCA, TENMAUCA, 
               coalesce(MAUQUAI, '') as MAUQUAI, TENMAUQUAI,
               SIZE5-DaphancongSize5 as SIZE5, SIZE0-DaphancongSIZE0 as SIZE0,
-              SIZE1-DaphancongSIZE1 as SIZE1,
+              coalesce(SIZE1, 0)-DaphancongSIZE1 as SIZE1,
               SIZE6-DaphancongSize6 as SIZE6,SIZE7-DaphancongSize7 as SIZE7,
               SIZE8-DaphancongSize8 as SIZE8,SIZE9-DaphancongSize9 as SIZE9,
-              SIZE0 as dhSIZE0, DaphancongSIZE0, SIZE1 as dhSIZE1, DaphancongSIZE1,
-              SIZE5 as dhSize5, DaphancongSize5, 
+              SIZE0 as dhSIZE0, DaphancongSIZE0, coalesce(SIZE1, 0) as dhSIZE1, 
+              DaphancongSIZE1,SIZE5 as dhSize5, DaphancongSize5, 
               SIZE6 as dhSize6, DaphancongSize6, SIZE7 as dhSize7, DaphancongSize7, 
               SIZE8 as dhSize8, DaphancongSize8, SIZE9 as dhSize9, DaphancongSize9
               from (
@@ -206,10 +218,10 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
                     GROUP BY dh.magiay,dh.madh,dh.sodh,dh.ngaydh,dh.makh,
                     kh.tenkh,dh.diengiaiphieu,DH.MAUDE, DH.MAUGOT,DH.MAUSUON, 
                     DH.MAUCA, DH.MAUQUAI, DH.SIZE5, DH.SIZE6, DH.SIZE7, DH.SIZE8, 
-                    DH.SIZE9, DH.SIZE0, DH.SIZE1
-              ) as V_KIEMTRAPHANCONG
+                    DH.SIZE9, DH.SIZE0, coalesce(DH.SIZE1, 0) AS SIZE1
+              ) as KIEMTRAPHANCONG
               left join (select MAGIAY, TENGIAY from DMGIAY) 
-              as DMGIAY on DMGIAY.MAGIAY = V_KIEMTRAPHANCONG.magiay
+              as DMGIAY on DMGIAY.MAGIAY = KIEMTRAPHANCONG.magiay
               left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
                     as DMMAUDE on MAUDE = DMMAUDE.MAMAU
               left join (select MAMAU, TENMAU as TENMAUGOT from DMMAU) 
@@ -221,7 +233,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
               left join (select MAMAU, TENMAU as TENMAUQUAI from DMMAU) 
                     as DMMAUQUAI on MAUQUAI = DMMAUQUAI.MAMAU
               where SODH = '{SODH}'
-              and SIZE5 + SIZE6+ SIZE7+SIZE8+SIZE9+SIZE0 +SIZE1> 
+              and SIZE5 + SIZE6+ SIZE7+SIZE8+SIZE9+SIZE0 +coalesce(SIZE1, 0)> 
               DaphancongSize5 +DaphancongSize6+DaphancongSize7+
               DaphancongSize8+DaphancongSize9+DaphancongSIZE0+DaphancongSIZE1
             """
@@ -236,7 +248,8 @@ def read(SOPHIEU: str) -> List[RESPONSE_PHANCONG]:
                     SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, THODE,
                     THOQUAI, DAIN, DIENGIAIDONG, NGAYTAO, NGUOITAO,
                     NGUOISUA, NGAYSUA, MAUDE, MAUGOT, MAUSUON, MAUCA,
-                    MAUQUAI, Size0 AS SIZE0, SIZE1, MAKY, TENGIAY, TENKH,
+                    MAUQUAI, Size0 AS SIZE0, coalesce(SIZE1, 0) AS SIZE1, 
+                    MAKY, TENGIAY, TENKH,
                     TENMAUDE, TENMAUGOT, TENMAUSUON, TENMAUCA, TENMAUQUAI,
                     TENTHODE, TENTHOQUAI
                 from PHANCONG
@@ -363,8 +376,15 @@ def delete(SOPHIEU: str) -> RESPONSE:
 @router.get("/phancong/get_thongtin_thode")
 def read(SOPC: str) -> List[RESPONSE_PHANCONG_THO]:
     sql = f"""select THODE as MANVIEN, TENTHODE as TENNVIEN, 
-                SUM(TONGSL) as SOLUONG, SUM(LUONGDE) as THANHTIEN
-                from V_KQPHANCONG
+                SUM(TONGSL) as SOLUONG, SUM(TONGSL *DONGIADE) as THANHTIEN
+                from (SELECT PHANCONG.*,
+                NV01.TENNVIEN TENTHODE,
+                (size5 + size6 + size7 + size8 + size9+ size0 +coalesce(SIZE1, 0)) as TONGSL,
+                DONGIAQUAI, DONGIADE
+                FROM PHANCONG 
+                    LEFT JOIN V_GIAY ON PHANCONG.MAGIAY = V_GIAY.MAGIAY
+                        LEFT JOIN DMNHANVIEN NV01 ON PHANCONG.THODE = NV01.MANVIEN) 
+                AS KQPHANCONG
                 where SOPHIEU = '{SOPC}'
                 group by THODE, TENTHODE
             """
@@ -375,8 +395,15 @@ def read(SOPC: str) -> List[RESPONSE_PHANCONG_THO]:
 @router.get("/phancong/get_thongtin_thoquai")
 def get_thongtin_thoquai(SOPC: str) -> List[RESPONSE_PHANCONG_THO]:
     sql = f"""select THOQUAI as MANVIEN, TENTHOQUAI as TENNVIEN, 
-                SUM(TONGSL) as SOLUONG, SUM(LUONGQUAI) as THANHTIEN
-                from V_KQPHANCONG
+                SUM(TONGSL) as SOLUONG, SUM(TONGSL *DONGIAQUAI) as THANHTIEN
+                from (SELECT PHANCONG.*,
+                NV01.TENNVIEN TENTHOQUAI,
+                (size5 + size6 + size7 + size8 + size9+ size0 +coalesce(SIZE1, 0)) as TONGSL,
+                DONGIAQUAI
+                FROM PHANCONG 
+                    LEFT JOIN V_GIAY ON PHANCONG.MAGIAY = V_GIAY.MAGIAY
+		            LEFT JOIN DMNHANVIEN NV01 ON PHANCONG.THOQUAI = NV01.MANVIEN) 
+                AS KQPHANCONG
                 where SOPHIEU = '{SOPC}'
                 group by THOQUAI, TENTHOQUAI
             """

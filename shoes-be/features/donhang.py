@@ -119,7 +119,7 @@ def baocao_donhang(YEAR: str=None) -> List[RESPONSE_BAOCAO_DONHANG]:
 
     sql = f"""SELECT SODH, DH.MAKH, KH.TENKH, NGAYDH, NGAYGH, 
                 DIENGIAIPHIEU AS DIENGIAI,
-                SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE1) as SOLUONG
+                SUM(SIZE0 +SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+coalesce(SIZE1, 0)) as SOLUONG
               FROM DONHANG DH
                 LEFT JOIN V_GIAY ON V_GIAY.MAGIAY = DH.MAGIAY
                 LEFT JOIN DMKHACHHANG KH ON KH.MAKH = DH.MAKH
@@ -147,14 +147,14 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
                 V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI, 
                 V_GIAY.TENCA,
                 SIZE5,SIZE6,SIZE7,
-                SIZE9,SIZE8,SIZE0, SIZE1,
+                SIZE9,SIZE8,SIZE0,SIZE1,
                 SOLUONG,NGAYDH, NGAYGH,
                 V_GIAY.DONGIA * SOLUONG AS THANHTIEN,
                 DIENGIAIDONG, INHIEU
             FROM (select DIENGIAIPHIEU, MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
 		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
-                SIZE9,SIZE8,SIZE0, SIZE1, NGAYDH, NGAYGH,
-                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0+SIZE1) AS SOLUONG,
+                SIZE9,SIZE8,SIZE0, coalesce(SIZE1, 0) AS SIZE1, NGAYDH, NGAYGH,
+                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0+coalesce(SIZE1, 0)) AS SOLUONG,
                 DIENGIAIDONG, INHIEU
             from DONHANG 
             WHERE DONHANG.SODH='{SODH}') AS DONHANG
@@ -289,9 +289,10 @@ def delete(SODH: str) -> RESPONSE:
 # should I change post method to get method??? 
 def read(info_query: dict) -> List[RESPONSE_GIAYDONHANG]:
     sql = f"""
-            select SODH, NGAYDH, DONHANG.MAKH, TENKH, MAGIAY, TENGIAY, SIZE1, Size0 as SIZE0,
-            SIZE5, SIZE6, SIZE7, SIZE8, SIZE9,
-            (Size0+SIZE1+SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) AS SOLUONG,
+            select SODH, NGAYDH, DONHANG.MAKH, TENKH, MAGIAY, TENGIAY, 
+            coalesce(SIZE1, 0) as SIZE1, 
+            Size0 as SIZE0, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9,
+            (Size0+coalesce(SIZE1, 0)+SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) AS SOLUONG,
             GIABAN, THANHTIEN
             from DONHANG
             INNER JOIN (SELECT MAGIAY AS MA, TENGIAY FROM DMGIAY) AS DMGIAY
