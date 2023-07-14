@@ -48,22 +48,28 @@ const In = ({ data, setShowModal }) => {
       <div className={styles.row}>
         <div>
           <label>Khách hàng:</label>
-          <input value={data["TENKH"]} />
+          <input style={{ "font-weight": "bold" }} value={data["TENKH"]} />
         </div>
         <div>
           <label>Nợ cũ:</label>
-          <input value={tongNo} />
+          <input
+            style={{ "font-weight": "bold" }}
+            value={parseFloat(tongNo).toLocaleString("en")}
+          />
         </div>
       </div>
 
       <div className={styles.row}>
         <div>
           <label>Số tiền:</label>
-          <input value={data["THANHTIEN"]} />
+          <input value={parseFloat(data["THANHTIEN"]).toLocaleString("en")} />
         </div>
         <div>
           <label>Tổng nợ:</label>
-          <input value={tongNo - data["THANHTIEN"]} />
+          <input
+            style={{ "font-weight": "bold" }}
+            value={parseFloat(tongNo - data["THANHTIEN"]).toLocaleString("en")}
+          />
         </div>
       </div>
 
@@ -74,7 +80,7 @@ const In = ({ data, setShowModal }) => {
 
       <br />
       <br />
-      <Signature />
+      <Signature fontSize={"1.6rem"} />
     </div>
   );
 };
