@@ -3,7 +3,7 @@ import { useUserContext } from "~user";
 import { DonHang } from "./DonHang";
 import { PhanCong } from "./PhanCong";
 import GiaoHang from "./GiaoHang";
-import ThuChi from "./ThuChi";
+import ThuTien from "./ThuTien";
 import ChamCong from "./ChamCong";
 
 const TruyVan = () => {
@@ -24,8 +24,8 @@ const TruyVan = () => {
         alert("Bạn không có quyền truy cập vào chức năng này!");
         return <></>;
       }
-    case "Thu chi":
-      return <ThuChi />;
+    case "Thu tiền":
+      return <ThuTien />;
     case "Chấm công":
       if (userAccess.some((obj) => obj.MAFORM === "F0042" && obj.XEM === 1)) {
         return <ChamCong />;

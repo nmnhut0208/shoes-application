@@ -1,5 +1,11 @@
 @import "~common_scss/form.module.scss";
 
+@page {
+  size: auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 .show_content_column {
   display: flex;
   flex-direction: column;
@@ -10,7 +16,6 @@
   padding: 0rem 2rem 0rem 2rem;
   width: 79.4rem;
   .each_page {
-    padding-top: 4rem;
     h1 {
       font-family: "Times New Roman";
       font-size: 1.5rem;

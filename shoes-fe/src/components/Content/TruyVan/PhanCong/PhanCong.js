@@ -10,6 +10,8 @@ import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { FormNghiepVuPhanCong, Modal } from "~nghiep_vu/PhanCong/";
 import { INFO_COLS_PHANCONG } from "./ConstantVariable";
 import { border_text_table_config } from "~config/ui";
+import styles from "./PhanCong.module.scss";
+import clsx from "clsx";
 
 const Table = ({ columns, data, setDataPhanCong, permission }) => {
   console.log("vao table phan cong ne");
@@ -155,8 +157,29 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
 
 const MAFORM_TRUYVAN_PHANCONG = "F0039";
 
+const updateInfo = (permission, year, setData) => {
+  if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
+    let url = "http://localhost:8000/phancong/baocao_phancong";
+    if (year != "" && year > 2020) {
+      url += "?YEAR=" + year;
+    }
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        setData(info);
+        console.log("info: ", info);
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+  }
+};
+
 const PhanCong = () => {
   const [dataPhanCong, setDataPhanCong] = useState([]);
+  const [year, setYear] = useState("");
 
   const columns = useMemo(() => {
     return processingInfoColumnTable(INFO_COLS_PHANCONG);
@@ -171,22 +194,8 @@ const PhanCong = () => {
     return phanquyen;
   }, []);
 
-  console.log("permission: ", permission);
-
   useEffect(() => {
-    if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
-      fetch("http://localhost:8000/phancong/baocao_phancong")
-        .then((response) => {
-          return response.json();
-        })
-        .then((info) => {
-          setDataPhanCong(info);
-          console.log("info: ", info);
-        })
-        .catch((err) => {
-          console.log(":error: ", err);
-        });
-    }
+    updateInfo(permission, year, setDataPhanCong);
   }, []);
 
   if (permission.XEM + permission.SUA + permission.XOA + permission.IN === 0) {
@@ -194,9 +203,25 @@ const PhanCong = () => {
     return <></>;
   }
 
+  const handleTruyVan = () => {
+    if (year === "") return;
+    updateInfo(permission, year, setDataPhanCong);
+  };
+
   return (
     <>
-      <h1>Phân công - F0039</h1>
+      <h1>Phân công</h1>
+      <div className={clsx(styles.form, styles.info_query)}>
+        <label>Xem dữ liệu năm</label>
+        <input
+          type="number"
+          min="2020"
+          step="1"
+          value={year}
+          onChange={(e) => setYear(parseInt(e.target.value))}
+        />
+        <button onClick={handleTruyVan}>Truy Vấn</button>
+      </div>
       <Table
         columns={columns}
         data={dataPhanCong}

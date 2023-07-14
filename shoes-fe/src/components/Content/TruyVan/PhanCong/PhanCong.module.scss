@@ -1,0 +1,13 @@
+@import "~common_scss/form.module.scss";
+
+.info_query {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  label {
+    width: fit-content;
+  }
+  button {
+    margin-left: 1rem;
+  }
+}

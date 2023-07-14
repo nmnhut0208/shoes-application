@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: row-reverse;
   margin-right: 5rem;
+  break-inside: avoid;
   p {
     margin-bottom: 0.5rem;
     font-family: "Times New Roman";

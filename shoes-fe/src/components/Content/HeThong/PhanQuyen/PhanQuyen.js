@@ -6,29 +6,21 @@ import {
   actions_table,
   cleanupContextTable,
 } from "~table_context";
+import { rem_to_px } from "~config/ui";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 
 const list_key = [
-  // { key: "STT", width: "7rem" },
-  { header: "Mã Nhân Viên", key: "MANVIEN", width: "21rem" },
-  { header: "Mã Form", key: "MAFORM", width: "21rem" },
-  { header: "Tên Form", key: "TENFORM", width: "21rem" },
-  { header: "Thêm", key: "THEM", width: "10rem" },
-  { header: "Sửa", key: "SUA", width: "10rem" },
-  { header: "Xóa", key: "XOA", width: "10rem" },
-  { header: "Xem", key: "XEM", width: "10rem" },
-  { header: "In", key: "IN", width: "10rem" },
+  { header: "Mã Nhân Viên", key: "MANVIEN", width: 5 * rem_to_px },
+  { header: "Mã Form", key: "MAFORM", width: 5 * rem_to_px },
+  { header: "Tên Form", key: "TENFORM", width: 10 * rem_to_px },
+  { header: "Thêm", key: "THEM", width: 1 * rem_to_px },
+  { header: "Sửa", key: "SUA", width: 1 * rem_to_px },
+  { header: "Xóa", key: "XOA", width: 1 * rem_to_px },
+  { header: "Xem", key: "XEM", width: 1 * rem_to_px },
+  { header: "In", key: "IN", width: 1 * rem_to_px },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
+const infoColumns = processingInfoColumnTable(list_key, false);
 
 const PhanQuyen = () => {
   const [renderUI, setRenderUI] = useState(false);

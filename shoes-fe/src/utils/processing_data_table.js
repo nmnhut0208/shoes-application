@@ -24,7 +24,8 @@ export const processingInfoColumnTableHaveFooter = (
   list_key,
   COLS_HAVE_SUM_FOOTER,
   data,
-  setMinMax = true
+  setMinMax = true,
+  footer_name = "Tổng cộng"
 ) => {
   const infoColumnsInit = [];
   for (let index in list_key) {
@@ -40,7 +41,7 @@ export const processingInfoColumnTableHaveFooter = (
     }
 
     if (list_key[index]["key"] === "TENGIAY")
-      info["Footer"] = () => <div>Tổng cộng: </div>;
+      info["Footer"] = () => <div>{footer_name}: </div>;
     if (COLS_HAVE_SUM_FOOTER.includes(list_key[index]["key"])) {
       let sum_value = data.reduce(
         (total, row) => total + row[list_key[index]["key"]],

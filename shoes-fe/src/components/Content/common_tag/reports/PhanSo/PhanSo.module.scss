@@ -1,12 +1,18 @@
-td {
-  padding-right: 2.5px;
-  padding-left: 2.5px;
-}
-.phan_so {
+.fraction {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  letter-spacing: 0.001em;
   text-align: center;
   font-family: "Times New Roman";
 }
-
-.tu_so {
-  border-bottom: solid 1.6px;
+.fraction > span {
+  display: block;
+  padding: 0.1em;
+}
+.fraction span.fdn {
+  border-top: thin solid black;
+}
+.fraction span.bar {
+  display: none;
 }
