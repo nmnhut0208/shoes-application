@@ -24,15 +24,12 @@ const groupbyFunction = (data, key) => {
 
 const compute_footer_SOLUONG = (data) => {
   let footer_info = [];
-  let total = 0;
   for (let i in data) {
     let info = {};
     info["DONGIA"] = i;
     info["SOLUONG"] = data[i].reduce((init, obj) => init + obj["SOLUONG"], 0);
-    total += info["SOLUONG"];
     footer_info.push(info);
   }
-  footer_info.push({ DONGIA: "Tổng cộng", SOLUONG: total });
   console.log("footer_info: ", footer_info);
   return footer_info;
 };
@@ -72,16 +69,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
       let all_pages = [];
       for (let key in groupByEmployer) {
         let page = { MANVIEN: key };
-
-        let end_line = {};
-        end_line["MAGIAY"] = "Cộng " + groupByEmployer[key][0]["TENNVIEN"];
-        end_line["SOLUONG"] = 0;
-        end_line["THANHTIEN"] = 0;
-        for (let i = 0; i < groupByEmployer[key].length; i++) {
-          end_line["SOLUONG"] += groupByEmployer[key][i]["SOLUONG"];
-          end_line["THANHTIEN"] += groupByEmployer[key][i]["THANHTIEN"];
-        }
-        page["table"] = [...groupByEmployer[key], end_line];
+        page["table"] = groupByEmployer[key];
         const dongia_group = groupbyFunction(groupByEmployer[key], "DONGIA");
         page["footer"] = compute_footer_SOLUONG(dongia_group);
 
@@ -116,7 +104,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
               <TableToPrint
                 columns={INFO_TABLE}
                 data={page["table"]}
-                listHaveFooterSum={INFO_TABLE_FOOTER}
+                listHaveFooterSum={["SOLUONG", "THANHTIEN"]}
                 LIST_FORMAT_NUMBER={LIST_FORMAT_NUMBER}
                 Col_Name_Footer="MAGIAY"
               />

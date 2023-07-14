@@ -9,19 +9,19 @@ export const INFO_TABLE = [
   {
     header: "Mã giày",
     key: "MAGIAY",
-    width: 30 * rem_to_px,
+    width: 20 * rem_to_px,
     textAlign: "left",
   },
   {
     header: "SL",
     key: "SOLUONG",
-    width: 7 * rem_to_px,
+    width: 6 * rem_to_px,
     textAlign: "right",
   },
   {
     header: "Đơn giá",
     key: "DONGIA",
-    width: 8 * rem_to_px,
+    width: 7 * rem_to_px,
     textAlign: "right",
     muiTableBodyCellProps: {
       align: "right",
@@ -30,29 +30,29 @@ export const INFO_TABLE = [
   {
     header: "Thành tiền",
     key: "THANHTIEN",
-    width: 11 * rem_to_px,
+    width: 10 * rem_to_px,
     textAlign: "right",
   },
   {
     header: "Mã quai",
     key: "MAQUAI",
-    width: 8 * rem_to_px,
+    width: 7 * rem_to_px,
     textAlign: "left",
   },
   {
     header: "Mã đế",
     key: "MADE",
-    width: 8 * rem_to_px,
+    width: 6.5 * rem_to_px,
   },
   {
     header: "Phiếu PC",
     key: "PHIEUPC",
-    width: 15 * rem_to_px,
+    width: 10 * rem_to_px,
   },
   {
     header: "Diễn giải",
     key: "DIENGIAIPHIEU",
-    width: 16.5 * rem_to_px,
+    width: 7 * rem_to_px,
   },
 ];
 
