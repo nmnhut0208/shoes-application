@@ -9,12 +9,7 @@ const TableToPrint = ({
   listHaveFooterSum,
   listColDate,
   Col_Name_Footer,
-  width,
 }) => {
-  const width_config = useMemo(() => {
-    if (width) return width;
-    else return "100%";
-  });
   const footer = useMemo(() => {
     let _footer = {};
     if (listHaveFooterSum && listHaveFooterSum.length > 0) {
@@ -35,7 +30,7 @@ const TableToPrint = ({
 
   return (
     <div className={styles.my_table}>
-      <table style={{ width: width_config }}>
+      <table style={{ width: "fit-content" }}>
         {/* Header table */}
         <tr>
           {columns.map((col) => {

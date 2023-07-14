@@ -6,7 +6,6 @@ import {
   LIST_FORMAT_NUMBER,
 } from "./ConstantVariable";
 import styles from "./In.module.scss";
-// import MyTable from "./MyTable";
 import { TableToPrint } from "~common_tag/reports";
 
 const groupbyFunction = (data, key) => {
@@ -117,7 +116,6 @@ const In = ({ data, setShowModal, stylePrint }) => {
               <TableToPrint
                 columns={INFO_TABLE}
                 data={page["table"]}
-                width="1040px"
                 listHaveFooterSum={INFO_TABLE_FOOTER}
                 LIST_FORMAT_NUMBER={LIST_FORMAT_NUMBER}
                 Col_Name_Footer="MAGIAY"
@@ -126,7 +124,6 @@ const In = ({ data, setShowModal, stylePrint }) => {
               <TableToPrint
                 columns={INFO_TABLE_FOOTER}
                 data={page["footer"]}
-                width={"200px"}
                 listHaveFooterSum={["SOLUONG"]}
                 LIST_FORMAT_NUMBER={["SOLUONG", "DONGIA"]}
                 Col_Name_Footer="DONGIA"

@@ -69,7 +69,7 @@ export const INFO_TABLE_FOOTER = [
   {
     header: "SL",
     key: "SOLUONG",
-    width: 15 * rem_to_px,
+    width: 10 * rem_to_px,
     textAlign: "right",
   },
 ];
