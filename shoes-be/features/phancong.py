@@ -149,8 +149,8 @@ def baocao_phancong(YEAR: str=None) -> List[RESPONSE_BAOCAO_PHANCONG]:
 
 @router.get("/phancong/get_info_donhang")
 def baocao_phancong(SOPHIEU: str) -> List[dict]:
-    sql = f"""select DONHANG.SODH, NGAYDH,MAKH, 
-                    TENKH, DIENGIAIPHIEU, SOLUONG
+    sql = f"""select DONHANG.SODH, NGAYDH,DONHANG.MAKH, DMKHACHHANG.TENKH, 
+                     DIENGIAIPHIEU, SOLUONG
             from
             (select SODH, SUM(SIZE0+coalesce(SIZE1, 0)+SIZE5
             +SIZE6+SIZE7+SIZE8+SIZE9) as SOLUONG
@@ -158,9 +158,10 @@ def baocao_phancong(SOPHIEU: str) -> List[dict]:
             where SOPHIEU = '{SOPHIEU}'
             group by SODH
             ) as PHANCONG
-            inner join (select distinct SODH, NGAYDH, MAKH, TENKH, 
-                    DIENGIAIPHIEU from V_DONHANG) 
+            inner join (select distinct SODH, NGAYDH, MAKH, 
+                    DIENGIAIPHIEU from DONHANG) 
                     as DONHANG on DONHANG.SODH = PHANCONG.SODH
+            inner join DMKHACHHANG on DONHANG.MAKH = DMKHACHHANG.MAKH
             order by NGAYDH desc
             """
     result = phancong.read_custom(sql)
