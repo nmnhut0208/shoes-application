@@ -7,10 +7,25 @@ import { checkMaDanhMucExisted } from "~danh_muc/helper";
 const FormGiay = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [isSaveData, setIsSaveData] = useState(true);
-  const [dataForm, setDataForm] = useState(() => {
-    setIsSaveData(true);
-    return stateTable.inforShowTable.record;
-  });
+  const [dataForm, setDataForm] = useState(stateTable.inforShowTable.record);
+
+  useEffect(() => {
+    if (stateTable.inforShowTable.record["MAGIAY"] !== "") {
+      fetch(
+        "http://localhost:8000/giay/all_info_giay?MAGIAY=" +
+          stateTable.inforShowTable.record["MAGIAY"]
+      )
+        .then((response) => response.json())
+        .then((info) => {
+          console.log("info: ", info);
+          setDataForm(info[0]);
+          setIsSaveData(true);
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+    }
+  }, []);
 
   useEffect(() => {
     setIsSaveData(false);

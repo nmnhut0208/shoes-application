@@ -79,12 +79,24 @@ giay = GIAY()
 @router.get("/giay")
 def read() -> List[RESPONSE_GIAY]:
     sql = """select MAGIAY, TENGIAY, DMGIAY.MADE, 
+                DMGIAY.MASUON, DMGIAY.MACA, 
+                DMGIAY.MAQUAI, GHICHU, DONGIA
+            from DMGIAY  
+            LEFT JOIN(SELECT MAKH, TENKH FROM DMKHACHHANG) AS DMKHACHHANG 
+                    ON DMGIAY.MAKH = DMKHACHHANG.MAKH
+            """
+    return giay.read_custom(sql)
+
+
+@router.get("/giay/all_info_giay")
+def read(MAGIAY: str) -> RESPONSE_GIAY:
+    sql = f"""select MAGIAY, TENGIAY, DMGIAY.MADE, 
                 TENDE, DMGIAY.MASUON,TENSUON, DMGIAY.MACA, 
                 TENCA, DMGIAY.MAQUAI, TENQUAI, GHICHU, DONGIA,
                 DMGIAY.MAMAU, TENMAU, DMGIAY.MAKH, TENKH, SortID,
                 GIATRANGTRI,GIASUON, GIAGOT, GIATANTRANG, 
                 GIANHANCONG, GIAKEO,TRANGTRIDE, GHICHUDE, 
-                TRANGTRIQUAI, GHICHUQUAI 
+                TRANGTRIQUAI, GHICHUQUAI, coalesce(HINHANH, '') as HINHANH
             from DMGIAY  
             LEFT JOIN(select MADE, TENDE FROM DMDE) AS DMDE 
                      ON DMGIAY.MADE = DMDE.MADE 
@@ -98,6 +110,7 @@ def read() -> List[RESPONSE_GIAY]:
                     ON DMGIAY.MAMAU = DMMAU.MAMAU 
             LEFT JOIN(SELECT MAKH, TENKH FROM DMKHACHHANG) AS DMKHACHHANG 
                     ON DMGIAY.MAKH = DMKHACHHANG.MAKH
+            WHERE MAGIAY='{MAGIAY}'
             """
     return giay.read_custom(sql)
 

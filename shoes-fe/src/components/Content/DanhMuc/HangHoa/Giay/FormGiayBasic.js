@@ -15,8 +15,10 @@ let list_info_generator_MAGIAY = ["MAKH", "SortID", "MASUON", "MAQUAI"];
 
 const FormGiayBasic = ({ form, setDataForm, mode }) => {
   const readOnly = useMemo(() => mode === "edit", [mode]);
-  const [image_base64, setImageBase64] = useState("");
+  const [image_base64, setImageBase64] = useState(""); //form["HINHANH"]);
   const [image_url, setImageURL] = useState("");
+
+  console.log("image_base64: ", image_base64);
 
   useEffect(() => {
     if (form["MAGIAY"] != "" && image_base64 === "") {
