@@ -7,17 +7,15 @@ const MenuItemMau = ({ dataMau, handleMenuItemClick, selectedIndex }) => {
   return (
     <>
       {dataMau.map((option, index) => (
-        <MenuItem
-          //   key={option.value}
-          //   disabled={index === 0}
-          //   selected={index === selectedIndex}
-          onClick={(event) => handleMenuItemClick(event, index)}
-        >
-          {/* <ListItemText>
-            {option.value} - {option.label}
-          </ListItemText> */}
-          <ListItemText>{option.value}</ListItemText>
-          <Typography variant="body2" color="text.secondary">
+        <MenuItem onClick={(event) => handleMenuItemClick(event, index)}>
+          <ListItemText primaryTypographyProps={{ fontSize: "1.4rem" }}>
+            {option.value}
+          </ListItemText>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ fontSize: "1.4rem" }}
+          >
             {option.label}
           </Typography>
         </MenuItem>

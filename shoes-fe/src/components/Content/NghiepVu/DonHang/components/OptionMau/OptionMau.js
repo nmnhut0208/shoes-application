@@ -43,7 +43,7 @@ const OptionMau = ({
       <List
         component="nav"
         aria-label="Device settings"
-        sx={{ bgcolor: "background.paper" }}
+        sx={{ bgcolor: "none" }}
       >
         <ListItem
           id="lock-button"
@@ -55,7 +55,7 @@ const OptionMau = ({
         >
           <ListItemText
             primary={dataTable[id_row][id_column]}
-            // secondary={dataMau[selectedIndex]}
+            primaryTypographyProps={{ fontSize: "1.4rem" }}
           />
         </ListItem>
       </List>

@@ -6,6 +6,41 @@ import {
   COLS_HAVE_SELECT_INPUT,
 } from "./ConstantVariable";
 
+const handleSaveCell = (cell, value, data, setDataTable) => {
+  //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
+  var row_current = data[cell.row.index];
+  // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
+  // Tính lại số lượng
+  var list_size = [
+    "SIZE5",
+    "SIZE6",
+    "SIZE7",
+    "SIZE8",
+    "SIZE9",
+    "SIZE0",
+    "SIZE1",
+    "GIABAN",
+  ];
+  if (list_size.includes(cell.column.id)) {
+    if (value === "") value = 0;
+    row_current[cell.column.id] = parseInt(value);
+
+    var so_luong = 0;
+    for (let i = 0; i < list_size.length; i++) {
+      so_luong += row_current[list_size[i]];
+    }
+    row_current["SOLUONG"] = so_luong;
+    row_current["THANHTIEN"] =
+      row_current["SOLUONG"] * parseInt(row_current["GIABAN"]);
+    data[cell.row.index] = row_current;
+  } else {
+    data[cell.row.index][cell.column.id] = value;
+  }
+
+  //send/receive api updates here
+  setDataTable([...data]); //re-render with new data
+};
+
 export const updateColumnsInformations = (
   dataMau,
   dataTable,
@@ -24,6 +59,43 @@ export const updateColumnsInformations = (
       key: INFO_COLS_DONHANG[index]["key"].toLowerCase(),
     };
 
+    // Render input tag for edit cell
+    if (key.includes("SIZE") || key === "GIABAN") {
+      info["Cell"] = ({ cell }) => (
+        <input
+          style={{
+            border: "none",
+            width: "100%",
+            height: "100%",
+            fontSize: "1.4rem",
+          }}
+          type="number"
+          value={cell.getValue().toString()}
+          onChange={(e) =>
+            handleSaveCell(cell, e.target.value, dataTable, setDataTable)
+          }
+        />
+      );
+    }
+
+    if (key === "DIENGIAIDONG" || key === "INHIEU") {
+      info["Cell"] = ({ cell }) => (
+        <input
+          style={{
+            border: "none",
+            width: "100%",
+            height: "100%",
+            fontSize: "1.4rem",
+          }}
+          type="text"
+          value={cell.getValue()}
+          onChange={(e) => {
+            dataTable[cell.row.id][cell.column.id] = e.target.value;
+            setDataTable([...dataTable]);
+          }}
+        />
+      );
+    }
     if (COLS_HAVE_SELECT_INPUT.includes(key)) {
       info["Cell"] = ({ cell }) => {
         return (
