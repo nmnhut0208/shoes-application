@@ -3,7 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import { memo } from "react";
 
-const MenuItemMau = ({ dataMau, handleMenuItemClick, selectedIndex }) => {
+const MenuItemMau = ({ dataMau, handleMenuItemClick }) => {
   return (
     <>
       {dataMau.map((option, index) => (

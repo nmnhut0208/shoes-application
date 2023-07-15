@@ -68,7 +68,9 @@ export const updateColumnsInformations = (
             width: "100%",
             height: "100%",
             fontSize: "1.4rem",
+            backgroundColor: "inherit",
           }}
+          readOnly={view}
           type="number"
           value={cell.getValue().toString()}
           onChange={(e) =>
@@ -86,7 +88,9 @@ export const updateColumnsInformations = (
             width: "100%",
             height: "100%",
             fontSize: "1.4rem",
+            backgroundColor: "inherit",
           }}
+          readOnly={view}
           type="text"
           value={cell.getValue()}
           onChange={(e) => {
@@ -99,23 +103,19 @@ export const updateColumnsInformations = (
     if (COLS_HAVE_SELECT_INPUT.includes(key)) {
       info["Cell"] = ({ cell }) => {
         return (
-          <>
-            <OptionMau
-              init={dataTable[cell.row.id][cell.column.id]}
-              id_row={cell.row.id}
-              id_column={cell.column.id}
-              dataTable={dataTable}
-              dataMau={dataMau}
-              handleChange={(value, label) => {
-                console.log("cell.row.id: ", cell.row.id);
-                console.log("cell.column.id: ", cell.column.id);
-                dataTable[cell.row.id][cell.column.id] = value;
-                dataTable[cell.row.id]["TEN" + cell.column.id] = label;
-                setDataTable([...dataTable]);
-              }}
-              readOnly={view}
-            />
-          </>
+          <OptionMau
+            init={dataTable[cell.row.id][cell.column.id]}
+            id_row={cell.row.id}
+            id_column={cell.column.id}
+            dataTable={dataTable}
+            dataMau={dataMau}
+            handleChange={(value, label) => {
+              dataTable[cell.row.id][cell.column.id] = value;
+              dataTable[cell.row.id]["TEN" + cell.column.id] = label;
+              setDataTable([...dataTable]);
+            }}
+            readOnly={view}
+          />
         );
       };
     }
@@ -190,8 +190,6 @@ export const updateFormDonHang = (
       return response.json();
     })
     .then((data) => {
-      console.log(":data: ", data);
-      console.log("today: ", moment().format("YYYY-MM-DD HH:mm:ss"));
       let sodh = data["SODH"];
       setFormInfoDonHang({
         ...formInfoDonHang,
