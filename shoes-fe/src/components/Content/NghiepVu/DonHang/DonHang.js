@@ -31,7 +31,7 @@ const DonHang = () => {
       isResetPageEmpty={true}
     >
       <FormDonHang
-        setShowModalNghiepVuDonHang={setShowModal}
+        isSaveData={isSaveData}
         setIsSaveDataNghiepVuDonHang={setIsSaveData}
         permission={permission}
       />

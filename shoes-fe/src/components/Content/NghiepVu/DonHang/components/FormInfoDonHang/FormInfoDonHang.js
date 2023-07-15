@@ -8,7 +8,7 @@ import styles from "./FormInfoDonHang.module.scss";
 const FormInfoDonHang = ({
   formInfoDonHang,
   setFormInfoDonHang,
-  setIsSavedData,
+  // setIsSavedData,
   setIsSaveDataNghiepVuDonHang,
   view,
 }) => {
@@ -16,7 +16,7 @@ const FormInfoDonHang = ({
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
-    setIsSavedData(false);
+    // setIsSavedData(false);
     if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(false);
   };
 
@@ -26,7 +26,7 @@ const FormInfoDonHang = ({
       "YYYY-MM-DD HH:mm:ss"
     );
     setFormInfoDonHang(data);
-    setIsSavedData(false);
+    // setIsSavedData(false);
     if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(false);
   };
 
@@ -62,18 +62,6 @@ const FormInfoDonHang = ({
             />
           </div>
         </div>
-        {/* <input
-          type="checkbox"
-          name="Giá lẻ"
-          // value="true"
-          value={formInfoDonHang["Giá lẻ"]}
-          onChange={(e) => handleChangeForm(e)}
-          readOnly={view}
-          className={styles.checkbox}
-        />
-        <span for="Giá lẻ" className={styles.span_for_checkbox}>
-          Giá lẻ
-        </span> */}
       </div>
       <div className={styles.group_item}>
         <div className={styles.item_column}>

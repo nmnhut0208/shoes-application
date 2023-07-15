@@ -83,14 +83,15 @@ const TableDonHang = ({
         // footer sum
         enableStickyFooter
         // edit each cell in row
-        editingMode="table"
-        enableEditing={!readOnly}
-        muiTableBodyCellEditTextFieldProps={({ cell }) => ({
-          //onBlur is more efficient, but could use onChange instead
-          onBlur: (event) => {
-            handleSaveCell(cell, event.target.value);
-          },
-        })}
+        // editingMode="table"
+        // enableEditing={!readOnly}
+        // muiTableBodyCellEditTextFieldProps={({ cell }) => ({
+        //   //onBlur is more efficient, but could use onChange instead
+        //   onBlur: (event) => {
+        //     handleSaveCell(cell, event.target.value);
+        //   },
+        // })}
+
         renderBottomToolbarCustomActions={() => (
           <>
             {!readOnly && (
