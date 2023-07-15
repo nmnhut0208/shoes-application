@@ -205,7 +205,7 @@ const FormDonHang = ({
   console.log("dataTable: ", dataTable);
 
   return (
-    <>
+    <div className={styles.page}>
       <FormInfoDonHang
         formInfoDonHang={formInfoDonHang}
         setFormInfoDonHang={setFormInfoDonHang}
@@ -297,7 +297,7 @@ const FormDonHang = ({
           />
         </Modal>
       )}
-    </>
+    </div>
   );
 };
 

@@ -69,6 +69,8 @@ export const updateColumnsInformations = (
             height: "100%",
             fontSize: "1.4rem",
             backgroundColor: "inherit",
+            textAlign: "right",
+            marginRight: "0.5rem",
           }}
           readOnly={view}
           type="number"
@@ -79,6 +81,22 @@ export const updateColumnsInformations = (
         />
       );
     }
+
+    if (key === "SOLUONG" || key === "THANHTIEN")
+      info["Cell"] = ({ cell }) => (
+        <input
+          style={{
+            border: "none",
+            width: "100%",
+            height: "100%",
+            fontSize: "1.4rem",
+            backgroundColor: "inherit",
+            textAlign: "right",
+            marginRight: "0.5rem",
+          }}
+          value={parseFloat(cell.getValue()).toLocaleString("en")}
+        />
+      );
 
     if (key === "DIENGIAIDONG" || key === "INHIEU") {
       info["Cell"] = ({ cell }) => (
@@ -123,7 +141,20 @@ export const updateColumnsInformations = (
     if (key === "TENGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
     if (COLS_HAVE_SUM_FOOTER.includes(key)) {
       let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
-      info["Footer"] = () => <div>{sum_value}</div>;
+      info["Footer"] = () => (
+        <input
+          style={{
+            textAlign: "right",
+            height: "100%",
+            width: "100%",
+            border: "none",
+            fontWeight: "bold",
+            fontSize: "1.4rem",
+            marginRight: "0.5rem",
+          }}
+          value={parseFloat(sum_value).toLocaleString("en")}
+        />
+      );
     }
     infoColumnsInit.push(info);
   }

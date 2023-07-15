@@ -14,8 +14,8 @@ import { Edit } from "@mui/icons-material";
 const list_key = [
   { header: "Mã kỳ", key: "MAKY", width: 3 * rem_to_px },
   { header: "Tên kỳ", key: "TENKY", width: 5 * rem_to_px },
-  { header: "Từ ngày", key: "TUNGAY", width: 10 * rem_to_px },
-  { header: "Đến ngày", key: "DENNGAY", width: 10 * rem_to_px },
+  { header: "Từ ngày", key: "TUNGAY", width: 15 * rem_to_px },
+  { header: "Đến ngày", key: "DENNGAY", width: 15 * rem_to_px },
 ];
 
 const infoColumns = processingInfoColumnTable(list_key, false);
@@ -74,7 +74,7 @@ const KyTinhLuong = () => {
           <Edit style={{ color: "green" }} fontSize="large" />
         </IconButton>
       </Tooltip>
-      {renderUI && <TableContent info_other_column={{ action: 24, stt: 10 }} />}
+      {renderUI && <TableContent info_other_column={{ action: 24, stt: 15 }} />}
     </>
   );
 };

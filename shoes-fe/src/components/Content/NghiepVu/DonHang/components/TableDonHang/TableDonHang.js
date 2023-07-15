@@ -14,39 +14,8 @@ const TableDonHang = ({
   handleAddGiay,
   readOnly,
 }) => {
+  console.log("render TableDonHang");
   console.log("data: ", data);
-  const handleSaveCell = (cell, value) => {
-    //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
-    var row_current = data[cell.row.index];
-    // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
-    // Tính lại số lượng
-    var list_size = [
-      "SIZE5",
-      "SIZE6",
-      "SIZE7",
-      "SIZE8",
-      "SIZE9",
-      "SIZE0",
-      "SIZE1",
-    ];
-    if (list_size.includes(cell.column.id)) {
-      if (value === "") value = 0;
-      row_current[cell.column.id] = parseInt(value);
-
-      var so_luong = 0;
-      for (let i = 0; i < list_size.length; i++) {
-        so_luong += row_current[list_size[i]];
-      }
-      row_current["SOLUONG"] = so_luong;
-      row_current["THANHTIEN"] = row_current["SOLUONG"] * row_current["GIABAN"];
-      data[cell.row.index] = row_current;
-    } else {
-      data[cell.row.index][cell.column.id] = value;
-    }
-
-    //send/receive api updates here
-    setDataTable([...data]); //re-render with new data
-  };
 
   const handleDeleteRow = (row) => {
     let index = row.index;
@@ -82,16 +51,6 @@ const TableDonHang = ({
         // enablePinning // enable pinning
         // footer sum
         enableStickyFooter
-        // edit each cell in row
-        // editingMode="table"
-        // enableEditing={!readOnly}
-        // muiTableBodyCellEditTextFieldProps={({ cell }) => ({
-        //   //onBlur is more efficient, but could use onChange instead
-        //   onBlur: (event) => {
-        //     handleSaveCell(cell, event.target.value);
-        //   },
-        // })}
-
         renderBottomToolbarCustomActions={() => (
           <>
             {!readOnly && (

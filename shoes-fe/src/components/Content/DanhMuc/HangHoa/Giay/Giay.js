@@ -41,7 +41,9 @@ const Giay = () => {
 
   return (
     <>
-      {renderUI && <TableContent info_other_column={{ action: 26, stt: 12 }} />}
+      {renderUI && (
+        <TableContent info_other_column={{ action: 100, stt: 50 }} />
+      )}
     </>
   );
 };

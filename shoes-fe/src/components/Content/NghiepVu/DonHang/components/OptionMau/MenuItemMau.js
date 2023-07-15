@@ -7,7 +7,10 @@ const MenuItemMau = ({ dataMau, handleMenuItemClick }) => {
   return (
     <>
       {dataMau.map((option, index) => (
-        <MenuItem onClick={(event) => handleMenuItemClick(event, index)}>
+        <MenuItem
+          onClick={(event) => handleMenuItemClick(event, index)}
+          // onDoubleClick={(event) => handleMenuItemClick(event, index)}
+        >
           <ListItemText primaryTypographyProps={{ fontSize: "1.4rem" }}>
             {option.value}
           </ListItemText>

@@ -40,7 +40,7 @@ const OptionMau = ({
       <List
         component="nav"
         aria-label="Device settings"
-        sx={{ bgcolor: "none" }}
+        sx={{ bgcolor: "inherit" }}
       >
         <ListItem
           id="lock-button"
