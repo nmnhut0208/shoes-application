@@ -20,9 +20,6 @@ import {
   updateFormDonHang,
   updateColumnsInformations,
 } from "./helper";
-import { processingInfoColumnTable } from "~utils/processing_data_table";
-
-import { INFO_COLS_DONHANG } from "./ConstantVariable";
 
 const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   const view = useMemo(() => {
@@ -155,10 +152,6 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
     return updateColumnsInformations(dataMau, dataTable, setDataTable, view);
   }, [dataTable, dataMau]);
 
-  // const infoColumns = useMemo(() => {
-  //   return processingInfoColumnTable(INFO_COLS_DONHANG);
-  // }, []);
-
   useEffect(() => {
     if (dataTable.length > 0) {
       setIsSaveData(false);
@@ -191,10 +184,6 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
     setShowModal(true);
   };
 
-  useEffect(() => {
-    console.log("thay doi: infoColumns");
-  }, [infoColumns]);
-
   return (
     <div className={styles.page}>
       <FormInfoDonHang
@@ -207,6 +196,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
           <AddCircleIcon style={{ color: "green" }} fontSize="large" />
         </IconButton>
       </Tooltip>
+
       <TableDonHang
         columns={infoColumns}
         data={dataTable}
