@@ -1,8 +1,7 @@
-import { useMemo, useRef, useState, useLayoutEffect } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 
 import styles from "./InDonHang.module.scss";
-import { processingInfoColumnTable } from "~utils/processing_data_table";
 import {
   TableToPrint,
   SizeColumnInPrint,

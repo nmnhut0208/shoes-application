@@ -37,8 +37,7 @@ const handleSaveCell = (cell, value, data, setDataTable) => {
     data[cell.row.index][cell.column.id] = value;
   }
 
-  //send/receive api updates here
-  setDataTable([...data]); //re-render with new data
+  setDataTable([...data]);
 };
 
 export const updateColumnsInformations = (

@@ -32,7 +32,7 @@ const DonHang = () => {
     >
       <FormDonHang
         isSaveData={isSaveData}
-        setIsSaveDataNghiepVuDonHang={setIsSaveData}
+        setIsSaveData={setIsSaveData}
         permission={permission}
       />
     </Modal>

@@ -38,7 +38,8 @@ const infoTableChiTietPhanCong = processingInfoColumnTable(
 
 const FormNghiepVuPhanCong = ({
   dataView,
-  setIsSaveDataNghiepVuPhanCong,
+  isSaveData,
+  setIsSaveData,
   permission,
   listMaDongPhanCongAddButWaitSave,
   setListMaDongPhanCongAddButWaitSave,
@@ -59,7 +60,7 @@ const FormNghiepVuPhanCong = ({
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
-  const [havedSaveData, setHavedSaveData] = useState(true);
+  // const [havedSaveData, setHavedSaveData] = useState(true);
   // lưu những đơn hàng đã phân công xong
   // để sửa lý logic khi người dùng chỉnh sửa phân công
 
@@ -195,7 +196,7 @@ const FormNghiepVuPhanCong = ({
           console.log(":error: ", err);
         });
 
-      setHavedSaveData(true);
+      setIsSaveData(true);
 
       // query thông tin show bảng thứ 2
     }
@@ -228,8 +229,7 @@ const FormNghiepVuPhanCong = ({
       listMaDongPhanCongAddButWaitSave,
       setListMaDongPhanCongAddButWaitSave
     );
-    setHavedSaveData(false);
-    setIsSaveDataNghiepVuPhanCong(false);
+    setIsSaveData(false);
   };
   const handleClickDelete = () => {
     processing_button_delete(
@@ -253,17 +253,12 @@ const FormNghiepVuPhanCong = ({
       dataDeleteButWaitSave,
       setDataDeleteButWaitSave
     );
-    setHavedSaveData(false);
-    setIsSaveDataNghiepVuPhanCong(false);
+    setIsSaveData(false);
   };
-
-  console.log("================================");
-  console.log("havedSaveData: ", havedSaveData);
-  console.log("================================");
 
   const handleClickSave = () => {
     console.log("save thong tin phan cong chua qua doan if");
-    if (havedSaveData) return;
+    if (isSaveData) return;
     let dataSave = dataChiTietPhanCong;
     for (let i = 0; i < dataSave.length; i++) {
       dataSave[i] = { ...dataSave[i], ...infoPhieu };
@@ -287,8 +282,7 @@ const FormNghiepVuPhanCong = ({
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);
     setListMaDongPhanCongAddButWaitSave([]);
     setDataDeleteButWaitSave([]);
-    setHavedSaveData(true);
-    setIsSaveDataNghiepVuPhanCong(true);
+    setIsSaveData(true);
   };
 
   const handleClickChiTietDonHang = () => {
@@ -337,8 +331,7 @@ const FormNghiepVuPhanCong = ({
       <InfoPhieu
         infoPhieu={infoPhieu}
         setInfoPhieu={setInfoPhieu}
-        setHavedSaveData={setHavedSaveData}
-        setIsSaveDataNghiepVuPhanCong={setIsSaveDataNghiepVuPhanCong}
+        setIsSaveData={setIsSaveData}
         view={view}
       />
       <TableDonHang

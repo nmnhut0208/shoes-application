@@ -8,16 +8,14 @@ import styles from "./FormInfoDonHang.module.scss";
 const FormInfoDonHang = ({
   formInfoDonHang,
   setFormInfoDonHang,
-  // setIsSavedData,
-  setIsSaveDataNghiepVuDonHang,
+  setIsSaveData,
   view,
 }) => {
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
-    // setIsSavedData(false);
-    if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(false);
+    setIsSaveData(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
@@ -26,8 +24,7 @@ const FormInfoDonHang = ({
       "YYYY-MM-DD HH:mm:ss"
     );
     setFormInfoDonHang(data);
-    // setIsSavedData(false);
-    if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(false);
+    setIsSaveData(false);
   };
 
   return (

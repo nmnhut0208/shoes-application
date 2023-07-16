@@ -1,9 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 
 import { useUserContext } from "~user";
-import { INFO_COLS_DONHANG } from "./ConstantVariable";
 import Modal from "./Modal";
-import { renderDataEmpty } from "~utils/processing_data_table";
 
 import FormInfoDonHang from "./FormInfoDonHang";
 import TableDonHang from "./TableDonHang";
@@ -21,12 +19,7 @@ import {
   updateColumnsInformations,
 } from "./helper";
 
-const FormDonHang = ({
-  dataView,
-  isSaveData,
-  setIsSaveDataNghiepVuDonHang,
-  permission,
-}) => {
+const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   const view = useMemo(() => {
     if (permission && permission.THEM === 0 && permission.SUA === 0)
       return true;
@@ -34,12 +27,6 @@ const FormDonHang = ({
   }, []);
 
   const [stateUser, dispatchUser] = useUserContext();
-
-  // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
-  // nên đành để thành thêm 1 dòng trống sau dataTable
-  // const [dataTable, setDataTable] = useState(() => {
-  //   return renderDataEmpty(INFO_COLS_DONHANG, 1);
-  // });
   const [dataTable, setDataTable] = useState([]);
   const [isUpdateFromDataView, setIsUpdateFromDataView] = useState(false);
 
@@ -89,8 +76,6 @@ const FormDonHang = ({
             TENKH: info[0]["TENKH"],
             DIENGIAIPHIEU: info[0]["DIENGIAIPHIEU"],
           });
-          // setIsSavedData(true);
-          console.log(dataTable);
         })
         .catch((err) => {
           console.log(":error: ", err);
@@ -126,16 +111,12 @@ const FormDonHang = ({
       return;
     }
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
-    setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
-    // setIsSavedData(true);
-    if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
+    setDataTable([]);
+    setIsSaveData(true);
   };
 
   const handleSaveDonHang = () => {
     if (isSaveData) return;
-
-    // let dataDatHang = dataTable.slice(0, dataTable.length - 1);
-    // remove the last empty line
 
     let dataDatHang = dataTable.filter((data) => data["SOLUONG"] > 0);
     if (dataDatHang.length == 0) {
@@ -147,8 +128,7 @@ const FormDonHang = ({
         console.log("updateSODH(lastestDH);: ");
         updateSODH(lastestDH);
       }
-      // setIsSavedData(true);
-      if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
+      setIsSaveData(true);
     }
   };
 
@@ -175,23 +155,18 @@ const FormDonHang = ({
       if (isUpdateFromDataView) {
         // Để lần update đầu tiên từ dataView thì trạng thái của page
         // vẫn là chưa thay đổi => có thể đóng page mà ko cần save
-        // setIsSavedData(true);
-        if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
+        setIsSaveData(true);
         setIsUpdateFromDataView(false);
       } else {
-        // setIsSavedData(false);
-        if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(false);
+        setIsSaveData(false);
       }
     } else {
-      // setIsSavedData(true);
-      if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
+      setIsSaveData(true);
     }
   }, [dataTable]);
 
   const handleInDonHang = () => {
     if (dataTable.length == 0) return;
-    console.log("handleInDonHang: handleInDonHang");
-    // TODO: handle In DonHang
     setInfoFormWillShow({
       giay: false,
       mau: false,
@@ -209,8 +184,7 @@ const FormDonHang = ({
       <FormInfoDonHang
         formInfoDonHang={formInfoDonHang}
         setFormInfoDonHang={setFormInfoDonHang}
-        // setIsSavedData={setIsSavedData}
-        setIsSaveDataNghiepVuDonHang={setIsSaveDataNghiepVuDonHang}
+        setIsSaveData={setIsSaveData}
         view={view}
       />
       {
@@ -244,8 +218,6 @@ const FormDonHang = ({
           <button onClick={handleThemMau} disabled={view}>
             Thêm màu
           </button>
-
-          {/* <button onClick={handleDongForm}>Đóng</button> */}
         </div>
       </div>
       {infoFormWillShow["giay"] && (
