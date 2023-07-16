@@ -5,17 +5,11 @@ import { ItemKhachHang } from "~items";
 import { convertDate } from "~utils/processing_date";
 import styles from "./FormInfoDonHang.module.scss";
 
-const FormInfoDonHang = ({
-  formInfoDonHang,
-  setFormInfoDonHang,
-  setIsSaveData,
-  view,
-}) => {
+const FormInfoDonHang = ({ formInfoDonHang, setFormInfoDonHang, view }) => {
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
-    setIsSaveData(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
@@ -24,7 +18,6 @@ const FormInfoDonHang = ({
       "YYYY-MM-DD HH:mm:ss"
     );
     setFormInfoDonHang(data);
-    setIsSaveData(false);
   };
 
   return (

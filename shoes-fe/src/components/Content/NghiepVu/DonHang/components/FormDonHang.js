@@ -152,6 +152,12 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
 
   useEffect(() => {
     if (dataTable.length > 0) {
+      setIsSaveData(false);
+    }
+  }, [formInfoDonHang]);
+
+  useEffect(() => {
+    if (dataTable.length > 0) {
       if (isUpdateFromDataView) {
         // Để lần update đầu tiên từ dataView thì trạng thái của page
         // vẫn là chưa thay đổi => có thể đóng page mà ko cần save
@@ -184,7 +190,6 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
       <FormInfoDonHang
         formInfoDonHang={formInfoDonHang}
         setFormInfoDonHang={setFormInfoDonHang}
-        setIsSaveData={setIsSaveData}
         view={view}
       />
       {

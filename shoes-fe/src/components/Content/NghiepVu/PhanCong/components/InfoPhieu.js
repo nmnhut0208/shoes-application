@@ -6,12 +6,11 @@ import styles from "../FormNghiepVuPhanCong/FormNghiepVuPhanCong.module.scss";
 import { convertDate } from "~utils/processing_date";
 import { ItemKyTinhLuong } from "~items";
 
-const InfoPhieu = ({ infoPhieu, setInfoPhieu, setIsSaveData, view }) => {
+const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
   const handleChangeInfoPhieu = (e) => {
     const data = { ...infoPhieu };
     data[e.target.name] = e.target.value;
     setInfoPhieu(data);
-    setIsSaveData(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
@@ -20,7 +19,6 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu, setIsSaveData, view }) => {
       "YYYY-MM-DD HH:mm:ss"
     );
     setInfoPhieu(data);
-    setIsSaveData(false);
   };
 
   return (
