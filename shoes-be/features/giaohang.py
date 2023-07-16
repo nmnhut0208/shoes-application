@@ -29,9 +29,14 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
     # FROM DONHANG \
     # where MAKH = '{makh}' \
     # GROUP BY SODH, MAKH, NGAYDH, NGAYGH, DIENGIAIPHIEU"
-    sql = f"""SELECT SODH, NGAYDH, NGAYGH, DIENGIAI AS DIENGIAIDONG,
-              SLDONHANG - SLGIAOHANG as SOLUONGCONLAI FROM V_DHGIAOHANG 
-              WHERE MAKH = '{makh}' AND SLDONHANG > SLGIAOHANG
+    sql = f"""SELECT SODH, NGAYDH, NGAYGH, DIENGIAI AS DIENGIAIDONG, SLDONHANG - SLGIAOHANG as SOLUONGCONLAI
+            from 
+            (SELECT DISTINCT dh.sodh,dh.ngaydh,dh.ngaygh,dh.makh,kh.tenkh,dh.diengiaiphieu AS DIENGIAI,dh.madh, dh.tmpfield as dagh,
+                ISNULL(SUM(DH.SIZE5 + DH.SIZE6 + DH.SIZE7 + DH.SIZE8  +DH.SIZE9  +DH.SIZE0 + coalesce(DH.SIZE1,0)),0) AS SLDONHANG,
+                ISNULL((SELECT SUM(CN.SIZE5 + CN.SIZE6 + CN.SIZE7 + CN.SIZE8  +CN.SIZE9 +CN.SIZE0 +coalesce(CN.SIZE1,0)) FROM CONGNO CN WHERE DH.SODH = CN.SODH),0) AS SLGIAOHANG
+            FROM DONHANG DH Left Join DMkhachhang kh on kh.makh=dh.makh 
+            GROUP BY dh.sodh,dh.makh,kh.tenkh,dh.diengiaiphieu,madh,dh.ngaydh,dh.ngaygh,dh.tmpfield) as view_gh
+            WHERE MAKH = '{makh}' AND SLDONHANG > SLGIAOHANG
               """
     return GH.read_custom(sql)
 
@@ -44,8 +49,8 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
     sodh = "(" + ", ".join([f"'{value}'" for value in data["sodh"]]) + ")"
     print(sodh)
     makh = data["makh"]
-    sql = f"""SELECT SODH, THONGKE.MAGIAY, DMGIAY.TENGIAY, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, SIZE1, MAUDE, MAUGOT, MAUSUON, MAUCA, MAUQUAI,
-                SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 as SOLUONG, THONGKE.GIABAN, (SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0) * THONGKE.GIABAN AS THANHTIEN,
+    sql = f"""SELECT SODH, THONGKE.MAGIAY, DMGIAY.TENGIAY, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, coalesce(SIZE1,0) AS SIZE1, MAUDE, MAUGOT, MAUSUON, MAUCA, MAUQUAI,
+                SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, THONGKE.GIABAN, (SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0)) * THONGKE.GIABAN AS THANHTIEN,
                 THONGKE.DIENGIAIPHIEU AS DIENGIAIDONG
                 FROM 
                 (
@@ -69,7 +74,7 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
                 DONHANG.GIABAN, DONHANG.THANHTIEN, DONHANG.DIENGIAIPHIEU
                 ) AS THONGKE
                 left join (SELECT MAGIAY, TENGIAY FROM DMGIAY) as DMGIAY ON THONGKE.MAGIAY = DMGIAY.MAGIAY
-                WHERE SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + SIZE1 > 0
+                WHERE SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) > 0
                 """
     print(sql)
     return GH.read_custom(sql)

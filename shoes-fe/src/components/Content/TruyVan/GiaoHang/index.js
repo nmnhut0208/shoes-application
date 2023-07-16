@@ -1,1 +1,1 @@
-export { default } from "./GiaoHang";
+export { default as GiaoHang } from "./GiaoHang";

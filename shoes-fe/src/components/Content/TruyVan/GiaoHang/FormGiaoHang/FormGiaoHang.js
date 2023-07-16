@@ -39,6 +39,8 @@ const list_key_sub = [
   { header: "Size 7", key: "SIZE7", width: "10rem" },
   { header: "Size 8", key: "SIZE8", width: "10rem" },
   { header: "Size 9", key: "SIZE9", width: "10rem" },
+  { header: "Size 0", key: "SIZE0", width: "10rem" },
+  { header: "Size 1", key: "SIZE1", width: "10rem" },
   { header: "Số lượng", key: "SOLUONG", width: "10rem" },
   { header: "Giá bán", key: "GIABAN", width: "10rem" },
   { header: "Thành tiền", key: "THANHTIEN", width: "10rem" },
@@ -52,6 +54,7 @@ const COLS_HAVE_SUM_FOOTER = [
   "SIZE8",
   "SIZE9",
   "SIZE0",
+  "SIZE1",
   "SOLUONG",
   "THANHTIEN",
 ];
@@ -237,8 +240,8 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
       .catch((err) => {
         console.log(":error: ", err);
       });
-    console.log("sub: ", data);
-    setDataTableSub([...data]);
+    // console.log("sub: ", data);
+    // setDataTableSub([...data]);
   }, [rowSelection]);
 
   const infoColumnsSub = useMemo(() => {
@@ -344,8 +347,8 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
         columns={infoColumns}
         data={dataTable}
         rowSelection={rowSelection}
-        flag_rowSelection={true}
-        setRowSelection={setRowSelection}
+        flag_rowSelection={false}
+        // setRowSelection={setRowSelection}
         maxHeight={"24rem"}
       />
       <header className={styles.header_table}>Chi tiết đơn hàng</header>

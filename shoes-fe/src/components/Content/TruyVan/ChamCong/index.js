@@ -1,1 +1,1 @@
-export { default } from "./ChamCong";
+export { default as ChamCong } from "./ChamCong";

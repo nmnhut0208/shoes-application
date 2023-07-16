@@ -1,15 +1,44 @@
 import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
-import MaterialReactTable from "material-react-table";
-
 import { useReactToPrint } from "react-to-print";
 import { convertDateForReport } from "~utils/processing_date";
-import { border_text_table_config } from "./ConstantVariable";
-import { processingInfoColumnTableHaveFooter } from "~utils/processing_data_table";
-import { INFO_TABLE, LIST_COLS_FOOTER_SUM } from "./ConstantVariable";
 import styles from "./FormXem.module.scss";
+import { TableToPrint } from "~common_tag/reports";
+import { rem_to_px } from "~config/ui";
+
+const COLS_HAVE_SUM_FOOTER = ["TONGNO", "TONGMUA", "TONGTRA", "CONGNO"];
+const LIST_FORMAT_NUMBER = ["TONGNO", "TONGMUA", "TONGTRA", "CONGNO"];
+
+const infoColumns = [
+  { header: "MÃ KH", key: "MAKH", width: 14 * rem_to_px },
+  { header: "TÊN KHÁCH HÀNG", key: "TENKH", width: 25 * rem_to_px },
+  {
+    header: "NỢ ĐẦU KỲ",
+    key: "TONGNO",
+    width: 10 * rem_to_px,
+    textAlign: "right",
+  },
+  {
+    header: "TỔNG MUA",
+    key: "TONGMUA",
+    width: 10 * rem_to_px,
+    textAlign: "right",
+  },
+  {
+    header: "ĐÃ TRẢ",
+    key: "TONGTRA",
+    width: 10 * rem_to_px,
+    textAlign: "right",
+  },
+  {
+    header: "CÒN NỢ",
+    key: "CONGNO",
+    width: 10 * rem_to_px,
+    textAlign: "right",
+  },
+];
 
 const FormXem = ({ data, setShowModal }) => {
-  const [columns, setColumns] = useState([]);
+  // const [columns, setColumns] = useState([]);
   const [dataTable, setDataTable] = useState([]);
 
   const componentRef = useRef();
@@ -28,13 +57,6 @@ const FormXem = ({ data, setShowModal }) => {
       .then((response) => response.json())
       .then((info) => {
         console.log("info: ", info);
-        let info_columns = processingInfoColumnTableHaveFooter(
-          INFO_TABLE,
-          LIST_COLS_FOOTER_SUM,
-          info
-        );
-        console.log("info_columns: ", info_columns);
-        setColumns(info_columns);
         setDataTable(info);
       })
       .catch((error) => {
@@ -52,31 +74,12 @@ const FormXem = ({ data, setShowModal }) => {
           <label>đến ngày</label>
           <label>{convertDateForReport(data["DATE_TO"])} </label>
         </div>
-
-        <MaterialReactTable
-          columns={columns}
+        <TableToPrint
+          columns={infoColumns}
           data={dataTable}
-          {...border_text_table_config}
-          muiTableProps={{
-            sx: {
-              tableLayout: "fixed",
-            },
-          }}
-          // knmhgk
-          enableTopToolbar={false}
-          enableColumnActions={false}
-          enableSorting={false}
-          // scroll to bottom
-          // enable phân trang
-          enablePagination={false}
-          enableBottomToolbar={false}
-          // group Mã giày
-          enableGrouping={false}
-          initialState={{
-            //   grouping: ["SODH", "NGAYDH", "TENKH", "TENGIAY"],
-            grouping: ["SODH"],
-            expanded: true,
-          }}
+          listHaveFooterSum={COLS_HAVE_SUM_FOOTER}
+          LIST_FORMAT_NUMBER={LIST_FORMAT_NUMBER}
+          Col_Name_Footer="TENKH"
         />
       </div>
       <button className={styles.btn} onClick={handelPrint}>

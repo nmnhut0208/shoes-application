@@ -1,70 +1,41 @@
-import { useState, useEffect } from "react";
-import FormGiaoHang from "./FormGiaoHang/";
-import Modal from "./Modal";
-import SubTable from "./SubTable";
-import styles from "./GiaoHang.module.scss";
+import { useState, useMemo } from "react";
+import { Modal } from "./Modal";
+import GiaoHangSub from "./GiaoHangSub";
+import { useUserContext } from "~user";
 
-const list_key = [
-  { header: "Số phiếu", key: "SOPHIEU" },
-  { header: "Ngày phiếu", key: "NGAYPHIEU" },
-  // { header: "Số đơn hàng", key: "SODH" },
-  { header: "Khách hàng", key: "MAKH" },
-  { header: "Tên khách hàng", key: "TENKH" },
-  { header: "Diễn giải", key: "DIENGIAIPHIEU" },
-];
-
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
+const MAFORM_GIAOHANG = "F0033";
 
 const GiaoHang = () => {
-  const [dataTable, setDataTable] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [sendData, setSendData] = useState({});
-  //   const [rowSelection, setRowSelection] = useState({});
+  const [isSaveData, setIsSaveData] = useState(true);
+  const [showModal, setShowModal] = useState(true);
+  const [stateUser, dispatchUser] = useUserContext();
 
-  console.log("GiaoHang");
-
-  useEffect(() => {
-    fetch("http://localhost:8000/tv_giaohang")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        setDataTable(info);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
+  const permission = useMemo(() => {
+    const phanquyen = stateUser.userPoolAccess.filter(
+      (obj) => obj.MAFORM === MAFORM_GIAOHANG
+    )[0];
+    return phanquyen;
   }, []);
-
+  // if (permission.THEM === 0) {
+  //   alert(stateUser.userName + " không có quyền thêm Giao Hàng");
+  //   return null;
+  // }
+  // Việc xem, xóa, sửa đơn hàng sẽ từ bên truy vấn => đơn hàng
+  // Nghiệp Vụ Đơn Hàng chỉ để tạo mới đơn hàng thôi
   return (
-    <>
-      <header className={styles.header_table}>Phiếu Giao hàng - F0033</header>
-      <SubTable
-        columns={infoColumns}
-        data={dataTable}
-        setShowForm={setShowForm}
-        setSendData={setSendData}
-        setDataTable={setDataTable}
-        // rowSelection={rowSelection}
-        // setRowSelection={setRowSelection}
-        maxHeight={"65rem"}
+    <Modal
+      status={showModal}
+      title="Giao Hàng - F0033"
+      setShowModal={setShowModal}
+      isSaveData={isSaveData}
+      isResetPageEmpty={true}
+    >
+      <GiaoHangSub
+        // setShowModalNghiepVuGiaoHang={setShowModal}
+        setIsSaveDataTruyVanGiaoHang={setIsSaveData}
+        permission={permission}
       />
-      {showForm && (
-        <Modal setShowForm={setShowForm}>
-          <FormGiaoHang infoKH={sendData} setShowForm={setShowForm} />
-        </Modal>
-      )}
-    </>
+    </Modal>
   );
 };
-
 export default GiaoHang;

@@ -4,8 +4,8 @@ import { DonHang } from "./DonHang";
 import { PhanCong } from "./PhanCong";
 // import ChiTien from "./ChiTien";
 import { ThuTien } from "./ThuTien";
-import GiaoHang from "./GiaoHang";
-import ChamCong from "./ChamCong";
+import { ChamCong } from "./ChamCong";
+import { GiaoHang } from "./GiaoHang";
 
 const NghiepVu = () => {
   const [stateTask, dispatchTask] = useTaskContext();

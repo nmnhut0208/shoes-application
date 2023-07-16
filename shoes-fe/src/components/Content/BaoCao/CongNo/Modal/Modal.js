@@ -8,12 +8,13 @@ const Modal = ({ setShowForm, children }) => {
       <div className={styles.modal__overlay}></div>
       <div className={styles.model__body}>
         <div className={styles.header_modal}>
-          <label className={styles.title_modal}>Giao hàng - F0033</label>
+          <label className={styles.title_modal}>Báo cáo Công Nợ - F0056</label>
           <button
             className={styles.button_close_modal}
             onClick={() => {
               setShowForm(false);
-            }}>
+            }}
+          >
             X
           </button>
         </div>

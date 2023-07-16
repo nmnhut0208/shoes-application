@@ -10,7 +10,6 @@ import FormXem from "./FormXem";
 
 const CongNo = () => {
   const [statusModal, setStatusModal] = useState(true);
-  const [statusModalIn, setStatusModalIn] = useState(false);
   const [statusModalXem, setStatusModalXem] = useState(false);
   const [stateItem, dispatchItem] = useItemsContext();
   const [form, setForm] = useState({
@@ -22,7 +21,6 @@ const CongNo = () => {
     DATE_FROM: moment().format("YYYY-MM-DD HH:mm:ss"),
     DATE_TO: moment().format("YYYY-MM-DD HH:mm:ss"),
   });
-  const [dataTable, setDataTable] = useState([]);
 
   const handleChangeInformationForm = (dict_data) => {
     const data = { ...form, ...dict_data };
@@ -31,9 +29,9 @@ const CongNo = () => {
 
   console.log("form: ", form);
 
-  const handlePrint = () => {
-    setStatusModalIn(true);
-  };
+  // const handlePrint = () => {
+  //   setStatusModalIn(true);
+  // };
 
   const handleXem = () => {
     setStatusModalXem(true);
