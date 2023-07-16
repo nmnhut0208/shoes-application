@@ -52,11 +52,6 @@ const FormNghiepVuPhanCong = ({
     else return false;
   }, []);
 
-  console.log(
-    "listMaDongPhanCongAddButWaitSave: ",
-    listMaDongPhanCongAddButWaitSave
-  );
-
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
@@ -88,7 +83,6 @@ const FormNghiepVuPhanCong = ({
     let form_current = formPhanCong;
     for (let key in form_current) {
       if (!["THODE", "THOQUAI"].includes(key)) {
-        console.log("resetForm: ", key);
         form_current[key] = "";
       }
     }

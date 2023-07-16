@@ -9,6 +9,7 @@ const TableChiTietPhanCong = ({
   rowSelection,
   setRowSelection,
 }) => {
+  console.log("re-render TableChiTietPhanCong: ");
   return (
     <div>
       <MaterialReactTable

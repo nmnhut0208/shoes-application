@@ -1,4 +1,6 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, memo } from "react";
+import { IconButton, Tooltip } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import { useUserContext } from "~user";
 import Modal from "./Modal";
@@ -18,6 +20,9 @@ import {
   updateFormDonHang,
   updateColumnsInformations,
 } from "./helper";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
+
+import { INFO_COLS_DONHANG } from "./ConstantVariable";
 
 const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   const view = useMemo(() => {
@@ -150,6 +155,10 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
     return updateColumnsInformations(dataMau, dataTable, setDataTable, view);
   }, [dataTable, dataMau]);
 
+  // const infoColumns = useMemo(() => {
+  //   return processingInfoColumnTable(INFO_COLS_DONHANG);
+  // }, []);
+
   useEffect(() => {
     if (dataTable.length > 0) {
       setIsSaveData(false);
@@ -182,8 +191,9 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
     setShowModal(true);
   };
 
-  console.log("infoFormWillShow: ", infoFormWillShow);
-  console.log("dataTable: ", dataTable);
+  useEffect(() => {
+    console.log("thay doi: infoColumns");
+  }, [infoColumns]);
 
   return (
     <div className={styles.page}>
@@ -192,15 +202,18 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
         setFormInfoDonHang={setFormInfoDonHang}
         view={view}
       />
-      {
-        <TableDonHang
-          columns={infoColumns}
-          data={dataTable}
-          setDataTable={setDataTable}
-          handleAddGiay={handleClickMaGiay}
-          readOnly={view}
-        />
-      }
+      <Tooltip arrow title="Add">
+        <IconButton onClick={handleClickMaGiay}>
+          <AddCircleIcon style={{ color: "green" }} fontSize="large" />
+        </IconButton>
+      </Tooltip>
+      <TableDonHang
+        columns={infoColumns}
+        data={dataTable}
+        setDataTable={setDataTable}
+        readOnly={view}
+      />
+
       <div className={styles.form}>
         {/* Không hiểu tại sao gộp 2 form lại thì ko nhận extend nên phải tách đỡ ra vầy */}
         <div className={styles.group_button}>
@@ -278,4 +291,4 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   );
 };
 
-export default FormDonHang;
+export default memo(FormDonHang);

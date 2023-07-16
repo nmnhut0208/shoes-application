@@ -7,15 +7,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import { border_text_table_config } from "~config/ui";
 
-const TableDonHang = ({
-  columns,
-  data,
-  setDataTable,
-  handleAddGiay,
-  readOnly,
-}) => {
+const TableDonHang = ({ columns, data, setDataTable, readOnly }) => {
   console.log("render TableDonHang");
-  console.log("data: ", data);
 
   const handleDeleteRow = (row) => {
     let index = row.index;
@@ -25,15 +18,6 @@ const TableDonHang = ({
 
   return (
     <div>
-      <Tooltip arrow title="Add">
-        <IconButton
-          onClick={() => {
-            handleAddGiay();
-          }}
-        >
-          <AddCircleIcon style={{ color: "green" }} fontSize="large" />
-        </IconButton>
-      </Tooltip>
       <MaterialReactTable
         {...border_text_table_config}
         enableTopToolbar={false}
@@ -64,24 +48,24 @@ const TableDonHang = ({
           </>
         )}
         // add action in row
-        enableRowActions={!readOnly}
-        renderRowActions={({ row, table }) => (
-          <Box
-            sx={{
-              display: "flex",
-              "align-content": "center",
-              // "flex-direction": "row",
-            }}
-          >
-            {row.original["MAGIAY"] !== "" && (
-              <Tooltip arrow title="Delete">
-                <IconButton color="error" onClick={() => handleDeleteRow(row)}>
-                  <Delete />
-                </IconButton>
-              </Tooltip>
-            )}
-          </Box>
-        )}
+        // enableRowActions={!readOnly}
+        // renderRowActions={({ row, table }) => (
+        //   <Box
+        //     sx={{
+        //       display: "flex",
+        //       "align-content": "center",
+        //       // "flex-direction": "row",
+        //     }}
+        //   >
+        //     {row.original["MAGIAY"] !== "" && (
+        //       <Tooltip arrow title="Delete">
+        //         <IconButton color="error" onClick={() => handleDeleteRow(row)}>
+        //           <Delete />
+        //         </IconButton>
+        //       </Tooltip>
+        //     )}
+        //   </Box>
+        // )}
       />
     </div>
   );

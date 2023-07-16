@@ -6,6 +6,7 @@ import { convertDate } from "~utils/processing_date";
 import styles from "./FormInfoDonHang.module.scss";
 
 const FormInfoDonHang = ({ formInfoDonHang, setFormInfoDonHang, view }) => {
+  console.log("re-render FormInfoDonHang");
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;

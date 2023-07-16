@@ -7,6 +7,7 @@ import { convertDate } from "~utils/processing_date";
 import { ItemKyTinhLuong } from "~items";
 
 const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
+  console.log("re-render InfoPhieu");
   const handleChangeInfoPhieu = (e) => {
     const data = { ...infoPhieu };
     data[e.target.name] = e.target.value;
