@@ -29,7 +29,7 @@ const TableChiTietPhanCong = ({
         // scroll to bottom
         enableRowVirtualization
         muiTableContainerProps={{
-          sx: { maxHeight: [maxHeight, "rem"].join("") },
+          sx: { height: [maxHeight, "rem"].join("") },
         }}
         // row selection
         enableMultiRowSelection={false}

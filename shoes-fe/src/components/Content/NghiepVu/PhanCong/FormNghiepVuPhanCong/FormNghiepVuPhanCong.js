@@ -341,7 +341,7 @@ const FormNghiepVuPhanCong = ({
       <TableChiTietPhanCong
         columns={infoTableChiTietPhanCong}
         data={dataChiTietPhanCong}
-        maxHeight={35}
+        maxHeight={45}
         rowSelection={rowSelectionChiTietPhanCong}
         setRowSelection={setRowSelectionChiTietPhanCong}
       />
