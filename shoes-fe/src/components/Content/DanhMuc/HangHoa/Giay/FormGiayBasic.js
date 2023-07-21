@@ -15,8 +15,17 @@ let list_info_generator_MAGIAY = ["MAKH", "SortID", "MASUON", "MAQUAI"];
 
 const FormGiayBasic = ({ form, setDataForm, mode }) => {
   const readOnly = useMemo(() => mode === "edit", [mode]);
-  const [image_base64, setImageBase64] = useState(""); //form["HINHANH"]);
+  const [image_base64, setImageBase64] = useState("");
   const [image_url, setImageURL] = useState("");
+
+  console.log("form: ", form);
+
+  const [maKH, setMaKH] = useState(form["MAKH"]);
+  useEffect(() => {
+    handleChangeInformationForm({
+      MAKH: maKH,
+    });
+  }, [maKH]);
 
   console.log("image_base64: ", image_base64);
 
@@ -118,10 +127,8 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
               <label>Khách hàng</label>
               <ItemKhachHang
                 readOnly={readOnly}
-                initValue={{ MAKH: form["MAKH"] }}
-                changeData={(data) => {
-                  handleChangeInformationForm(data);
-                }}
+                value={form["MAKH"]}
+                setValue={setMaKH}
                 size_input={"15rem"}
               />
             </div>

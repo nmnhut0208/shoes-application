@@ -9,19 +9,22 @@ const Quai = ({ readOnly, initValue, changeData, size_input }) => {
     setData(stateItem.infoItemQuai);
   }, []);
 
+  const [value, setValue] = useState(initValue["value"]);
+  const [label, setLabel] = useState(initValue["label"]);
+  useEffect(() => {
+    changeData({ value, label });
+  }, [value]);
+
   return (
-    <>
-      <Selection
-        readOnly={readOnly}
-        defaultValue={{
-          value: initValue["value"],
-          label: initValue["label"],
-        }}
-        data={data}
-        changeData={changeData}
-        size_input={size_input}
-      />
-    </>
+    <Selection
+      readOnly={readOnly}
+      value={value}
+      setValue={setValue}
+      label={label}
+      setLabel={setLabel}
+      data={data}
+      size_input={size_input}
+    />
   );
 };
 

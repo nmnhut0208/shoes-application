@@ -3,28 +3,25 @@ import { useState, useEffect, memo } from "react";
 
 const Selection = ({
   readOnly,
-  defaultValue,
+  value,
+  setValue,
+  label,
+  setLabel,
   data,
-  changeData,
   size_input,
   size_span,
   className,
 }) => {
-  const [name, setName] = useState(defaultValue["label"]);
-  useEffect(() => {
-    setName(defaultValue["label"]);
-  }, [defaultValue["label"]]);
-
   return (
     <Space size="small" className={className}>
       <select
         style={{ width: size_input }}
         onChange={(e) => {
           let _data = data.filter((_data) => _data["value"] === e.target.value);
-          setName(_data[0]["label"]);
-          changeData({ value: e.target.value, label: _data[0]["label"] });
+          setLabel(_data[0]["label"]);
+          setValue(e.target.value);
         }}
-        value={defaultValue["value"]}
+        value={value}
       >
         {!readOnly && (
           <>
@@ -37,13 +34,13 @@ const Selection = ({
         )}
 
         {readOnly && (
-          <option value={name} key={name}>
-            {name}
+          <option value={value} key={value}>
+            {value}
           </option>
         )}
       </select>
 
-      <input readOnly={true} value={name} style={{ width: size_span }} />
+      <input readOnly={true} value={label} style={{ width: size_span }} />
     </Space>
   );
 };

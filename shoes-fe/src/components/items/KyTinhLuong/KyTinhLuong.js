@@ -18,14 +18,7 @@ const KyTinhLuong = ({
       {!readOnly && (
         <Popover
           placement="bottomLeft"
-          content={
-            <ListKyTinhLuong
-              value={value}
-              setValue={setValue}
-              label={label}
-              setLabel={setLabel}
-            />
-          }
+          content={<ListKyTinhLuong setValue={setValue} setLabel={setLabel} />}
         >
           <input
             name="MAKY"

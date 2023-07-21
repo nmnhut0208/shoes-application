@@ -1,5 +1,5 @@
 import moment from "moment";
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 
 import { ItemKhachHang } from "~items";
 import { convertDate } from "~utils/processing_date";
@@ -12,6 +12,16 @@ const FormInfoDonHang = ({ formInfoDonHang, setFormInfoDonHang, view }) => {
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
   };
+
+  const [maKH, setMaKH] = useState("");
+  const [tenKH, setTenKH] = useState("");
+  useEffect(() => {
+    setFormInfoDonHang({
+      ...formInfoDonHang,
+      MAKH: maKH,
+      TENKH: tenKH,
+    });
+  }, [maKH]);
 
   const handleChangeFormForTypeDate = (e) => {
     const data = { ...formInfoDonHang };
@@ -39,13 +49,10 @@ const FormInfoDonHang = ({ formInfoDonHang, setFormInfoDonHang, view }) => {
           <div className={styles.pair}>
             <label>Mã khách hàng</label>
             <ItemKhachHang
-              initValue={{
-                MAKH: formInfoDonHang["MAKH"],
-                TENKH: formInfoDonHang["TENKH"],
-              }}
-              changeData={(data) => {
-                setFormInfoDonHang({ ...formInfoDonHang, ...data });
-              }}
+              value={formInfoDonHang["MAKH"]}
+              setValue={setMaKH}
+              label={formInfoDonHang["TENKH"]}
+              setLabel={setTenKH}
               size_input={"15rem"}
               size_span={"29.7rem"}
               have_span={true}

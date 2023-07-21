@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import clsx from "clsx";
 import moment from "moment";
 
 import { ItemKhachHang } from "~items";
@@ -28,6 +27,16 @@ const FormThuTien = ({ dataView, type_action }) => {
   const [stateUser, dispatchUser] = useUserContext();
   const [showPrint, setShowPrint] = useState(false);
   console.log("form hhe: ", form);
+
+  const [maKH, setMaKH] = useState(form["MAKH"]);
+  const [tenKH, setTenKH] = useState(form["TENKH"]);
+  useEffect(() => {
+    setForm({
+      ...form,
+      MAKH: maKH,
+      TENKH: tenKH,
+    });
+  }, [maKH]);
 
   useEffect(() => {
     if (!dataView) {
@@ -153,10 +162,14 @@ const FormThuTien = ({ dataView, type_action }) => {
         <div className={styles.group_second_row}>
           <label>Khách hàng</label>
           <ItemKhachHang
-            initValue={{ MAKH: form["MAKH"], TENKH: form["TENKH"] }}
-            changeData={(data) => {
-              handleChangeInformationForm(data);
-            }}
+            value={form["MAKH"]}
+            setValue={setMaKH}
+            label={form["TENKH"]}
+            setLabel={setTenKH}
+            // initValue={{ MAKH: form["MAKH"], TENKH: form["TENKH"] }}
+            // changeData={(data) => {
+            //   handleChangeInformationForm(data);
+            // }}
             size_input={"15rem"}
             size_span={"29.7rem"}
             have_span={true}

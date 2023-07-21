@@ -9,18 +9,21 @@ const Mau = ({ initValue, changeData, size_input }) => {
     setData(stateItem.infoItemMau);
   }, []);
 
+  const [value, setValue] = useState(initValue["value"]);
+  const [label, setLabel] = useState(initValue["label"]);
+  useEffect(() => {
+    changeData({ value, label });
+  }, [value]);
+
   return (
-    <>
-      <Selection
-        defaultValue={{
-          value: initValue["value"],
-          label: initValue["label"],
-        }}
-        data={data}
-        changeData={changeData}
-        size_input={size_input}
-      />
-    </>
+    <Selection
+      value={value}
+      setValue={setValue}
+      label={label}
+      setLabel={setLabel}
+      data={data}
+      size_input={size_input}
+    />
   );
 };
 
