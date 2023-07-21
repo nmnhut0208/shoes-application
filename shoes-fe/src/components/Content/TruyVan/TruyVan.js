@@ -2,9 +2,9 @@ import { useTaskContext } from "~task";
 import { useUserContext } from "~user";
 import { DonHang } from "./DonHang";
 import { PhanCong } from "./PhanCong";
-import GiaoHang from "./GiaoHang";
+import { GiaoHang } from "./GiaoHang";
 import ThuTien from "./ThuTien";
-import ChamCong from "./ChamCong";
+import { ChamCong } from "./ChamCong";
 
 const TruyVan = () => {
   const [stateTask, dispatchTask] = useTaskContext();

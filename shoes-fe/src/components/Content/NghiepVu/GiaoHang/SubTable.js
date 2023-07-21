@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
 import { border_text_table_config } from "~config/ui";
@@ -10,6 +10,7 @@ const SubTable = ({
   rowSelection,
   flag_rowSelection,
   setRowSelection,
+  setIsSaveData,
   maxHeight,
 }) => {
   //   console.log("data: ", data);
@@ -44,6 +45,7 @@ const SubTable = ({
     // console.log("cell: ", data);
     //send/receive api updates here
     setDataTable([...data]); //re-render with new data
+    setIsSaveData(false);
   };
 
   return (
@@ -57,7 +59,10 @@ const SubTable = ({
       enableSelectAll={false}
       enableRowSelection={flag_rowSelection}
       //   getRowId={(row) => row.userId}
-      onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
+      onRowSelectionChange={(rows) => {
+        setRowSelection(rows);
+        setIsSaveData(false);
+      }}
       state={{ rowSelection }}
       enableTopToolbar={false}
       enableBottomToolbar={false}
@@ -77,4 +82,4 @@ const SubTable = ({
   );
 };
 
-export default SubTable;
+export default memo(SubTable);

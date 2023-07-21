@@ -1,5 +1,5 @@
 import { useReactToPrint } from "react-to-print";
-import { useRef, useLayoutEffect } from "react";
+import { useRef, useLayoutEffect, useMemo } from "react";
 import { useTableContext, actions_table } from "~table_context";
 import { rem_to_px } from "~config/ui";
 import styles from "./In.module.scss";
@@ -33,13 +33,21 @@ const infoColumns = [
   { header: "Số đơn hàng", key: "SODH", width: 10 * rem_to_px },
 ];
 
-const In = ({ data }) => {
+const In = ({ data, flag }) => {
   const [stateTable, dispatchTable] = useTableContext();
   const handelPrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: "Thông tin phân công",
   });
   const componentRef = useRef();
+
+  const sum_value = useMemo(() => {
+    let sum = 0;
+    data["table"].forEach((item) => {
+      sum += item["THANHTIEN"];
+    });
+    return sum;
+  }, [data["table"]]);
 
   console.log("columns: ", data["table"].length);
   useLayoutEffect(() => {
@@ -65,7 +73,17 @@ const In = ({ data }) => {
         LIST_FORMAT_NUMBER={LIST_FORMAT_NUMBER}
         Col_Name_Footer="TENGIAY"
       />
-
+      {flag && (
+        <div className={styles.congno}>
+          <h2 className={styles.congno_left}>
+            Nợ cũ: {parseFloat(data["CONGNO"]).toLocaleString("en")}
+          </h2>
+          <h2 className={styles.congno_left}>
+            Tổng nợ:{" "}
+            {parseFloat(data["CONGNO"] + sum_value).toLocaleString("en")}
+          </h2>
+        </div>
+      )}
       <div className={styles.footer}>
         <h2>Người nhận hàng</h2>
         <h2>Người lập</h2>

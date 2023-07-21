@@ -31,6 +31,10 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
   console.log("ChamCong", infoForm["MAKY"]);
 
   const handleDelete = () => {
+    let text = "Bạn thực sự muốn xóa thông tin này không!";
+    if (!window.confirm(text)) {
+      return;
+    }
     const send_data = {
       MAKY: infoForm["MAKY"],
       MANVIEN: infoForm["MANVIEN"],

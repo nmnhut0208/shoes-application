@@ -11,6 +11,10 @@ const FormDelete = ({ setShowModal }) => {
       alert("Mã kỳ không được để trống");
       return;
     } else {
+      let text = "Bạn thực sự muốn xóa thông tin này không!";
+      if (!window.confirm(text)) {
+        return;
+      }
       fetch("http://localhost:8000/delete_ky", {
         method: "DELETE",
         headers: {

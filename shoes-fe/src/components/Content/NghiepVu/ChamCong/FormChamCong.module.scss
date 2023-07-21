@@ -2,36 +2,40 @@
 
 .form {
   @extend .flex-row;
+  input {
+    margin-bottom: 1rem;
+  }
 }
 
 .left {
   flex: 1;
-  border: 1px solid black;
-  margin-right: 0.5rem;
+  //   border: 1px solid black;
+  //   margin-right: 0.5rem;
 }
 
 .right {
   flex: 1;
-  border: 1px solid black;
-  input {
-    margin-bottom: 0.5rem;
-  }
+  //   border: 1px solid black;
+  //   input {
+  //     margin-bottom: 0.5rem;
+  //   }
 }
 
-.left_row {
-  margin-left: 1rem;
-}
+// .left_row {
+//   margin-left: 1rem;
+// }
 
-.right_row {
-  margin-left: 1rem;
-}
+// .right_row {
+//   margin-left: 1rem;
+// }
 
 .title {
   width: 20rem !important;
 }
 
 .small {
-  width: 25rem;
+  width: 24.5rem;
+  margin-right: 0.5rem;
 }
 
 .medium {
@@ -39,7 +43,7 @@
 }
 
 .large {
-  width: 60rem;
+  width: 63.96rem;
 }
 
 .header_table {
@@ -54,7 +58,8 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  margin: 1rem;
+  // margin: 2rem;
+  margin-bottom: 2rem;
 
   button {
     margin-right: 1rem;
@@ -65,4 +70,9 @@
     width: 10rem;
     height: 3rem;
   }
+}
+
+.container {
+  height: 68rem;
+  width: 150rem;
 }

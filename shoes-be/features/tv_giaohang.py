@@ -51,8 +51,8 @@ def read(data: dict):
     makh = data["MAKH"]
     sodh = "(" + ", ".join([f"'{value}'" for value in data["SODH"]]) + ")"
     sql = f"""SELECT SODH, CONGNO.MAGIAY, TENGIAY, MAUDE, MAUGOT, MAUSUON, MAUCA,
-                     MAUQUAI, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, 
-                     SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 as SOLUONG, 
+                     MAUQUAI, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, coalesce(SIZE1,0) AS SIZE1, 
+                     SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, 
                     GIABAN, THANHTIEN, DIENGIAIPHIEU AS DIENGIAIDONG 
               FROM CONGNO  
               left join (SELECT MAGIAY, TENGIAY FROM DMGIAY) as DMGIAY 

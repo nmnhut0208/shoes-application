@@ -1,14 +1,14 @@
-import styles from "./Modal.module.scss";
+import styles from "./ModalForm.module.scss";
 import { useTaskContext, resetHeader } from "~task";
 
-const Modal = ({ setShowForm, children }) => {
+const ModalForm = ({ setShowForm, children }) => {
   const [stateTask, dispatchTask] = useTaskContext();
   return (
     <div className={styles.modal}>
       <div className={styles.modal__overlay}></div>
       <div className={styles.model__body}>
         <div className={styles.header_modal}>
-          <label className={styles.title_modal}>Báo cáo Công Nợ - F0056</label>
+          <label className={styles.title_modal}>Giao hàng - F0033</label>
           <button
             className={styles.button_close_modal}
             onClick={() => {
@@ -24,4 +24,4 @@ const Modal = ({ setShowForm, children }) => {
   );
 };
 
-export default Modal;
+export default ModalForm;

@@ -30,7 +30,6 @@ const DonHang = () => {
       KhachHangFrom: khachHangFromValue,
     });
   }, [khachHangFromValue]);
-  console.log(form);
 
   const [khachHangToValue, setKhachHangToValue] = useState("");
   useEffect(() => {

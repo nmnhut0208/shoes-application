@@ -80,6 +80,10 @@ const SubTable = ({
                     (obj) => obj.MAFORM === maForm && obj.XOA === 1
                   )
                 ) {
+                  let text = "Bạn thực sự muốn xóa thông tin này không!";
+                  if (!window.confirm(text)) {
+                    return;
+                  }
                   fetch("http://localhost:8000/tv_chamcong", {
                     method: "DELETE",
                     headers: {
