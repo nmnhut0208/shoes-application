@@ -95,6 +95,7 @@ const FormNghiepVuPhanCong = ({
       rowSelectionDonHangToPhanCong,
       dataChiTietPhanCong,
       setListGiayWillPhanCong,
+      formPhanCong,
       setFormPhanCong,
       resetForm
     );

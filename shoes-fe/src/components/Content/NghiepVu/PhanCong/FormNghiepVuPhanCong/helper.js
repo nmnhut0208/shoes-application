@@ -131,6 +131,8 @@ export const processing_button_add = (
       setListGiayWillPhanCong([...listGiayWillPhanCong]);
       setFormPhanCong({
         ...listGiayWillPhanCong[0],
+        THODE: formPhanCong["THODE"],
+        THOQUAI: formPhanCong["THOQUAI"],
       });
     } else {
       // Khi phân công xong thì nhảy qua thằng tiếp theo
@@ -164,6 +166,7 @@ export const updateMaGiayWillPhanCong = (
   rowSelectionDonHangToPhanCong,
   dataChiTietPhanCong,
   setListGiayWillPhanCong,
+  formPhanCong,
   setFormPhanCong,
   resetForm
 ) => {
@@ -200,9 +203,15 @@ export const updateMaGiayWillPhanCong = (
           if (list_data_will_phancong.length > 0) {
             setFormPhanCong({
               ...list_data_will_phancong[0],
+              THODE: formPhanCong["THODE"],
+              THOQUAI: formPhanCong["THOQUAI"],
             });
           } else {
-            resetForm();
+            // resetForm();
+            setFormPhanCong({
+              THODE: formPhanCong["THODE"],
+              THOQUAI: formPhanCong["THOQUAI"],
+            });
           }
         })
         .catch((err) => {
@@ -234,7 +243,16 @@ export const processing_button_delete = (
   dataDeleteButWaitSave,
   setDataDeleteButWaitSave
 ) => {
+  console.log("======================", "de;ete");
+  console.log("rowSelectionChiTietPhanCong: ", rowSelectionChiTietPhanCong);
+  console.log("dataChiTietPhanCong: ", dataChiTietPhanCong.length);
+  // Kiểm tra người dùng không chọn dòng nào mà vẫn click Xóa button => return
   if (Object.keys(rowSelectionChiTietPhanCong).length == 0) return;
+  if (
+    parseInt(Object.keys(rowSelectionChiTietPhanCong)[0]) >=
+    dataChiTietPhanCong.length
+  )
+    return;
   let data_delete =
     dataChiTietPhanCong[parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])];
   data_delete = { ...data_delete, ...infoPhieu };
