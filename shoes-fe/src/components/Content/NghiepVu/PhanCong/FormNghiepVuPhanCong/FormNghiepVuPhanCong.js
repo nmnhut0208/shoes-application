@@ -93,11 +93,9 @@ const FormNghiepVuPhanCong = ({
     updateMaGiayWillPhanCong(
       dataDonHang,
       rowSelectionDonHangToPhanCong,
-      dataChiTietPhanCong,
       setListGiayWillPhanCong,
       formPhanCong,
-      setFormPhanCong,
-      resetForm
+      setFormPhanCong
     );
   }, [rowSelectionDonHangToPhanCong, dataDonHang]);
 

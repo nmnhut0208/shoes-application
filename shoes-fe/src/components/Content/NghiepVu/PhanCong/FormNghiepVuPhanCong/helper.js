@@ -166,14 +166,10 @@ export const processing_button_add = (
 export const updateMaGiayWillPhanCong = (
   dataDonHang,
   rowSelectionDonHangToPhanCong,
-  dataChiTietPhanCong,
   setListGiayWillPhanCong,
   formPhanCong,
-  setFormPhanCong,
-  resetForm
+  setFormPhanCong
 ) => {
-  console.log("-================0");
-  console.log("run updateMaGiayWillPhanCong: ");
   if (dataDonHang.length > 0) {
     let index = 0;
     if (Object.keys(rowSelectionDonHangToPhanCong).length > 0) {
@@ -182,14 +178,12 @@ export const updateMaGiayWillPhanCong = (
     }
 
     let idDonHang = dataDonHang[index]["SODH"];
-    console.log("idDonHang updateMaGiayWillPhanCong: ", idDonHang);
     if (typeof idDonHang !== "undefined") {
       // call API voi idDonHang để lấy chi tiết đơn hàng
       // các mã giày và số lượng mà khách đã chọn
       // update lại selection box cho mã giày
       // mỗi lựa chọn sẽ là thông tin khác nhau của form
       // nhớ xử lý vụ size nữa nè
-      console.log("Bat dau xu ly");
       fetch(
         "http://localhost:8000/phancong/get_chitietdonhang_dephancong?SODH=" +
           encodeURIComponent(idDonHang)
@@ -198,25 +192,14 @@ export const updateMaGiayWillPhanCong = (
           return response.json();
         })
         .then((info) => {
-          console.log(
-            "@@@@@@chi tiet don hang can phan cong updateMaGiayWillPhanCong: @@@@@",
-            info
-          );
           setListGiayWillPhanCong(info);
-          console.log("formPhanCong: ", formPhanCong);
           if (info.length > 0) {
-            console.log("@@@@set form phan cong nef@@@@@: ", {
-              ...info[0],
-              THODE: formPhanCong["THODE"],
-              THOQUAI: formPhanCong["THOQUAI"],
-            });
             setFormPhanCong({
               ...info[0],
               THODE: formPhanCong["THODE"],
               THOQUAI: formPhanCong["THOQUAI"],
             });
           } else {
-            // resetForm();
             setFormPhanCong({
               THODE: formPhanCong["THODE"],
               THOQUAI: formPhanCong["THOQUAI"],
@@ -309,11 +292,9 @@ export const processing_button_delete = (
         updateMaGiayWillPhanCong(
           dataDonHang,
           rowSelectionDonHangToPhanCong,
-          dataChiTietPhanCong,
           setListGiayWillPhanCong,
           formPhanCong,
-          setFormPhanCong,
-          resetForm
+          setFormPhanCong
         );
       }
       return _info;
