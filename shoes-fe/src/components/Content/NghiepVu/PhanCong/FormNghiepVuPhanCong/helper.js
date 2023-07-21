@@ -59,7 +59,9 @@ export const processing_button_add = (
     !list_key_form.includes("THODE") ||
     !list_key_form.includes("THOQUAI") ||
     formPhanCong["THODE"] == "" ||
-    formPhanCong["THOQUAI"] == ""
+    formPhanCong["THOQUAI"] == "" ||
+    formPhanCong["THOQUAI"] == undefined ||
+    formPhanCong["THODE"] == undefined
   ) {
     alert("Chọn thợ đế và thợ quai để phân công");
     return;
