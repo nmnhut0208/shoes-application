@@ -265,7 +265,9 @@ const FormNghiepVuPhanCong = ({
   const handleClickChiTietDonHang = () => {
     if (
       dataChiTietPhanCong.length == 0 ||
-      Object.keys(rowSelectionChiTietPhanCong).length == 0
+      Object.keys(rowSelectionChiTietPhanCong).length == 0 ||
+      parseInt(Object.keys(rowSelectionChiTietPhanCong)[0]) >=
+        dataChiTietPhanCong.length
     ) {
       return false;
     }
