@@ -225,6 +225,7 @@ const FormNghiepVuPhanCong = ({
       listDonHangDonePhanCong,
       setListDonHangDonePhanCong,
       setListGiayWillPhanCong,
+      formPhanCong,
       setFormPhanCong,
       infoPhieu,
       resetForm,

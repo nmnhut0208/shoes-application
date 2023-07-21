@@ -182,7 +182,7 @@ export const updateMaGiayWillPhanCong = (
     }
 
     let idDonHang = dataDonHang[index]["SODH"];
-    console.log("idDonHang: ", idDonHang);
+    console.log("idDonHang updateMaGiayWillPhanCong: ", idDonHang);
     if (typeof idDonHang !== "undefined") {
       // call API voi idDonHang để lấy chi tiết đơn hàng
       // các mã giày và số lượng mà khách đã chọn
@@ -198,13 +198,20 @@ export const updateMaGiayWillPhanCong = (
           return response.json();
         })
         .then((info) => {
-          console.log("chi tiet don hang can phan cong: ", info);
-          let list_data_will_phancong = info;
-          console.log("list_data_will_phancong: ", list_data_will_phancong);
-          setListGiayWillPhanCong(list_data_will_phancong);
-          if (list_data_will_phancong.length > 0) {
+          console.log(
+            "@@@@@@chi tiet don hang can phan cong updateMaGiayWillPhanCong: @@@@@",
+            info
+          );
+          setListGiayWillPhanCong(info);
+          console.log("formPhanCong: ", formPhanCong);
+          if (info.length > 0) {
+            console.log("@@@@set form phan cong nef@@@@@: ", {
+              ...info[0],
+              THODE: formPhanCong["THODE"],
+              THOQUAI: formPhanCong["THOQUAI"],
+            });
             setFormPhanCong({
-              ...list_data_will_phancong[0],
+              ...info[0],
               THODE: formPhanCong["THODE"],
               THOQUAI: formPhanCong["THOQUAI"],
             });
@@ -237,6 +244,7 @@ export const processing_button_delete = (
   listDonHangDonePhanCong,
   setListDonHangDonePhanCong,
   setListGiayWillPhanCong,
+  formPhanCong,
   setFormPhanCong,
   infoPhieu,
   resetForm,
@@ -245,9 +253,6 @@ export const processing_button_delete = (
   dataDeleteButWaitSave,
   setDataDeleteButWaitSave
 ) => {
-  console.log("======================", "de;ete");
-  console.log("rowSelectionChiTietPhanCong: ", rowSelectionChiTietPhanCong);
-  console.log("dataChiTietPhanCong: ", dataChiTietPhanCong.length);
   // Kiểm tra người dùng không chọn dòng nào mà vẫn click Xóa button => return
   if (Object.keys(rowSelectionChiTietPhanCong).length == 0) return;
   if (
@@ -272,6 +277,9 @@ export const processing_button_delete = (
     }
   )
     .then((response) => {
+      return response.json();
+    })
+    .then((_info) => {
       let SoDH_del = data_delete["SODH"];
       let index = parseInt(Object.keys(rowSelectionChiTietPhanCong)[0]);
       dataChiTietPhanCong.splice(index, 1);
@@ -294,8 +302,8 @@ export const processing_button_delete = (
         let record_del = dataDonHangDaPhanCong[index_del];
         dataDonHangDaPhanCong.splice(index_del, 1);
         setDataDonHang([record_del, ...dataDonHang]);
-        setListDonHangDonePhanCong(newListDonHangDonePhanCong);
-        setDataDonHangDaPhanCong(dataDonHangDaPhanCong);
+        setListDonHangDonePhanCong(newListDonHangDonePhanCong); // list SODH
+        setDataDonHangDaPhanCong(dataDonHangDaPhanCong); // json information data donhang
         setRowSelectionDonHangToPhanCong({ 0: true });
       } else {
         updateMaGiayWillPhanCong(
@@ -303,11 +311,12 @@ export const processing_button_delete = (
           rowSelectionDonHangToPhanCong,
           dataChiTietPhanCong,
           setListGiayWillPhanCong,
+          formPhanCong,
           setFormPhanCong,
           resetForm
         );
       }
-      return response.json();
+      return _info;
     })
     .catch((err) => {
       console.log(":error: ", err);
