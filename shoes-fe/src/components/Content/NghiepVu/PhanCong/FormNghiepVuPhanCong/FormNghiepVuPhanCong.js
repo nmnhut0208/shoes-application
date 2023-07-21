@@ -370,6 +370,10 @@ const FormNghiepVuPhanCong = ({
                 parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])
               ]
             }
+            isSaveData={true}
+            setIsSaveData={() => {
+              return 1;
+            }} // fake function => không cần thay đổi gì cả
             permission={{
               MAFORM: "F0032",
               TENFORM: "Đơn hàng",
