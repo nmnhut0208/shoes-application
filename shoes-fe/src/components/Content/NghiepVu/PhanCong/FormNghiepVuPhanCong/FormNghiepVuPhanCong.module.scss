@@ -1,6 +1,9 @@
 @import "~common_scss/form.module.scss";
 
 .container {
+  height: 100%;
+  width: 100%;
+  margin-right: 2rem;
   display: grid;
   grid-template-columns: 1fr;
   row-gap: 1rem;
@@ -56,18 +59,6 @@
         grid-column: 1/3 !important;
         width: 100%;
       }
-
-      // .pair_tho_quai {
-      //   grid-column: 1/2;
-      //   select {
-      //     width: 64%;
-      //   }
-      // }
-      // .span_thoquai {
-      //   grid-column: 2/3;
-      //   width: 100%;
-      //   margin-left: 0rem;
-      // }
     }
 
     .content_size {

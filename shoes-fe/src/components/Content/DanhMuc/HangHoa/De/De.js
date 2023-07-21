@@ -13,8 +13,18 @@ import { processingInfoColumnTable } from "~utils/processing_data_table";
 const list_key = [
   { header: "Mã Đế", key: "MADE", width: 5 * rem_to_px },
   { header: "Tên Đế", key: "TENDE", width: 10 * rem_to_px },
-  { header: "Đơn giá Đế", key: "DONGIA", width: 5 * rem_to_px },
-  { header: "Ghi chú", key: "GHICHU", width: 10 * rem_to_px },
+  {
+    header: "Đơn giá Đế",
+    key: "DONGIA",
+    width: 5 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  { header: "Ghi chú", key: "GHICHU", width: 25 * rem_to_px },
 ];
 
 const infoColumns = processingInfoColumnTable(list_key, false);

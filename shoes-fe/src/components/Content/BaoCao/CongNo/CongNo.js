@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Modal } from "~nghiep_vu/DonHang";
 import { ModalForm } from "./Modal";
 import styles from "./CongNo.module.scss";
@@ -26,6 +26,22 @@ const CongNo = () => {
     const data = { ...form, ...dict_data };
     setForm(data);
   };
+
+  const [khachHangFromValue, setKhachHangFromValue] = useState("");
+  useEffect(() => {
+    setForm({
+      ...form,
+      KhachHangFrom: khachHangFromValue,
+    });
+  }, [khachHangFromValue]);
+
+  const [khachHangToValue, setKhachHangToValue] = useState("");
+  useEffect(() => {
+    setForm({
+      ...form,
+      KhachHangTo: khachHangToValue,
+    });
+  }, [khachHangToValue]);
 
   console.log("form: ", form);
 
@@ -82,10 +98,8 @@ const CongNo = () => {
             <div className={styles.item}>
               <label>Từ khách hàng</label>
               <ItemKhachHang
-                initValue={{ MAKH: form["KhachHangFrom"], TENKH: "" }}
-                changeData={(data) => {
-                  handleChangeInformationForm({ KhachHangFrom: data["MAKH"] });
-                }}
+                value={khachHangFromValue}
+                setValue={setKhachHangFromValue}
                 size_input={"15rem"}
                 have_span={false}
               />
@@ -93,10 +107,8 @@ const CongNo = () => {
             <div className={styles.item}>
               <label>Đến khách hàng</label>
               <ItemKhachHang
-                initValue={{ MAKH: form["KhachHangTo"], TENKH: "" }}
-                changeData={(data) => {
-                  handleChangeInformationForm({ KhachHangTo: data["MAKH"] });
-                }}
+                value={khachHangToValue}
+                setValue={setKhachHangToValue}
                 size_input={"15rem"}
                 have_span={false}
               />

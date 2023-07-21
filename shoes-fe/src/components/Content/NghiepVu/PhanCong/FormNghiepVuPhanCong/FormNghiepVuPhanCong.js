@@ -38,7 +38,8 @@ const infoTableChiTietPhanCong = processingInfoColumnTable(
 
 const FormNghiepVuPhanCong = ({
   dataView,
-  setIsSaveDataNghiepVuPhanCong,
+  isSaveData,
+  setIsSaveData,
   permission,
   listMaDongPhanCongAddButWaitSave,
   setListMaDongPhanCongAddButWaitSave,
@@ -51,15 +52,9 @@ const FormNghiepVuPhanCong = ({
     else return false;
   }, []);
 
-  console.log(
-    "listMaDongPhanCongAddButWaitSave: ",
-    listMaDongPhanCongAddButWaitSave
-  );
-
   const [dataDonHang, setDataDonHang] = useState(() =>
     renderDataEmpty(INFO_COLS_DONHANG, 6)
   );
-  const [havedSaveData, setHavedSaveData] = useState(true);
   // lưu những đơn hàng đã phân công xong
   // để sửa lý logic khi người dùng chỉnh sửa phân công
 
@@ -71,7 +66,6 @@ const FormNghiepVuPhanCong = ({
   });
 
   const [infoPhieu, setInfoPhieu] = useState({});
-  console.log("infoPhieu: ", infoPhieu);
   const [lastestSOPHIEU, setLastestSOPHIEU] = useState(0);
   const [dataChiTietPhanCong, setDataChiTietPhanCong] = useState([]);
   const [rowSelectionDonHangToPhanCong, setRowSelectionDonHangToPhanCong] =
@@ -82,12 +76,6 @@ const FormNghiepVuPhanCong = ({
   const [listDonHangDonePhanCong, setListDonHangDonePhanCong] = useState([]);
   const [dataDonHangDaPhanCong, setDataDonHangDaPhanCong] = useState([]);
 
-  console.log("listDonHangDonePhanCong: ", listDonHangDonePhanCong);
-  console.log("dataDonHangDaPhanCong: ", dataDonHangDaPhanCong);
-  console.log("dataChiTietPhanCong:", dataChiTietPhanCong);
-
-  console.log("dataDeleteButWaitSave: ", dataDeleteButWaitSave);
-
   const [rowSelectionChiTietPhanCong, setRowSelectionChiTietPhanCong] =
     useState({});
 
@@ -95,7 +83,6 @@ const FormNghiepVuPhanCong = ({
     let form_current = formPhanCong;
     for (let key in form_current) {
       if (!["THODE", "THOQUAI"].includes(key)) {
-        console.log("resetForm: ", key);
         form_current[key] = "";
       }
     }
@@ -106,10 +93,9 @@ const FormNghiepVuPhanCong = ({
     updateMaGiayWillPhanCong(
       dataDonHang,
       rowSelectionDonHangToPhanCong,
-      dataChiTietPhanCong,
       setListGiayWillPhanCong,
-      setFormPhanCong,
-      resetForm
+      formPhanCong,
+      setFormPhanCong
     );
   }, [rowSelectionDonHangToPhanCong, dataDonHang]);
 
@@ -135,7 +121,6 @@ const FormNghiepVuPhanCong = ({
 
     // case 2: Truy Vấn Phân Công
     if (dataView) {
-      console.log(":dataView: ", dataView);
       // set Form Header
       setInfoPhieu(dataView);
       // query info to show for 2 table
@@ -195,16 +180,10 @@ const FormNghiepVuPhanCong = ({
           console.log(":error: ", err);
         });
 
-      setHavedSaveData(true);
+      setIsSaveData(true);
 
       // query thông tin show bảng thứ 2
     }
-
-    // case 3: người dùng query lại thông tin cũ
-    // giờ thì mình thấy cho edit từ truy vấn cũng tiện
-    // đỡ phải nhập mã phân công, rồi query
-    // => ko biết web hiện tại trường hợp này nó làm gì ta??
-    // khi ng dùng nhập mã phân công, mã đơn hàng á
   }, []);
 
   const handleClickAdd = () => {
@@ -228,8 +207,7 @@ const FormNghiepVuPhanCong = ({
       listMaDongPhanCongAddButWaitSave,
       setListMaDongPhanCongAddButWaitSave
     );
-    setHavedSaveData(false);
-    setIsSaveDataNghiepVuPhanCong(false);
+    setIsSaveData(false);
   };
   const handleClickDelete = () => {
     processing_button_delete(
@@ -245,6 +223,7 @@ const FormNghiepVuPhanCong = ({
       listDonHangDonePhanCong,
       setListDonHangDonePhanCong,
       setListGiayWillPhanCong,
+      formPhanCong,
       setFormPhanCong,
       infoPhieu,
       resetForm,
@@ -253,23 +232,15 @@ const FormNghiepVuPhanCong = ({
       dataDeleteButWaitSave,
       setDataDeleteButWaitSave
     );
-    setHavedSaveData(false);
-    setIsSaveDataNghiepVuPhanCong(false);
+    setIsSaveData(false);
   };
 
-  console.log("================================");
-  console.log("havedSaveData: ", havedSaveData);
-  console.log("================================");
-
   const handleClickSave = () => {
-    console.log("save thong tin phan cong chua qua doan if");
-    if (havedSaveData) return;
+    if (isSaveData) return;
     let dataSave = dataChiTietPhanCong;
     for (let i = 0; i < dataSave.length; i++) {
       dataSave[i] = { ...dataSave[i], ...infoPhieu };
     }
-    console.log("save thong tin phan cong");
-    console.log("JSON.stringify(dataSave): ", JSON.stringify(dataSave));
     fetch("http://localhost:8000/phancong", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -287,14 +258,15 @@ const FormNghiepVuPhanCong = ({
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);
     setListMaDongPhanCongAddButWaitSave([]);
     setDataDeleteButWaitSave([]);
-    setHavedSaveData(true);
-    setIsSaveDataNghiepVuPhanCong(true);
+    setIsSaveData(true);
   };
 
   const handleClickChiTietDonHang = () => {
     if (
       dataChiTietPhanCong.length == 0 ||
-      Object.keys(rowSelectionChiTietPhanCong).length == 0
+      Object.keys(rowSelectionChiTietPhanCong).length == 0 ||
+      parseInt(Object.keys(rowSelectionChiTietPhanCong)[0]) >=
+        dataChiTietPhanCong.length
     ) {
       return false;
     }
@@ -332,13 +304,17 @@ const FormNghiepVuPhanCong = ({
     dispatchTable(actions_table.setModeShowModal(true));
   };
 
+  useEffect(() => {
+    if (dataChiTietPhanCong.length > 0) {
+      setIsSaveData(false);
+    }
+  }, [infoPhieu]);
+
   return (
     <div className={styles.container}>
       <InfoPhieu
         infoPhieu={infoPhieu}
         setInfoPhieu={setInfoPhieu}
-        setHavedSaveData={setHavedSaveData}
-        setIsSaveDataNghiepVuPhanCong={setIsSaveDataNghiepVuPhanCong}
         view={view}
       />
       <TableDonHang
@@ -361,14 +337,13 @@ const FormNghiepVuPhanCong = ({
         <div className={clsx(styles.button_group, styles.form)}>
           <button onClick={handleClickAdd}>Thêm</button>
           <button onClick={handleClickDelete}>Xóa</button>
-          {/* <button onClick={handleClickDelete}>Sửa</button> */}
         </div>
       )}
 
       <TableChiTietPhanCong
         columns={infoTableChiTietPhanCong}
         data={dataChiTietPhanCong}
-        maxHeight={35}
+        maxHeight={45}
         rowSelection={rowSelectionChiTietPhanCong}
         setRowSelection={setRowSelectionChiTietPhanCong}
       />
@@ -396,6 +371,10 @@ const FormNghiepVuPhanCong = ({
                 parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])
               ]
             }
+            isSaveData={true}
+            setIsSaveData={() => {
+              return 1;
+            }} // fake function => không cần thay đổi gì cả
             permission={{
               MAFORM: "F0032",
               TENFORM: "Đơn hàng",

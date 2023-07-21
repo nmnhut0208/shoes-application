@@ -9,18 +9,26 @@ const De = ({ initValue, changeData, size_input }) => {
     setData(stateItem.infoItemDe);
   }, []);
 
+  const [value, setValue] = useState("");
+  const [label, setLabel] = useState("");
+  useEffect(() => {
+    setValue(initValue["value"]);
+    setLabel(initValue["label"]);
+  }, []);
+
+  useEffect(() => {
+    changeData({ value, label });
+  }, [value]);
+
   return (
-    <>
-      <Selection
-        defaultValue={{
-          value: initValue["value"],
-          label: initValue["label"],
-        }}
-        data={data}
-        changeData={changeData}
-        size_input={size_input}
-      />
-    </>
+    <Selection
+      value={value}
+      setValue={setValue}
+      label={label}
+      setLabel={setLabel}
+      data={data}
+      size_input={size_input}
+    />
   );
 };
 

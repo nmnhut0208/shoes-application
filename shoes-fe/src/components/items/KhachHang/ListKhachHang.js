@@ -5,7 +5,7 @@ import { COL_KHACHHANG } from "./ConstantVariable";
 import { useItemsContext } from "~items_context";
 import { border_text_table_config } from "~config/ui";
 
-const ListKhachHang = ({ changeData }) => {
+const ListKhachHang = ({ setValue, setLabel }) => {
   const [data, setData] = useState([]);
   const [stateItem, dispatchItem] = useItemsContext();
   const [rowSelection, setRowSelection] = useState({});
@@ -15,10 +15,8 @@ const ListKhachHang = ({ changeData }) => {
   useEffect(() => {
     let keys = Object.keys(rowSelection);
     if (keys.length > 0) {
-      changeData({
-        MAKH: data[keys[0]]["MAKH"],
-        TENKH: data[keys[0]]["TENKH"],
-      });
+      setValue(data[keys[0]]["MAKH"]);
+      if (setLabel) setLabel(data[keys[0]]["TENKH"]);
     }
   }, [rowSelection]);
 

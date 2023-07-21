@@ -1,24 +1,27 @@
 import moment from "moment";
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 
 import { ItemKhachHang } from "~items";
 import { convertDate } from "~utils/processing_date";
 import styles from "./FormInfoDonHang.module.scss";
 
-const FormInfoDonHang = ({
-  formInfoDonHang,
-  setFormInfoDonHang,
-  setIsSavedData,
-  setIsSaveDataNghiepVuDonHang,
-  view,
-}) => {
+const FormInfoDonHang = ({ formInfoDonHang, setFormInfoDonHang, view }) => {
+  console.log("re-render FormInfoDonHang");
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
-    setIsSavedData(false);
-    if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(false);
   };
+
+  const [maKH, setMaKH] = useState("");
+  const [tenKH, setTenKH] = useState("");
+  useEffect(() => {
+    setFormInfoDonHang({
+      ...formInfoDonHang,
+      MAKH: maKH,
+      TENKH: tenKH,
+    });
+  }, [maKH]);
 
   const handleChangeFormForTypeDate = (e) => {
     const data = { ...formInfoDonHang };
@@ -26,8 +29,6 @@ const FormInfoDonHang = ({
       "YYYY-MM-DD HH:mm:ss"
     );
     setFormInfoDonHang(data);
-    setIsSavedData(false);
-    if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(false);
   };
 
   return (
@@ -48,13 +49,10 @@ const FormInfoDonHang = ({
           <div className={styles.pair}>
             <label>Mã khách hàng</label>
             <ItemKhachHang
-              initValue={{
-                MAKH: formInfoDonHang["MAKH"],
-                TENKH: formInfoDonHang["TENKH"],
-              }}
-              changeData={(data) => {
-                setFormInfoDonHang({ ...formInfoDonHang, ...data });
-              }}
+              value={formInfoDonHang["MAKH"]}
+              setValue={setMaKH}
+              label={formInfoDonHang["TENKH"]}
+              setLabel={setTenKH}
               size_input={"15rem"}
               size_span={"29.7rem"}
               have_span={true}
@@ -62,18 +60,6 @@ const FormInfoDonHang = ({
             />
           </div>
         </div>
-        {/* <input
-          type="checkbox"
-          name="Giá lẻ"
-          // value="true"
-          value={formInfoDonHang["Giá lẻ"]}
-          onChange={(e) => handleChangeForm(e)}
-          readOnly={view}
-          className={styles.checkbox}
-        />
-        <span for="Giá lẻ" className={styles.span_for_checkbox}>
-          Giá lẻ
-        </span> */}
       </div>
       <div className={styles.group_item}>
         <div className={styles.item_column}>

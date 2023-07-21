@@ -131,7 +131,8 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
       >
         <FormNghiepVuPhanCong
           dataView={rowInfo}
-          setIsSaveDataNghiepVuPhanCong={setIsSaveData}
+          isSaveData={isSaveData}
+          setIsSaveData={setIsSaveData}
           permission={permission}
           listMaDongPhanCongAddButWaitSave={listMaDongPhanCongAddButWaitSave}
           dataDeleteButWaitSave={dataDeleteButWaitSave}

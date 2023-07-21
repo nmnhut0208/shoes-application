@@ -1,8 +1,7 @@
-import { useMemo, useRef, useState, useLayoutEffect } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 
 import styles from "./InDonHang.module.scss";
-import { processingInfoColumnTable } from "~utils/processing_data_table";
 import {
   TableToPrint,
   SizeColumnInPrint,
@@ -18,9 +17,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   const [dataPrint, setDataPrint] = useState([]);
   const [listImage, setListImage] = useState([]);
   const [doneGetDiaChi, setDoneGetDiaChi] = useState(false);
-  const columns = useMemo(() => {
-    return processingInfoColumnTable(INFO_COLS_THO);
-  }, []);
+
   const componentRef = useRef();
   const handelPrint = useReactToPrint({
     content: () => componentRef.current,
@@ -46,16 +43,17 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
         for (let j = 0; j < info["TABLE"].length; j++) {
           info["TABLE"][j]["SIZE"] = "";
           let top = [];
-          let line = [];
           let bottom = [];
           let tongso = 0;
           for (let k = 0; k < COL_INFO_SIZE.length; k++) {
             if (info["TABLE"][j][COL_INFO_SIZE[k].name] > 0) {
               let value = parseInt(info["TABLE"][j][COL_INFO_SIZE[k].name]);
               top.push(COL_INFO_SIZE[k].key);
-              line.push("__");
               bottom.push(value);
               tongso += value;
+            } else {
+              top.push("");
+              bottom.push("");
             }
           }
           info["TABLE"][j]["SIZE"] = (

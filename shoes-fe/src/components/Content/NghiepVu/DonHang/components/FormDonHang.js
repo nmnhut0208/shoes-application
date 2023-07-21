@@ -1,9 +1,9 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, memo } from "react";
+import { IconButton, Tooltip } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import { useUserContext } from "~user";
-import { INFO_COLS_DONHANG } from "./ConstantVariable";
 import Modal from "./Modal";
-import { renderDataEmpty } from "~utils/processing_data_table";
 
 import FormInfoDonHang from "./FormInfoDonHang";
 import TableDonHang from "./TableDonHang";
@@ -21,12 +21,7 @@ import {
   updateColumnsInformations,
 } from "./helper";
 
-const FormDonHang = ({
-  dataView,
-  setShowModalNghiepVuDonHang,
-  setIsSaveDataNghiepVuDonHang,
-  permission,
-}) => {
+const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   const view = useMemo(() => {
     if (permission && permission.THEM === 0 && permission.SUA === 0)
       return true;
@@ -34,17 +29,10 @@ const FormDonHang = ({
   }, []);
 
   const [stateUser, dispatchUser] = useUserContext();
-
-  // NOTE: ko biết cách vẫn show ra núp edit khi ko có data
-  // nên đành để thành thêm 1 dòng trống sau dataTable
-  // const [dataTable, setDataTable] = useState(() => {
-  //   return renderDataEmpty(INFO_COLS_DONHANG, 1);
-  // });
   const [dataTable, setDataTable] = useState([]);
   const [isUpdateFromDataView, setIsUpdateFromDataView] = useState(false);
 
   const [dataMau, setDataMau] = useState([]);
-  const [isSavedData, setIsSavedData] = useState(true);
 
   const [formInfoDonHang, setFormInfoDonHang] = useState({
     SODH: "",
@@ -82,7 +70,6 @@ const FormDonHang = ({
         .then((info) => {
           setIsUpdateFromDataView(true);
           setDataTable(info);
-          // setDataTable([...info, dataTable[dataTable.length - 1]]);
           setFormInfoDonHang({
             SODH: info[0]["SODH"],
             NGAYDH: info[0]["NGAYDH"],
@@ -91,8 +78,6 @@ const FormDonHang = ({
             TENKH: info[0]["TENKH"],
             DIENGIAIPHIEU: info[0]["DIENGIAIPHIEU"],
           });
-          setIsSavedData(true);
-          console.log(dataTable);
         })
         .catch((err) => {
           console.log(":error: ", err);
@@ -123,21 +108,17 @@ const FormDonHang = ({
   };
 
   const handleNhapTiep = () => {
-    if (!isSavedData) {
+    if (!isSaveData) {
       alert("Lưu thông tin trước khi reset page!");
       return;
     }
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
-    setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
-    setIsSavedData(true);
-    if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
+    setDataTable([]);
+    setIsSaveData(true);
   };
 
   const handleSaveDonHang = () => {
-    if (isSavedData) return;
-
-    // let dataDatHang = dataTable.slice(0, dataTable.length - 1);
-    // remove the last empty line
+    if (isSaveData) return;
 
     let dataDatHang = dataTable.filter((data) => data["SOLUONG"] > 0);
     if (dataDatHang.length == 0) {
@@ -149,8 +130,7 @@ const FormDonHang = ({
         console.log("updateSODH(lastestDH);: ");
         updateSODH(lastestDH);
       }
-      setIsSavedData(true);
-      if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
+      setIsSaveData(true);
     }
   };
 
@@ -173,27 +153,28 @@ const FormDonHang = ({
   }, [dataTable, dataMau]);
 
   useEffect(() => {
-    if (dataTable.length > 1) {
+    if (dataTable.length > 0) {
+      setIsSaveData(false);
+    }
+  }, [formInfoDonHang]);
+
+  useEffect(() => {
+    if (dataTable.length > 0) {
       if (isUpdateFromDataView) {
         // Để lần update đầu tiên từ dataView thì trạng thái của page
         // vẫn là chưa thay đổi => có thể đóng page mà ko cần save
-        setIsSavedData(true);
-        if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
+        setIsSaveData(true);
         setIsUpdateFromDataView(false);
       } else {
-        setIsSavedData(false);
-        if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(false);
+        setIsSaveData(false);
       }
     } else {
-      setIsSavedData(true);
-      if (setIsSaveDataNghiepVuDonHang) setIsSaveDataNghiepVuDonHang(true);
+      setIsSaveData(true);
     }
   }, [dataTable]);
 
   const handleInDonHang = () => {
     if (dataTable.length == 0) return;
-    console.log("handleInDonHang: handleInDonHang");
-    // TODO: handle In DonHang
     setInfoFormWillShow({
       giay: false,
       mau: false,
@@ -203,36 +184,26 @@ const FormDonHang = ({
     setShowModal(true);
   };
 
-  const handleDongForm = () => {
-    console.log("ne: ", isSavedData);
-    if (!isSavedData) {
-      alert("Lưu thông tin thay đổi trước khi đóng");
-      return;
-    }
-    if (setShowModalNghiepVuDonHang) setShowModalNghiepVuDonHang(false);
-  };
-
-  console.log("infoFormWillShow: ", infoFormWillShow);
-  console.log("dataTable: ", dataTable);
-
   return (
-    <>
+    <div className={styles.page}>
       <FormInfoDonHang
         formInfoDonHang={formInfoDonHang}
         setFormInfoDonHang={setFormInfoDonHang}
-        setIsSavedData={setIsSavedData}
-        setIsSaveDataNghiepVuDonHang={setIsSaveDataNghiepVuDonHang}
         view={view}
       />
-      {
-        <TableDonHang
-          columns={infoColumns}
-          data={dataTable}
-          setDataTable={setDataTable}
-          handleAddGiay={handleClickMaGiay}
-          readOnly={view}
-        />
-      }
+      <Tooltip arrow title="Add">
+        <IconButton onClick={handleClickMaGiay}>
+          <AddCircleIcon style={{ color: "green" }} fontSize="large" />
+        </IconButton>
+      </Tooltip>
+
+      <TableDonHang
+        columns={infoColumns}
+        data={dataTable}
+        setDataTable={setDataTable}
+        readOnly={view}
+      />
+
       <div className={styles.form}>
         {/* Không hiểu tại sao gộp 2 form lại thì ko nhận extend nên phải tách đỡ ra vầy */}
         <div className={styles.group_button}>
@@ -255,8 +226,6 @@ const FormDonHang = ({
           <button onClick={handleThemMau} disabled={view}>
             Thêm màu
           </button>
-
-          {/* <button onClick={handleDongForm}>Đóng</button> */}
         </div>
       </div>
       {infoFormWillShow["giay"] && (
@@ -308,8 +277,8 @@ const FormDonHang = ({
           />
         </Modal>
       )}
-    </>
+    </div>
   );
 };
 
-export default FormDonHang;
+export default memo(FormDonHang);

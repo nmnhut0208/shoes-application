@@ -15,16 +15,13 @@ const OptionMau = ({
   readOnly,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  // const [selectedIndex, setSelectedIndex] = useState(1);
   const open = Boolean(anchorEl);
   const handleClickListItem = (event) => {
     if (readOnly) return;
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget); // ở lại trang hiện tại
   };
 
   const handleMenuItemClick = (event, index) => {
-    // setSelectedIndex(index);
-    console.log("dataMau: ", dataMau[index]["value"], dataMau[index]["label"]);
     setAnchorEl(null);
     handleChange(dataMau[index]["value"], dataMau[index]["label"]);
   };
@@ -43,19 +40,19 @@ const OptionMau = ({
       <List
         component="nav"
         aria-label="Device settings"
-        sx={{ bgcolor: "background.paper" }}
+        sx={{ bgcolor: "inherit" }}
       >
         <ListItem
           id="lock-button"
-          aria-haspopup="listbox"
-          aria-controls="lock-menu"
-          aria-label="when device is locked"
+          // aria-haspopup="listbox"
+          // aria-controls="lock-menu"
+          // aria-label="when device is locked"
           aria-expanded={open ? "true" : undefined}
           onClick={handleClickListItem}
         >
           <ListItemText
             primary={dataTable[id_row][id_column]}
-            // secondary={dataMau[selectedIndex]}
+            primaryTypographyProps={{ fontSize: "1.4rem" }}
           />
         </ListItem>
       </List>
@@ -64,6 +61,7 @@ const OptionMau = ({
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        transitionDuration={0}
         MenuListProps={{
           "aria-labelledby": "lock-button",
           role: "listbox",
@@ -73,7 +71,6 @@ const OptionMau = ({
           <MenuItemMau
             dataMau={dataMau}
             handleMenuItemClick={handleMenuItemClick}
-            // selectedIndex={selectedIndex}
           />
         )}
       </Menu>

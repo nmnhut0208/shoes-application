@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import clsx from "clsx";
 import moment from "moment";
 
@@ -6,19 +6,13 @@ import styles from "../FormNghiepVuPhanCong/FormNghiepVuPhanCong.module.scss";
 import { convertDate } from "~utils/processing_date";
 import { ItemKyTinhLuong } from "~items";
 
-const InfoPhieu = ({
-  infoPhieu,
-  setInfoPhieu,
-  setHavedSaveData,
-  setIsSaveDataNghiepVuPhanCong,
-  view,
-}) => {
+const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
+  console.log("re-render InfoPhieu: ", infoPhieu);
+  const [kyTinhLuong, setKyTinhLuong] = useState("");
   const handleChangeInfoPhieu = (e) => {
     const data = { ...infoPhieu };
     data[e.target.name] = e.target.value;
     setInfoPhieu(data);
-    setHavedSaveData(false);
-    setIsSaveDataNghiepVuPhanCong(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
@@ -27,9 +21,11 @@ const InfoPhieu = ({
       "YYYY-MM-DD HH:mm:ss"
     );
     setInfoPhieu(data);
-    setHavedSaveData(false);
-    setIsSaveDataNghiepVuPhanCong(false);
   };
+
+  useEffect(() => {
+    setInfoPhieu({ ...infoPhieu, MAKY: kyTinhLuong });
+  }, [kyTinhLuong]);
 
   return (
     <div className={clsx(styles.form, styles.input_query)}>
@@ -54,12 +50,8 @@ const InfoPhieu = ({
       <div className={styles.pair}>
         <label>Kỳ</label>
         <ItemKyTinhLuong
-          initValue={{
-            MAKY: infoPhieu["MAKY"],
-          }}
-          changeData={(data) => {
-            setInfoPhieu({ ...infoPhieu, ...data });
-          }}
+          value={infoPhieu["MAKY"]}
+          setValue={setKyTinhLuong}
           size_input={"7rem"}
           readOnly={view}
         />

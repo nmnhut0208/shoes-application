@@ -9,19 +9,27 @@ const ThoDe = ({ initValue, changeData, size_input, className }) => {
     setData(stateItem.infoItemThoDe);
   }, []);
 
+  const [value, setValue] = useState("");
+  const [label, setLabel] = useState("");
+  useEffect(() => {
+    setValue(initValue["value"]);
+    setLabel(initValue["label"]);
+  }, []);
+
+  useEffect(() => {
+    changeData({ value, label });
+  }, [value]);
+
   return (
-    <>
-      <Selection
-        className={className}
-        defaultValue={{
-          value: initValue["value"],
-          label: initValue["label"],
-        }}
-        data={data}
-        changeData={changeData}
-        size_input={size_input}
-      />
-    </>
+    <Selection
+      className={className}
+      value={value}
+      setValue={setValue}
+      label={label}
+      setLabel={setLabel}
+      data={data}
+      size_input={size_input}
+    />
   );
 };
 

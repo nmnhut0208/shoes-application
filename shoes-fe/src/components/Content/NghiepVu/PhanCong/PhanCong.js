@@ -53,7 +53,8 @@ const PhanCong = () => {
       dataDeleteButWaitSave={dataDeleteButWaitSave}
     >
       <FormNghiepVuPhanCong
-        setIsSaveDataNghiepVuPhanCong={setIsSaveData}
+        isSaveData={isSaveData}
+        setIsSaveData={setIsSaveData}
         permission={permission}
         listMaDongPhanCongAddButWaitSave={listMaDongPhanCongAddButWaitSave}
         setListMaDongPhanCongAddButWaitSave={

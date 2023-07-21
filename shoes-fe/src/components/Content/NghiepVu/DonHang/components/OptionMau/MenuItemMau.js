@@ -3,21 +3,22 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import { memo } from "react";
 
-const MenuItemMau = ({ dataMau, handleMenuItemClick, selectedIndex }) => {
+const MenuItemMau = ({ dataMau, handleMenuItemClick }) => {
   return (
     <>
       {dataMau.map((option, index) => (
         <MenuItem
-          //   key={option.value}
-          //   disabled={index === 0}
-          //   selected={index === selectedIndex}
           onClick={(event) => handleMenuItemClick(event, index)}
+          // onDoubleClick={(event) => handleMenuItemClick(event, index)}
         >
-          {/* <ListItemText>
-            {option.value} - {option.label}
-          </ListItemText> */}
-          <ListItemText>{option.value}</ListItemText>
-          <Typography variant="body2" color="text.secondary">
+          <ListItemText primaryTypographyProps={{ fontSize: "1.4rem" }}>
+            {option.value}
+          </ListItemText>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ fontSize: "1.4rem" }}
+          >
             {option.label}
           </Typography>
         </MenuItem>

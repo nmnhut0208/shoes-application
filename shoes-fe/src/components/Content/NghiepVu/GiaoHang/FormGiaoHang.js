@@ -363,7 +363,7 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
               <input
                 name="MAKH"
                 value={infoKH["MAKH"] ? infoKH["MAKH"] : ""}
-                // onChange={(e) => setFormInfoDonHang(e)}
+                readOnly={true}
               />
             </Popover>
             <input

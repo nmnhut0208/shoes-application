@@ -9,6 +9,7 @@ const TableChiTietPhanCong = ({
   rowSelection,
   setRowSelection,
 }) => {
+  console.log("re-render TableChiTietPhanCong: ");
   return (
     <div>
       <MaterialReactTable
@@ -28,7 +29,7 @@ const TableChiTietPhanCong = ({
         // scroll to bottom
         enableRowVirtualization
         muiTableContainerProps={{
-          sx: { maxHeight: [maxHeight, "rem"].join("") },
+          sx: { height: [maxHeight, "rem"].join("") },
         }}
         // row selection
         enableMultiRowSelection={false}

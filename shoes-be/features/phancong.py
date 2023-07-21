@@ -219,7 +219,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
                     GROUP BY dh.magiay,dh.madh,dh.sodh,dh.ngaydh,dh.makh,
                     kh.tenkh,dh.diengiaiphieu,DH.MAUDE, DH.MAUGOT,DH.MAUSUON, 
                     DH.MAUCA, DH.MAUQUAI, DH.SIZE5, DH.SIZE6, DH.SIZE7, DH.SIZE8, 
-                    DH.SIZE9, DH.SIZE0, coalesce(DH.SIZE1, 0) AS SIZE1
+                    DH.SIZE9, DH.SIZE0, coalesce(DH.SIZE1, 0)
               ) as KIEMTRAPHANCONG
               left join (select MAGIAY, TENGIAY from DMGIAY) 
               as DMGIAY on DMGIAY.MAGIAY = KIEMTRAPHANCONG.magiay

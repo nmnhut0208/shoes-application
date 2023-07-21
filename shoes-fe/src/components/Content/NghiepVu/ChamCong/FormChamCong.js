@@ -281,13 +281,13 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
             >
               <input
                 value={infoForm["MAKY"]}
-                type="text"
+                readOnly={true}
                 className={styles.small}
               />
             </Popover>
             <input
               value={infoForm["TENKY"]}
-              type="text"
+              readOnly={true}
               className={styles.medium}
             />
           </div>
@@ -306,13 +306,13 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
             >
               <input
                 value={infoForm["MANVIEN"]}
-                type="text"
+                readOnly={true}
                 className={styles.small}
               />
             </Popover>
             <input
               value={infoForm["TENNVIEN"]}
-              type="text"
+              readOnly={true}
               className={styles.medium}
             />
           </div>
