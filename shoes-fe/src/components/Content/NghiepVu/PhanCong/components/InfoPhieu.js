@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import clsx from "clsx";
 import moment from "moment";
 
@@ -7,7 +7,8 @@ import { convertDate } from "~utils/processing_date";
 import { ItemKyTinhLuong } from "~items";
 
 const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
-  console.log("re-render InfoPhieu");
+  console.log("re-render InfoPhieu: ", infoPhieu);
+  const [kyTinhLuong, setKyTinhLuong] = useState("");
   const handleChangeInfoPhieu = (e) => {
     const data = { ...infoPhieu };
     data[e.target.name] = e.target.value;
@@ -21,6 +22,10 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
     );
     setInfoPhieu(data);
   };
+
+  useEffect(() => {
+    setInfoPhieu({ ...infoPhieu, MAKY: kyTinhLuong });
+  }, [kyTinhLuong]);
 
   return (
     <div className={clsx(styles.form, styles.input_query)}>
@@ -45,12 +50,8 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
       <div className={styles.pair}>
         <label>Kỳ</label>
         <ItemKyTinhLuong
-          initValue={{
-            MAKY: infoPhieu["MAKY"],
-          }}
-          changeData={(data) => {
-            setInfoPhieu({ ...infoPhieu, ...data });
-          }}
+          value={infoPhieu["MAKY"]}
+          setValue={setKyTinhLuong}
           size_input={"7rem"}
           readOnly={view}
         />
