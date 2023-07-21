@@ -7,11 +7,9 @@ export const _style_component_table = {
   fontSize: "1.4rem",
   lineHeight: "2.1rem",
   fontFamily: "Arial",
-  // borderRight: "0.1rem solid rgba(0, 0, 0, 0.15)",
-  // borderBottom: "0.1rem solid rgba(0, 0, 0, 0.15)",
-  borderRight: "0.1rem solid rgba(0, 0, 0, 0.1)",
-  borderBottom: "0.1rem solid rgba(0, 0, 0, 0.1)",
-  padding: "5px 5px 5px 5px",
+  borderRight: "0.15rem solid rgba(0, 0, 0, 0.25)",
+  borderBottom: "0.15rem solid rgba(0, 0, 0, 0.25)",
+  padding: "8px",
 };
 
 export const border_text_table_config = {
@@ -24,7 +22,7 @@ export const border_text_table_config = {
   muiTableContainerProps: {
     sx: {
       border: "none",
-      borderTop: "0.1rem solid rgba(0, 0, 0, 0.15)",
+      borderTop: "0.15rem solid rgba(0, 0, 0, 0.25)",
     },
   },
 };
