@@ -11,8 +11,18 @@ import { processingInfoColumnTable } from "~utils/processing_data_table";
 
 const list_key = [
   { header: "Mã quai", key: "MAQUAI", width: 5 * rem_to_px },
-  { header: "Tên quai", key: "TENQUAI", width: 10 * rem_to_px },
-  { header: "Đơn giá lương", key: "DONGIA", width: 5 * rem_to_px },
+  { header: "Tên quai", key: "TENQUAI", width: 15 * rem_to_px },
+  {
+    header: "Đơn giá lương",
+    key: "DONGIA",
+    width: 5 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
   { header: "Ghi chú", key: "GHICHU", width: 20 * rem_to_px },
 ];
 

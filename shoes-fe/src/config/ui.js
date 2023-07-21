@@ -5,11 +5,13 @@ export const rem_to_px = (font_size_html * font_size_default_rem) / 100;
 // for Table
 export const _style_component_table = {
   fontSize: "1.4rem",
-  lineHeight: "1.5rem",
+  lineHeight: "2.1rem",
   fontFamily: "Arial",
-  borderRight: "0.1rem solid rgba(0, 0, 0, 0.15)",
-  borderBottom: "0.1rem solid rgba(0, 0, 0, 0.15)",
-  padding: "8px 5px 8px 5px",
+  // borderRight: "0.1rem solid rgba(0, 0, 0, 0.15)",
+  // borderBottom: "0.1rem solid rgba(0, 0, 0, 0.15)",
+  borderRight: "0.1rem solid rgba(0, 0, 0, 0.1)",
+  borderBottom: "0.1rem solid rgba(0, 0, 0, 0.1)",
+  padding: "5px 5px 5px 5px",
 };
 
 export const border_text_table_config = {
