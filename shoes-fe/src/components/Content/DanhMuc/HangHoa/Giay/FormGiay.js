@@ -7,7 +7,7 @@ import { checkMaDanhMucExisted } from "~danh_muc/helper";
 const FormGiay = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [isSaveData, setIsSaveData] = useState(true);
-  const [dataForm, setDataForm] = useState(stateTable.inforShowTable.record);
+  const [dataForm, setDataForm] = useState(null);
 
   useEffect(() => {
     if (stateTable.inforShowTable.record["MAGIAY"] !== "") {
@@ -24,6 +24,9 @@ const FormGiay = () => {
         .catch((error) => {
           console.log("error: ", error);
         });
+    } else {
+      // form empty to add giay
+      setDataForm(stateTable.inforShowTable.record);
     }
   }, []);
 
@@ -104,11 +107,13 @@ const FormGiay = () => {
 
   return (
     <>
-      <FormGiayBasic
-        form={dataForm}
-        setDataForm={setDataForm}
-        mode={stateTable.inforShowTable.action_row}
-      />
+      {dataForm && (
+        <FormGiayBasic
+          form={dataForm}
+          setDataForm={setDataForm}
+          mode={stateTable.inforShowTable.action_row}
+        />
+      )}
 
       <div className={styles.group_button}>
         <div>

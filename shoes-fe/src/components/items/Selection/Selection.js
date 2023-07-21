@@ -1,5 +1,5 @@
 import { Space } from "antd";
-import { useState, useEffect, memo } from "react";
+import { memo } from "react";
 
 const Selection = ({
   readOnly,
@@ -12,6 +12,7 @@ const Selection = ({
   size_span,
   className,
 }) => {
+  console.log("label la: ", label);
   return (
     <Space size="small" className={className}>
       <select
