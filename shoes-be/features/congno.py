@@ -129,8 +129,12 @@ def read(YEAR: str=None) -> RESPONSE_TVTHUCHI:
 def add(data: dict):
     makh_from = data["KhachHangFrom"]
     makh_to = data["KhachHangTo"]
+    # convert date_from to DD-MM-YYYY 00:00:00
     date_from = data["DATE_FROM"]
+    date_from = datetime.strptime(date_from, "%Y-%m-%d %H:%M:%S")
+    date_from = date_from.strftime("%Y-%m-%d 00:00:00")
     date_to = data["DATE_TO"]
+    # print("testt: ", date_from, date_to)
 
     sql_tongno = f"""
                 select V_TONGHOP.MAKH, DMKHACHHANG.TENKH, SUM(THANHTIENQD) as TONGNO
