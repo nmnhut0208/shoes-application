@@ -27,6 +27,8 @@ def read() -> RESPONSE_TVGIAOHANG:
             LEFT JOIN (SELECT MAKH, TENKH, DIACHI FROM DMKHACHHANG) 
                 AS DMKHACHHANG 
                 ON CONGNO.MAKH = DMKHACHHANG.MAKH
+            WHERE CONGNO.LOAIPHIEU = 'BH'
+            ORDER BY CONGNO.NGAYPHIEU DESC
             """
     return TVGH.read_custom(sql)
 
