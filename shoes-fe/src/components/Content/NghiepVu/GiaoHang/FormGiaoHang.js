@@ -4,51 +4,62 @@ import moment from "moment";
 import SubTable from "./SubTable";
 import styles from "./FormGiaoHang.module.scss";
 import { convertDate } from "~utils/processing_date";
-import { useUserContext, actions } from "~user";
+import { useUserContext } from "~user";
 import TableMaKH from "./TableMaKH";
+import { rem_to_px } from "~config/ui";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
+import { convertDateForReport } from "~utils/processing_date";
 
 const list_key = [
-  { header: "Số đơn hàng", key: "SODH", width: "10rem", enableEditing: false },
+  {
+    header: "Số đơn hàng",
+    key: "SODH",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
   {
     header: "Ngày đơn hàng",
     key: "NGAYDH",
-    width: "10rem",
+    width: 5 * rem_to_px,
     enableEditing: false,
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
   },
   {
     header: "Ngày giao hàng",
     key: "NGAYGH",
-    width: "10rem",
+    width: 5 * rem_to_px,
     enableEditing: false,
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
   },
   {
     header: "Diễn giải",
     key: "DIENGIAIDONG",
-    width: "10rem",
+    width: 20 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Số lượng còn lại",
     key: "SOLUONGCONLAI",
-    width: "10rem",
+    width: 5 * rem_to_px,
     enableEditing: false,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
   },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-    enableEditing: list_key[obj]["enableEditing"],
-  };
-  infoColumns.push(info);
-}
+const infoColumns = processingInfoColumnTable(list_key);
 
 const list_key_sub = [
-  { header: "Mã Giày", key: "MAGIAY", width: "10rem", enableEditing: false },
+  {
+    header: "Mã Giày",
+    key: "MAGIAY",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
   { header: "Tên Giày", key: "TENGIAY", width: "10rem", enableEditing: false },
   { header: "Màu Đế", key: "MAUDE", width: "10rem", enableEditing: false },
   { header: "Màu Gót", key: "MAUGOT", width: "10rem", enableEditing: false },
@@ -91,6 +102,8 @@ const COLS_HAVE_SUM_FOOTER = [
 ];
 
 const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
+  console.log("=====infoColumns: ", infoColumns);
+
   const [userState, userDispatch] = useUserContext();
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);

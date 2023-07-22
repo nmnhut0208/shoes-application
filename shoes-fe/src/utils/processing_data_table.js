@@ -11,6 +11,8 @@ export const processingInfoColumnTable = (list_key, setMinMax = true) => {
       info["minSize"] = list_key[index]["width"];
       info["maxSize"] = list_key[index]["width"];
     }
+    if (list_key[index]["enableEditing"])
+      info["enableEditing"] = list_key[index]["enableEditing"];
     if (list_key[index]["header_custorm"])
       info["header"] = list_key[index]["header_custorm"];
     if (list_key[index]["Cell"]) info["Cell"] = list_key[index]["Cell"];

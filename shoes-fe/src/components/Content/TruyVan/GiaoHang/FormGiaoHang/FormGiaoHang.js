@@ -5,26 +5,39 @@ import { useUserContext, actions } from "~user";
 import { useTableContext, actions_table } from "~table_context";
 import { Modal } from "~common_tag";
 import In from "./In";
-// import { Header } from "antd/es/layout/layout";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
+import { convertDateForReport } from "~utils/processing_date";
+import { rem_to_px } from "~config/ui";
 
 const list_key = [
-  { header: "Số đơn hàng", key: "SODH", width: "10rem" },
-  { header: "Ngày đơn hàng", key: "NGAYDH", width: "10rem" },
-  { header: "Ngày giao hàng", key: "NGAYGH", width: "10rem" },
-  { header: "Diễn giải", key: "DIENGIAIDONG", width: "10rem" },
-  { header: "Số lượng", key: "SOLUONG", width: "10rem" },
+  { header: "Số đơn hàng", key: "SODH", width: 5 * rem_to_px },
+  {
+    header: "Ngày đơn hàng",
+    key: "NGAYDH",
+    width: 5 * rem_to_px,
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
+  },
+  {
+    header: "Ngày giao hàng",
+    key: "NGAYGH",
+    width: 5 * rem_to_px,
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
+  },
+  { header: "Diễn giải", key: "DIENGIAIDONG", width: 5 * rem_to_px },
+  {
+    header: "Số lượng",
+    key: "SOLUONG",
+    width: 5 * rem_to_px,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
+const infoColumns = processingInfoColumnTable(list_key);
 
 const list_key_sub = [
   { header: "Mã Giày", key: "MAGIAY", width: "10rem" },

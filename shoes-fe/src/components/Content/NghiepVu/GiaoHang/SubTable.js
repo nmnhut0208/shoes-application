@@ -26,7 +26,7 @@ const SubTable = ({
       "SIZE8",
       "SIZE9",
       "SIZE0",
-      // "SIZE1",
+      "SIZE1",
     ];
     if (list_size.includes(cell.column.id)) {
       if (value === "") value = 0;

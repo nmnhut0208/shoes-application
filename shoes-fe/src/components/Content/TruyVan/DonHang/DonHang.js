@@ -132,6 +132,7 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
 const MAFORM_TRUYVAN_DONHANG = "F0031";
 
 const updateInfo = (permission, year, setDataDonHang) => {
+  if (permission === undefined) return;
   if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
     let url = "http://localhost:8000/donhang/baocao_donhang";
     if (year != "" && year > 2020) {
@@ -170,7 +171,11 @@ const DonHang = () => {
     updateInfo(permission, year, setDataDonHang);
   }, []);
 
-  if (permission.XEM + permission.SUA + permission.XOA + permission.IN === 0) {
+  if (
+    permission === undefined ||
+    Object.keys(permission).length === 0 ||
+    permission.XEM + permission.SUA + permission.XOA + permission.IN === 0
+  ) {
     alert(stateUser.userName + " không có quyền xem Truy Vấn Đơn Hàng");
     return <></>;
   }
