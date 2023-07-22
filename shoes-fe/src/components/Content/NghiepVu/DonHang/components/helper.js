@@ -6,6 +6,40 @@ import {
   COLS_HAVE_SELECT_INPUT,
 } from "./ConstantVariable";
 
+const handleSaveCell = (cell, value, data, setDataTable) => {
+  //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
+  var row_current = data[cell.row.index];
+  // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
+  // Tính lại số lượng
+  var list_size = [
+    "SIZE5",
+    "SIZE6",
+    "SIZE7",
+    "SIZE8",
+    "SIZE9",
+    "SIZE0",
+    "SIZE1",
+    "GIABAN",
+  ];
+  if (list_size.includes(cell.column.id)) {
+    if (value === "") value = 0;
+    row_current[cell.column.id] = parseInt(value);
+
+    var so_luong = 0;
+    for (let i = 0; i < list_size.length; i++) {
+      so_luong += row_current[list_size[i]];
+    }
+    row_current["SOLUONG"] = so_luong;
+    row_current["THANHTIEN"] =
+      row_current["SOLUONG"] * parseInt(row_current["GIABAN"]);
+    data[cell.row.index] = row_current;
+  } else {
+    data[cell.row.index][cell.column.id] = value;
+  }
+
+  setDataTable([...data]);
+};
+
 export const updateColumnsInformations = (
   dataMau,
   dataTable,
@@ -24,26 +58,81 @@ export const updateColumnsInformations = (
       key: INFO_COLS_DONHANG[index]["key"].toLowerCase(),
     };
 
+    // Render input tag for edit cell
+    if (key.includes("SIZE") || key === "GIABAN") {
+      info["Cell"] = ({ cell }) => (
+        <input
+          style={{
+            border: "none",
+            width: "100%",
+            height: "100%",
+            fontSize: "1.4rem",
+            backgroundColor: "inherit",
+            textAlign: "right",
+            marginRight: "0.5rem",
+          }}
+          readOnly={view}
+          type="number"
+          value={cell.getValue().toString()}
+          onChange={(e) =>
+            handleSaveCell(cell, e.target.value, dataTable, setDataTable)
+          }
+        />
+      );
+    }
+
+    if (key === "SOLUONG" || key === "THANHTIEN")
+      info["Cell"] = ({ cell }) => (
+        <input
+          style={{
+            border: "none",
+            width: "100%",
+            height: "100%",
+            fontSize: "1.4rem",
+            backgroundColor: "inherit",
+            textAlign: "right",
+            marginRight: "0.5rem",
+          }}
+          value={parseFloat(cell.getValue()).toLocaleString("en")}
+        />
+      );
+
+    if (key === "DIENGIAIDONG" || key === "INHIEU") {
+      info["Cell"] = ({ cell }) => (
+        <input
+          style={{
+            border: "none",
+            width: "100%",
+            height: "100%",
+            fontSize: "1.4rem",
+            backgroundColor: "inherit",
+          }}
+          readOnly={view}
+          type="text"
+          value={cell.getValue()}
+          onChange={(e) => {
+            dataTable[cell.row.id][cell.column.id] = e.target.value;
+            setDataTable([...dataTable]);
+          }}
+        />
+      );
+    }
     if (COLS_HAVE_SELECT_INPUT.includes(key)) {
       info["Cell"] = ({ cell }) => {
         return (
-          <>
-            <OptionMau
-              init={dataTable[cell.row.id][cell.column.id]}
-              id_row={cell.row.id}
-              id_column={cell.column.id}
-              dataTable={dataTable}
-              dataMau={dataMau}
-              handleChange={(value, label) => {
-                console.log("cell.row.id: ", cell.row.id);
-                console.log("cell.column.id: ", cell.column.id);
-                dataTable[cell.row.id][cell.column.id] = value;
-                dataTable[cell.row.id]["TEN" + cell.column.id] = label;
-                setDataTable([...dataTable]);
-              }}
-              readOnly={view}
-            />
-          </>
+          <OptionMau
+            init={dataTable[cell.row.id][cell.column.id]}
+            id_row={cell.row.id}
+            id_column={cell.column.id}
+            dataTable={dataTable}
+            dataMau={dataMau}
+            handleChange={(value, label) => {
+              dataTable[cell.row.id][cell.column.id] = value;
+              dataTable[cell.row.id]["TEN" + cell.column.id] = label;
+              setDataTable([...dataTable]);
+            }}
+            readOnly={view}
+          />
         );
       };
     }
@@ -51,7 +140,20 @@ export const updateColumnsInformations = (
     if (key === "TENGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
     if (COLS_HAVE_SUM_FOOTER.includes(key)) {
       let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
-      info["Footer"] = () => <div>{sum_value}</div>;
+      info["Footer"] = () => (
+        <input
+          style={{
+            textAlign: "right",
+            height: "100%",
+            width: "100%",
+            border: "none",
+            fontWeight: "bold",
+            fontSize: "1.4rem",
+            marginRight: "0.5rem",
+          }}
+          value={parseFloat(sum_value).toLocaleString("en")}
+        />
+      );
     }
     infoColumnsInit.push(info);
   }
@@ -118,8 +220,6 @@ export const updateFormDonHang = (
       return response.json();
     })
     .then((data) => {
-      console.log(":data: ", data);
-      console.log("today: ", moment().format("YYYY-MM-DD HH:mm:ss"));
       let sodh = data["SODH"];
       setFormInfoDonHang({
         ...formInfoDonHang,

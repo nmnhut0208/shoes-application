@@ -18,6 +18,17 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
   const [image_base64, setImageBase64] = useState("");
   const [image_url, setImageURL] = useState("");
 
+  console.log("form: ", form);
+
+  const [maKH, setMaKH] = useState(form["MAKH"]);
+  useEffect(() => {
+    handleChangeInformationForm({
+      MAKH: maKH,
+    });
+  }, [maKH]);
+
+  console.log("image_base64: ", image_base64);
+
   useEffect(() => {
     if (form["MAGIAY"] != "" && image_base64 === "") {
       getImageOfDanhMuc("giay", form["MAGIAY"], "MAGIAY").then((value) => {
@@ -116,10 +127,8 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
               <label>Khách hàng</label>
               <ItemKhachHang
                 readOnly={readOnly}
-                initValue={{ MAKH: form["MAKH"] }}
-                changeData={(data) => {
-                  handleChangeInformationForm(data);
-                }}
+                value={form["MAKH"]}
+                setValue={setMaKH}
                 size_input={"15rem"}
               />
             </div>

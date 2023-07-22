@@ -94,7 +94,11 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
   useEffect(() => {
     let keys = Object.keys(rowSelection);
     if (keys.length > 0) {
-      setChiTietPhanCong(listGiayWillPhanCong[keys[0]]);
+      setChiTietPhanCong({
+        ...listGiayWillPhanCong[keys[0]],
+        THODE: form["THODE"],
+        THOQUAI: form["THOQUAI"],
+      });
     }
     setAnchorEl(null);
   }, [rowSelection]);

@@ -1,39 +1,28 @@
 import { Popover, Space } from "antd";
-import { useState, memo, useEffect } from "react";
+import { memo } from "react";
 import ListKhachHang from "./ListKhachHang";
 
 const KhachHang = ({
   readOnly,
-  initValue,
-  changeData,
+  value,
+  setValue,
+  label,
+  setLabel,
   size_input,
   have_span,
   size_span,
 }) => {
-  const [data, setData] = useState(initValue["MAKH"]);
-  const [data_span, setDataSpan] = useState(initValue["TENKH"]);
-  useEffect(() => {
-    setData(initValue["MAKH"]);
-    setDataSpan(initValue["TENKH"]);
-  }, [initValue]);
+  console.log("re-render ItemKhachHang");
   return (
     <Space>
       {!readOnly && (
         <Popover
           placement="bottomLeft"
-          content={
-            <ListKhachHang
-              changeData={(info) => {
-                setData(info["MAKH"]);
-                setDataSpan(info["TENKH"]);
-                changeData(info);
-              }}
-            />
-          }
+          content={<ListKhachHang setValue={setValue} setLabel={setLabel} />}
         >
           <input
             name="MAKH"
-            value={data}
+            value={value}
             readOnly={true}
             style={{ width: size_input }}
           />
@@ -42,13 +31,13 @@ const KhachHang = ({
       {readOnly && (
         <input
           name="MAKH"
-          value={data}
+          value={value}
           readOnly={true}
           style={{ width: size_input }}
         />
       )}
       {have_span && (
-        <input readOnly={true} value={data_span} style={{ width: size_span }} />
+        <input readOnly={true} value={label} style={{ width: size_span }} />
       )}
     </Space>
   );

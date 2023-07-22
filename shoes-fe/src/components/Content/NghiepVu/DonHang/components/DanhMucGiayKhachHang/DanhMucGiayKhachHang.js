@@ -56,12 +56,7 @@ const DanhMucGiayKhachHang = ({
       }
     }
 
-    setInfoSelection([
-      ...dataOrigin, //.slice(0, -1),
-      ...columns_selected,
-      // ,
-      // dataOrigin[dataOrigin.length - 1],
-    ]);
+    setInfoSelection([...dataOrigin, ...columns_selected]);
     setShowModal(false);
   };
 

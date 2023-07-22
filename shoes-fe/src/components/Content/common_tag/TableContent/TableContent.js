@@ -22,6 +22,8 @@ const TableContent = ({ info_other_column }) => {
     if (info_other_column) return info_other_column;
     else return { action: 30, stt: 15 };
   });
+
+  console.log("actionSttInfo: ", actionSttInfo);
   const [stateTable, dispatchTable] = useTableContext();
   const [stateTask, dispatchTask] = useTaskContext();
   const [stateUser, dispatchUser] = useUserContext();
@@ -216,10 +218,14 @@ const TableContent = ({ info_other_column }) => {
             enableEditing={showActionColumn}
             displayColumnDefOptions={{
               "mrt-row-actions": {
-                size: actionSttInfo["action"], //set custom width
-                minSize: 24,
+                sx: { minSize: actionSttInfo["action"] },
+                // minSize: actionSttInfo["action"], //set custom width
+                // minSize: 24,
                 muiTableHeadCellProps: {
                   align: "center", //change head cell props
+                },
+                muiTableBodyCellProps: {
+                  minSize: actionSttInfo["action"],
                 },
                 enableResizing: true,
               },
@@ -241,6 +247,8 @@ const TableContent = ({ info_other_column }) => {
                 sx={{
                   display: "flex",
                   justifyContent: "center",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
                 }}
               >
                 {permission.THEM === 1 && (

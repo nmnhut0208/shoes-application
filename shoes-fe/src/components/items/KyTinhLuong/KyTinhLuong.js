@@ -4,36 +4,25 @@ import ListKyTinhLuong from "./ListKyTinhLuong";
 
 const KyTinhLuong = ({
   readOnly,
-  initValue,
-  changeData,
+  value,
+  setValue,
+  label,
+  setLabel,
   size_input,
   have_span,
   size_span,
 }) => {
-  const [data, setData] = useState(initValue["MAKY"]);
-  const [data_span, setDataSpan] = useState(initValue["TENKY"]);
-  useEffect(() => {
-    setData(initValue["MAKY"]);
-    setDataSpan(initValue["TENKY"]);
-  }, [initValue]);
+  console.log("re-render ItemKyTinhLuong");
   return (
     <Space>
       {!readOnly && (
         <Popover
           placement="bottomLeft"
-          content={
-            <ListKyTinhLuong
-              changeData={(info) => {
-                setData(info["MAKY"]);
-                setDataSpan(info["TENKY"]);
-                changeData(info);
-              }}
-            />
-          }
+          content={<ListKyTinhLuong setValue={setValue} setLabel={setLabel} />}
         >
           <input
             name="MAKY"
-            value={data}
+            value={value}
             readOnly={true}
             style={{ width: size_input }}
           />
@@ -42,13 +31,13 @@ const KyTinhLuong = ({
       {readOnly && (
         <input
           name="MAKY"
-          value={data}
+          value={value}
           readOnly={true}
           style={{ width: size_input }}
         />
       )}
       {have_span && (
-        <input readOnly={true} value={data_span} style={{ width: size_span }} />
+        <input readOnly={true} value={label} style={{ width: size_span }} />
       )}
     </Space>
   );

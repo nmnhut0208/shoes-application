@@ -13,6 +13,7 @@ export const processingInfoColumnTable = (list_key, setMinMax = true) => {
     }
     if (list_key[index]["header_custorm"])
       info["header"] = list_key[index]["header_custorm"];
+    if (list_key[index]["Cell"]) info["Cell"] = list_key[index]["Cell"];
     if (list_key[index]["muiTableBodyCellProps"])
       info["muiTableBodyCellProps"] = list_key[index]["muiTableBodyCellProps"];
     infoColumns.push(info);

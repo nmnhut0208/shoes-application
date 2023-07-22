@@ -6,6 +6,7 @@ import { useUserContext } from "~user";
 const MAFORM_DONHANG = "F0032";
 
 const DonHang = () => {
+  console.log("re-render DonHang");
   const [isSaveData, setIsSaveData] = useState(true);
   const [showModal, setShowModal] = useState(true);
   const [stateUser, dispatchUser] = useUserContext();
@@ -31,8 +32,8 @@ const DonHang = () => {
       isResetPageEmpty={true}
     >
       <FormDonHang
-        setShowModalNghiepVuDonHang={setShowModal}
-        setIsSaveDataNghiepVuDonHang={setIsSaveData}
+        isSaveData={isSaveData}
+        setIsSaveData={setIsSaveData}
         permission={permission}
       />
     </Modal>

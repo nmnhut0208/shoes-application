@@ -120,7 +120,8 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
         <FormDonHang
           dataView={rowInfo}
           setShowModalNghiepVuDonHang={setShowModal}
-          setIsSaveDataNghiepVuDonHang={setIsSaveData}
+          isSaveData={isSaveData}
+          setIsSaveData={setIsSaveData}
           permission={permission}
         />
       </Modal>

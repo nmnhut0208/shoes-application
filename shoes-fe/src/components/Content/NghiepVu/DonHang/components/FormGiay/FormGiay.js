@@ -47,11 +47,6 @@ const FormGiay = ({ setShowModal }) => {
       <FormGiayBasic form={dataForm} setDataForm={setDataForm} mode="add" />
       <div className={styles.form}>
         <div className={styles.group_button}>
-          {/* <div>
-            <button onClick={handleNhanBan}>Nhân bản</button>
-            <button>Second first</button>
-          </div> */}
-
           <div>
             <button onClick={handleSaveFrom}>Lưu</button>
             <button onClick={handleNhapTiep}>Nhập tiếp</button>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { Modal } from "~nghiep_vu/DonHang";
 import { ItemKyTinhLuong } from "~items";
@@ -11,6 +11,11 @@ const BangLuong = () => {
   const [stylePrint, setStylePrint] = useState({});
 
   const [form, setForm] = useState({ MAKY: "", TENKY: "", TYPE: "ALL" });
+  const [kyValue, setKyValue] = useState("");
+  const [kyLabel, setKyLabel] = useState("");
+  useEffect(() => {
+    setForm({ ...form, MAKY: kyValue, TENKY: kyLabel });
+  }, [kyValue]);
   console.log(form);
 
   const handlePrint = () => {
@@ -38,13 +43,10 @@ const BangLuong = () => {
       <div className={clsx(styles.page, styles.form)}>
         <label>Kỳ </label>
         <ItemKyTinhLuong
-          initValue={{
-            MAKY: form["MAKY"],
-            TENKY: form["TENKY"],
-          }}
-          changeData={(data) => {
-            setForm({ ...form, ...data });
-          }}
+          value={kyValue}
+          setValue={setKyValue}
+          label={kyLabel}
+          setLabel={setKyLabel}
           size_input={"15rem"}
           have_span={true}
           size_span={"41.8rem"}

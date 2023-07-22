@@ -9,6 +9,7 @@ const TableDonHang = ({
   rowSelection,
   setRowSelection,
 }) => {
+  console.log("render TableDonHang: ");
   return (
     <div>
       <MaterialReactTable
