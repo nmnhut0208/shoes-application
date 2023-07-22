@@ -59,7 +59,11 @@ const TableToPrint = ({
                   value = convertDateForReport(value);
                 return (
                   <td
-                    style={{ width: col["width"], textAlign: col["textAlign"] }}
+                    style={{
+                      width: col["width"],
+                      height: col["height"],
+                      textAlign: col["textAlign"],
+                    }}
                   >
                     {value}
                   </td>

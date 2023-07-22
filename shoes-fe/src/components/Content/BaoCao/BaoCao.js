@@ -3,6 +3,7 @@ import { useTaskContext } from "~task";
 import DonHang from "./DonHang";
 import CongNo from "./CongNo";
 import BangLuong from "./BangLuong";
+import DonHangMau from "./DonHangMau";
 
 const BaoCao = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -14,6 +15,8 @@ const BaoCao = () => {
       return <CongNo />;
     case "Bảng lương":
       return <BangLuong />;
+    case "Đơn hàng mẫu":
+      return <DonHangMau />;
   }
   return <></>;
 };
