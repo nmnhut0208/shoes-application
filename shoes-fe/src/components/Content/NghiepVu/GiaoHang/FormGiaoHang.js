@@ -431,6 +431,7 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
         setRowSelection={setRowSelection}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"22rem"}
+        change={false}
       />
       <header className={styles.header_table}>Chi tiết đơn hàng</header>
       <SubTable
@@ -442,6 +443,7 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
         setRowSelection={setRowSelectionSub}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"22rem"}
+        change={true}
       />
       <div className={styles.group_button}>
         <div>

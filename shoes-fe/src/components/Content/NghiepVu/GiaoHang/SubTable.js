@@ -12,6 +12,7 @@ const SubTable = ({
   setRowSelection,
   setIsSaveData,
   maxHeight,
+  change,
 }) => {
   //   console.log("data: ", data);
   const handleSaveCell = (cell, value) => {
@@ -71,7 +72,7 @@ const SubTable = ({
       enableRowVirtualization
       enableStickyFooter
       editingMode="table"
-      enableEditing={true}
+      enableEditing={change}
       muiTableBodyCellEditTextFieldProps={({ cell }) => ({
         //onBlur is more efficient, but could use onChange instead
         onBlur: (event) => {
