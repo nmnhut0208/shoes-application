@@ -113,15 +113,73 @@ def read(data: dict):
     typenv = None
     if loainv == "TD":
         typenv = "THODE"
+        sql = f"""SELECT * FROM 
+                (SELECT 
+                    dmgiay.tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI,pc.THODE,
+                    SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8  +PC.SIZE9 +PC.SIZE0 +coalesce(PC.SIZE1,0)) AS SLPHANCONG, 
+                    ISNULL((SELECT SUM(ISNULL(CC.SOLUONG,0))  FROM CHAMCONG CC  WHERE PC.SOPHIEU = CC.PHIEUPC AND 
+                                                PC.MAGIAY = CC.MAGIAY AND 
+                                                PC.MAUGOT = CC.MAUGOT AND 
+                                                PC.MAUSUON = CC.MAUSUON AND 
+                                                PC.MAUCA = CC.MAUCA AND 
+                                                PC.mauquai = CC.mauquai and 
+                                                pc.maude=cc.maude and 
+                                                pc.THODE=cc.manvien),0) AS SLCHAMCONG, 
+                    
+                    (SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8  +PC.SIZE9 +PC.SIZE0 +coalesce(PC.SIZE1,0)) - 
+                    
+                    ISNULL((SELECT SUM(ISNULL(CC.SOLUONG,0))  FROM CHAMCONG CC  WHERE PC.SOPHIEU = CC.PHIEUPC AND 
+                                                PC.MAGIAY = CC.MAGIAY AND 
+                                                PC.MAUGOT = CC.MAUGOT AND 
+                                                PC.MAUSUON = CC.MAUSUON AND 
+                                                PC.MAUCA = CC.MAUCA AND 
+                                                PC.mauquai = CC.mauquai and 
+                                                pc.maude=cc.maude and 
+                                                pc.THODE=cc.manvien),0)) AS SLCONLAI 
+                FROM PHANCONG PC 
+                            left join dmgiay on dmgiay.magiay=pc.magiay 
+                GROUP BY tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.THODE) AS CHAMCONGTHODE
+                  where CHAMCONGTHODE.{typenv}='{manvien}' 
+                  and SOPHIEU IN {phieupc}"""
+        return CC.read_custom(sql)
     elif loainv == "TQ":
         typenv = "THOQUAI"
-    
-    if typenv is not None:
-        sql = f"""SELECT * FROM V_CHAMCONG{typenv} 
-                  where {typenv}='{manvien}' 
+        sql = f"""SELECT * FROM 
+                (SELECT 
+                dmgiay.tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI,pc.THOQUAI,
+                SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8  +PC.SIZE9 +PC.SIZE0 +coalesce(PC.SIZE1,0)) AS SLPHANCONG, 
+                ISNULL((SELECT SUM(ISNULL(CC.SOLUONG,0))  FROM CHAMCONG CC  WHERE PC.SOPHIEU = CC.PHIEUPC AND 
+                                            PC.MAGIAY = CC.MAGIAY AND 
+                                            PC.MAUGOT = CC.MAUGOT AND 
+                                            PC.MAUSUON = CC.MAUSUON AND 
+                                            PC.MAUCA = CC.MAUCA AND 
+                                            PC.mauquai = CC.mauquai and 
+                                            pc.maude=cc.maude and 
+                                            pc.THOQUAI=cc.manvien),0) AS SLCHAMCONG, 
+                
+                (SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8  +PC.SIZE9+PC.SIZE0 +coalesce(PC.SIZE1,0)) - 
+                
+                ISNULL((SELECT SUM(ISNULL(CC.SOLUONG,0))  FROM CHAMCONG CC  WHERE PC.SOPHIEU = CC.PHIEUPC AND 
+                                            PC.MAGIAY = CC.MAGIAY AND 
+                                            PC.MAUGOT = CC.MAUGOT AND 
+                                            PC.MAUSUON = CC.MAUSUON AND 
+                                            PC.MAUCA = CC.MAUCA AND 
+                                            PC.mauquai = CC.mauquai and 
+                                            pc.maude=cc.maude and 
+                                            pc.THOQUAI=cc.manvien),0)) AS SLCONLAI 
+            FROM PHANCONG PC 
+                        left join dmgiay on dmgiay.magiay=pc.magiay 
+            GROUP BY tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.THOQUAI) AS CHAMCONGTHOQUAI
+                  where CHAMCONGTHOQUAI.{typenv}='{manvien}' 
                   and SOPHIEU IN {phieupc}"""
-        print(sql)
         return CC.read_custom(sql)
+    
+    # if typenv is not None:
+    #     sql = f"""SELECT * FROM V_CHAMCONG{typenv} 
+    #               where {typenv}='{manvien}' 
+    #               and SOPHIEU IN {phieupc}"""
+    #     print(sql)
+    #     return CC.read_custom(sql)
 
 @router.post("/savechamcong")
 def save(data: dict) -> RESPONSE:
