@@ -53,7 +53,7 @@ const FormThuTien = ({ dataView, type_action }) => {
             MAKH: "",
             TENKH: "",
             SOPHIEU: sophieu,
-            NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+            NGAYPHIEU: moment().format("YYYY-MM-DDTHH:mm:ss"),
           });
           setLastestSOPHIEU(data["LastestSOPHIEU"]);
         })
@@ -62,11 +62,9 @@ const FormThuTien = ({ dataView, type_action }) => {
         });
     } else {
       // load data from dataView
+      console.log("dataView: ", dataView);
       setForm({
         ...dataView,
-        NGAYPHIEU: moment(dataView["NGAYPHIEU"], "YYYY-MM-DD").format(
-          "YYYY-MM-DD HH:mm:ss"
-        ),
         THANHTIEN: dataView["SODUCUOI"],
         NGUOITAO: stateUser.userName,
         NGUOISUA: stateUser.userName,
@@ -81,9 +79,7 @@ const FormThuTien = ({ dataView, type_action }) => {
 
   const handleChangeFormForTypeDate = (e) => {
     const data = { ...form };
-    data[e.target.name] = moment(e.target.value, "YYYY-MM-DD").format(
-      "YYYY-MM-DD HH:mm:ss"
-    );
+    data[e.target.name] = e.target.value;
     setForm(data);
   };
 
@@ -149,9 +145,9 @@ const FormThuTien = ({ dataView, type_action }) => {
           <div className="styles.group_first_row_between">
             <label>Ngày phiếu</label>
             <input
-              type="date"
+              type="datetime-local"
               name="NGAYPHIEU"
-              value={convertDate(form["NGAYPHIEU"])}
+              value={form["NGAYPHIEU"]}
               onChange={handleChangeFormForTypeDate}
               className={styles.item_size_small}
             />
@@ -166,12 +162,8 @@ const FormThuTien = ({ dataView, type_action }) => {
             setValue={setMaKH}
             label={form["TENKH"]}
             setLabel={setTenKH}
-            // initValue={{ MAKH: form["MAKH"], TENKH: form["TENKH"] }}
-            // changeData={(data) => {
-            //   handleChangeInformationForm(data);
-            // }}
             size_input={"15rem"}
-            size_span={"29.7rem"}
+            size_span={"39rem"}
             have_span={true}
             readOnly={type_action !== "add"}
           />

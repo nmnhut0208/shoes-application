@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
+import { useRef, useState, useLayoutEffect, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import { Signature } from "~common_tag/reports";
 import { convertDateForReport } from "~utils/processing_date";

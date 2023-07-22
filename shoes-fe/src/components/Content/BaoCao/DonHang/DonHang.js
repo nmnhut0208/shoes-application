@@ -23,7 +23,9 @@ const DonHang = () => {
     DATE_TO: moment().format("YYYY-MM-DD HH:mm:ss"),
   });
 
-  const [khachHangFromValue, setKhachHangFromValue] = useState("");
+  const [khachHangFromValue, setKhachHangFromValue] = useState(
+    stateItem.infoItemKhachHang[0]["MAKH"]
+  );
   useEffect(() => {
     setForm({
       ...form,
@@ -31,7 +33,9 @@ const DonHang = () => {
     });
   }, [khachHangFromValue]);
 
-  const [khachHangToValue, setKhachHangToValue] = useState("");
+  const [khachHangToValue, setKhachHangToValue] = useState(
+    stateItem.infoItemKhachHang[stateItem.infoItemKhachHang.length - 1]["MAKH"]
+  );
   useEffect(() => {
     setForm({
       ...form,

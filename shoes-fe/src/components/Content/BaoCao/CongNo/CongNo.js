@@ -27,7 +27,9 @@ const CongNo = () => {
     setForm(data);
   };
 
-  const [khachHangFromValue, setKhachHangFromValue] = useState("");
+  const [khachHangFromValue, setKhachHangFromValue] = useState(
+    stateItem.infoItemKhachHang[0]["MAKH"]
+  );
   useEffect(() => {
     setForm({
       ...form,
@@ -35,7 +37,9 @@ const CongNo = () => {
     });
   }, [khachHangFromValue]);
 
-  const [khachHangToValue, setKhachHangToValue] = useState("");
+  const [khachHangToValue, setKhachHangToValue] = useState(
+    stateItem.infoItemKhachHang[stateItem.infoItemKhachHang.length - 1]["MAKH"]
+  );
   useEffect(() => {
     setForm({
       ...form,

@@ -22,26 +22,6 @@
   }
 }
 
-// .group_second {
-//   height: var(--height-region);
-//   width: 100%;
-//   @extend .flex-column;
-//   .group_second_row {
-//     margin-bottom: var(--margin-bottom-config);
-//     // @extend .flex-row;
-//     textarea {
-//       display: inline-block;
-//       vertical-align: top;
-//       width: 45rem;
-//       height: 7rem;
-//       border: var(--border-setting);
-//       padding: 0.4rem 1.1rem;
-//       font-size: 1.4rem;
-//       font-family: Arial;
-//     }
-//   }
-// }
-
 .group_button {
   @extend .flex_row_flex-end;
   margin-bottom: var(--margin-bottom-config);
@@ -56,7 +36,7 @@
 }
 
 .item_size_small {
-  width: 15rem;
+  width: 21rem;
 }
 
 .item_size_small_1 {
@@ -64,5 +44,5 @@
 }
 
 .item_size_big {
-  width: 45rem;
+  width: 55rem;
 }
