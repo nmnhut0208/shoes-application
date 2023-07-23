@@ -4,45 +4,50 @@ import styles from "./FormChamCong.module.scss";
 import { Popover } from "antd";
 import { convertDate } from "~utils/processing_date";
 import moment from "moment";
-import { useUserContext, actions } from "~user";
+import { useUserContext } from "~user";
 import TableMaNVIEN from "./TableMaNVIEN";
 import TableMaKY from "./TableMaKY";
+import { convertDateForReport } from "~utils/processing_date";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 
 const list_key = [
-  // { key: "STT" },
   { header: "Số phiếu", key: "SOPHIEU" },
-  { header: "Ngày phiếu", key: "NGAYPHIEU" },
+  {
+    header: "Ngày phiếu",
+    key: "NGAYPHIEU",
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
+  },
   { header: "Diễn giải", key: "DIENGIAI" },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
+const infoColumns = processingInfoColumnTable(list_key);
 
 const list_key_sub = [
   { header: "Mã giày", key: "MAGIAY" },
   { header: "Tên giày", key: "tengiay" },
-  { header: "Số lượng phân công", key: "SLPHANCONG" },
-  { header: "Số lượng hoàn thành", key: "SLCHAMCONG" },
+  {
+    header: "Số lượng phân công",
+    key: "SLPHANCONG",
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Số lượng hoàn thành",
+    key: "SLCHAMCONG",
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
 ];
 
-const infoColumnsSub = [];
-for (var obj in list_key_sub) {
-  const info = {
-    header: list_key_sub[obj]["header"],
-    width: list_key_sub[obj]["width"],
-    accessorKey: list_key_sub[obj]["key"],
-    key: list_key_sub[obj]["key"],
-  };
-  infoColumnsSub.push(info);
-}
+const infoColumnsSub = processingInfoColumnTable(list_key_sub);
 
 const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
   const [userState, userDispatch] = useUserContext();

@@ -153,7 +153,8 @@ columns_vietnamese = {"TENGIAY", "TENKHO", "TENMUI",
                       "TENMAU", "TENMAUDE", "TENMAUCA",
                       "TENMAUQUAI", "TENMAUSUON",
                       "TENMAUGOT", "DienGiai", 
-                      "TENFORM", "TENTHODE", "TENTHOQUAI"}
+                      "TENFORM", "TENTHODE", "TENTHOQUAI",
+                      "tengiay"}
 
 
 def convert_vni_to_unicode(vni_str):

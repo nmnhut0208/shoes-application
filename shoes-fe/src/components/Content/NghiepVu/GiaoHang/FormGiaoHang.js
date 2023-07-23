@@ -416,25 +416,6 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
       dataTableSub,
       false
     );
-    // for (var obj in list_key_sub) {
-    //   const info = {
-    //     header: list_key_sub[obj]["header"],
-    //     size: list_key_sub[obj]["width"],
-    //     accessorKey: list_key_sub[obj]["key"],
-    //     key: list_key_sub[obj]["key"],
-    //     enableEditing: list_key_sub[obj]["enableEditing"],
-    //   };
-    //   if (list_key_sub[obj]["key"] === "TENGIAY")
-    //     info["Footer"] = () => <div>Tổng cộng</div>;
-    //   if (COLS_HAVE_SUM_FOOTER.includes(list_key_sub[obj]["key"])) {
-    //     let sum_value = dataTableSub.reduce(
-    //       (total, row) => total + row[list_key_sub[obj]["key"]],
-    //       0
-    //     );
-    //     info["Footer"] = () => <div>{sum_value}</div>;
-    //   }
-    //   infoColumnsSubInit.push(info);
-    // }
     return infoColumnsSubInit;
   }, [dataTableSub]);
 

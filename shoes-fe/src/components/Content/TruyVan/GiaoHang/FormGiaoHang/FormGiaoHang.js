@@ -5,7 +5,10 @@ import { useUserContext, actions } from "~user";
 import { useTableContext, actions_table } from "~table_context";
 import { Modal } from "~common_tag";
 import In from "./In";
-import { processingInfoColumnTable } from "~utils/processing_data_table";
+import {
+  processingInfoColumnTable,
+  processingInfoColumnTableHaveFooter,
+} from "~utils/processing_data_table";
 import { convertDateForReport } from "~utils/processing_date";
 import { rem_to_px } from "~config/ui";
 
@@ -40,24 +43,174 @@ const list_key = [
 const infoColumns = processingInfoColumnTable(list_key);
 
 const list_key_sub = [
-  { header: "Mã Giày", key: "MAGIAY", width: "10rem" },
-  { header: "Tên Giày", key: "TENGIAY", width: "10rem" },
-  { header: "Màu Đế", key: "MAUDE", width: "10rem" },
-  { header: "Màu Gót", key: "MAUGOT", width: "10rem" },
-  { header: "Màu Sườn", key: "MAUSUON", width: "10rem" },
-  { header: "Màu Cá", key: "MAUCA", width: "10rem" },
-  { header: "Màu Quai", key: "MAUQUAI", width: "10rem" },
-  { header: "Size 5", key: "SIZE5", width: "10rem" },
-  { header: "Size 6", key: "SIZE6", width: "10rem" },
-  { header: "Size 7", key: "SIZE7", width: "10rem" },
-  { header: "Size 8", key: "SIZE8", width: "10rem" },
-  { header: "Size 9", key: "SIZE9", width: "10rem" },
-  { header: "Size 0", key: "SIZE0", width: "10rem" },
-  { header: "Size 1", key: "SIZE1", width: "10rem" },
-  { header: "Số lượng", key: "SOLUONG", width: "10rem" },
-  { header: "Giá bán", key: "GIABAN", width: "10rem" },
-  { header: "Thành tiền", key: "THANHTIEN", width: "10rem" },
-  { header: "Diễn giải", key: "DIENGIAIDONG", width: "10rem" },
+  {
+    header: "Mã Giày",
+    key: "MAGIAY",
+    width: 21 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Tên Giày",
+    key: "TENGIAY",
+    width: 35 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu Đế",
+    key: "MAUDE",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu Gót",
+    key: "MAUGOT",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu Sườn",
+    key: "MAUSUON",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu Cá",
+    key: "MAUCA",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu Quai",
+    key: "MAUQUAI",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Size 5",
+    key: "SIZE5",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Size 6",
+    key: "SIZE6",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Size 7",
+    key: "SIZE7",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Size 8",
+    key: "SIZE8",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Size 9",
+    key: "SIZE9",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Size 0",
+    key: "SIZE0",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Size 1",
+    key: "SIZE1",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Số lượng",
+    key: "SOLUONG",
+    width: 8 * rem_to_px,
+    enableEditing: false,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Giá bán",
+    key: "GIABAN",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Thành tiền",
+    key: "THANHTIEN",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Diễn giải",
+    key: "DIENGIAIDONG",
+    width: 30 * rem_to_px,
+    enableEditing: false,
+  },
 ];
 
 const COLS_HAVE_SUM_FOOTER = [
@@ -258,25 +411,13 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
   }, [rowSelection]);
 
   const infoColumnsSub = useMemo(() => {
-    const infoColumnsSubInit = [];
-    for (var obj in list_key_sub) {
-      const info = {
-        header: list_key_sub[obj]["header"],
-        width: list_key_sub[obj]["width"],
-        accessorKey: list_key_sub[obj]["key"],
-        key: list_key_sub[obj]["key"],
-      };
-      if (list_key_sub[obj]["key"] === "TENGIAY")
-        info["Footer"] = () => <div>Tổng cộng: </div>;
-      if (COLS_HAVE_SUM_FOOTER.includes(list_key_sub[obj]["key"])) {
-        let sum_value = dataTableSub.reduce(
-          (total, row) => total + row[list_key_sub[obj]["key"]],
-          0
-        );
-        info["Footer"] = () => <div>{sum_value}</div>;
-      }
-      infoColumnsSubInit.push(info);
-    }
+    const infoColumnsSubInit = processingInfoColumnTableHaveFooter(
+      list_key_sub,
+      COLS_HAVE_SUM_FOOTER,
+      dataTableSub,
+      false
+    );
+
     return infoColumnsSubInit;
   }, [dataTableSub]);
 
