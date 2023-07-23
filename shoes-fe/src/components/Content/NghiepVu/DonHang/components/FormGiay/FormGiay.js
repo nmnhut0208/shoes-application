@@ -6,6 +6,10 @@ const FormGiay = ({ setShowModal }) => {
   const [dataForm, setDataForm] = useState({});
 
   const handleSaveFrom = async () => {
+    if (dataForm["DONGIA"] === undefined || dataForm["DONGIA"] === "") {
+      alert("Nhập đơn giá!!!");
+      return false;
+    }
     if (dataForm["MAGIAY"] == "") {
       alert("Chưa nhập đủ thông tin!");
       return false;

@@ -35,6 +35,10 @@ const FormGiay = () => {
   }, [dataForm]);
 
   const handleSaveFrom = () => {
+    if (dataForm["DONGIA"] === undefined || dataForm["DONGIA"] === "") {
+      alert("Nhập đơn giá!!!");
+      return false;
+    }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -93,17 +97,12 @@ const FormGiay = () => {
   };
 
   const handleNhanBan = () => {
-    let text = "Lưu thông tin hiện tại trước khi nhân bản!";
-    if (window.confirm(text)) {
-      handleSaveFrom();
-    }
+    // let text = "Lưu thông tin hiện tại trước khi nhân bản!";
+    // if (window.confirm(text)) {
+    //   handleSaveFrom();
+    // }
     dispatchTable(actions_table.setActionForm("add"));
   };
-
-  console.log(
-    "stateTable.inforShowTable.action_row: ",
-    stateTable.inforShowTable.action_row
-  );
 
   return (
     <>
@@ -118,7 +117,6 @@ const FormGiay = () => {
       <div className={styles.group_button}>
         <div>
           <button onClick={handleNhanBan}>Nhân bản</button>
-          <button>Second first</button>
         </div>
 
         <div>
