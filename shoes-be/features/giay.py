@@ -158,3 +158,20 @@ def read(MAGIAY: str) -> dict:
         return {MAGIAY: False}
     else:
         return {MAGIAY: True}
+
+
+@router.get("/giay/get_DONGIAQUAI")
+def read(MAGIAY: str) -> dict:
+    sql = f"""select MAGIAY, coalesce(DONGIAQUAI, 0) as DONGIA
+            from V_GIAY  
+            where MAGIAY='{MAGIAY}'
+            """
+    return giay.read_custom(sql)
+
+@router.get("/giay/get_DONGIADE")
+def read(MAGIAY: str) -> dict:
+    sql = f"""select MAGIAY, coalesce(DONGIADE, 0) as DONGIA
+            from V_GIAY  
+            where MAGIAY='{MAGIAY}'
+            """
+    return giay.read_custom(sql)

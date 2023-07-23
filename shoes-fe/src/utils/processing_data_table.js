@@ -11,6 +11,8 @@ export const processingInfoColumnTable = (list_key, setMinMax = true) => {
       info["minSize"] = list_key[index]["width"];
       info["maxSize"] = list_key[index]["width"];
     }
+    if (list_key[index]["enableEditing"] !== undefined)
+      info["enableEditing"] = list_key[index]["enableEditing"];
     if (list_key[index]["header_custorm"])
       info["header"] = list_key[index]["header_custorm"];
     if (list_key[index]["Cell"]) info["Cell"] = list_key[index]["Cell"];
@@ -40,7 +42,8 @@ export const processingInfoColumnTableHaveFooter = (
       info["minSize"] = list_key[index]["width"];
       info["maxSize"] = list_key[index]["width"];
     }
-
+    if (list_key[index]["enableEditing"] !== undefined)
+      info["enableEditing"] = list_key[index]["enableEditing"];
     if (list_key[index]["key"] === "TENGIAY")
       info["Footer"] = () => <div>{footer_name}: </div>;
     if (COLS_HAVE_SUM_FOOTER.includes(list_key[index]["key"])) {
@@ -49,7 +52,7 @@ export const processingInfoColumnTableHaveFooter = (
         0
       );
       info["Footer"] = () => (
-        <div style={{ textAlign: "right" }}>{sum_value}</div>
+        <div style={{ textAlign: "right", width: "100%" }}>{sum_value}</div>
       );
     }
 

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import FormGiaoHang from "./FormChamCong/";
 import { Modal } from "~common_tag";
 import SubTable from "./SubTable";
 import styles from "./ChamCongSub.module.scss";
@@ -8,26 +7,32 @@ import { IconButton, Tooltip } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import ModalDelelete from "./ModalDelete";
 import FormDelete from "./FormDelete";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
+import { convertDateForReport } from "~utils/processing_date";
 
 const list_key = [
   { header: "Mã kỳ", key: "MAKY" },
   { header: "Mã Nhân Viên", key: "MANVIEN" },
   { header: "Số phiếu", key: "SOPHIEU" },
-  { header: "Ngày phiếu", key: "NGAYPHIEU" },
-  { header: "Số lượng", key: "SOLUONG" },
+  {
+    header: "Ngày phiếu",
+    key: "NGAYPHIEU",
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
+  },
+  {
+    header: "Số lượng",
+    key: "SOLUONG",
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
   { header: "Diễn giải", key: "DIENGIAI" },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
+const infoColumns = processingInfoColumnTable(list_key);
 
 const ChamCongSub = () => {
   const [dataTable, setDataTable] = useState([]);

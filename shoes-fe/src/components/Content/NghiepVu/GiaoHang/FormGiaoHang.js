@@ -4,76 +4,189 @@ import moment from "moment";
 import SubTable from "./SubTable";
 import styles from "./FormGiaoHang.module.scss";
 import { convertDate } from "~utils/processing_date";
-import { useUserContext, actions } from "~user";
+import { useUserContext } from "~user";
 import TableMaKH from "./TableMaKH";
+import { rem_to_px } from "~config/ui";
+import {
+  processingInfoColumnTable,
+  processingInfoColumnTableHaveFooter,
+} from "~utils/processing_data_table";
+import { convertDateForReport } from "~utils/processing_date";
 
 const list_key = [
-  { header: "Số đơn hàng", key: "SODH", width: "10rem", enableEditing: false },
+  {
+    header: "Số đơn hàng",
+    key: "SODH",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
   {
     header: "Ngày đơn hàng",
     key: "NGAYDH",
-    width: "10rem",
+    width: 5 * rem_to_px,
     enableEditing: false,
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
   },
   {
     header: "Ngày giao hàng",
     key: "NGAYGH",
-    width: "10rem",
+    width: 5 * rem_to_px,
     enableEditing: false,
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
   },
   {
     header: "Diễn giải",
     key: "DIENGIAIDONG",
-    width: "10rem",
+    width: 20 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Số lượng còn lại",
     key: "SOLUONGCONLAI",
-    width: "10rem",
+    width: 5 * rem_to_px,
     enableEditing: false,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
   },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-    enableEditing: list_key[obj]["enableEditing"],
-  };
-  infoColumns.push(info);
-}
+const infoColumns = processingInfoColumnTable(list_key);
 
 const list_key_sub = [
-  { header: "Mã Giày", key: "MAGIAY", width: "10rem", enableEditing: false },
-  { header: "Tên Giày", key: "TENGIAY", width: "10rem", enableEditing: false },
-  { header: "Màu Đế", key: "MAUDE", width: "10rem", enableEditing: false },
-  { header: "Màu Gót", key: "MAUGOT", width: "10rem", enableEditing: false },
-  { header: "Màu Sườn", key: "MAUSUON", width: "10rem", enableEditing: false },
-  { header: "Màu Cá", key: "MAUCA", width: "10rem", enableEditing: false },
-  { header: "Màu Quai", key: "MAUQUAI", width: "10rem", enableEditing: false },
-  { header: "Size 5", key: "SIZE5", width: "10rem", enableEditing: true },
-  { header: "Size 6", key: "SIZE6", width: "10rem", enableEditing: true },
-  { header: "Size 7", key: "SIZE7", width: "10rem", enableEditing: true },
-  { header: "Size 8", key: "SIZE8", width: "10rem", enableEditing: true },
-  { header: "Size 9", key: "SIZE9", width: "10rem", enableEditing: true },
-  { header: "Size 0", key: "SIZE0", width: "10rem", enableEditing: true },
-  { header: "Size 1", key: "SIZE1", width: "10rem", enableEditing: true },
-  { header: "Số lượng", key: "SOLUONG", width: "10rem", enableEditing: false },
-  { header: "Giá bán", key: "GIABAN", width: "10rem", enableEditing: false },
+  {
+    header: "Mã Giày",
+    key: "MAGIAY",
+    width: 21 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Tên Giày",
+    key: "TENGIAY",
+    width: 35 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu Đế",
+    key: "MAUDE",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu Gót",
+    key: "MAUGOT",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu Sườn",
+    key: "MAUSUON",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu Cá",
+    key: "MAUCA",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Màu Quai",
+    key: "MAUQUAI",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Size 5",
+    key: "SIZE5",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+  },
+  {
+    header: "Size 6",
+    key: "SIZE6",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Size 7",
+    key: "SIZE7",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+  },
+  {
+    header: "Size 8",
+    key: "SIZE8",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+  },
+  {
+    header: "Size 9",
+    key: "SIZE9",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+  },
+  {
+    header: "Size 0",
+    key: "SIZE0",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+  },
+  {
+    header: "Size 1",
+    key: "SIZE1",
+    width: 8 * rem_to_px,
+    enableEditing: true,
+  },
+  {
+    header: "Số lượng",
+    key: "SOLUONG",
+    width: 8 * rem_to_px,
+    enableEditing: false,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
+  {
+    header: "Giá bán",
+    key: "GIABAN",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
   {
     header: "Thành tiền",
     key: "THANHTIEN",
-    width: "10rem",
+    width: 10 * rem_to_px,
     enableEditing: false,
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
   },
   {
     header: "Diễn giải",
     key: "DIENGIAIDONG",
-    width: "10rem",
+    width: 30 * rem_to_px,
     enableEditing: false,
   },
 ];
@@ -91,6 +204,8 @@ const COLS_HAVE_SUM_FOOTER = [
 ];
 
 const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
+  console.log("=====infoColumns: ", infoColumns);
+
   const [userState, userDispatch] = useUserContext();
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
@@ -295,28 +410,16 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
   }, [rowSelection]);
 
   const infoColumnsSub = useMemo(() => {
-    const infoColumnsSubInit = [];
-    for (var obj in list_key_sub) {
-      const info = {
-        header: list_key_sub[obj]["header"],
-        width: list_key_sub[obj]["width"],
-        accessorKey: list_key_sub[obj]["key"],
-        key: list_key_sub[obj]["key"],
-        enableEditing: list_key_sub[obj]["enableEditing"],
-      };
-      if (list_key_sub[obj]["key"] === "TENGIAY")
-        info["Footer"] = () => <div>Tổng cộng</div>;
-      if (COLS_HAVE_SUM_FOOTER.includes(list_key_sub[obj]["key"])) {
-        let sum_value = dataTableSub.reduce(
-          (total, row) => total + row[list_key_sub[obj]["key"]],
-          0
-        );
-        info["Footer"] = () => <div>{sum_value}</div>;
-      }
-      infoColumnsSubInit.push(info);
-    }
+    const infoColumnsSubInit = processingInfoColumnTableHaveFooter(
+      list_key_sub,
+      COLS_HAVE_SUM_FOOTER,
+      dataTableSub,
+      false
+    );
     return infoColumnsSubInit;
   }, [dataTableSub]);
+
+  console.log("infoColumnsSub: ", infoColumnsSub);
 
   useEffect(() => {
     if (infoKH["MAKH"] == undefined || infoKH["MAKH"] == "") {
@@ -418,6 +521,7 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
         setRowSelection={setRowSelection}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"22rem"}
+        change={false}
       />
       <header className={styles.header_table}>Chi tiết đơn hàng</header>
       <SubTable
@@ -429,6 +533,7 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
         setRowSelection={setRowSelectionSub}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"22rem"}
+        change={true}
       />
       <div className={styles.group_button}>
         <div>

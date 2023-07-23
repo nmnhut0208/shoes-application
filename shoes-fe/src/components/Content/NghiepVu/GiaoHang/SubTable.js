@@ -1,5 +1,4 @@
-import { useState, memo } from "react";
-import { Typography } from "@mui/material";
+import { memo } from "react";
 import MaterialReactTable from "material-react-table";
 import { border_text_table_config } from "~config/ui";
 
@@ -12,6 +11,7 @@ const SubTable = ({
   setRowSelection,
   setIsSaveData,
   maxHeight,
+  change,
 }) => {
   //   console.log("data: ", data);
   const handleSaveCell = (cell, value) => {
@@ -26,7 +26,7 @@ const SubTable = ({
       "SIZE8",
       "SIZE9",
       "SIZE0",
-      // "SIZE1",
+      "SIZE1",
     ];
     if (list_size.includes(cell.column.id)) {
       if (value === "") value = 0;
@@ -71,11 +71,17 @@ const SubTable = ({
       enableRowVirtualization
       enableStickyFooter
       editingMode="table"
-      enableEditing={true}
+      enableEditing={change}
       muiTableBodyCellEditTextFieldProps={({ cell }) => ({
         //onBlur is more efficient, but could use onChange instead
         onBlur: (event) => {
           handleSaveCell(cell, event.target.value);
+        },
+        type: "number",
+        sx: {
+          input: {
+            textAlign: "right",
+          },
         },
       })}
     />

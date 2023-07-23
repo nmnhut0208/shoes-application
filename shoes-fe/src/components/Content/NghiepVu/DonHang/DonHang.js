@@ -17,7 +17,12 @@ const DonHang = () => {
     )[0];
     return phanquyen;
   }, []);
-  if (permission.THEM === 0) {
+  console.log("permission: ", permission);
+  if (
+    permission === undefined ||
+    Object.keys(permission).length === 0 ||
+    permission.THEM === 0
+  ) {
     alert(stateUser.userName + " không có quyền thêm Đơn hàng");
     return null;
   }

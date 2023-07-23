@@ -3,26 +3,22 @@ import FormGiaoHang from "./FormGiaoHang";
 import ModalForm from "./ModalForm";
 import SubTable from "./SubTable";
 import styles from "./GiaoHangSub.module.scss";
+import { convertDateForReport } from "~utils/processing_date";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 
 const list_key = [
   { header: "Số phiếu", key: "SOPHIEU" },
-  { header: "Ngày phiếu", key: "NGAYPHIEU" },
-  // { header: "Số đơn hàng", key: "SODH" },
+  {
+    header: "Ngày phiếu",
+    key: "NGAYPHIEU",
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
+  },
   { header: "Khách hàng", key: "MAKH" },
   { header: "Tên khách hàng", key: "TENKH" },
   { header: "Diễn giải", key: "DIENGIAIPHIEU" },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
+const infoColumns = processingInfoColumnTable(list_key);
 
 const GiaoHangSub = ({ setIsSaveDataTruyVanGiaoHang, permission }) => {
   const [dataTable, setDataTable] = useState([]);

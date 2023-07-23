@@ -10,3 +10,8 @@
 tr {
   break-inside: avoid;
 }
+
+.MuiInputBase-input {
+  font-size: 1.4rem !important;
+  font-family: "Arial" !important;
+}
