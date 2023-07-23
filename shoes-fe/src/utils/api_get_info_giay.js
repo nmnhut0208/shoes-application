@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const getDonGiaQuai = (MAGIAY) => {
   const request = new XMLHttpRequest();
   request.open(
