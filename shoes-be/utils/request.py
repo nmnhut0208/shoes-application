@@ -60,8 +60,8 @@ class ITEM_PHANQUYEN(BaseModel):
     MANVIEN: str
     MAFORM: str
     TENFORM: str
-    THEM: int
-    SUA: int
-    XOA: int
-    XEM: int
-    IN: int
+    THEM: Optional[int] = 0
+    SUA: Optional[int] = 0
+    XOA: Optional[int] = 0
+    XEM: Optional[int] = 0
+    IN: Optional[int] = 0

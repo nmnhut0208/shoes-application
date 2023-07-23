@@ -39,8 +39,17 @@ const FormPhanQuyen = () => {
   }, []);
 
   const handleSaveFrom = () => {
+    // keys of inputForm !== ""
+    if (Object.keys(inputForm).some((key) => inputForm[key] === "")) {
+      // alert with key === ""
+      alert("Vui lòng nhập đầy đủ thông tin!");
+    }
+
     // saveDataBase()
-    if (stateTable.inforShowTable.action_row === "edit") {
+    if (
+      stateTable.inforShowTable.action_row === "edit" &&
+      Object.keys(inputForm).every((key) => inputForm[key] !== "")
+    ) {
       fetch("http://localhost:8000/phanquyen", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -62,7 +71,11 @@ const FormPhanQuyen = () => {
           )
         )
       );
-    } else if (stateTable.inforShowTable.action_row === "add") {
+    } else if (
+      stateTable.inforShowTable.action_row === "add" &&
+      Object.keys(inputForm).every((key) => inputForm[key] !== "")
+    ) {
+      console.log("inputForm phan quyen: ", inputForm);
       fetch("http://localhost:8000/phanquyen", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -116,7 +129,8 @@ const FormPhanQuyen = () => {
                 readOnly={readOnly}
                 name="MAFORM"
                 onChange={(e) => handleChangeInformationForm(e)}
-                className={styles.item_size_big}>
+                className={styles.item_size_big}
+              >
                 {typeForm.map((form) => (
                   <option value={form["MAFORM"]}>{form["TENFORM"]}</option>
                 ))}

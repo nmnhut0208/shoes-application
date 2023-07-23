@@ -4,6 +4,7 @@ import { convertDateForReport } from "~utils/processing_date";
 import styles from "./FormXem.module.scss";
 import { TableToPrint } from "~common_tag/reports";
 import { rem_to_px } from "~config/ui";
+import { useUserContext } from "~user";
 
 const COLS_HAVE_SUM_FOOTER = ["TONGNO", "TONGMUA", "TONGTRA", "CONGNO"];
 const LIST_FORMAT_NUMBER = ["TONGNO", "TONGMUA", "TONGTRA", "CONGNO"];
@@ -40,6 +41,7 @@ const infoColumns = [
 const FormXem = ({ data, setShowModal }) => {
   // const [columns, setColumns] = useState([]);
   const [dataTable, setDataTable] = useState([]);
+  const [stateUser, dispatchUser] = useUserContext();
 
   const componentRef = useRef();
   const handelPrint = useReactToPrint({
@@ -82,7 +84,19 @@ const FormXem = ({ data, setShowModal }) => {
           Col_Name_Footer="TENKH"
         />
       </div>
-      <button className={styles.btn} onClick={handelPrint}>
+      <button
+        className={styles.btn}
+        onClick={() => {
+          const userAccess = stateUser.userPoolAccess;
+          if (
+            userAccess.some((obj) => obj.MAFORM === "F0046" && obj.IN === 1)
+          ) {
+            handelPrint();
+          } else {
+            alert("Bạn không có quyền truy cập vào chức năng này!");
+          }
+        }}
+      >
         In
       </button>
     </div>

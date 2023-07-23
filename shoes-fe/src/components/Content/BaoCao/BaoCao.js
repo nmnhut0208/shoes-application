@@ -1,4 +1,5 @@
 import { useTaskContext } from "~task";
+import { useUserContext } from "~user";
 
 import DonHang from "./DonHang";
 import CongNo from "./CongNo";
@@ -7,12 +8,19 @@ import DonHangMau from "./DonHangMau";
 
 const BaoCao = () => {
   const [stateTask, dispatchTask] = useTaskContext();
+  const [stateUser, dispatchUser] = useUserContext();
   const inforCurrentTask = stateTask.inforCurrentTask;
+  const userAccess = stateUser.userPoolAccess;
   switch (inforCurrentTask.infoDetail) {
     case "Đơn hàng":
       return <DonHang />;
     case "Công nợ":
-      return <CongNo />;
+      if (userAccess.some((obj) => obj.MAFORM === "F0046" && obj.XEM === 1)) {
+        return <CongNo />;
+      } else {
+        alert("Bạn không có quyền truy cập vào chức năng này!");
+        return <></>;
+      }
     case "Bảng lương":
       return <BangLuong />;
     case "Đơn hàng mẫu":
