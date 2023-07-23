@@ -153,6 +153,7 @@ const Table = ({ columns, data, setData, permission }) => {
 const MAFORM_TRUYVAN_PHIEUTHU = "F0035";
 
 const updateInfo = (permission, year, setData) => {
+  if (permission === undefined) return;
   if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
     let url = "http://localhost:8000/congno/truyvan_thu";
     if (year != "" && year > 2020) {
@@ -191,7 +192,11 @@ const ThuTien = () => {
     updateInfo(permission, year, setData);
   }, []);
 
-  if (permission.XEM + permission.SUA + permission.XOA + permission.IN === 0) {
+  if (
+    permission === undefined ||
+    Object.keys(permission).length === 0 ||
+    permission.XEM + permission.SUA + permission.XOA + permission.IN === 0
+  ) {
     alert(stateUser.userName + " không có quyền xem Truy Vấn Phiếu Thu");
     return <></>;
   }

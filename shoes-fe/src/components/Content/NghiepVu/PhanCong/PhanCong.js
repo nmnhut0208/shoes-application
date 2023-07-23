@@ -36,7 +36,11 @@ const PhanCong = () => {
     console.log("phanquyen: ", phanquyen);
     return phanquyen;
   }, []);
-  if (permission.THEM === 0) {
+  if (
+    permission === undefined ||
+    Object.keys(permission).length === 0 ||
+    permission.THEM === 0
+  ) {
     alert(stateUser.userName + " không có quyền Phân Công");
     return null;
   }

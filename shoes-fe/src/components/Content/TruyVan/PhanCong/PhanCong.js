@@ -159,6 +159,7 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
 const MAFORM_TRUYVAN_PHANCONG = "F0039";
 
 const updateInfo = (permission, year, setData) => {
+  if (permission === undefined) return;
   if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
     let url = "http://localhost:8000/phancong/baocao_phancong";
     if (year != "" && year > 2020) {
@@ -199,7 +200,11 @@ const PhanCong = () => {
     updateInfo(permission, year, setDataPhanCong);
   }, []);
 
-  if (permission.XEM + permission.SUA + permission.XOA + permission.IN === 0) {
+  if (
+    permission === undefined ||
+    Object.keys(permission).length === 0 ||
+    permission.XEM + permission.SUA + permission.XOA + permission.IN === 0
+  ) {
     alert(stateUser.userName + " không có quyền xem Truy Vấn Phân Công");
     return <></>;
   }

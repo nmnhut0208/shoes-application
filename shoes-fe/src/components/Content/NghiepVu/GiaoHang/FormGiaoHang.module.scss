@@ -71,4 +71,10 @@
   // position: relative;
   height: 68rem;
   width: 150rem;
+  // Không hiển thị dấu tăng giảm ở input number
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }

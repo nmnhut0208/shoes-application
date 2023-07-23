@@ -10,20 +10,20 @@ import moment from "moment";
 const list_key = [
   { header: "Mã giày", key: "MAGIAY" },
   { header: "Tên giày", key: "TENGIAY" },
-  { header: "Số lượng", key: "SOLUONG" },
+  {
+    header: "Số lượng",
+    key: "SOLUONG",
+    muiTableBodyCellProps: {
+      align: "right",
+    },
+    Cell: ({ cell }) => (
+      <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
+    ),
+  },
   // { header: "Số lượng hoàn thành", key: "SLCHAMCONG" },
 ];
 
-const infoColumns = [];
-for (var obj in list_key) {
-  const info = {
-    header: list_key[obj]["header"],
-    width: list_key[obj]["width"],
-    accessorKey: list_key[obj]["key"],
-    key: list_key[obj]["key"],
-  };
-  infoColumns.push(info);
-}
+const infoColumns = processingInfoColumnTable(list_key);
 
 const FormChamCong = ({ infoForm, setData, setShowForm }) => {
   const [dataTable, setDataTable] = useState([]);
