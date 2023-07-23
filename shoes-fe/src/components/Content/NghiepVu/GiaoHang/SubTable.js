@@ -1,5 +1,4 @@
-import { useState, memo } from "react";
-import { Typography } from "@mui/material";
+import { memo } from "react";
 import MaterialReactTable from "material-react-table";
 import { border_text_table_config } from "~config/ui";
 
@@ -77,6 +76,12 @@ const SubTable = ({
         //onBlur is more efficient, but could use onChange instead
         onBlur: (event) => {
           handleSaveCell(cell, event.target.value);
+        },
+        type: "number",
+        sx: {
+          input: {
+            textAlign: "right",
+          },
         },
       })}
     />
