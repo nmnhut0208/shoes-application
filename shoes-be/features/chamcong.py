@@ -247,7 +247,7 @@ def reasalary_computed(MAKY: str, TYPE: str) -> List[dict]:
         where MaKy = '{MAKY}'
         -- and MANVIEN='LINH' -- delete this line
         {LOAINVIEN}
-        order by MANVIEN, PHIEUPC
+        order by MANVIEN, PHIEUPC, MAGIAY
     """
     result = CC.read_custom(sql)
     return result

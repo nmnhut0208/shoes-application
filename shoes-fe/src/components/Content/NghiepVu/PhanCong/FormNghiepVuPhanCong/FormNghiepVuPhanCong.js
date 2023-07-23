@@ -17,6 +17,7 @@ import {
   TableChiTietPhanCong,
   XemPhanCong,
   InTongHop,
+  In,
 } from "../components";
 import {
   updateInfoPhieuPhanCong,
@@ -63,6 +64,7 @@ const FormNghiepVuPhanCong = ({
     chitiet_donhang: false,
     xem_phancong: false,
     in_tonghop: false,
+    in: false,
   });
 
   const [infoPhieu, setInfoPhieu] = useState({});
@@ -275,6 +277,7 @@ const FormNghiepVuPhanCong = ({
       chitiet_donhang: true,
       xem_phancong: false,
       in_tonghop: false,
+      in: false,
     });
     dispatchTable(actions_table.setTitleModal("Đơn hàng - F0032"));
     dispatchTable(actions_table.setModeShowModal(true));
@@ -289,6 +292,7 @@ const FormNghiepVuPhanCong = ({
       chitiet_donhang: false,
       xem_phancong: true,
       in_tonghop: false,
+      in: false,
     });
     dispatchTable(actions_table.setTitleModal("Xem phân công - F0038"));
     dispatchTable(actions_table.setModeShowModal(true));
@@ -299,8 +303,20 @@ const FormNghiepVuPhanCong = ({
       chitiet_donhang: false,
       xem_phancong: false,
       in_tonghop: true,
+      in: false,
     });
     dispatchTable(actions_table.setTitleModal("In tổng hợp"));
+    dispatchTable(actions_table.setModeShowModal(true));
+  };
+
+  const handle_in = () => {
+    setInfoFormWillShow({
+      chitiet_donhang: false,
+      xem_phancong: false,
+      in_tonghop: false,
+      in: true,
+    });
+    dispatchTable(actions_table.setTitleModal("In phân công theo nhân viên"));
     dispatchTable(actions_table.setModeShowModal(true));
   };
 
@@ -355,7 +371,7 @@ const FormNghiepVuPhanCong = ({
         </div>
 
         <div className={styles.right}>
-          <button>In</button>
+          <button onClick={handle_in}>In</button>
           <button onClick={handleClickXemPhanCong}>Xem phân công</button>
           <button onClick={handleClickSave}>Lưu</button>
           {/* button Lưu để lưu thông tin đã phân công */}
@@ -403,6 +419,12 @@ const FormNghiepVuPhanCong = ({
             sophieu={infoPhieu["SOPHIEU"]}
             data={dataChiTietPhanCong}
           />
+        </Modal>
+      )}
+
+      {infoFormWillShow["in"] && (
+        <Modal>
+          <In sophieu={infoPhieu["SOPHIEU"]} data={dataChiTietPhanCong} />
         </Modal>
       )}
     </div>
