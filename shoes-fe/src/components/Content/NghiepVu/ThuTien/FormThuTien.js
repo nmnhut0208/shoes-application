@@ -6,7 +6,6 @@ import ModalForButton from "./ModalForButton";
 import In from "./In";
 import styles from "./FormThuTien.module.scss";
 import { useTableContext, actions_table } from "~table_context";
-import { convertDate } from "~utils/processing_date";
 import { useUserContext } from "~user";
 
 const updateSOPHIEU = (sophieu) => {
@@ -84,6 +83,15 @@ const FormThuTien = ({ dataView, type_action }) => {
   };
 
   const handleSaveFrom = () => {
+    if (form["MAKH"] === "") {
+      alert("Nhập khách hàng!!!");
+      return false;
+    }
+    if (form["THANHTIEN"] === "" || form["THANHTIEN"] === undefined) {
+      alert("Nhập số tiền!!!");
+      return false;
+    }
+
     console.log("Save form");
     let method = "";
     if (type_action === "edit") {
