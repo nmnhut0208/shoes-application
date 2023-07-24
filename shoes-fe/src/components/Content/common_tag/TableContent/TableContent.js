@@ -34,6 +34,9 @@ const TableContent = ({ info_other_column }) => {
   const permission = useMemo(() => {
     return stateUser.userPoolAccess.filter((obj) => obj.MAFORM === maForm)[0];
   }, []);
+
+  console.log("permission: ", permission);
+
   const showActionColumn = useMemo(() => {
     if (permission.THEM + permission.SUA + permission.XOA > 0) {
       return true;

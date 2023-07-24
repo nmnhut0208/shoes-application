@@ -116,16 +116,27 @@ const FormGiay = () => {
 
       <div className={styles.group_button}>
         <div>
-          <button onClick={handleNhanBan}>Nhân bản</button>
+          <button
+            onClick={handleNhanBan}
+            disabled={stateTable.inforShowTable.action_row === "view"}
+          >
+            Nhân bản
+          </button>
         </div>
 
         <div>
-          {stateTable.inforShowTable.action_row !== "view" && (
-            <button onClick={handleSaveFrom}>Lưu</button>
-          )}
-          {stateTable.inforShowTable.action_row !== "view" && (
-            <button onClick={handleNhapTiep}>Nhập tiếp</button>
-          )}
+          <button
+            onClick={handleSaveFrom}
+            disabled={stateTable.inforShowTable.action_row === "view"}
+          >
+            Lưu
+          </button>
+          <button
+            onClick={handleNhapTiep}
+            disabled={stateTable.inforShowTable.action_row === "view"}
+          >
+            Nhập tiếp
+          </button>
         </div>
       </div>
     </>
