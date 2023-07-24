@@ -16,7 +16,7 @@ const SubTable = ({
   //   rowSelection,
   //   setRowSelection,
   maxHeight,
-  allow_delete,
+  allowDelete,
 }) => {
   //   console.log("data: ", data);
   const [stateUser, dispatchUser] = useUserContext();
@@ -72,7 +72,7 @@ const SubTable = ({
               <Edit />
             </IconButton>
           </Tooltip>
-          {allow_delete && (
+          {allowDelete && (
             <Tooltip arrow placement="right" title="Delete">
               <IconButton
                 color="error"
