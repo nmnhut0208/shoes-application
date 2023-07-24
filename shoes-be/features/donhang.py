@@ -183,6 +183,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
 @router.get("/donhang/khachhang/{MAKH}/giay")
 # lấy tất cả các loại giày của khách hàng MAKH
 def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
+    date_care = datetime.today().year - 2
     sql = f""" (SELECT DISTINCT SORTID,V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                     coalesce(MAUDE, '') as MAUDE, TENMAUDE,        
                     coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT,     
@@ -194,8 +195,9 @@ def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
                     V_GIAY.TENCA, V_GIAY.TENKH
             FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT,
                         MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH        
-                from DONHANG WHERE DONHANG.MAKH='{MAKH}') AS DONHANG
-            left JOIN (select * from V_GIAY where DONGIAQUAI is not null)
+                from DONHANG WHERE DONHANG.MAKH='{MAKH}'
+                and NGAYDH >= '{date_care}-01-01') AS DONHANG
+            inner JOIN (select * from V_GIAY where DONGIAQUAI is not null)
             As V_GIAY on V_GIAY.magiay=DONHANG.magiay
             left join (select MAMAU, TENMAU as TENMAUDE from DMMAU)
                     AS DMMAUDE
