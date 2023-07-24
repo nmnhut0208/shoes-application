@@ -57,8 +57,8 @@ function FormDangKy() {
                 .then((data) => {
                   console.log("data", data);
                   if (data.status === "success") {
-                    dispatchUser(actions.setUserName(values.username));
-                    dispatchUser(actions.setUserPassword(values.password));
+                    // dispatchUser(actions.setUserName(values.username));
+                    // dispatchUser(actions.setUserPassword(values.password));
                     setLoading(false);
                     alert("Đăng ký thành công");
                     resetHeader(dispatchTask);
@@ -85,19 +85,22 @@ function FormDangKy() {
     <Form form={form} onFinish={handleOk}>
       <Form.Item
         name="username"
-        rules={[{ required: true, message: "Please enter your username" }]}>
+        rules={[{ required: true, message: "Please enter your username" }]}
+      >
         <Input placeholder="Username" />
       </Form.Item>
       <Form.Item
         name="password"
-        rules={[{ required: true, message: "Please enter your password" }]}>
+        rules={[{ required: true, message: "Please enter your password" }]}
+      >
         <Input.Password placeholder="Password" />
       </Form.Item>
       <Form.Item
         name="confirm-password"
         rules={[
           { required: true, message: "Please enter your password again" },
-        ]}>
+        ]}
+      >
         <Input.Password placeholder="Confirm Password" />
       </Form.Item>
       <Form.Item>

@@ -55,3 +55,15 @@ def delete(data: ITEM_PHANQUYEN) -> RESPONSE:
 def getform() -> RESPONSE:
     sql = f"SELECT distinct MAFORM, TENFORM FROM PHANQUYEN"
     return PQ.read_custom(sql)
+
+@router.post("/check_exist")
+def check_exist(data: dict):
+    # print("quyen: ", data)
+    MANVIEN = data["MANVIEN"]
+    MAFORM = data["MAFORM"]
+    sql = f"SELECT * FROM PHANQUYEN WHERE MANVIEN = '{MANVIEN}' AND MAFORM = '{MAFORM}'"
+    df = PQ.read_custom(sql)
+    if len(df) > 0:
+        return {"status": "exist"}
+    else:
+        return {"status": "not exist"}

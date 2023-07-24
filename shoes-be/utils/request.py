@@ -65,3 +65,8 @@ class ITEM_PHANQUYEN(BaseModel):
     XOA: Optional[int] = 0
     XEM: Optional[int] = 0
     IN: Optional[int] = 0
+
+
+class ITEM_CHECKEXIST(BaseModel):
+    MANVIEN: str
+    MAFORM: str
