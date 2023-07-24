@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from datetime import datetime
 
 router = APIRouter()
 
@@ -15,11 +16,16 @@ TVGH = TVGIAOHANG()
 
 
 @router.get("/tv_giaohang")
-def read() -> RESPONSE_TVGIAOHANG:
-    print("nhut")
-    # return KH.read()
-    # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
-    # sql = f"SELECT distinct SOPHIEU, NGAYPHIEU, MAKH, TENKH, DIENGIAIPHIEU FROM V_GIAOHANG"
+def read(YEAR: str=None) -> RESPONSE_TVGIAOHANG:
+    condition_year = ""
+    if YEAR is not None:
+        condition_year = f"""and NGAYPHIEU >= '{YEAR}-01-01'
+                             and NGAYPHIEU <= '{YEAR}-12-31'
+                             """
+    else:
+        care_year = datetime.today().year
+        condition_year = f"""and NGAYPHIEU >= '{care_year}-01-01'
+                        """
     sql = f"""
             SELECT distinct SOPHIEU, NGAYPHIEU, CONGNO.MAKH, 
                 DMKHACHHANG.TENKH, DMKHACHHANG.DIACHI, DIENGIAIPHIEU 
@@ -28,8 +34,10 @@ def read() -> RESPONSE_TVGIAOHANG:
                 AS DMKHACHHANG 
                 ON CONGNO.MAKH = DMKHACHHANG.MAKH
             WHERE CONGNO.LOAIPHIEU = 'BH'
+            {condition_year}
             ORDER BY CONGNO.NGAYPHIEU DESC
             """
+    print(sql)
     return TVGH.read_custom(sql)
 
 @router.post("/tv_giaohang")

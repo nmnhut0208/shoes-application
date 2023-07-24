@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from datetime import datetime
 
 router = APIRouter()
 
@@ -15,12 +16,20 @@ TVCC = TVCHAMCONG()
 
 
 @router.get("/tv_chamcong")
-def read():
-    # return KH.read()
-    # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
-    # sql = f"SELECT distinct SOPHIEU, NGAYPHIEU, MAKH, TENKH, DIENGIAIPHIEU FROM V_GIAOHANG"
+def read(YEAR: str=None):
+    condition_year = ""
+    if YEAR is not None:
+        condition_year = f"""where NgayPhieu >= '{YEAR}-01-01'
+                             and NgayPhieu <= '{YEAR}-12-31'
+                             """
+    else:
+        care_year = datetime.today().year
+        condition_year = f"""where NgayPhieu >= '{care_year}-01-01'
+                        """
     sql = f"""
-        select MAKY, MANVIEN, phieupc as SOPHIEU, NgayPhieu as NGAYPHIEU, SUM(SOLUONG) as SOLUONG, DienGiai AS DIENGIAI FROM CHAMCONG
+        select MAKY, MANVIEN, phieupc as SOPHIEU, NgayPhieu as NGAYPHIEU,
+          SUM(SOLUONG) as SOLUONG, DienGiai AS DIENGIAI FROM CHAMCONG
+        {condition_year}
         GROUP BY MAKY, phieupc, NgayPhieu, MANVIEN, DienGiai
         order by MAKY, MANVIEN, NgayPhieu 
     """

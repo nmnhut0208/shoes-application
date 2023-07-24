@@ -16,6 +16,7 @@ const SubTable = ({
   //   rowSelection,
   //   setRowSelection,
   maxHeight,
+  allow_delete,
 }) => {
   //   console.log("data: ", data);
   const [stateUser, dispatchUser] = useUserContext();
@@ -71,55 +72,57 @@ const SubTable = ({
               <Edit />
             </IconButton>
           </Tooltip>
-          <Tooltip arrow placement="right" title="Delete">
-            <IconButton
-              color="error"
-              onClick={() => {
-                if (
-                  stateUser.userPoolAccess.some(
-                    (obj) => obj.MAFORM === maForm && obj.XOA === 1
-                  )
-                ) {
-                  let text = "Bạn thực sự muốn xóa thông tin này không!";
-                  if (!window.confirm(text)) {
-                    return;
+          {allow_delete && (
+            <Tooltip arrow placement="right" title="Delete">
+              <IconButton
+                color="error"
+                onClick={() => {
+                  if (
+                    stateUser.userPoolAccess.some(
+                      (obj) => obj.MAFORM === maForm && obj.XOA === 1
+                    )
+                  ) {
+                    let text = "Bạn thực sự muốn xóa thông tin này không!";
+                    if (!window.confirm(text)) {
+                      return;
+                    }
+                    fetch("http://localhost:8000/tv_chamcong", {
+                      method: "DELETE",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(row.original),
+                    })
+                      .then((response) => {
+                        return response.json();
+                      })
+                      .then((data) => {
+                        if (data["status"] === "success") {
+                          fetch("http://localhost:8000/tv_chamcong")
+                            .then((response) => {
+                              return response.json();
+                            })
+                            .then((info) => {
+                              setData(info);
+                            })
+                            .catch((err) => {
+                              console.log(err);
+                            });
+                          alert("Xóa thành công");
+                        } else {
+                          alert("Xóa thất bại");
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
                   }
-                  fetch("http://localhost:8000/tv_chamcong", {
-                    method: "DELETE",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(row.original),
-                  })
-                    .then((response) => {
-                      return response.json();
-                    })
-                    .then((data) => {
-                      if (data["status"] === "success") {
-                        fetch("http://localhost:8000/tv_chamcong")
-                          .then((response) => {
-                            return response.json();
-                          })
-                          .then((info) => {
-                            setData(info);
-                          })
-                          .catch((err) => {
-                            console.log(err);
-                          });
-                        alert("Xóa thành công");
-                      } else {
-                        alert("Xóa thất bại");
-                      }
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                }
-              }}
-            >
-              <Delete />
-            </IconButton>
-          </Tooltip>
+                }}
+              >
+                <Delete />
+              </IconButton>
+            </Tooltip>
+          )}
         </Box>
       )}
     />
