@@ -193,9 +193,18 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
       />
       <Tooltip arrow title="Add">
         <IconButton onClick={handleClickMaGiay}>
-          <AddCircleIcon style={{ color: "green" }} fontSize="large" />
+          <AddCircleIcon style={{ color: "green", fontSize: "3rem" }} />
         </IconButton>
       </Tooltip>
+
+      <lable
+        style={{
+          fontSize: "1.5rem",
+          fontFamily: "Arial",
+        }}
+      >
+        (Thêm giày vào đơn hàng)
+      </lable>
 
       <TableDonHang
         columns={infoColumns}
