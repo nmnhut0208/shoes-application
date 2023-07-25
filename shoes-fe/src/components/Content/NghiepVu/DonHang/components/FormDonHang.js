@@ -205,13 +205,14 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
       >
         (Thêm giày vào đơn hàng)
       </lable>
-
-      <TableDonHang
-        columns={infoColumns}
-        data={dataTable}
-        setDataTable={setDataTable}
-        readOnly={view}
-      />
+      <div style={{ width: "85vw" }}>
+        <TableDonHang
+          columns={infoColumns}
+          data={dataTable}
+          setDataTable={setDataTable}
+          readOnly={view}
+        />
+      </div>
 
       <div className={styles.form}>
         {/* Không hiểu tại sao gộp 2 form lại thì ko nhận extend nên phải tách đỡ ra vầy */}
