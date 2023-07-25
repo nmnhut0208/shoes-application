@@ -12,7 +12,7 @@ const Selection = ({
   size_span,
   className,
 }) => {
-  console.log("label la: ", label);
+  console.log("label la: ", label, "width: ", size_input);
   return (
     <Space size="small" className={className}>
       <select

@@ -165,7 +165,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           });
         }}
         size_input={"19.5rem"}
-        size_span={"47rem"}
+        size_span={"25rem"}
       />
 
       <div className={styles.phancong_remain}>
@@ -182,7 +182,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
               });
             }}
             size_input={"19.5rem"}
-            size_span={"47rem"}
+            size_span={"46.5rem"}
           />
         </div>
       </div>

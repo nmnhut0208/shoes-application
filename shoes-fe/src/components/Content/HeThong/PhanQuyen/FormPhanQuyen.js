@@ -145,7 +145,8 @@ const FormPhanQuyen = () => {
       <div className={styles.form_group}>
         <div className={styles.form_group_first}>
           <label>Mã Nhân Viên</label>
-          {!readOnly && (
+
+          {readOnly !== true ? (
             <select
               value={inputForm["MANVIEN"]}
               readOnly={readOnly}
@@ -158,6 +159,12 @@ const FormPhanQuyen = () => {
                 <option value={nv["MANVIEN"]}>{nv["MANVIEN"]}</option>
               ))}
             </select>
+          ) : (
+            <input
+              value={inputForm["MANVIEN"]}
+              readOnly={true}
+              className={styles.item_size_big}
+            />
           )}
         </div>
         <div className={styles.form_group_first}>

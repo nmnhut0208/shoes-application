@@ -32,6 +32,7 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
       <div className={styles.pair}>
         <label>Số phiếu</label>
         <input
+          type="text"
           value={infoPhieu["SOPHIEU"]}
           onChange={(e) => handleChangeInfoPhieu(e)}
           name="SOPHIEU"
