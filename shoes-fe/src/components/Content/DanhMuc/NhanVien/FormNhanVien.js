@@ -24,6 +24,14 @@ const FormNhanVien = () => {
       alert("Chọn loại nhân viên!!!");
       return false;
     }
+    if (inputForm["TENNVIEN"] == "") {
+      alert("Nhập tên nhân viên!!!");
+      return false;
+    }
+    if (inputForm["MANVIEN"] == "") {
+      alert("Nhập mã nhân viên!!!");
+      return false;
+    }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";

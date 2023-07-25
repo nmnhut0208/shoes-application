@@ -55,11 +55,7 @@ const FormPhanQuyen = () => {
 
   const handleSaveFrom = () => {
     // keys of inputForm !== ""
-    if (
-      Object.keys(inputForm).some((key) => inputForm[key] === "") ||
-      inputForm["MANVIEN"] === "Chọn Nhân Viên" ||
-      inputForm["MAFORM"] === "Chọn Form"
-    ) {
+    if (Object.keys(inputForm).some((key) => inputForm[key] === "")) {
       // alert with key === ""
       alert("Vui lòng nhập đầy đủ thông tin!");
     }
@@ -67,9 +63,7 @@ const FormPhanQuyen = () => {
     // saveDataBase()
     if (
       stateTable.inforShowTable.action_row === "edit" &&
-      Object.keys(inputForm).every((key) => inputForm[key] !== "") &&
-      inputForm["MANVIEN"] !== "Chọn Nhân Viên" &&
-      inputForm["MAFORM"] !== "Chọn Form"
+      Object.keys(inputForm).every((key) => inputForm[key] !== "")
     ) {
       fetch("http://localhost:8000/phanquyen", {
         method: "PUT",
@@ -95,9 +89,7 @@ const FormPhanQuyen = () => {
       dispatchTable(actions_table.setModeShowModal(false));
     } else if (
       stateTable.inforShowTable.action_row === "add" &&
-      Object.keys(inputForm).every((key) => inputForm[key] !== "") &&
-      inputForm["MANVIEN"] !== "Chọn Nhân Viên" &&
-      inputForm["MAFORM"] !== "Chọn Form"
+      Object.keys(inputForm).every((key) => inputForm[key] !== "")
     ) {
       // console.log("inputForm phan quyen: ", inputForm);
       fetch("http://localhost:8000/check_exist", {

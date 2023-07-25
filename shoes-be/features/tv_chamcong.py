@@ -72,7 +72,9 @@ def read():
 @router.delete("/delete_ky")
 def delete(data: dict):
     maky = data["MAKY"]
-    sql = f"""DELETE FROM CHAMCONG WHERE MAKY='{maky}' """
+    # get year today 01-01
+    care_year = datetime.today().year
+    sql = f"""DELETE FROM CHAMCONG WHERE MAKY='{maky}' and NgayPhieu >= '{care_year}-01-01'"""
     # print(sql)
     TVCC.execute_custom(sql)
     return {"status": "success"}

@@ -54,10 +54,8 @@ def read(data: dict) -> RESPONSE_EXISTUSER:
         return {"exist": False}
 
 @router.post("/register")
-def add(data: dict) -> RESPONSE:
+def update(data: dict) -> RESPONSE:
     data = dict(data)
-    username = data["username"]
-    password = data["password"]
-    col = "MANVIEN, MATKHAU"
-    val = f"'{username}', '{password}'"
-    return LG.add(col, val)
+    val = f"MATKHAU = '{data['password']}'"
+    condition = f"MANVIEN = '{data['username']}'"
+    return LG.update(val, condition)

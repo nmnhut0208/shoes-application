@@ -19,7 +19,13 @@ NV = NHANVIEN()
 @router.get("/nhanvien")
 def read() -> RESPONSE_NHANVIEN:
     # return KH.read()
-    sql = "SELECT MANVIEN, TENNVIEN, LOAINVIEN, GHICHU FROM DMNHANVIEN"
+    sql = "SELECT MANVIEN, TENNVIEN, LOAINVIEN, GHICHU FROM DMNHANVIEN WHERE MATKHAU IS NOT NULL"
+    return NV.read_custom(sql)
+
+@router.get("/nhanvien_null")
+def read() -> RESPONSE_NHANVIEN:
+    # return KH.read()
+    sql = "SELECT MANVIEN, TENNVIEN, LOAINVIEN, GHICHU FROM DMNHANVIEN WHERE MATKHAU IS NULL"
     return NV.read_custom(sql)
 
 
