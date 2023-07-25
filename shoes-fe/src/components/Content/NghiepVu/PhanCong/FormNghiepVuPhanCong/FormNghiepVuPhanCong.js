@@ -376,7 +376,9 @@ const FormNghiepVuPhanCong = ({
         <div className={styles.right}>
           <button onClick={handle_in}>In</button>
           <button onClick={handleClickXemPhanCong}>Xem phân công</button>
-          <button onClick={handleClickSave}>Lưu</button>
+          <button onClick={handleClickSave} disabled={view}>
+            Lưu
+          </button>
           {/* button Lưu để lưu thông tin đã phân công */}
           {/* sau khi phân công xong sẽ lưu hết nguyên bảng chi tiết phân công lại */}
         </div>
