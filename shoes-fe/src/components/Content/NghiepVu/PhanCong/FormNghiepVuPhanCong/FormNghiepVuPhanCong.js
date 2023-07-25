@@ -207,7 +207,9 @@ const FormNghiepVuPhanCong = ({
       rowSelectionDonHangToPhanCong,
       setRowSelectionDonHangToPhanCong,
       listMaDongPhanCongAddButWaitSave,
-      setListMaDongPhanCongAddButWaitSave
+      setListMaDongPhanCongAddButWaitSave,
+      dataView,
+      lastestSOPHIEU
     );
     setIsSaveData(false);
   };
