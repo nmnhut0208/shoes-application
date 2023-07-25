@@ -54,7 +54,7 @@ def delete(data: ITEM_KYTINHLUONG) -> RESPONSE:
     condition = f"MAKY = '{data['MAKY']}'"
     return KTL.delete(condition)
 
-@router.get("/update_tenky")
+@router.get("/kytinhluong/update_tenky")
 def update_tenky() -> RESPONSE:
     cur_sql = f"SELECT MAKY, TENKY FROM DMKYTINHLUONG"
     cur_ktl = KTL.read_custom(cur_sql)

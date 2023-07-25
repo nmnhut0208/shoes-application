@@ -16,6 +16,7 @@ import styles from "./ThuTien.module.scss";
 import clsx from "clsx";
 
 const Table = ({ columns, data, setData, permission }) => {
+  const [typeAction, setTypeAction] = useState("");
   const [rowInfo, setRowInfo] = useState({});
   const [showModal, setShowModal] = useState(false);
   const handleCheckDonHang = () => {
@@ -100,6 +101,7 @@ const Table = ({ columns, data, setData, permission }) => {
               <Tooltip arrow title="Edit" placement="right">
                 <IconButton
                   onClick={() => {
+                    setTypeAction("edit");
                     setRowInfo(row.original);
                     handleCheckDonHang();
                   }}
@@ -126,6 +128,7 @@ const Table = ({ columns, data, setData, permission }) => {
                 <Tooltip arrow placement="right" title="View Detail">
                   <IconButton
                     onClick={() => {
+                      setTypeAction("view");
                       setRowInfo(row.original);
                       handleCheckDonHang();
                     }}
@@ -144,7 +147,7 @@ const Table = ({ columns, data, setData, permission }) => {
         setShowModal={setShowModal}
         isResetPageEmpty={false}
       >
-        <FormThuTien dataView={rowInfo} type_action="edit" />
+        <FormThuTien dataView={rowInfo} type_action={typeAction} />
       </ModalMain>
     </>
   );

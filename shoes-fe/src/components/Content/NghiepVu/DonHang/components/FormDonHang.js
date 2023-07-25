@@ -193,16 +193,26 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
       />
       <Tooltip arrow title="Add">
         <IconButton onClick={handleClickMaGiay}>
-          <AddCircleIcon style={{ color: "green" }} fontSize="large" />
+          <AddCircleIcon style={{ color: "green", fontSize: "3rem" }} />
         </IconButton>
       </Tooltip>
 
-      <TableDonHang
-        columns={infoColumns}
-        data={dataTable}
-        setDataTable={setDataTable}
-        readOnly={view}
-      />
+      <lable
+        style={{
+          fontSize: "1.5rem",
+          fontFamily: "Arial",
+        }}
+      >
+        (Thêm giày vào đơn hàng)
+      </lable>
+      <div style={{ width: "85vw" }}>
+        <TableDonHang
+          columns={infoColumns}
+          data={dataTable}
+          setDataTable={setDataTable}
+          readOnly={view}
+        />
+      </div>
 
       <div className={styles.form}>
         {/* Không hiểu tại sao gộp 2 form lại thì ko nhận extend nên phải tách đỡ ra vầy */}

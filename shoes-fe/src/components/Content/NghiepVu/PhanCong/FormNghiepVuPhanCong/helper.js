@@ -45,7 +45,9 @@ export const processing_button_add = (
   rowSelectionDonHangToPhanCong,
   setRowSelectionDonHangToPhanCong,
   listMaDongPhanCongAddButWaitSave,
-  setListMaDongPhanCongAddButWaitSave
+  setListMaDongPhanCongAddButWaitSave,
+  dataView,
+  lastestSOPHIEU
 ) => {
   if (infoPhieu["MAKY"] == "") {
     alert("Chọn kỳ tính lương.");
@@ -160,6 +162,7 @@ export const processing_button_add = (
       resetForm();
     }
   }
+  if (!dataView) updateSOPHIEU(lastestSOPHIEU);
 };
 
 //----------------------------------------------------------------

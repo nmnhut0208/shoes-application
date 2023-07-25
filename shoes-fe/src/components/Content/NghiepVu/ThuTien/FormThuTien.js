@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import moment from "moment";
 
 import { ItemKhachHang } from "~items";
@@ -6,7 +6,6 @@ import ModalForButton from "./ModalForButton";
 import In from "./In";
 import styles from "./FormThuTien.module.scss";
 import { useTableContext, actions_table } from "~table_context";
-import { convertDate } from "~utils/processing_date";
 import { useUserContext } from "~user";
 
 const updateSOPHIEU = (sophieu) => {
@@ -21,6 +20,10 @@ const updateSOPHIEU = (sophieu) => {
 };
 
 const FormThuTien = ({ dataView, type_action }) => {
+  const view = useMemo(() => {
+    if (type_action === "view") return true;
+    else return false;
+  }, []);
   const [stateTable, dispatchTable] = useTableContext();
   const [form, setForm] = useState({});
   const [lastestSOPHIEU, setLastestSOPHIEU] = useState(0);
@@ -84,6 +87,15 @@ const FormThuTien = ({ dataView, type_action }) => {
   };
 
   const handleSaveFrom = () => {
+    if (form["MAKH"] === "") {
+      alert("Nhập khách hàng!!!");
+      return false;
+    }
+    if (form["THANHTIEN"] === "" || form["THANHTIEN"] === undefined) {
+      alert("Nhập số tiền!!!");
+      return false;
+    }
+
     console.log("Save form");
     let method = "";
     if (type_action === "edit") {
@@ -195,7 +207,9 @@ const FormThuTien = ({ dataView, type_action }) => {
       </div>
       <div className={styles.group_button}>
         <div>
-          <button onClick={handleSaveFrom}>Lưu</button>
+          <button onClick={handleSaveFrom} disabled={view}>
+            Lưu
+          </button>
           {type_action === "add" && (
             <button onClick={handleNhapTiep}>Nhập tiếp</button>
           )}

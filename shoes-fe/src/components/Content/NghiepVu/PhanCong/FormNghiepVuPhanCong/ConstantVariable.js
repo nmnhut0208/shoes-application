@@ -33,8 +33,8 @@ export const INFO_COLS_CHITIET_PHANCONG = [
   { header: "Màu sườn", key: "MAUSUON", width: 10 * rem_to_px },
   { header: "Màu cá", key: "MAUCA", width: 10 * rem_to_px },
   { header: "Màu quai", key: "MAUQUAI", width: 10 * rem_to_px },
-  { header: "Thợ đế", key: "THODE", width: 15 * rem_to_px },
-  { header: "Thợ quai", key: "THOQUAI", width: 15 * rem_to_px },
+  { header: "Thợ đế", key: "THODE", width: 11 * rem_to_px },
+  { header: "Thợ quai", key: "THOQUAI", width: 11 * rem_to_px },
   {
     header: "Size 5",
     key: "SIZE5",
@@ -112,5 +112,5 @@ export const INFO_COLS_CHITIET_PHANCONG = [
       <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
     ),
   },
-  { header: "Tên giày", key: "TENGIAY", width: 15 * rem_to_px },
+  { header: "Tên giày", key: "TENGIAY", width: 60 * rem_to_px },
 ];

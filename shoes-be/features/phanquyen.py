@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from utils.vietnamese import convert_unicode_to_vni
 
 router = APIRouter()
 
@@ -22,8 +23,8 @@ def read() -> RESPONSE_PHANQUYEN:
 @router.post("/phanquyen")
 def add(data: ITEM_PHANQUYEN) -> RESPONSE:
     data = dict(data)
-    # col = ", ".join(data.keys())
-    # except key IN
+    data["TENFORM"] = convert_unicode_to_vni(data["TENFORM"])
+    # convert TENFORM
     col = ", ".join([key if key != "IN" else '\"IN\"' for key in data.keys()])
     val = ", ".join([f"'{value}'" for value in data.values()])
     return PQ.add(col, val)
@@ -32,6 +33,7 @@ def add(data: ITEM_PHANQUYEN) -> RESPONSE:
 @router.put("/phanquyen")
 def update(data: ITEM_PHANQUYEN) -> RESPONSE:
     data = dict(data)
+    data["TENFORM"] = convert_unicode_to_vni(data["TENFORM"])
     # except key IN
     MANVIEN = data["MANVIEN"]
     MAFORM = data["MAFORM"]

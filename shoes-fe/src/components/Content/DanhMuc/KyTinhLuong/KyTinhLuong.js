@@ -26,7 +26,7 @@ const KyTinhLuong = () => {
   const [count, setCount] = useState(0);
 
   const handleUpdate = () => {
-    fetch("http://localhost:8000/update_tenky")
+    fetch("http://localhost:8000/kytinhluong/update_tenky")
       .then((response) => {
         return response.json();
       })

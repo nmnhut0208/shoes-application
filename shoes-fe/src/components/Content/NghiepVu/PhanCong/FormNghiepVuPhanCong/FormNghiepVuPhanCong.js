@@ -207,7 +207,9 @@ const FormNghiepVuPhanCong = ({
       rowSelectionDonHangToPhanCong,
       setRowSelectionDonHangToPhanCong,
       listMaDongPhanCongAddButWaitSave,
-      setListMaDongPhanCongAddButWaitSave
+      setListMaDongPhanCongAddButWaitSave,
+      dataView,
+      lastestSOPHIEU
     );
     setIsSaveData(false);
   };
@@ -336,7 +338,7 @@ const FormNghiepVuPhanCong = ({
       <TableDonHang
         columns={infoTableDonHang}
         data={dataDonHang}
-        maxHeight={18}
+        maxHeight={15}
         rowSelection={rowSelectionDonHangToPhanCong}
         setRowSelection={setRowSelectionDonHangToPhanCong}
       />
@@ -355,14 +357,15 @@ const FormNghiepVuPhanCong = ({
           <button onClick={handleClickDelete}>Xóa</button>
         </div>
       )}
-
-      <TableChiTietPhanCong
-        columns={infoTableChiTietPhanCong}
-        data={dataChiTietPhanCong}
-        maxHeight={45}
-        rowSelection={rowSelectionChiTietPhanCong}
-        setRowSelection={setRowSelectionChiTietPhanCong}
-      />
+      <div style={{ width: "85vw" }}>
+        <TableChiTietPhanCong
+          columns={infoTableChiTietPhanCong}
+          data={dataChiTietPhanCong}
+          maxHeight={30}
+          rowSelection={rowSelectionChiTietPhanCong}
+          setRowSelection={setRowSelectionChiTietPhanCong}
+        />
+      </div>
 
       <div className={styles.button_group_end_page}>
         <div className={styles.left}>
@@ -373,7 +376,9 @@ const FormNghiepVuPhanCong = ({
         <div className={styles.right}>
           <button onClick={handle_in}>In</button>
           <button onClick={handleClickXemPhanCong}>Xem phân công</button>
-          <button onClick={handleClickSave}>Lưu</button>
+          <button onClick={handleClickSave} disabled={view}>
+            Lưu
+          </button>
           {/* button Lưu để lưu thông tin đã phân công */}
           {/* sau khi phân công xong sẽ lưu hết nguyên bảng chi tiết phân công lại */}
         </div>
