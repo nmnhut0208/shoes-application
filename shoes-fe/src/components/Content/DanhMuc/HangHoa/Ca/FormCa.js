@@ -104,7 +104,6 @@ const FormCa = () => {
       <div className={styles.group_button}>
         <div>
           <button onClick={handleSaveFrom}>Lưu</button>
-          <button>Nhập tiếp</button>
         </div>
       </div>
     </div>

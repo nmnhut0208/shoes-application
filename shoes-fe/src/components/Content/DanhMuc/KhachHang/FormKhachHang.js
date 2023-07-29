@@ -148,7 +148,6 @@ const FormKhachHang = () => {
 
       <div className={styles.button_container}>
         <button onClick={handleSaveFrom}>Lưu</button>
-        <button>Button 2</button>
       </div>
     </div>
   );

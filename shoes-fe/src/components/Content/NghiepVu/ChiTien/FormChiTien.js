@@ -51,8 +51,6 @@ const FormChiTien = () => {
             >
               Lưu
             </button>
-            <button>Nhập tiếp</button>
-            <button>Đóng</button>
           </div>
         </div>
       </form>
