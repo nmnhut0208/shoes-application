@@ -22,9 +22,9 @@ authenticate_User = ["nhutnm123456", "thuntk123456"]
 def execute_database(sql, action_type='read'):
     print("sql: ", sql)
     conn = pyodbc.connect(driver='{ODBC Driver 17 for SQL Server}',
-                        #   server="MINH\SQLEXPRESS",
-                            server="DESKTOP-GT3LP7K\SQLEXPRESS",
-                          database="PT2023",
+                          server="MINH\SQLEXPRESS",
+                            # server="DESKTOP-GT3LP7K\SQLEXPRESS",
+                          database="PT",
                         # database="PTBigAllYear",
                           trusted_connection="yes",
                           mars_connection="yes",

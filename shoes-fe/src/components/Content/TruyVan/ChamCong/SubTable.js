@@ -116,6 +116,8 @@ const SubTable = ({
                       .catch((err) => {
                         console.log(err);
                       });
+                  } else {
+                    alert("Bạn không có quyền xóa");
                   }
                 }}
               >

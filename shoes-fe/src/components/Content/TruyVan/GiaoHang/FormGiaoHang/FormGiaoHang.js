@@ -226,6 +226,7 @@ const COLS_HAVE_SUM_FOOTER = [
 ];
 
 const FormGiaoHang = ({ infoKH, setShowForm }) => {
+  const [stateUser, dispatchUser] = useUserContext();
   const [userState, userDispatch] = useUserContext();
   const [stateTable, dispatchTable] = useTableContext();
   const [dataTable, setDataTable] = useState([]);
@@ -267,68 +268,77 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
   };
 
   const handleIn = () => {
-    const table = dataTableSub.map((item) => {
-      const obj = {
-        MAGIAY: item.MAGIAY,
-        TENGIAY: item.TENGIAY,
-        SOLUONG: item.SOLUONG,
-        DONGIA: item.GIABAN,
-        THANHTIEN: item.THANHTIEN,
-        SODH: item.SODH,
-      };
-      return obj;
-    });
-    console.log("table: ", dataTableSub);
-    setDataIn({
-      MAKH: infoKH.MAKH,
-      TENKH: infoKH.TENKH,
-      DIACHI: infoKH.DIACHI,
-      NGAYPHIEU: infoKH.NGAYPHIEU,
-      SOPHIEU: infoKH.SOPHIEU,
-      table: table,
-    });
-    setFlag(false);
-    dispatchTable(actions_table.setModeShowModal(true));
+    if (stateUser.userPoolAccess.some((obj) => obj.MAFORM === "F0033" && obj.IN === 1)) {
+      const table = dataTableSub.map((item) => {
+        const obj = {
+          MAGIAY: item.MAGIAY,
+          TENGIAY: item.TENGIAY,
+          SOLUONG: item.SOLUONG,
+          DONGIA: item.GIABAN,
+          THANHTIEN: item.THANHTIEN,
+          SODH: item.SODH,
+        };
+        return obj;
+      });
+      console.log("table: ", dataTableSub);
+      setDataIn({
+        MAKH: infoKH.MAKH,
+        TENKH: infoKH.TENKH,
+        DIACHI: infoKH.DIACHI,
+        NGAYPHIEU: infoKH.NGAYPHIEU,
+        SOPHIEU: infoKH.SOPHIEU,
+        table: table,
+      });
+      setFlag(false);
+      dispatchTable(actions_table.setModeShowModal(true));
+    } else {
+      alert("Bạn không có quyền in");
+    }
   };
 
   const handleInCongNo = () => {
-    const table = dataTableSub.map((item) => {
-      const obj = {
-        MAGIAY: item.MAGIAY,
-        TENGIAY: item.TENGIAY,
-        SOLUONG: item.SOLUONG,
-        DONGIA: item.GIABAN,
-        THANHTIEN: item.THANHTIEN,
-        SODH: item.SODH,
-      };
-      return obj;
-    });
-    const SOPHIEU = infoKH.SOPHIEU;
-    const MAKH = infoKH.MAKH;
-    const DATE = infoKH.NGAYPHIEU;
-    fetch(
-      `http://localhost:8000/congno/get_congno_khachhang?SOPHIEU=${SOPHIEU}&MAKH=${MAKH}&DATE_TO=${DATE}`
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        console.log("tong no : ", data[0]["TONGNO"]);
-        setDataIn({
-          CONGNO: data[0]["TONGNO"],
-          MAKH: infoKH.MAKH,
-          TENKH: infoKH.TENKH,
-          DIACHI: infoKH.DIACHI,
-          NGAYPHIEU: infoKH.NGAYPHIEU,
-          SOPHIEU: infoKH.SOPHIEU,
-          table: table,
-        });
-        setFlag(true);
-        dispatchTable(actions_table.setModeShowModal(true));
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
+    if (stateUser.userPoolAccess.some((obj) => obj.MAFORM === "F0033" && obj.IN === 1)) {
+      const table = dataTableSub.map((item) => {
+        const obj = {
+          MAGIAY: item.MAGIAY,
+          TENGIAY: item.TENGIAY,
+          SOLUONG: item.SOLUONG,
+          DONGIA: item.GIABAN,
+          THANHTIEN: item.THANHTIEN,
+          SODH: item.SODH,
+        };
+        return obj;
       });
+      const SOPHIEU = infoKH.SOPHIEU;
+      const MAKH = infoKH.MAKH;
+      const DATE = infoKH.NGAYPHIEU;
+      fetch(
+        `http://localhost:8000/congno/get_congno_khachhang?SOPHIEU=${SOPHIEU}&MAKH=${MAKH}&DATE_TO=${DATE}`
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log("tong no : ", data[0]["TONGNO"]);
+          setDataIn({
+            CONGNO: data[0]["TONGNO"],
+            MAKH: infoKH.MAKH,
+            TENKH: infoKH.TENKH,
+            DIACHI: infoKH.DIACHI,
+            NGAYPHIEU: infoKH.NGAYPHIEU,
+            SOPHIEU: infoKH.SOPHIEU,
+            table: table,
+          });
+          setFlag(true);
+          dispatchTable(actions_table.setModeShowModal(true));
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+    } else {
+      alert("Bạn không có quyền in");
+    }
+    
   };
 
   // useEffect(() => {
@@ -519,18 +529,18 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
       </Modal>
       <div className={styles.group_button}>
         <div>
-          <button onClick={handleSave}>Lưu</button>
+          {/* <button onClick={handleSave}>Lưu</button> */}
           {/* <button>Nhập tiếp</button> */}
           <button onClick={handleIn}>In</button>
           <button onClick={handleInCongNo}>In Công Nợ</button>
-          <button
+          {/* <button
             onClick={() => {
               // dispatchTable(actions_table.setModeShowModal(false));
               setShowForm(false);
             }}
           >
             Đóng
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ import ModalDelelete from "./ModalDelete";
 import FormDelete from "./FormDelete";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { convertDateForReport } from "~utils/processing_date";
+import { useUserContext } from "~user";
 
 const list_key = [
   { header: "Mã kỳ", key: "MAKY" },
@@ -58,6 +59,7 @@ const ChamCongSub = () => {
   const [showForm, setShowForm] = useState(false);
   const [sendData, setSendData] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [stateUser, dispatchUser] = useUserContext();
 
   const [year, setYear] = useState("");
   const [allowDelete, setAllowDelete] = useState(true);
@@ -67,8 +69,12 @@ const ChamCongSub = () => {
   console.log("GiaoHang");
 
   const handleDelete = () => {
-    console.log("handleDelete");
-    setShowModal(true);
+    if (stateUser.userPoolAccess.some((obj) => obj.MAFORM === "F0042" && obj.XOA === 1)) {
+      console.log("handleDelete");
+      setShowModal(true);
+    } else {
+      alert("Bạn không có quyền xóa");
+    }
   };
 
   useEffect(() => {

@@ -21,7 +21,7 @@ def read(data: dict) -> RESPONSE_LOGIN:
     print(data)
     user = data["username"]
     pwd = data["password"]
-    sql = f"SELECT MANVIEN, MATKHAU FROM DMNHANVIEN where MANVIEN='{user}' AND MATKHAU='{pwd}'"
+    sql = f"SELECT MANVIEN, MATKHAU FROM DMNHANVIEN where MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS ='{user}' AND MATKHAU COLLATE SQL_Latin1_General_CP1_CS_AS ='{pwd}'"
     data =  LG.read_custom(sql)
     if len(data) > 0:
         return {"exist": True}
@@ -32,7 +32,7 @@ def read(data: dict) -> RESPONSE_LOGIN:
 def read(data: dict) -> RESPONSE_ACCESS:
     print(data)
     user = data["username"]
-    sql = f"SELECT MAFORM, TENFORM, THEM, SUA, XOA, XEM, \"IN\" FROM PHANQUYEN where MANVIEN='{user}'"
+    sql = f"SELECT MAFORM, TENFORM, THEM, SUA, XOA, XEM, \"IN\" FROM PHANQUYEN where MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS ='{user}'"
     return LG.read_custom(sql)
 
 
@@ -40,13 +40,13 @@ def read(data: dict) -> RESPONSE_ACCESS:
 def update(data: dict) -> RESPONSE:
     data = dict(data)
     val = f"MATKHAU = '{data['newpassword']}'"
-    condition = f"MANVIEN = '{data['username']}'"
+    condition = f"MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS = '{data['username']}'"
     return LG.update(val, condition)
 
 @router.post("/existuser")
 def read(data: dict) -> RESPONSE_EXISTUSER:
     data = dict(data)
-    sql = f"SELECT MANVIEN FROM DMNHANVIEN where MANVIEN='{data['username']}'"
+    sql = f"SELECT MANVIEN FROM DMNHANVIEN where MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS ='{data['username']}'"
     data = LG.read_custom(sql)
     if len(data) > 0:
         return {"exist": True}
@@ -57,5 +57,5 @@ def read(data: dict) -> RESPONSE_EXISTUSER:
 def update(data: dict) -> RESPONSE:
     data = dict(data)
     val = f"MATKHAU = '{data['password']}'"
-    condition = f"MANVIEN = '{data['username']}'"
+    condition = f"MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS = '{data['username']}'"
     return LG.update(val, condition)

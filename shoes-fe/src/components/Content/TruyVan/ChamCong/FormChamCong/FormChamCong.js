@@ -6,6 +6,7 @@ import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { rem_to_px } from "~config/ui";
 import { convertDate } from "~utils/processing_date";
 import moment from "moment";
+import { useUserContext } from "~user";
 
 const list_key = [
   { header: "Mã giày", key: "MAGIAY" },
@@ -27,50 +28,55 @@ const infoColumns = processingInfoColumnTable(list_key);
 
 const FormChamCong = ({ infoForm, setData, setShowForm }) => {
   const [dataTable, setDataTable] = useState([]);
+  const [stateUser, dispatchUser] = useUserContext();
 
   console.log("ChamCong", infoForm["MAKY"]);
 
   const handleDelete = () => {
-    let text = "Bạn thực sự muốn xóa thông tin này không!";
-    if (!window.confirm(text)) {
-      return;
-    }
-    const send_data = {
-      MAKY: infoForm["MAKY"],
-      MANVIEN: infoForm["MANVIEN"],
-      SOPHIEU: infoForm["SOPHIEU"],
-    };
-    fetch("http://localhost:8000/tv_chamcong", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(send_data),
-    })
-      .then((response) => {
-        return response.json();
+    if (stateUser.userPoolAccess.some((obj) => obj.MAFORM === "F0042" && obj.XOA === 1)) {
+      let text = "Bạn thực sự muốn xóa thông tin này không!";
+      if (!window.confirm(text)) {
+        return;
+      }
+      const send_data = {
+        MAKY: infoForm["MAKY"],
+        MANVIEN: infoForm["MANVIEN"],
+        SOPHIEU: infoForm["SOPHIEU"],
+      };
+      fetch("http://localhost:8000/tv_chamcong", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(send_data),
       })
-      .then((data) => {
-        if (data["status"] === "success") {
-          fetch("http://localhost:8000/tv_chamcong")
-            .then((response) => {
-              return response.json();
-            })
-            .then((info) => {
-              setData(info);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-          alert("Xóa thành công");
-          setShowForm(false);
-        } else {
-          alert("Xóa thất bại");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data["status"] === "success") {
+            fetch("http://localhost:8000/tv_chamcong")
+              .then((response) => {
+                return response.json();
+              })
+              .then((info) => {
+                setData(info);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            alert("Xóa thành công");
+            setShowForm(false);
+          } else {
+            alert("Xóa thất bại");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      alert("Bạn không có quyền xóa");
+    } 
   };
 
   useEffect(() => {
