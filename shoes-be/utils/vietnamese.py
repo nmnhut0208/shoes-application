@@ -160,7 +160,7 @@ columns_vietnamese = {"TENGIAY", "TENKHO", "TENMUI",
 def convert_vni_to_unicode(vni_str):
     result = ""
     if vni_str is None or len(vni_str) == 0:
-        return result
+        return ""
     start = 0
     
     while start < len(vni_str):
@@ -180,7 +180,7 @@ def convert_vni_to_unicode(vni_str):
 def convert_unicode_to_vni(unicode_str):
     result = ""
     if unicode_str is None or len(unicode_str) == 0:
-        return result
+        return ""
     
     for i in range(0, len(unicode_str)):
         result += dict_unicode_to_vni.get(unicode_str[i],unicode_str[i])

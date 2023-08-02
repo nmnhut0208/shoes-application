@@ -1,4 +1,4 @@
-USE [PT]
+USE [PTMain]
 GO
 /****** Object:  Table [dbo].[DMMAU]    Script Date: 04/29/2023 11:37:20 ******/
 SET ANSI_NULLS ON
@@ -1324,7 +1324,7 @@ GO
 ALTER TABLE [dbo].[DONHANG] ADD  CONSTRAINT [DF__donhang__Size0__531856C7]  DEFAULT (0) FOR [Size0]
 GO
 /****** Object:  Default [DF__donhang__Size0__531856C7]    Script Date: 04/29/2023 11:37:20 ******/
-ALTER TABLE [dbo].[DONHANG] ADD  CONSTRAINT [DF__donhang__Size1]  DEFAULT (0) FOR [Size1]
+ALTER TABLE [dbo].[DONHANG] ADD  CONSTRAINT [DF__donhang__SIZE1]  DEFAULT (0) FOR [SIZE1]
 GO
 
 /****** Object:  Default [DF__donhang__GIALE__55F4C372]    Script Date: 04/29/2023 11:37:20 ******/
@@ -1338,6 +1338,12 @@ ALTER TABLE [dbo].[DONHANG] ADD  CONSTRAINT [DF__donhang__tmpFiel__57DD0BE4]  DE
 GO
 /****** Object:  Default [DF__phancong__Size0__55009F39]    Script Date: 04/29/2023 11:37:20 ******/
 ALTER TABLE [dbo].[PHANCONG] ADD  CONSTRAINT [DF__phancong__Size0__55009F39]  DEFAULT (0) FOR [Size0]
+GO
+
+ALTER TABLE [dbo].[PHANCONG] ADD  CONSTRAINT [DF__phancong__SIZE1__55009F39]  DEFAULT (0) FOR [SIZE1]
+GO
+
+ALTER TABLE [dbo].[CONGNO] ADD  CONSTRAINT [DF__congno__SIZE1__55009F39]  DEFAULT (0) FOR [SIZE1]
 GO
 /****** Object:  Default [DF_PHANQUYEN_THEM]    Script Date: 04/29/2023 11:37:20 ******/
 ALTER TABLE [dbo].[PHANQUYEN] ADD  CONSTRAINT [DF_PHANQUYEN_THEM]  DEFAULT (0) FOR [THEM]
