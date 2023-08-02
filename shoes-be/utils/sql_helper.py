@@ -33,6 +33,7 @@ def execute_database(sql, action_type='read'):
     s = datetime.now()
     if action_type == 'read':
         data = pd.read_sql(sql, conn)
+        print("data: ", data)
         conn.close()
         # convert vni to unicode string
         for col in data.columns:
