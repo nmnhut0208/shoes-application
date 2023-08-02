@@ -35,14 +35,12 @@ def execute_database(sql, action_type='read'):
     s = datetime.now()
     if action_type == 'read':
         data = pd.read_sql(sql, conn)
-        print("data: ", data)
         conn.close()
         # convert vni to unicode string
         for col in data.columns:
             if check_need_convert(col):
                 data[col] = data.apply(
                     lambda x: convert_vni_to_unicode(x[col]), axis=1)
-                print("data sau: ", data)
 
         print("time convert to unicode: ", datetime.now()-s)
         return data
