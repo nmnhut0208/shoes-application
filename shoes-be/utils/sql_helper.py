@@ -40,6 +40,7 @@ def execute_database(sql, action_type='read'):
             if check_need_convert(col):
                 data[col] = data.apply(
                     lambda x: convert_vni_to_unicode(x[col]), axis=1)
+                print("data sau: ", data)
 
         print("time convert to unicode: ", datetime.now()-s)
         return data
