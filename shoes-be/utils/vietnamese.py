@@ -163,17 +163,22 @@ def convert_vni_to_unicode(vni_str):
     if vni_str is None or len(vni_str) == 0:
         return result
     start = 0
-    
-    while start < len(vni_str):
-        if vni_str[start: start+2] in dict_vni_to_unicode.keys():
-            result += dict_vni_to_unicode[vni_str[start:start+2]]
-            start += 2
-        elif vni_str[start] in dict_vni_to_unicode.keys():
-            result += dict_vni_to_unicode[vni_str[start]]
-            start += 1
-        else:
-            result += vni_str[start]
-            start += 1
+
+    try:
+        while start < len(vni_str):
+            if vni_str[start: start+2] in dict_vni_to_unicode.keys():
+                result += dict_vni_to_unicode[vni_str[start:start+2]]
+                start += 2
+            elif vni_str[start] in dict_vni_to_unicode.keys():
+                result += dict_vni_to_unicode[vni_str[start]]
+                start += 1
+            else:
+                result += vni_str[start]
+                start += 1
+    except:
+        print("vni_str loi: ", vni_str)
+        return vni_str
+
     print("result: ", result)
     return result
 
