@@ -16,12 +16,12 @@ LG = LOGIN()
 
 @router.post("/login")
 def read(data: dict) -> RESPONSE_LOGIN:
-    # return KH.read()
-    # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
-    print(data)
     user = data["username"]
     pwd = data["password"]
-    sql = f"SELECT MANVIEN, MATKHAU FROM DMNHANVIEN where MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS ='{user}' AND MATKHAU COLLATE SQL_Latin1_General_CP1_CS_AS ='{pwd}'"
+    sql = f"""SELECT MANVIEN, MATKHAU FROM DMNHANVIEN 
+              where MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS ='{user}' 
+              AND MATKHAU COLLATE SQL_Latin1_General_CP1_CS_AS ='{pwd}'
+              """
     data =  LG.read_custom(sql)
     if len(data) > 0:
         return {"exist": True}
@@ -30,9 +30,11 @@ def read(data: dict) -> RESPONSE_LOGIN:
     
 @router.post("/access")
 def read(data: dict) -> RESPONSE_ACCESS:
-    print(data)
     user = data["username"]
-    sql = f"SELECT MAFORM, TENFORM, THEM, SUA, XOA, XEM, \"IN\" FROM PHANQUYEN where MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS ='{user}'"
+    sql = f"""SELECT MAFORM, TENFORM, THEM, SUA, XOA, XEM, \"IN\" 
+              FROM PHANQUYEN 
+              where MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS ='{user}'
+              """
     return LG.read_custom(sql)
 
 
@@ -46,7 +48,9 @@ def update(data: dict) -> RESPONSE:
 @router.post("/existuser")
 def read(data: dict) -> RESPONSE_EXISTUSER:
     data = dict(data)
-    sql = f"SELECT MANVIEN FROM DMNHANVIEN where MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS ='{data['username']}'"
+    sql = f"""SELECT MANVIEN FROM DMNHANVIEN 
+              where MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS ='{data['username']}'
+              """
     data = LG.read_custom(sql)
     if len(data) > 0:
         return {"exist": True}

@@ -45,7 +45,6 @@ def read() -> List[ITEM_KHACHHANG]:
 
 @router.get("/khachhang/get_details")
 def read(MAKH: str) -> List[ITEM_KHACHHANG]:
-    print("MAKH: ", MAKH)
     sql = f"""SELECT MAKH, TENKH, COALESCE(DONGIA, 0) as DONGIA, 
                 COALESCE(DIACHI, '') AS DIACHI, 
                 COALESCE(TEL, '') AS TEL, 

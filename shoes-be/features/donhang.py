@@ -128,14 +128,12 @@ def baocao_donhang(YEAR: str=None) -> List[RESPONSE_BAOCAO_DONHANG]:
                 NGAYGH, DIENGIAIPHIEU
               order by NGAYDH desc
             """
-    print("sql: ", sql)
     result = donhang.read_custom(sql)
     return result
 
 
 @router.get("/donhang")
 def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
-    print("SODH: ", SODH)
     sql = f"""SELECT DIENGIAIPHIEU,MADONG, SODH, 
                 V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                 coalesce(MAUDE, '') as MAUDE, TENMAUDE,
@@ -273,7 +271,6 @@ def add(data: List[ITEM_DONHANG]) -> RESPONSE:
 
 @router.get("/donhang/update_status_phancong/")
 def update_status_phancong(MADONG: list = Query([]), status: int=0) -> RESPONSE:
-    print("MADONG: ", MADONG)
     # update status of the MADONGs
     ds_madong = ""
     for madong in MADONG:
@@ -282,7 +279,6 @@ def update_status_phancong(MADONG: list = Query([]), status: int=0) -> RESPONSE:
     sql = """UPDATE donhang SET DAPHANCONG = {} 
             WHERE MADONG IN ({});
             """.format(status, ds_madong)
-    print("sql: ", sql)
     donhang.execute_custom(sql)
     return 1 
 

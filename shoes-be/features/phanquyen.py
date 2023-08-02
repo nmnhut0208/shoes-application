@@ -60,7 +60,6 @@ def getform() -> RESPONSE:
 
 @router.post("/check_exist")
 def check_exist(data: dict):
-    # print("quyen: ", data)
     MANVIEN = data["MANVIEN"]
     MAFORM = data["MAFORM"]
     sql = f"SELECT * FROM PHANQUYEN WHERE MANVIEN = '{MANVIEN}' AND MAFORM = '{MAFORM}'"

@@ -43,11 +43,7 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
 
 @router.post("/giaohang/{makh}")
 def read(data: dict) -> RESPONSE_GIAOHANG:
-    # return KH.read()
-    # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
-    print(data)
     sodh = "(" + ", ".join([f"'{value}'" for value in data["sodh"]]) + ")"
-    print(sodh)
     makh = data["makh"]
     sql = f"""SELECT SODH, THONGKE.MAGIAY, DMGIAY.TENGIAY, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, coalesce(SIZE1,0) AS SIZE1, MAUDE, MAUGOT, MAUSUON, MAUCA, MAUQUAI,
                 SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, THONGKE.GIABAN, (SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0)) * THONGKE.GIABAN AS THANHTIEN,
@@ -76,7 +72,6 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
                 left join (SELECT MAGIAY, TENGIAY FROM DMGIAY) as DMGIAY ON THONGKE.MAGIAY = DMGIAY.MAGIAY
                 WHERE SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) > 0
                 """
-    print(sql)
     return GH.read_custom(sql)
 
 @router.post("/savegiaohang")
@@ -97,7 +92,6 @@ def save(data: dict) -> RESPONSE:
     gh = find_info_primary_key("CONGNO", "BH", today) + 1
     MAPHIEU = f"BH{year}{str(gh).zfill(12)}"
     day_created = today.strftime("%Y-%m-%d %H:%M:%S")
-    # print(madong, MAGH, day_created)
     
     for item in items:
         _c = []

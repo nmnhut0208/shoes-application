@@ -37,7 +37,6 @@ def read(YEAR: str=None) -> RESPONSE_TVGIAOHANG:
             {condition_year}
             ORDER BY CONGNO.NGAYPHIEU DESC
             """
-    print(sql)
     return TVGH.read_custom(sql)
 
 @router.post("/tv_giaohang")
@@ -75,7 +74,6 @@ def read(data: dict):
 
 @router.delete("/tv_giaohang")
 def delete(data: dict):
-    print(data)
     sophieu = data["SOPHIEU"]
     makh = data["MAKH"]
     loaiphieu = "BH"

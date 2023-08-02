@@ -5,22 +5,10 @@ from fastapi import Request, HTTPException
 from utils.vietnamese import convert_vni_to_unicode, check_need_convert
 from datetime import datetime
 
-# conn = pyodbc.connect(
-#     driver="{ODBC Driver 17 for SQL Server}",
-#     # server="MINH\SQLEXPRESS",
-#       server="DESKTOP-GT3LP7K\SQLEXPRESS",
-#     database="PT",
-#     trusted_connection="yes",
-#     mars_connection="yes",
-# )
-
-# cursor = conn.cursor()
-
 authenticate_User = ["nhutnm123456", "thuntk123456"]
 
 
 def execute_database(sql, action_type='read'):
-    print("sql: ", sql)
     conn = pyodbc.connect(
                             # driver="{ODBC Driver 17 for SQL Server}",
                             # server="DESKTOP-GT3LP7K\SQLEXPRESS",
@@ -32,7 +20,6 @@ def execute_database(sql, action_type='read'):
                           mars_connection="yes")
     cursor = conn.cursor()
     cursor.execute(sql)
-    s = datetime.now()
     if action_type == 'read':
         data = pd.read_sql(sql, conn)
         conn.close()
@@ -42,7 +29,6 @@ def execute_database(sql, action_type='read'):
                 data[col] = data.apply(
                     lambda x: convert_vni_to_unicode(x[col]), axis=1)
 
-        print("time convert to unicode: ", datetime.now()-s)
         return data
     else:
         conn.commit()
@@ -66,7 +52,6 @@ def execute_custom(sql: str) -> pd.DataFrame:
 
 def insert_sql(tbn: str, col: str, val: str) -> None:
     sql = f"INSERT INTO {tbn} ({col}) VALUES ({val})"
-    print("sql: ", sql)
     execute_database(sql, action_type='insert')
 
 
@@ -82,18 +67,13 @@ def update_sql(tbn: str, val: str, condition: str) -> None:
 
 def delete_sql(tbn: str, condition: str) -> None:
     sql = f"DELETE FROM {tbn} WHERE {condition}"
-    print("sql: ", sql)
     execute_database(sql, action_type='delete')
-    # cursor.execute(sql)
-    # conn.commit()
 
 
 def user_access(f):
     @wraps(f)
     def decorator(request: Request, *args, **kwargs):
-        print(request.headers)
         if request.headers.get("x-access-tokens", None) not in authenticate_User:
-            # return {"status": "error", "message": "User not found"}
             raise HTTPException(
                 status_code=401, detail="Invalid client secret")
         return f(request=request, *args, **kwargs)

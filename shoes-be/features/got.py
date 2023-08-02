@@ -36,7 +36,6 @@ def read() -> List[ITEM_GOT]:
 @router.post("/got")
 def add(data: ITEM_GOT) -> RESPONSE:
     data = convert_data_to_save_database(dict(data))
-    print(data)
     col = ", ".join([k for k, v in data.items() if v is not None])
     val = ", ".join([v for v in data.values() if v is not None])
     return got.add(col, val)

@@ -175,7 +175,6 @@ def convert_vni_to_unicode(vni_str):
                 result += vni_str[start]
                 start += 1
     except:
-        print("vni_str loi: ", vni_str)
         return vni_str
 
     return result
