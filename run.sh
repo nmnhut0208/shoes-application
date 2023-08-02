@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Activate Conda environment
-conda activate env
+# conda activate env
 
 # Start React frontend
 cd shoes-fe
