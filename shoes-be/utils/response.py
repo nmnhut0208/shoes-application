@@ -6,7 +6,7 @@ from typing import Optional
 class RESPONSE_KHOHANG(BaseModel):
     MAKHO: str
     TENKHO: str
-    GHICHU: str=""
+    GHICHU: str
 
 class RESPONSE_MUI(BaseModel):
     MAMUI: str
