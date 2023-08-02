@@ -21,13 +21,15 @@ authenticate_User = ["nhutnm123456", "thuntk123456"]
 
 def execute_database(sql, action_type='read'):
     print("sql: ", sql)
-    conn = pyodbc.connect(driver='SQL Server Native Client 10.0',
-                            server="PC-SERVER-PC\SQLEXPRESS2008",
-                          database="PTMain",
+    conn = pyodbc.connect(
+                            # driver="{ODBC Driver 17 for SQL Server}",
+                            # server="DESKTOP-GT3LP7K\SQLEXPRESS",
+                            # database="PT2023",
+                        driver='SQL Server Native Client 10.0',
+                        server="PC-SERVER-PC\SQLEXPRESS2008",
+                        database="PTMain",
                           trusted_connection="yes",
-                          mars_connection="yes",
-                          unicode_results=True,
-                          CHARSET='UTF8')
+                          mars_connection="yes")
     cursor = conn.cursor()
     cursor.execute(sql)
     s = datetime.now()
