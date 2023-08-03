@@ -53,6 +53,9 @@ function FormLogin() {
                   console.log("error", error);
                 });
               resetHeader(dispatchTask);
+            } else {
+              alert("Thông tin đăng nhập chưa chính xác!");
+              setLoading(false);
             }
           })
           .catch((error) => {
@@ -68,12 +71,14 @@ function FormLogin() {
     <Form form={form} onFinish={handleOk}>
       <Form.Item
         name="username"
-        rules={[{ required: true, message: "Please enter your username" }]}>
+        rules={[{ required: true, message: "Please enter your username" }]}
+      >
         <Input placeholder="Username" />
       </Form.Item>
       <Form.Item
         name="password"
-        rules={[{ required: true, message: "Please enter your password" }]}>
+        rules={[{ required: true, message: "Please enter your password" }]}
+      >
         <Input.Password placeholder="Password" />
       </Form.Item>
       <Form.Item>
