@@ -85,7 +85,6 @@ def read(MAKH_FROM: str, MAKH_TO: str, DATE_TO: str, DATE_FROM: str) -> RESPONSE
             and NGAYPHIEU >= '{DATE_FROM}'
             group by MAKH
         """
-    print("sql: ", sql)
     return congno.read_custom(sql)
 
 @router.get("/congno/get_congno_khachhang")
@@ -100,7 +99,6 @@ def read(SOPHIEU: str, MAKH: str, DATE_TO: str, DATE_FROM: str=None) -> RESPONSE
     if DATE_FROM is not None:
         sql += f""" and NGAYPHIEU >= '{DATE_FROM}'
                 """
-    print("sql: ", sql)
     return congno.read_custom(sql)
 
 
@@ -134,7 +132,6 @@ def add(data: dict):
     date_from = datetime.strptime(date_from, "%Y-%m-%d %H:%M:%S")
     date_from = date_from.strftime("%Y-%m-%d 00:00:00")
     date_to = data["DATE_TO"]
-    # print("testt: ", date_from, date_to)
 
     sql_tongno = f"""
                 select V_TONGHOP.MAKH, DMKHACHHANG.TENKH, SUM(THANHTIENQD) as TONGNO
@@ -177,6 +174,5 @@ def add(data: dict):
     df_tongno = df_tongno.merge(df_tongtra, how="outer", on=["MAKH", "TENKH"])
     df_tongno = df_tongno.fillna(0)
     df_tongno["CONGNO"] = df_tongno["TONGNO"] + df_tongno["TONGMUA"] - df_tongno["TONGTRA"]
-    print(df_tongno)
     return df_tongno.to_dict(orient="records")
 

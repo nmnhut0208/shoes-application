@@ -160,7 +160,6 @@ const FormGot = () => {
 
       <div className={styles.button_container}>
         {!view && <button onClick={handleSaveFrom}>Lưu</button>}
-        <button>Button 2</button>
       </div>
     </div>
   );

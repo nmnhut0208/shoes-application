@@ -170,7 +170,6 @@ def baocao_phancong(SOPHIEU: str) -> List[dict]:
 
 @router.get("/phancong/get_chitietdonhang_dephancong")
 def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
-    print("SODH: ", SODH)              
     sql = f"""select KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, 
               madh as MADH, sodh as SODH, 
               ngaydh as NGAYDH, makh as MAKH, diengiaiphieu as DIENGIAIDONG, 
@@ -414,7 +413,6 @@ def get_thongtin_thoquai(SOPC: str) -> List[RESPONSE_PHANCONG_THO]:
 
 @router.delete("/phancong/by_list_MADONG/")
 def delete(MADONG: list = Query([])) -> RESPONSE:
-    print("MADONG: ", MADONG)
     # update status of the MADONGs
     ds_madong = ""
     for madong in MADONG:

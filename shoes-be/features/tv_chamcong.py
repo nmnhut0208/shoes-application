@@ -33,7 +33,6 @@ def read(YEAR: str=None):
         GROUP BY MAKY, phieupc, NgayPhieu, MANVIEN, DienGiai
         order by MAKY, MANVIEN, NgayPhieu 
     """
-    # print(sql)
     return TVCC.read_custom(sql)
 
 @router.post("/tv_chamcong")
@@ -57,7 +56,6 @@ def delete(data: dict):
     sql = f"""DELETE FROM CHAMCONG WHERE MAKY='{maky}' 
               AND MANVIEN='{manv}' AND PHIEUPC='{phieupc}'
               """
-    # print(sql)
     TVCC.execute_custom(sql)
     return {"status": "success"}
 
@@ -66,7 +64,6 @@ def read():
     sql = f"""
         select distinct MAKY FROM CHAMCONG order by MAKY
     """
-    # print(sql)
     return TVCC.read_custom(sql)
 
 @router.delete("/delete_ky")
@@ -75,6 +72,5 @@ def delete(data: dict):
     # get year today 01-01
     care_year = datetime.today().year
     sql = f"""DELETE FROM CHAMCONG WHERE MAKY='{maky}' and NgayPhieu >= '{care_year}-01-01'"""
-    # print(sql)
     TVCC.execute_custom(sql)
     return {"status": "success"}

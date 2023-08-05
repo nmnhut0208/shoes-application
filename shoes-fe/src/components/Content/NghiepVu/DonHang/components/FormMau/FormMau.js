@@ -43,7 +43,6 @@ const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
 
       <div className={styles.group_button}>
         <button onClick={handleSaveFrom}>Lưu</button>
-        <button>Button 2</button>
       </div>
     </div>
   );

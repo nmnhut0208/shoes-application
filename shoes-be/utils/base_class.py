@@ -7,7 +7,6 @@ class BaseClass:
 
     def read(self):
         df = read_sql(self.table_name)
-        print(df)
         return df.to_dict(orient="records")
 
     def read_custom(self, sql: str):

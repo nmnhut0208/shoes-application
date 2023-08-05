@@ -18,7 +18,6 @@ C = CA()
 
 @router.get("/ca")
 def read() -> RESPONSE_CA:
-    # return KH.read()
     sql = "SELECT MACA, TENCA, GHICHU FROM DMCA"
     return C.read_custom(sql)
 
@@ -26,7 +25,6 @@ def read() -> RESPONSE_CA:
 @router.post("/ca")
 def add(data: ITEM_CA) -> RESPONSE:
     data = convert_data_to_save_database(dict(data))
-    print(data)
     col = ", ".join([k for k, v in data.items() if v is not None])
     val = ", ".join([v for v in data.values() if v is not None])
     return C.add(col, val)

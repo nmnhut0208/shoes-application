@@ -372,7 +372,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       <div className={styles.group_button}>
         <div>
           <button onClick={handleSave}>Lưu</button>
-          {/* <button>Đóng</button> */}
         </div>
       </div>
     </div>

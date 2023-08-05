@@ -19,8 +19,11 @@ KH = KHOHANG()
 
 @router.get("/khohang")
 # @user_access
-def read(request: Request) -> RESPONSE_KHOHANG:
-    return KH.read()
+def read() -> RESPONSE_KHOHANG:
+    sql = """select MAKHO, TENKHO, coalesce(GHICHU, '') as GHICHU 
+            from DMKHO
+            """
+    return KH.read_custom(sql)
 
 
 @router.post("/khohang")
@@ -43,6 +46,5 @@ def update(data: ITEM_KHOHANG) -> RESPONSE:
 @router.delete("/khohang")
 def delete(data: ITEM_KHOHANG) -> RESPONSE:
     data = dict(data)
-    print(data)
     condition = f"MAKHO = '{data['MAKHO']}'"
     return KH.delete(condition)

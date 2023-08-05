@@ -11,9 +11,9 @@ export const INFO_COLS_DONHANG = [
   },
   { header: "Mã khách hàng", key: "MAKH", width: 16 * rem_to_px },
   { header: "Tên khách hàng", key: "TENKH", width: 25 * rem_to_px },
-  { header: "Diễn dãi", key: "DIENGIAI", width: 20 * rem_to_px },
+  { header: "Diễn dãi", key: "DIENGIAIPHIEU", width: 20 * rem_to_px },
   {
-    header: "Tổng số lượng đặt hàng",
+    header: "Số lượng chưa phân công",
     key: "SOLUONG",
     width: 21 * rem_to_px,
     muiTableBodyCellProps: {

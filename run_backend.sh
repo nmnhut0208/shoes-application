@@ -1,20 +1,18 @@
 #!/bin/bash
 
 # Activate Conda environment
-# conda activate env
+source activate web # chạy trong bash git phải xài source 
 
 # Start React frontend
-cd shoes-fe 
+# cd shoes-fe 
 # npm install
 # npm start & 
-npx kill-port 3000 -y  #close old port
-nohup serve -s build -l 3000 &
+# serve -s build -l 3001
 
-&
+# &
 
 # # Start Python backend
-cd ../shoes-be
-npx kill-port 8000 -y  #close old port
+#npx kill-port 8000 -y  #close old port
+cd shoes-be
 # # pip install -r requirements.txt
-source activate web
 nohup uvicorn main:app --reload &

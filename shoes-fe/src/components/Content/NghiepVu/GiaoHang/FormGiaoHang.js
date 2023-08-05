@@ -539,7 +539,6 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
         <div>
           <button onClick={handleSave}>Lưu</button>
           <button onClick={handleNhapTiep}>Nhập tiếp</button>
-          {/* <button>Đóng</button> */}
         </div>
       </div>
     </div>

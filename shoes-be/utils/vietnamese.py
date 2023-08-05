@@ -162,17 +162,20 @@ def convert_vni_to_unicode(vni_str):
     if vni_str is None or len(vni_str) == 0:
         return result
     start = 0
-    
-    while start < len(vni_str):
-        if vni_str[start: start+2] in dict_vni_to_unicode.keys():
-            result += dict_vni_to_unicode[vni_str[start:start+2]]
-            start += 2
-        elif vni_str[start] in dict_vni_to_unicode.keys():
-            result += dict_vni_to_unicode[vni_str[start]]
-            start += 1
-        else:
-            result += vni_str[start]
-            start += 1
+
+    try:
+        while start < len(vni_str):
+            if vni_str[start: start+2] in dict_vni_to_unicode.keys():
+                result += dict_vni_to_unicode[vni_str[start:start+2]]
+                start += 2
+            elif vni_str[start] in dict_vni_to_unicode.keys():
+                result += dict_vni_to_unicode[vni_str[start]]
+                start += 1
+            else:
+                result += vni_str[start]
+                start += 1
+    except:
+        return vni_str
 
     return result
 
@@ -188,10 +191,6 @@ def convert_unicode_to_vni(unicode_str):
 
 def check_need_convert(key):
     return key in columns_vietnamese
-    # for sub_name in columns_vietnamese:
-    #     if sub_name in key:
-    #         return True
-    # return False
 
 def convert_data_to_save_database(data):
     _data = deepcopy(data)

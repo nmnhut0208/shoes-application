@@ -49,7 +49,6 @@ def save_info_primary_key(table, key, year, value):
 def find_info_UI(table_nam, keystring):
     today = datetime.now()
     year = str(today.year)[2:]
-    print("year: ", year)
     month = str(today.month).zfill(2)
     sql = f"""select *
             from V1T4444

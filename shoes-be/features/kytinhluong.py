@@ -28,7 +28,6 @@ def add(data: ITEM_KYTINHLUONG) -> RESPONSE:
     data["TUNGAY"] = datetime.strptime(data["TUNGAY"], "%d-%m-%Y %H:%M:%S.%f")
     data["DENNGAY"] = datetime.strptime(
         data["DENNGAY"], "%d-%m-%Y %H:%M:%S.%f")
-    # print(data)
     col = ", ".join(data.keys())
     val = ", ".join([f"'{value}'" for value in data.values()])
     return KTL.add(col, val)
@@ -37,7 +36,6 @@ def add(data: ITEM_KYTINHLUONG) -> RESPONSE:
 @router.put("/kytinhluong")
 def update(data: ITEM_KYTINHLUONG) -> RESPONSE:
     data = dict(data)
-    print(data)
     data["TUNGAY"] = data["TUNGAY"].replace("T", " ")
     data["DENNGAY"] = data["DENNGAY"].replace("T", " ")
     data["TUNGAY"] = datetime.strptime(data["TUNGAY"], "%Y-%m-%d %H:%M:%S")

@@ -33,7 +33,11 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
   console.log("ChamCong", infoForm["MAKY"]);
 
   const handleDelete = () => {
-    if (stateUser.userPoolAccess.some((obj) => obj.MAFORM === "F0042" && obj.XOA === 1)) {
+    if (
+      stateUser.userPoolAccess.some(
+        (obj) => obj.MAFORM === "F0042" && obj.XOA === 1
+      )
+    ) {
       let text = "Bạn thực sự muốn xóa thông tin này không!";
       if (!window.confirm(text)) {
         return;
@@ -76,7 +80,7 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
         });
     } else {
       alert("Bạn không có quyền xóa");
-    } 
+    }
   };
 
   useEffect(() => {
@@ -174,7 +178,6 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
       <div className={styles.group_button}>
         <div>
           <button onClick={handleDelete}>Xóa</button>
-          {/* <button>Đóng</button> */}
         </div>
       </div>
     </div>

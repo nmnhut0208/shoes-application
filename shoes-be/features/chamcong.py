@@ -104,7 +104,6 @@ def read_ky():
 def read(data: dict):
     # return KH.read()
     # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
-    print(data)
     phieupc = "(" + \
         ", ".join([f"'{value}'" for value in data["PHIEUPC"]]) + ")"
     maky = data["MAKY"]
@@ -174,12 +173,6 @@ def read(data: dict):
                   and SOPHIEU IN {phieupc}"""
         return CC.read_custom(sql)
     
-    # if typenv is not None:
-    #     sql = f"""SELECT * FROM V_CHAMCONG{typenv} 
-    #               where {typenv}='{manvien}' 
-    #               and SOPHIEU IN {phieupc}"""
-    #     print(sql)
-    #     return CC.read_custom(sql)
 
 @router.post("/savechamcong")
 def save(data: dict) -> RESPONSE:
@@ -222,7 +215,6 @@ def save(data: dict) -> RESPONSE:
         _data_save = convert_data_to_save_database(d_item)
         _c = ",".join([k for k, v in _data_save.items() if v is not None])
         _v = ",".join([v for v in _data_save.values() if v is not None])
-        print(_c, "\n", _v)
         CC.add_with_table_name("CHAMCONG", _c, _v)
 
     save_info_primary_key("CHAMCONG", "MD", year, madong)
