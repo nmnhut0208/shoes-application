@@ -1,5 +1,14 @@
 @import "~common_scss/form.module.scss";
 
+// @media print {
+//   // image {
+//   //   print-color-adjust: exact;
+//   // }
+//   body {
+//     -webkit-print-color-adjust: exact;
+//   }
+// }
+
 @page {
   size: auto;
   margin-top: 2rem;

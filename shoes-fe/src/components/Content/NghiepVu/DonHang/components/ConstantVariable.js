@@ -7,11 +7,6 @@ export const INFO_COLS_DONHANG = [
     width: 21 * rem_to_px,
   },
   {
-    header: "Tên giày",
-    key: "TENGIAY",
-    width: 35 * rem_to_px,
-  },
-  {
     header: "Màu đế",
     key: "MAUDE",
     width: 10 * rem_to_px,
@@ -67,6 +62,11 @@ export const INFO_COLS_DONHANG = [
     header: "In hiệu",
     key: "INHIEU",
     width: 30 * rem_to_px,
+  },
+  {
+    header: "Tên giày",
+    key: "TENGIAY",
+    width: 35 * rem_to_px,
   },
 ];
 

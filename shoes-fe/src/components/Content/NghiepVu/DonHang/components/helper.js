@@ -19,7 +19,6 @@ const handleSaveCell = (cell, value, data, setDataTable) => {
     "SIZE9",
     "SIZE0",
     "SIZE1",
-    "GIABAN",
   ];
   if (list_size.includes(cell.column.id)) {
     if (value === "") value = 0;
@@ -137,7 +136,7 @@ export const updateColumnsInformations = (
       };
     }
 
-    if (key === "TENGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
+    if (key === "MAGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
     if (COLS_HAVE_SUM_FOOTER.includes(key)) {
       let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
       info["Footer"] = () => (
