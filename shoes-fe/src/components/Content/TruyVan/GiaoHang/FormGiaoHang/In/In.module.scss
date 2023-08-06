@@ -33,14 +33,15 @@
 
 .congno_left {
   align-self: flex-end;
+  margin-right: 10rem;
 }
 
 .footer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-left: 5rem;
-  margin-right: 5rem;
+  margin-left: 15rem;
+  margin-right: 15rem;
   margin-top: 1rem;
   break-inside: avoid;
 }

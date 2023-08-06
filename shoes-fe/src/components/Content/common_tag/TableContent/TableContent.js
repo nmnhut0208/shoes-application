@@ -217,7 +217,7 @@ const TableContent = ({ info_other_column }) => {
             autoResetPageIndex={false}
             // resize width of each column
             enableColumnResizing
-            enableRowNumbers
+            // enableRowNumbers
             enableEditing={showActionColumn}
             displayColumnDefOptions={{
               "mrt-row-actions": {

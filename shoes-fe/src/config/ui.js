@@ -16,8 +16,10 @@ export const border_text_table_config = {
   muiTablePaperProps: { sx: { ..._style_component_table } },
   muiTableHeadCellProps: {
     sx: { ..._style_component_table, fontSize: "1.5rem", lineHeight: "2rem" },
+    align: "center",
   },
-  muiTableBodyCellProps: { minSize: 12, sx: { ..._style_component_table } },
+  muiTableBodyCellProps: { minSize: 12, sx: { ..._style_component_table },
+  align: "center", },
   muiTableFooterCellProps: { sx: { ..._style_component_table } },
   muiTableContainerProps: {
     sx: {

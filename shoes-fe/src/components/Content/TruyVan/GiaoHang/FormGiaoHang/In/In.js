@@ -10,27 +10,27 @@ const COLS_HAVE_SUM_FOOTER = ["SOLUONG", "THANHTIEN"];
 const LIST_FORMAT_NUMBER = ["DONGIA", "THANHTIEN", "SOLUONG"];
 
 const infoColumns = [
-  { header: "Mã Hàng", key: "MAGIAY", width: 16.5 * rem_to_px },
-  { header: "Tên Hàng", key: "TENGIAY", width: 29 * rem_to_px },
+  { header: "Mã Hàng", key: "MAGIAY", width: 25 * rem_to_px, textAlign: "center" },
+  // { header: "Tên Hàng", key: "TENGIAY", width: 29 * rem_to_px },
   {
     header: "SL",
     key: "SOLUONG",
-    width: 5 * rem_to_px,
+    width: 10 * rem_to_px,
     textAlign: "right",
   },
   {
     header: "Đơn giá",
     key: "DONGIA",
-    width: 8 * rem_to_px,
+    width: 10 * rem_to_px,
     textAlign: "right",
   },
   {
     header: "Thành tiền",
     key: "THANHTIEN",
-    width: 10 * rem_to_px,
+    width: 15 * rem_to_px,
     textAlign: "right",
   },
-  { header: "Số đơn hàng", key: "SODH", width: 10 * rem_to_px },
+  { header: "Số đơn hàng", key: "SODH", width: 25 * rem_to_px, textAlign: "center" },
 ];
 
 const In = ({ data, flag }) => {

@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
-from datetime import datetime
+from datetime import datetime, timedelta
 
 router = APIRouter()
 
@@ -56,14 +56,20 @@ def delete(data: ITEM_KYTINHLUONG) -> RESPONSE:
 def update_tenky() -> RESPONSE:
     cur_sql = f"SELECT MAKY, TENKY FROM DMKYTINHLUONG"
     cur_ktl = KTL.read_custom(cur_sql)
-    tbn = "DMKYTINHLUONG"
+    # tbn = "DMKYTINHLUONG"
+    new_year = datetime.now().year
+    start_date = datetime.strptime(f"{new_year}-01-01 00:00:00", "%Y-%m-%d %H:%M:%S")
+    start_dates = [start_date + timedelta(weeks=i) for i in range(52)]
+    end_dates = [start_date + timedelta(weeks=i+1) for i in range(52)]
+
     # update new year for TENKY 
-    for item in cur_ktl:
+    for i, item in enumerate(cur_ktl):
         tenky = item["TENKY"]
         tenky = tenky.split("/")
-        new_year = datetime.now().year
         new_tenky = f"{tenky[0]}/{new_year}"
-        val = f"TENKY = '{new_tenky}'"
+        new_start_date = start_dates[i].strftime("%Y-%m-%d %H:%M:%S")
+        new_end_date = end_dates[i].strftime("%Y-%m-%d %H:%M:%S")
+        val = f"TENKY = '{new_tenky}', TUNGAY = '{new_start_date}', DENNGAY = '{new_end_date}'"
         condition = f"MAKY = '{item['MAKY']}'"
         KTL.update(val, condition)
     return {"status": "success"}

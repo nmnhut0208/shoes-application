@@ -50,12 +50,6 @@ const list_key_sub = [
     enableEditing: false,
   },
   {
-    header: "Tên Giày",
-    key: "TENGIAY",
-    width: 35 * rem_to_px,
-    enableEditing: false,
-  },
-  {
     header: "Màu Đế",
     key: "MAUDE",
     width: 10 * rem_to_px,
@@ -209,6 +203,12 @@ const list_key_sub = [
     header: "Diễn giải",
     key: "DIENGIAIDONG",
     width: 30 * rem_to_px,
+    enableEditing: false,
+  },
+  {
+    header: "Tên Giày",
+    key: "TENGIAY",
+    width: 35 * rem_to_px,
     enableEditing: false,
   },
 ];
