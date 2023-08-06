@@ -6,4 +6,4 @@ source activate web # chạy trong bash git phải xài source
 #npx kill-port 8000 -y  #close old port
 cd shoes-be
 # # pip install -r requirements.txt
-nohup uvicorn main:app --reload &
+nohup uvicorn main:app &

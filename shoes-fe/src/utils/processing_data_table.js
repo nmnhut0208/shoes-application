@@ -44,7 +44,7 @@ export const processingInfoColumnTableHaveFooter = (
     }
     if (list_key[index]["enableEditing"] !== undefined)
       info["enableEditing"] = list_key[index]["enableEditing"];
-    if (list_key[index]["key"] === "TENGIAY")
+    if (list_key[index]["key"] === "MAGIAY")
       info["Footer"] = () => <div>{footer_name}: </div>;
     if (COLS_HAVE_SUM_FOOTER.includes(list_key[index]["key"])) {
       let sum_value = data.reduce(

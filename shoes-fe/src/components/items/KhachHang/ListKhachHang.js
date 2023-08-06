@@ -45,7 +45,8 @@ const ListKhachHang = ({ setValue, setLabel }) => {
         // scroll to bottom
         // enableRowVirtualization // comment this line
         muiTableContainerProps={{
-          sx: { height: "30rem" },
+          sx: { height: "25rem"
+           , width: "50rem"},
         }}
       />
     </div>

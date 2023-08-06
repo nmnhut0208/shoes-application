@@ -10,8 +10,8 @@ const COLS_HAVE_SUM_FOOTER = ["TONGNO", "TONGMUA", "TONGTRA", "CONGNO"];
 const LIST_FORMAT_NUMBER = ["TONGNO", "TONGMUA", "TONGTRA", "CONGNO"];
 
 const infoColumns = [
-  { header: "MÃ KH", key: "MAKH", width: 14 * rem_to_px },
-  { header: "TÊN KHÁCH HÀNG", key: "TENKH", width: 25 * rem_to_px },
+  { header: "MÃ KH", key: "MAKH", width: 14 * rem_to_px, textAlign: "center" },
+  { header: "TÊN KHÁCH HÀNG", key: "TENKH", width: 25 * rem_to_px, textAlign: "center" },
   {
     header: "NỢ ĐẦU KỲ",
     key: "TONGNO",

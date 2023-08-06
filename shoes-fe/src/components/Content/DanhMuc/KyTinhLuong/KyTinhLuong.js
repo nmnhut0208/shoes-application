@@ -10,12 +10,13 @@ import { rem_to_px } from "~config/ui";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { IconButton, Tooltip } from "@mui/material";
 import { Edit } from "@mui/icons-material";
+import { convertDateForReport } from "~utils/processing_date";
 
 const list_key = [
   { header: "Mã kỳ", key: "MAKY", width: 3 * rem_to_px },
   { header: "Tên kỳ", key: "TENKY", width: 5 * rem_to_px },
-  { header: "Từ ngày", key: "TUNGAY", width: 15 * rem_to_px },
-  { header: "Đến ngày", key: "DENNGAY", width: 15 * rem_to_px },
+  { header: "Từ ngày", key: "TUNGAY", width: 15 * rem_to_px , Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,},
+  { header: "Đến ngày", key: "DENNGAY", width: 15 * rem_to_px , Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,},
 ];
 
 const infoColumns = processingInfoColumnTable(list_key, false);
