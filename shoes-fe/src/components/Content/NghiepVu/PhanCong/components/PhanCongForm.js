@@ -182,7 +182,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
               });
             }}
             size_input={"19.5rem"}
-            size_span={"40rem"}
+            size_span={"30rem"}
           />
         </div>
       </div>
