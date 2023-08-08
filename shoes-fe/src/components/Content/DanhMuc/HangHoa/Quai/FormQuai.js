@@ -8,6 +8,7 @@ import {
 
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { getImageOfDanhMuc } from "~utils/api_get_image";
+import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 
 const FormQuai = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -139,6 +140,9 @@ const FormQuai = () => {
               name="DONGIA"
               value={inputForm["DONGIA"]}
               onChange={(e) => handleChangeInformationForm(e)}
+              onKeyDown={handleDisableKeyDownUp}
+              onKeyUp={handleDisableKeyDownUp}
+              onFocus={handleFocus}
             />
           </div>
 

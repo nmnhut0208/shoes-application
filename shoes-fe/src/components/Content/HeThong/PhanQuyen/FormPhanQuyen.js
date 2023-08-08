@@ -185,15 +185,6 @@ const FormPhanQuyen = () => {
             </select>
           )}
         </div>
-        {/* <div className={styles.form_group_first}>
-            <label>Tên Form</label>
-            <input
-              value={inputForm["TENFORM"]}
-              onChange={(e) => handleChangeInformationForm(e)}
-              name="TENFORM"
-              className={styles.item_size_big}
-            />
-          </div> */}
         <div className={styles.form_group_first}>
           <label>Thêm</label>
           <input

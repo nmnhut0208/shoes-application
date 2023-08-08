@@ -5,6 +5,7 @@ import {
   COLS_HAVE_SUM_FOOTER,
   COLS_HAVE_SELECT_INPUT,
 } from "./ConstantVariable";
+import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 
 const handleSaveCell = (cell, value, data, setDataTable) => {
   //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
@@ -76,6 +77,9 @@ export const updateColumnsInformations = (
           onChange={(e) =>
             handleSaveCell(cell, e.target.value, dataTable, setDataTable)
           }
+          onKeyDown={handleDisableKeyDownUp}
+          onKeyUp={handleDisableKeyDownUp}
+          onFocus={handleFocus}
         />
       );
     }
