@@ -196,7 +196,7 @@ const FormPhanQuyen = () => {
           </div> */}
         <div className={styles.form_group_first}>
           <label>Thêm</label>
-          <input
+          {/* <input
             value={inputForm["THEM"]}
             onChange={(e) => handleChangeInformationForm(e)}
             name="THEM"
@@ -204,11 +204,20 @@ const FormPhanQuyen = () => {
             type="number"
             min={0}
             max={1}
-          />
+          /> */}
+          <select 
+          value={inputForm["THEM"]}
+          onChange={(e) => handleChangeInformationForm(e)}
+          name="THEM"
+          className={styles.item_size_small}>
+            <option value="">Chọn</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
         </div>
         <div className={styles.form_group_first}>
           <label>Sửa</label>
-          <input
+          {/* <input
             value={inputForm["SUA"]}
             onChange={(e) => handleChangeInformationForm(e)}
             name="SUA"
@@ -216,11 +225,20 @@ const FormPhanQuyen = () => {
             type="number"
             min={0}
             max={1}
-          />
+          /> */}
+          <select 
+          value={inputForm["SUA"]}
+          onChange={(e) => handleChangeInformationForm(e)}
+          name="SUA"
+          className={styles.item_size_small}>
+            <option value="">Chọn</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
         </div>
         <div className={styles.form_group_first}>
           <label>Xóa</label>
-          <input
+          {/* <input
             value={inputForm["XOA"]}
             onChange={(e) => handleChangeInformationForm(e)}
             name="XOA"
@@ -228,11 +246,20 @@ const FormPhanQuyen = () => {
             type="number"
             min={0}
             max={1}
-          />
+          /> */}
+          <select 
+          value={inputForm["XOA"]}
+          onChange={(e) => handleChangeInformationForm(e)}
+          name="XOA"
+          className={styles.item_size_small}>
+            <option value="">Chọn</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
         </div>
         <div className={styles.form_group_first}>
           <label>Xem</label>
-          <input
+          {/* <input
             value={inputForm["XEM"]}
             onChange={(e) => handleChangeInformationForm(e)}
             name="XEM"
@@ -240,11 +267,20 @@ const FormPhanQuyen = () => {
             type="number"
             min={0}
             max={1}
-          />
+          /> */}
+          <select 
+          value={inputForm["XEM"]}
+          onChange={(e) => handleChangeInformationForm(e)}
+          name="XEM"
+          className={styles.item_size_small}>
+            <option value="">Chọn</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
         </div>
         <div className={styles.form_group_first}>
           <label>In</label>
-          <input
+          {/* <input
             value={inputForm["IN"]}
             onChange={(e) => handleChangeInformationForm(e)}
             name="IN"
@@ -252,7 +288,16 @@ const FormPhanQuyen = () => {
             type="number"
             min={0}
             max={1}
-          />
+          /> */}
+          <select 
+          value={inputForm["IN"]}
+          onChange={(e) => handleChangeInformationForm(e)}
+          name="IN"
+          className={styles.item_size_small}>
+            <option value="">Chọn</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
         </div>
       </div>
       <div className={styles.form_button}>
