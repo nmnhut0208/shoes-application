@@ -13,16 +13,32 @@ export const COL_INFO_SIZE = [
 export const fontSize = "1.4rem";
 
 export const INFO_COLS_THO = [
-  { header: "ĐẾ", key: "TENMAUDE", width: 7 * rem_to_px },
-  { header: "GÓT", key: "TENMAUGOT", width: 7 * rem_to_px },
-  { header: "SƯỜN", key: "TENMAUSUON", width: 9 * rem_to_px },
+  { header: "ĐẾ", key: "TENMAUDE", width: 7 * rem_to_px, textAlign: "center" },
+  {
+    header: "GÓT",
+    key: "TENMAUGOT",
+    width: 7 * rem_to_px,
+    textAlign: "center",
+  },
+  {
+    header: "SƯỜN",
+    key: "TENMAUSUON",
+    width: 9 * rem_to_px,
+    textAlign: "center",
+  },
   {
     header: "CÁ: CÁ DÀI MAY CHỈ",
     key: "TENMAUCA",
     width: 11 * rem_to_px,
+    textAlign: "center",
   },
-  { header: "QUAI", key: "TENMAUQUAI", width: 9 * rem_to_px },
-  { header: "SIZE", key: "SIZE", width: 16 * rem_to_px },
+  {
+    header: "QUAI",
+    key: "TENMAUQUAI",
+    width: 9 * rem_to_px,
+    textAlign: "center",
+  },
+  { header: "SIZE", key: "SIZE", width: 16 * rem_to_px, textAlign: "center" },
   {
     header: "Tổng số",
     key: "TONGSO",
@@ -33,10 +49,12 @@ export const INFO_COLS_THO = [
     header: "THỢ ĐẾ",
     key: "TENTHODE",
     width: 6 * rem_to_px,
+    textAlign: "center",
   },
   {
     header: "THỢ QUAI",
     key: "TENTHOQUAI",
     width: 6 * rem_to_px,
+    textAlign: "center",
   },
 ];

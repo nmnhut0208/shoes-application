@@ -5,6 +5,7 @@ import {
   COLS_HAVE_SUM_FOOTER,
   COLS_HAVE_SELECT_INPUT,
 } from "./ConstantVariable";
+import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 
 const handleSaveCell = (cell, value, data, setDataTable) => {
   //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
@@ -19,7 +20,6 @@ const handleSaveCell = (cell, value, data, setDataTable) => {
     "SIZE9",
     "SIZE0",
     "SIZE1",
-    "GIABAN",
   ];
   if (list_size.includes(cell.column.id)) {
     if (value === "") value = 0;
@@ -77,6 +77,9 @@ export const updateColumnsInformations = (
           onChange={(e) =>
             handleSaveCell(cell, e.target.value, dataTable, setDataTable)
           }
+          onKeyDown={handleDisableKeyDownUp}
+          onKeyUp={handleDisableKeyDownUp}
+          onFocus={handleFocus}
         />
       );
     }
@@ -137,7 +140,7 @@ export const updateColumnsInformations = (
       };
     }
 
-    if (key === "TENGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
+    if (key === "MAGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
     if (COLS_HAVE_SUM_FOOTER.includes(key)) {
       let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
       info["Footer"] = () => (

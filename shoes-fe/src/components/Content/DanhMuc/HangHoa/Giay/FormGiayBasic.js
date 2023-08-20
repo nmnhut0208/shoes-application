@@ -10,6 +10,7 @@ import {
   ItemMau,
 } from "~items";
 import { getImageOfDanhMuc } from "~utils/api_get_image";
+import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 
 let list_info_generator_MAGIAY = ["MAKH", "SortID", "MASUON", "MAQUAI"];
 
@@ -218,6 +219,9 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
                 <label>Giá trang trí</label>
                 <input
                   type="number"
+                  onKeyDown={handleDisableKeyDownUp}
+                  onKeyUp={handleDisableKeyDownUp}
+                  onFocus={handleFocus}
                   min={0}
                   name="GIATRANGTRI"
                   value={form["GIATRANGTRI"]}
@@ -232,6 +236,9 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
                 <input
                   name="GIATANTRANG"
                   type="number"
+                  onKeyDown={handleDisableKeyDownUp}
+                  onKeyUp={handleDisableKeyDownUp}
+                  onFocus={handleFocus}
                   min={0}
                   value={form["GIATANTRANG"]}
                   onChange={(e) =>
@@ -263,6 +270,9 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
                 <input
                   name="GIASUON"
                   type="number"
+                  onKeyDown={handleDisableKeyDownUp}
+                  onKeyUp={handleDisableKeyDownUp}
+                  onFocus={handleFocus}
                   min={0}
                   value={form["GIASUON"]}
                   onChange={(e) =>
@@ -276,6 +286,9 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
                 <input
                   name="GIANHANCONG"
                   type="number"
+                  onKeyDown={handleDisableKeyDownUp}
+                  onKeyUp={handleDisableKeyDownUp}
+                  onFocus={handleFocus}
                   min={0}
                   value={form["GIANHANCONG"]}
                   onChange={(e) =>
@@ -291,6 +304,9 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
               <label>Đơn giá</label>
               <input
                 type="number"
+                onKeyDown={handleDisableKeyDownUp}
+                onKeyUp={handleDisableKeyDownUp}
+                onFocus={handleFocus}
                 min={0}
                 name="DONGIA"
                 value={form["DONGIA"]}
@@ -306,6 +322,9 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
                 <input
                   name="GIAGOT"
                   type="number"
+                  onKeyDown={handleDisableKeyDownUp}
+                  onKeyUp={handleDisableKeyDownUp}
+                  onFocus={handleFocus}
                   min={0}
                   value={form["GIAGOT"]}
                   onChange={(e) =>
@@ -318,6 +337,9 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
                 <input
                   name="GIAKEO"
                   type="number"
+                  onKeyDown={handleDisableKeyDownUp}
+                  onKeyUp={handleDisableKeyDownUp}
+                  onFocus={handleFocus}
                   min={0}
                   value={form["GIAKEO"]}
                   onChange={(e) =>
@@ -352,6 +374,9 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
                 <input
                   name="GIAVON"
                   type="number"
+                  onKeyDown={handleDisableKeyDownUp}
+                  onKeyUp={handleDisableKeyDownUp}
+                  onFocus={handleFocus}
                   min={0}
                   value={form["GIAVON"]}
                   onChange={(e) =>

@@ -1,10 +1,7 @@
 import MaterialReactTable from "material-react-table";
 import styles from "./XemPhanCong.module.scss";
 import { useMemo, useState, useEffect } from "react";
-import {
-  renderDataEmpty,
-  processingInfoColumnTable,
-} from "~utils/processing_data_table";
+import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { border_text_table_config } from "~config/ui";
 import { INFO_COLS_THO, INFO_COLS_DONHANG } from "./ConstantVariable";
 

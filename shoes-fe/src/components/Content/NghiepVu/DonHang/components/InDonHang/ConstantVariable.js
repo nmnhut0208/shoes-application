@@ -11,14 +11,44 @@ export const COL_INFO_SIZE = [
 ];
 
 export const INFO_COLS_THO = [
-  { header: "ĐẾ", key: "TENMAUDE", width: 7 * rem_to_px },
-  { header: "GÓT", key: "TENMAUGOT", width: 7 * rem_to_px },
-  { header: "SƯỜN", key: "TENMAUSUON", width: 8 * rem_to_px },
-  { header: "CÁ: CÁ DÀI", key: "TENMAUCA", width: 12 * rem_to_px },
-  { header: "QUAI", key: "TENMAUQUAI", width: 9 * rem_to_px },
+  { header: "ĐẾ", key: "TENMAUDE", width: 7 * rem_to_px, textAlign: "center" },
+  {
+    header: "GÓT",
+    key: "TENMAUGOT",
+    width: 7 * rem_to_px,
+    textAlign: "center",
+  },
+  {
+    header: "SƯỜN",
+    key: "TENMAUSUON",
+    width: 8 * rem_to_px,
+    textAlign: "center",
+  },
+  {
+    header: "CÁ: CÁ DÀI",
+    key: "TENMAUCA",
+    width: 12 * rem_to_px,
+    textAlign: "center",
+  },
+  {
+    header: "QUAI",
+    key: "TENMAUQUAI",
+    width: 9 * rem_to_px,
+    textAlign: "center",
+  },
   { header: "SIZE", key: "SIZE", width: 16 * rem_to_px },
-  { header: "THỢ ĐẾ", key: "TENTHODE", width: 8 * rem_to_px },
-  { header: "THỢ QUAI", key: "TENTHOQUAI", width: 8 * rem_to_px },
+  {
+    header: "THỢ ĐẾ",
+    key: "TENTHODE",
+    width: 8 * rem_to_px,
+    textAlign: "center",
+  },
+  {
+    header: "THỢ QUAI",
+    key: "TENTHOQUAI",
+    width: 8 * rem_to_px,
+    textAlign: "center",
+  },
 ];
 //===========================
 export const fontSize = "1.4rem";

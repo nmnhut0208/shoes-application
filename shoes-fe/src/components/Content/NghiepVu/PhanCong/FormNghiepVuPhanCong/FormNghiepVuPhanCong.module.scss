@@ -2,7 +2,7 @@
 
 .container {
   height: 90vh;
-  width: 85vw;
+  width: 80vw;
   margin-right: 2rem;
   display: grid;
   grid-template-columns: 1fr;
@@ -10,9 +10,9 @@
 
   .input_query {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 0.75fr 2.5fr;
+    grid-template-columns: 0.75fr 0.75fr 0.5fr 2fr;
     input[type="text"] {
-      width: 15rem;
+      width: 12rem;
     }
     .pair:not(:first-child) {
       label {
@@ -23,14 +23,14 @@
     .pair:last-child {
       text-align: right;
       input {
-        width: 70%;
+        width: 80%;
       }
     }
   }
 
   .phan_cong {
     display: grid;
-    grid-template-columns: 0.25fr 0.75fr 2fr 4fr;
+    grid-template-columns: 0.25fr 0.75fr 2fr 3fr;
 
     row-gap: 0.5rem;
     span {
@@ -72,7 +72,7 @@
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       input {
-        width: 10rem;
+        width: 7rem;
       }
       .pair_info:not(:first-child) {
         label {
@@ -104,7 +104,7 @@
     // position: fixed;
     // che mất đường cuối cùng để kéo table chi tiết phân công
     // => nên không xài cái này nữa
-    width: 85vw;
+    // width: 80vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

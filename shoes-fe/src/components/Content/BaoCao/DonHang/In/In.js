@@ -34,8 +34,10 @@ const In = ({ data, setShowModal, stylePrint }) => {
 
   useLayoutEffect(() => {
     if (dataTable.length > 0) {
-      // setShowModal(false);
-      if (Object.keys(stylePrint).length == 0) handelPrint();
+      if (Object.keys(stylePrint).length == 0) {
+        setShowModal(false);
+        handelPrint();
+      }
     }
   }, [dataTable]);
 
