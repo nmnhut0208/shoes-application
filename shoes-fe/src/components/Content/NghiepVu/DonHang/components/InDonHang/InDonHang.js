@@ -85,7 +85,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
   useLayoutEffect(() => {
     if (dataPrint.length > 0 && listImage.length > 0 && doneGetDiaChi) {
-      // setShowModal(false);
+      setShowModal(false);
       handelPrint();
     }
   }, [dataPrint, listImage, doneGetDiaChi]);

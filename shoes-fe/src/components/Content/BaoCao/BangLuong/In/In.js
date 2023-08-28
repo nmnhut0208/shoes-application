@@ -82,7 +82,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
 
   useLayoutEffect(() => {
     if (infoEachEmployer.length > 0) {
-      // setShowModal(false);
+      setShowModal(false);
       if (Object.keys(stylePrint).length == 0) handelPrint();
     }
   }, [infoEachEmployer]);

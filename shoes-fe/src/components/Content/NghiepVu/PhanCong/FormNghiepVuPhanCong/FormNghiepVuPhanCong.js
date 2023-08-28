@@ -335,13 +335,15 @@ const FormNghiepVuPhanCong = ({
         setInfoPhieu={setInfoPhieu}
         view={view}
       />
-      <TableDonHang
-        columns={infoTableDonHang}
-        data={dataDonHang}
-        maxHeight={15}
-        rowSelection={rowSelectionDonHangToPhanCong}
-        setRowSelection={setRowSelectionDonHangToPhanCong}
-      />
+      <div style={{ width: "80vw" }}>
+        <TableDonHang
+          columns={infoTableDonHang}
+          data={dataDonHang}
+          maxHeight={15}
+          rowSelection={rowSelectionDonHangToPhanCong}
+          setRowSelection={setRowSelectionDonHangToPhanCong}
+        />
+      </div>
 
       {!view && (
         <PhanCongForm
@@ -357,7 +359,7 @@ const FormNghiepVuPhanCong = ({
           <button onClick={handleClickDelete}>Xóa</button>
         </div>
       )}
-      <div style={{ width: "85vw" }}>
+      <div style={{ width: "80vw" }}>
         <TableChiTietPhanCong
           columns={infoTableChiTietPhanCong}
           data={dataChiTietPhanCong}

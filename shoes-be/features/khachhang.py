@@ -11,7 +11,6 @@ from utils.vietnamese import convert_data_to_save_database
 class ITEM_KHACHHANG(BaseModel):
     MAKH: str
     TENKH: str
-    DONGIA: Optional[int] = 0
     DIACHI: str
     TEL: str
     FAX: Optional[str] = None
@@ -32,7 +31,7 @@ kh = KHACHHANG()
 
 @router.get("/khachhang")
 def read() -> List[ITEM_KHACHHANG]:
-    sql = """SELECT MAKH, TENKH, COALESCE(DONGIA, 0) as DONGIA, 
+    sql = """SELECT MAKH, TENKH,
                 COALESCE(DIACHI, '') AS DIACHI, 
                 COALESCE(TEL, '') AS TEL, 
                 COALESCE(FAX, '') AS FAX,

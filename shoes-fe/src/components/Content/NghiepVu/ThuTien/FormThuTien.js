@@ -7,6 +7,7 @@ import In from "./In";
 import styles from "./FormThuTien.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import { useUserContext } from "~user";
+import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 
 const updateSOPHIEU = (sophieu) => {
   console.log("save so don hang");
@@ -190,6 +191,9 @@ const FormThuTien = ({ dataView, type_action }) => {
             onChange={(e) =>
               handleChangeInformationForm({ THANHTIEN: e.target.value })
             }
+            onKeyDown={handleDisableKeyDownUp}
+            onKeyUp={handleDisableKeyDownUp}
+            onFocus={handleFocus}
             className={styles.item_size_small}
           />
         </div>

@@ -31,9 +31,15 @@ const FormSuon = () => {
     []
   );
 
-  const handleChangeInformationForm = (e) => {
-    const data = { ...inputForm };
-    data[e.target.name] = e.target.value;
+  const handleChangeInformationForm = (dict_data) => {
+    const data = { ...inputForm, ...dict_data };
+    let name = Object.keys(dict_data)[0];
+    let list_feature = ["MAGOT", "MAMUI"];
+    if (list_feature.includes(name)) {
+      let masuon = data["MAGOT"] + "-" + data["MAMUI"];
+      data["MASUON"] = masuon;
+      data["TENSUON"] = masuon;
+    }
     setInputForm(data);
   };
 
@@ -111,35 +117,28 @@ const FormSuon = () => {
         <div className={styles.items_container}>
           <div className={styles.item}>
             <label>Mã sườn</label>
-            <input
-              name="MASUON"
-              readOnly={stateTable.inforShowTable.action_row === "edit" || view}
-              value={inputForm["MASUON"]}
-              onChange={(e) => handleChangeInformationForm(e)}
-            />
+            <input name="MASUON" readOnly={true} value={inputForm["MASUON"]} />
           </div>
 
           <div className={styles.item}>
             <label>Tên sườn</label>
             <input
-              readOnly={view}
+              readOnly={true}
               name="TENSUON"
               value={inputForm["TENSUON"]}
-              onChange={(e) => handleChangeInformationForm(e)}
             />
           </div>
 
           <div className={styles.item}>
             <label>Mã gót</label>
             <ItemGot
-              readOnly={view}
+              readOnly={stateTable.inforShowTable.action_row === "edit" || view}
               initValue={{
                 value: inputForm["MAGOT"],
                 label: inputForm["TENGOT"],
               }}
               changeData={(dict_data) => {
-                setInputForm({
-                  ...inputForm,
+                handleChangeInformationForm({
                   MAGOT: dict_data["value"],
                   TENGOT: dict_data["label"],
                 });
@@ -152,14 +151,13 @@ const FormSuon = () => {
           <div className={styles.item}>
             <label>Mã mũi</label>
             <ItemMui
-              readOnly={view}
+              readOnly={stateTable.inforShowTable.action_row === "edit" || view}
               initValue={{
                 value: inputForm["MAMUI"],
                 label: inputForm["TENMUI"],
               }}
               changeData={(dict_data) => {
-                setInputForm({
-                  ...inputForm,
+                handleChangeInformationForm({
                   MAMUI: dict_data["value"],
                   TENMUI: dict_data["label"],
                 });
@@ -175,7 +173,9 @@ const FormSuon = () => {
               readOnly={view}
               name="GHICHU"
               value={inputForm["GHICHU"]}
-              onChange={(e) => handleChangeInformationForm(e)}
+              onChange={(e) =>
+                handleChangeInformationForm({ GHICHU: e.target.value })
+              }
             />
           </div>
         </div>

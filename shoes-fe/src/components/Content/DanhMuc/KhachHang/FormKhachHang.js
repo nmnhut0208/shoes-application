@@ -129,15 +129,6 @@ const FormKhachHang = () => {
       </div>
 
       <div className={styles.item}>
-        <label>Giá ưu tiên</label>
-        <input
-          name="DONGIA"
-          value={inputForm["DONGIA"]}
-          onChange={(e) => handleChangeInformationForm(e)}
-        />
-      </div>
-
-      <div className={styles.item}>
         <label>Ghi chú</label>
         <input
           name="GHICHU"

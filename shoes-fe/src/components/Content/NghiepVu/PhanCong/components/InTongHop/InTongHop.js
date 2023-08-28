@@ -1,20 +1,15 @@
-import { useMemo, useRef, useState, useLayoutEffect, useEffect } from "react";
+import { useRef, useState, useLayoutEffect, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import { getImageOfDanhMuc } from "~utils/api_get_image";
 
 import styles from "./InTongHop.module.scss";
 import { INFO_COLS_THO, fontSize, COL_INFO_SIZE } from "./ConstantVariable";
-import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { TableToPrint, SizeColumnInPrint } from "~common_tag/reports";
 import { useTableContext, actions_table } from "~table_context";
 
 const InTongHop = ({ sophieu, data }) => {
-  const [dataPrint, setDataPrint] = useState([]);
   const [stateTable, dispatchTable] = useTableContext();
-  const [listImage, setListImage] = useState([]);
-  const columns = useMemo(() => {
-    return processingInfoColumnTable(INFO_COLS_THO);
-  }, []);
+  const [dataPrint, setDataPrint] = useState([]);
   const componentRef = useRef();
   const handelPrint = useReactToPrint({
     content: () => componentRef.current,
@@ -73,7 +68,7 @@ const InTongHop = ({ sophieu, data }) => {
   useLayoutEffect(() => {
     if (dataPrint.length > 0) {
       // && listImage.length > 0) {
-      // dispatchTable(actions_table.setModeShowModal(false));
+      dispatchTable(actions_table.setModeShowModal(false));
       handelPrint();
     }
   }, [dataPrint]);

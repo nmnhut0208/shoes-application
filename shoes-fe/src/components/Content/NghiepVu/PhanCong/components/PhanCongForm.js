@@ -9,8 +9,8 @@ import { rem_to_px, border_text_table_config } from "~config/ui";
 
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import styles from "../FormNghiepVuPhanCong/FormNghiepVuPhanCong.module.scss";
-
 import { ItemThoDe, ItemThoQuai } from "~items";
+import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 
 const listSubInforGiay = [
   {
@@ -182,7 +182,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
               });
             }}
             size_input={"19.5rem"}
-            size_span={"46.5rem"}
+            size_span={"30rem"}
           />
         </div>
       </div>
@@ -196,6 +196,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             readOnly={form["SIZE0"] !== "" && parseInt(form["SIZE0"]) == 0}
             value={form["SIZE0"]}
             onChange={(e) => handleChangeForm(e)}
+            onKeyDown={handleDisableKeyDownUp}
+            onKeyUp={handleDisableKeyDownUp}
+            onFocus={handleFocus}
           />
         </div>
         <div className={styles.pair_info}>
@@ -207,6 +210,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             readOnly={form["SIZE1"] !== "" && parseInt(form["SIZE1"]) == 0}
             value={form["SIZE1"]}
             onChange={(e) => handleChangeForm(e)}
+            onKeyDown={handleDisableKeyDownUp}
+            onKeyUp={handleDisableKeyDownUp}
+            onFocus={handleFocus}
           />
         </div>
         <div className={styles.pair_info}>
@@ -218,6 +224,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             min="0"
             readOnly={form["SIZE5"] !== "" && parseInt(form["SIZE5"]) == 0}
             onChange={(e) => handleChangeForm(e)}
+            onKeyDown={handleDisableKeyDownUp}
+            onKeyUp={handleDisableKeyDownUp}
+            onFocus={handleFocus}
           />
         </div>
         <div className={styles.pair_info}>
@@ -229,6 +238,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             min="0"
             readOnly={form["SIZE6"] !== "" && parseInt(form["SIZE6"]) == 0}
             onChange={(e) => handleChangeForm(e)}
+            onKeyDown={handleDisableKeyDownUp}
+            onKeyUp={handleDisableKeyDownUp}
+            onFocus={handleFocus}
           />
         </div>
         <div className={styles.pair_info}>
@@ -240,6 +252,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             min="0"
             readOnly={form["SIZE7"] !== "" && parseInt(form["SIZE7"]) == 0}
             onChange={(e) => handleChangeForm(e)}
+            onKeyDown={handleDisableKeyDownUp}
+            onKeyUp={handleDisableKeyDownUp}
+            onFocus={handleFocus}
           />
         </div>
         <div className={styles.pair_info}>
@@ -251,6 +266,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             min="0"
             readOnly={form["SIZE8"] !== "" && parseInt(form["SIZE8"]) == 0}
             onChange={(e) => handleChangeForm(e)}
+            onKeyDown={handleDisableKeyDownUp}
+            onKeyUp={handleDisableKeyDownUp}
+            onFocus={handleFocus}
           />
         </div>
         <div className={styles.pair_info}>
@@ -262,6 +280,9 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             min="0"
             readOnly={form["SIZE9"] !== "" && parseInt(form["SIZE9"]) == 0}
             onChange={(e) => handleChangeForm(e)}
+            onKeyDown={handleDisableKeyDownUp}
+            onKeyUp={handleDisableKeyDownUp}
+            onFocus={handleFocus}
           />
         </div>
       </div>

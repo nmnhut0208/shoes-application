@@ -1,6 +1,7 @@
 import { memo } from "react";
 import MaterialReactTable from "material-react-table";
 import { border_text_table_config } from "~config/ui";
+import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 
 const SubTable = ({
   columns,
@@ -83,6 +84,15 @@ const SubTable = ({
           handleSaveCell(cell, event.target.value);
         },
         type: "number",
+        onKeyDown: (event) => {
+          handleDisableKeyDownUp(event);
+        },
+        onKeyUp: (event) => {
+          handleDisableKeyDownUp(event);
+        },
+        onFocus: (event) => {
+          handleFocus(event);
+        },
         sx: {
           input: {
             textAlign: "right",

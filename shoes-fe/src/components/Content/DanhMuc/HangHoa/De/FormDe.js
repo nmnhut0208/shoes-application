@@ -6,6 +6,7 @@ import {
   actions as actions_items_context,
 } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
+import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 
 const FormDe = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -101,6 +102,9 @@ const FormDe = () => {
             onChange={(e) => handleChangeInformationForm(e)}
             name="DONGIA"
             type="number"
+            onKeyDown={handleDisableKeyDownUp}
+            onKeyUp={handleDisableKeyDownUp}
+            onFocus={handleFocus}
             className={styles.item_size_middle}
           />
         </div>

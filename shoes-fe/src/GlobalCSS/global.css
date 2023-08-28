@@ -20,3 +20,13 @@ tr {
   /* tăng kích thước cho mục chỉ dẫn, để chú dễ thấy */
   font-size: 1.5rem !important;
 }
+
+input[type=number] {
+  text-align: right;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

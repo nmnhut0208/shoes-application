@@ -4,6 +4,7 @@ import styles from "./In.module.scss";
 import { INFO_COLS_THO, fontSize, COL_INFO_SIZE } from "./ConstantVariable";
 import { TableToPrint, SizeColumnInPrint } from "~common_tag/reports";
 import { getDonGiaQuai, getDonGiaDe } from "~utils/api_get_info_giay";
+import { useTableContext, actions_table } from "~table_context";
 
 const processing_data = (data, TYPE) => {
   let ma_giay_checked = [];
@@ -59,7 +60,7 @@ const processing_data = (data, TYPE) => {
 };
 
 const In = ({ sophieu, data }) => {
-  console.log("data: ", data);
+  const [stateTable, dispatchTable] = useTableContext();
   const [dataPrint, setDataPrint] = useState([]);
 
   const componentRef = useRef();
@@ -110,6 +111,7 @@ const In = ({ sophieu, data }) => {
 
   useLayoutEffect(() => {
     if (dataPrint.length > 0) {
+      dispatchTable(actions_table.setModeShowModal(false));
       handelPrint();
     }
   }, [dataPrint]);
