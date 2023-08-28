@@ -207,7 +207,7 @@ const COLS_HAVE_SUM_FOOTER = [
   "THANHTIEN",
 ];
 
-const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
+const FormGiaoHang = ({ isSaveData, setIsSaveDataNghiepVuGiaoHang, permission }) => {
   console.log("=====infoColumns: ", infoColumns);
 
   const [userState, userDispatch] = useUserContext();
@@ -457,7 +457,7 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
     //   setRowSelectionSub(mapRowSelectedSub[mapSelected[curSelected]]);
     // }
     return infoColumnsSubInit;
-  }, [curSelected]);
+  }, [curSelected, dataTableSub]);
 
   // console.log("infoColumnsSub: ", infoColumnsSub);
   console.log("selected: ", rowSelectionSub)
@@ -683,7 +683,7 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
     }
   }, [curSelected])
 
-  console.log("sub: ", rowSelectionSub, mapRowSelectedSub);
+  console.log("sub: ", dataTableSub);
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -699,6 +699,7 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
                   data={dataTableKhachHang}
                   rowSelection={rowSelectionMaKH}
                   setRowSelection={setRowSelectionMaKH}
+                  isSaveData={isSaveData}
                   setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
                 />
               }
@@ -769,6 +770,7 @@ const FormGiaoHang = ({ setIsSaveDataNghiepVuGiaoHang, permission }) => {
         columns={infoColumnsSub}
         data={dataTableSub[mapSelected[curSelected]] ? dataTableSub[mapSelected[curSelected]] : []}
         dataAll={dataTableSub}
+        curDH={mapSelected[curSelected]}
         setDataTable={setDataTableSub}
         rowSelection={mapRowSelectedSub[mapSelected[curSelected]] ? mapRowSelectedSub[mapSelected[curSelected]] : {}}
         flag_rowSelection={true}
