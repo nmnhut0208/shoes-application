@@ -2,12 +2,12 @@ import { memo } from "react";
 import MaterialReactTable from "material-react-table";
 import { border_text_table_config } from "~config/ui";
 
-const SubTable = ({
+const MainTable = ({
   columns,
   data,
-  dataAll,
   setDataTable,
   rowSelection,
+  setCurSelected,
   flag_rowSelection,
   setRowSelection,
   setIsSaveData,
@@ -17,9 +17,6 @@ const SubTable = ({
   //   console.log("data: ", data);
   const handleSaveCell = (cell, value) => {
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
-    if ( dataAll.length === 0 ) return;
-    data = dataAll["DH-0051-04/23"]
-    console.log("cell: ", data);
     var row_current = data[cell.row.index];
     // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
     // Tính lại số lượng
@@ -48,8 +45,7 @@ const SubTable = ({
     }
     // console.log("cell: ", data);
     //send/receive api updates here
-    dataAll["DH-0051-04/23"] = data;
-    setDataTable({...dataAll}); //re-render with new data
+    setDataTable([...data]); //re-render with new data
     setIsSaveData(false);
   };
 
@@ -62,12 +58,26 @@ const SubTable = ({
       enableColumnActions={false}
       enableSorting={false}
       enableSelectAll={false}
-      enableRowSelection={flag_rowSelection}
+      // enableRowSelection={flag_rowSelection}
       //   getRowId={(row) => row.userId}
-      onRowSelectionChange={(rows) => {
-        setRowSelection(rows);
-        setIsSaveData(false);
-      }}
+      // onRowSelectionChange={(rows) => {
+      //   setRowSelection(rows);
+      //   setIsSaveData(false);
+      // }}
+      muiTableBodyRowProps={({ row }) => ({
+        //implement row selection click events manually
+        onClick: () => {
+          setRowSelection((prev) => ({
+            ...prev,
+            [row.id]: !prev[row.id],
+          }));
+          setCurSelected(row.id);
+        },
+        selected: rowSelection[row.id],
+        sx: {
+          cursor: 'pointer',
+        },
+      })}
       state={{ rowSelection }}
       enableTopToolbar={false}
       enableBottomToolbar={false}
@@ -93,4 +103,4 @@ const SubTable = ({
   );
 };
 
-export default memo(SubTable);
+export default memo(MainTable);

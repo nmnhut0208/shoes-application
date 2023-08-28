@@ -280,14 +280,26 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
         };
         return obj;
       });
-      console.log("table: ", dataTableSub);
+      // console.log("table: ", dataTableSub);
+      // group table follow MAGIAY
+      const table_group = table.reduce((acc, curr) => {
+        const index = acc.findIndex((item) => item.MAGIAY === curr.MAGIAY);
+        if (index === -1) {
+          acc.push(curr);
+        } else {
+          acc[index].SOLUONG += curr.SOLUONG;
+          acc[index].THANHTIEN += curr.THANHTIEN;
+        }
+        return acc;
+      }, []);
+      // console.log("table group: ", table_group);
       setDataIn({
         MAKH: infoKH.MAKH,
         TENKH: infoKH.TENKH,
         DIACHI: infoKH.DIACHI,
         NGAYPHIEU: infoKH.NGAYPHIEU,
         SOPHIEU: infoKH.SOPHIEU,
-        table: table,
+        table: table_group,
       });
       setFlag(false);
       dispatchTable(actions_table.setModeShowModal(true));
@@ -319,7 +331,17 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
           return response.json();
         })
         .then((data) => {
-          console.log("tong no : ", data[0]["TONGNO"]);
+          // console.log("tong no : ", data[0]["TONGNO"]);
+          const table_group = table.reduce((acc, curr) => {
+            const index = acc.findIndex((item) => item.MAGIAY === curr.MAGIAY);
+            if (index === -1) {
+              acc.push(curr);
+            } else {
+              acc[index].SOLUONG += curr.SOLUONG;
+              acc[index].THANHTIEN += curr.THANHTIEN;
+            }
+            return acc;
+          }, []);
           setDataIn({
             CONGNO: data[0]["TONGNO"],
             MAKH: infoKH.MAKH,
@@ -327,7 +349,7 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
             DIACHI: infoKH.DIACHI,
             NGAYPHIEU: infoKH.NGAYPHIEU,
             SOPHIEU: infoKH.SOPHIEU,
-            table: table,
+            table: table_group,
           });
           setFlag(true);
           dispatchTable(actions_table.setModeShowModal(true));
