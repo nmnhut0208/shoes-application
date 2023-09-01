@@ -149,8 +149,8 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   };
 
   const infoColumns = useMemo(() => {
-    return updateColumnsInformations(dataMau, dataTable, setDataTable, view);
-  }, [dataTable, dataMau]);
+    return updateColumnsInformations(dataTable, setDataTable, view);
+  }, [dataTable]);
 
   useEffect(() => {
     if (dataTable.length > 0) {

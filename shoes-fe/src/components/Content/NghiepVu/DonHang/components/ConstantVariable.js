@@ -77,6 +77,7 @@ export const COLS_HAVE_SUM_FOOTER = [
   "SIZE8",
   "SIZE9",
   "SIZE0",
+  "SIZE1",
   "SOLUONG",
   "THANHTIEN",
 ];

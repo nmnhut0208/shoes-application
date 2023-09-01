@@ -1,5 +1,6 @@
 import moment from "moment";
 import OptionMau from "./OptionMau";
+import InputMau from "./InputMau/InputMau";
 import {
   INFO_COLS_DONHANG,
   COLS_HAVE_SUM_FOOTER,
@@ -40,12 +41,7 @@ const handleSaveCell = (cell, value, data, setDataTable) => {
   setDataTable([...data]);
 };
 
-export const updateColumnsInformations = (
-  dataMau,
-  dataTable,
-  setDataTable,
-  view
-) => {
+export const updateColumnsInformations = (dataTable, setDataTable, view) => {
   const infoColumnsInit = [];
 
   for (let index in INFO_COLS_DONHANG) {
@@ -123,19 +119,17 @@ export const updateColumnsInformations = (
     if (COLS_HAVE_SELECT_INPUT.includes(key)) {
       info["Cell"] = ({ cell }) => {
         return (
-          <OptionMau
-            init={dataTable[cell.row.id][cell.column.id]}
-            id_row={cell.row.id}
-            id_column={cell.column.id}
-            dataTable={dataTable}
-            dataMau={dataMau}
-            handleChange={(value, label) => {
-              dataTable[cell.row.id][cell.column.id] = value;
-              dataTable[cell.row.id]["TEN" + cell.column.id] = label;
-              setDataTable([...dataTable]);
-            }}
-            readOnly={view}
-          />
+          <div style={{ width: "80%", marginLeft: "10%", marginRight: "10%" }}>
+            <InputMau
+              init={dataTable[cell.row.id][cell.column.id]}
+              handleChangeDataTable={(value, label) => {
+                dataTable[cell.row.id][cell.column.id] = value;
+                dataTable[cell.row.id]["TEN" + cell.column.id] = label;
+                setDataTable([...dataTable]);
+              }}
+              readOnly={view}
+            />
+          </div>
         );
       };
     }
