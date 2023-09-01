@@ -16,13 +16,13 @@ const SubTable = ({
   maxHeight,
   change,
 }) => {
-  //   console.log("data: ", data);
+  console.log("render SubTable: ", data);
   const handleSaveCell = (cell, value) => {
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
     if ( dataAll.length === 0 ) return;
-    data = dataAll[curDH]
-    console.log("cell: ", data);
-    var row_current = data[cell.row.index];
+    let data_new = dataAll[curDH]
+    console.log("cell: ", data_new);
+    var row_current = data_new[cell.row.index];
     // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
     // Tính lại số lượng
     var list_size = [
@@ -44,13 +44,13 @@ const SubTable = ({
       }
       row_current["SOLUONG"] = so_luong;
       row_current["THANHTIEN"] = row_current["SOLUONG"] * row_current["GIABAN"];
-      data[cell.row.index] = row_current;
+      data_new[cell.row.index] = row_current;
     } else {
-      data[cell.row.index][cell.column.id] = value;
+      data_new[cell.row.index][cell.column.id] = value;
     }
     // console.log("cell: ", data);
     //send/receive api updates here
-    dataAll[curDH] = data;
+    dataAll[curDH] = data_new;
     setDataTable({...dataAll}); //re-render with new data
     setIsSaveData(false);
   };

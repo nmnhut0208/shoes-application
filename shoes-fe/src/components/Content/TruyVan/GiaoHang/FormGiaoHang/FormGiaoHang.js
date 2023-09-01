@@ -636,6 +636,7 @@ const FormGiaoHang = ({ permission, infoKH, setShowForm }) => {
       />
       <header className={styles.header_table}>Chi tiết đơn hàng</header>
       <SubTable
+        key={curSelected}
         columns={infoColumnsSub}
         data={dataTableSub[mapSelected[curSelected]] ? dataTableSub[mapSelected[curSelected]] : []}
         dataAll={dataTableSub}
