@@ -7,7 +7,7 @@ import styles from "./DanhMucGiayKhachHang.module.scss";
 import { border_text_table_config } from "~config/ui";
 
 const DanhMucGiayKhachHang = ({
-  MAKH,
+  listGiayKH,
   dataOrigin,
   setInfoSelection,
   setShowModal,
@@ -20,20 +20,8 @@ const DanhMucGiayKhachHang = ({
   }, []);
 
   useEffect(() => {
-    if (MAKH !== "") {
-      fetch("http://localhost:8000/donhang/khachhang/" + MAKH + "/giay")
-        .then((response) => {
-          return response.json();
-        })
-        .then((info) => {
-          console.log(info);
-          setDataTable(info);
-        })
-        .catch((err) => {
-          console.log(":error: ", err);
-        });
-    }
-  }, []);
+    setDataTable(listGiayKH);
+  }, [listGiayKH]);
 
   const handleSubmit = () => {
     const columns_selected = [];

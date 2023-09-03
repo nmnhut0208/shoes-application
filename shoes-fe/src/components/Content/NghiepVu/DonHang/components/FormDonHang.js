@@ -13,6 +13,7 @@ import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import InDonHang from "./InDonHang";
 
 import styles from "./FormDonHang.module.scss";
+import { renderDataEmpty } from "~utils/processing_data_table";
 import {
   updateSODH,
   updateDanhSachMau,
@@ -20,6 +21,8 @@ import {
   updateFormDonHang,
   updateColumnsInformations,
 } from "./helper";
+
+import { INFO_COLS_DONHANG } from "./ConstantVariable";
 
 const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   const view = useMemo(() => {
@@ -29,7 +32,9 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   }, []);
 
   const [stateUser, dispatchUser] = useUserContext();
-  const [dataTable, setDataTable] = useState([]);
+  const [dataTable, setDataTable] = useState(() =>
+    renderDataEmpty(INFO_COLS_DONHANG, 1)
+  );
   const [isUpdateFromDataView, setIsUpdateFromDataView] = useState(false);
 
   const [dataMau, setDataMau] = useState([]);
@@ -53,6 +58,42 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   });
 
   const [showModal, setShowModal] = useState(false);
+  const [listGiayUnique, setListGiayUnique] = useState([]);
+  const [listGiayKH, setListGiayKH] = useState([]);
+
+  useEffect(() => {
+    if (formInfoDonHang["MAKH"] !== "") {
+      fetch(
+        "http://localhost:8000/donhang/giay_unique/" + formInfoDonHang["MAKH"]
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          console.log("GiayKH", info);
+          setListGiayUnique(info);
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+
+      fetch(
+        "http://localhost:8000/donhang/khachhang/" +
+          formInfoDonHang["MAKH"] +
+          "/giay"
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          console.log(info);
+          setListGiayKH(info);
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+    }
+  }, [formInfoDonHang["MAKH"]]);
 
   useEffect(() => {
     updateDanhSachMau(setDataMau);
@@ -149,8 +190,13 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   };
 
   const infoColumns = useMemo(() => {
-    return updateColumnsInformations(dataTable, setDataTable, view);
-  }, [dataTable]);
+    return updateColumnsInformations(
+      dataTable,
+      setDataTable,
+      view,
+      listGiayUnique
+    );
+  }, [dataTable, listGiayUnique]);
 
   useEffect(() => {
     if (dataTable.length > 0) {
@@ -267,7 +313,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
           setShowModal={setShowModal}
         >
           <DanhMucGiayKhachHang
-            MAKH={formInfoDonHang["MAKH"]}
+            listGiayKH={listGiayKH}
             dataOrigin={dataTable}
             setInfoSelection={setDataTable}
             setShowModal={setShowModal}

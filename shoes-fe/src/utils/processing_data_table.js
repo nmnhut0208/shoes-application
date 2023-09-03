@@ -71,7 +71,13 @@ export const renderDataEmpty = (list_key, number_rows) => {
   const data = [];
   const object_empty = {};
   for (let i = 0; i < list_key.length; i++) {
-    object_empty[list_key[i]["key"]] = "";
+    if (
+      list_key[i]["key"].includes("SIZE") ||
+      list_key[i]["key"].includes("THANHTIEN") ||
+      list_key[i]["key"].includes("SOLUONG")
+    )
+      object_empty[list_key[i]["key"]] = 0;
+    else object_empty[list_key[i]["key"]] = "";
   }
   for (let i = 0; i < number_rows; i++) {
     data.push(object_empty);
