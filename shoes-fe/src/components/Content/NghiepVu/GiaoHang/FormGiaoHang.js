@@ -190,7 +190,7 @@ const list_key_sub = [
   {
     header: "Tên Giày",
     key: "TENGIAY",
-    width: 35 * rem_to_px,
+    width: 50 * rem_to_px,
     enableEditing: false,
   },
 ];
@@ -207,7 +207,11 @@ const COLS_HAVE_SUM_FOOTER = [
   "THANHTIEN",
 ];
 
-const FormGiaoHang = ({ isSaveData, setIsSaveDataNghiepVuGiaoHang, permission }) => {
+const FormGiaoHang = ({
+  isSaveData,
+  setIsSaveDataNghiepVuGiaoHang,
+  permission,
+}) => {
   console.log("=====infoColumns: ", infoColumns);
 
   const [userState, userDispatch] = useUserContext();
@@ -442,7 +446,9 @@ const FormGiaoHang = ({ isSaveData, setIsSaveDataNghiepVuGiaoHang, permission })
     const infoColumnsSubInit = processingInfoColumnTableHaveFooter(
       list_key_sub,
       COLS_HAVE_SUM_FOOTER,
-      dataTableSub[mapSelected[curSelected]] ? dataTableSub[mapSelected[curSelected]] : [],
+      dataTableSub[mapSelected[curSelected]]
+        ? dataTableSub[mapSelected[curSelected]]
+        : [],
       false
     );
     // update mapRowSelectedSub by rowSelectionSub example {mapSelected[curSelected]: rowSelectionSub}
@@ -460,7 +466,7 @@ const FormGiaoHang = ({ isSaveData, setIsSaveDataNghiepVuGiaoHang, permission })
   }, [curSelected, dataTableSub]);
 
   // console.log("infoColumnsSub: ", infoColumnsSub);
-  console.log("selected: ", rowSelectionSub)
+  console.log("selected: ", rowSelectionSub);
 
   useEffect(() => {
     if (infoKH["MAKH"] == undefined || infoKH["MAKH"] == "") {
@@ -493,21 +499,21 @@ const FormGiaoHang = ({ isSaveData, setIsSaveDataNghiepVuGiaoHang, permission })
             "Content-Type": "application/json",
           },
           body: JSON.stringify(send_data),
-      })
-        .then((response) => {
-          return response.json();
         })
-        .then((info) => {
-          // console.log("info: ", info);
-          setDataTableSub(info);
-          // get keys of info to setMapSelected expample {0: key1, 1: key2, ...}
-          const keys = Object.keys(info);
-          const map = {};
-          for (var i = 0; i < keys.length; i++) {
-            map[i] = keys[i];
-          }
-          setMapSelected(map);
-        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((info) => {
+            // console.log("info: ", info);
+            setDataTableSub(info);
+            // get keys of info to setMapSelected expample {0: key1, 1: key2, ...}
+            const keys = Object.keys(info);
+            const map = {};
+            for (var i = 0; i < keys.length; i++) {
+              map[i] = keys[i];
+            }
+            setMapSelected(map);
+          });
       })
       .catch((err) => {
         console.log(":error: ", err);
@@ -515,7 +521,11 @@ const FormGiaoHang = ({ isSaveData, setIsSaveDataNghiepVuGiaoHang, permission })
   }, [infoKH]);
 
   const handleIn = () => {
-    if (stateUser.userPoolAccess.some((obj) => obj.MAFORM === "F0033" && obj.IN === 1)) {
+    if (
+      stateUser.userPoolAccess.some(
+        (obj) => obj.MAFORM === "F0033" && obj.IN === 1
+      )
+    ) {
       // only get rowSelectionSub from dataTableSub
       // const keys = Object.keys(rowSelectionSub);
       const data = [];
@@ -583,7 +593,11 @@ const FormGiaoHang = ({ isSaveData, setIsSaveDataNghiepVuGiaoHang, permission })
   };
 
   const handleInCongNo = () => {
-    if (stateUser.userPoolAccess.some((obj) => obj.MAFORM === "F0033" && obj.IN === 1)) {
+    if (
+      stateUser.userPoolAccess.some(
+        (obj) => obj.MAFORM === "F0033" && obj.IN === 1
+      )
+    ) {
       // const keys = Object.keys(rowSelectionSub);
       const data = [];
       // for (var i = 0; i < keys.length; i++) {
@@ -662,18 +676,16 @@ const FormGiaoHang = ({ isSaveData, setIsSaveDataNghiepVuGiaoHang, permission })
     } else {
       alert("Bạn không có quyền in");
     }
-    
   };
 
   useEffect(() => {
     if (mapSelected[curSelected] !== undefined) {
       setMapRowSelectedSub({
         ...mapRowSelectedSub,
-        [mapSelected[curSelected]]: rowSelectionSub
-      }
-      )
+        [mapSelected[curSelected]]: rowSelectionSub,
+      });
     }
-  }, [rowSelectionSub])
+  }, [rowSelectionSub]);
 
   useEffect(() => {
     if (mapSelected[curSelected] in mapRowSelectedSub) {
@@ -681,7 +693,7 @@ const FormGiaoHang = ({ isSaveData, setIsSaveDataNghiepVuGiaoHang, permission })
     } else {
       setRowSelectionSub({});
     }
-  }, [curSelected])
+  }, [curSelected]);
 
   console.log("sub: ", dataTableSub);
   return (
@@ -769,15 +781,23 @@ const FormGiaoHang = ({ isSaveData, setIsSaveDataNghiepVuGiaoHang, permission })
       <SubTable
         key={curSelected}
         columns={infoColumnsSub}
-        data={dataTableSub[mapSelected[curSelected]] ? dataTableSub[mapSelected[curSelected]] : []}
+        data={
+          dataTableSub[mapSelected[curSelected]]
+            ? dataTableSub[mapSelected[curSelected]]
+            : []
+        }
         dataAll={dataTableSub}
         curDH={mapSelected[curSelected]}
         setDataTable={setDataTableSub}
-        rowSelection={mapRowSelectedSub[mapSelected[curSelected]] ? mapRowSelectedSub[mapSelected[curSelected]] : {}}
+        rowSelection={
+          mapRowSelectedSub[mapSelected[curSelected]]
+            ? mapRowSelectedSub[mapSelected[curSelected]]
+            : {}
+        }
         flag_rowSelection={true}
         setRowSelection={setRowSelectionSub}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
-        maxHeight={"22rem"}
+        maxHeight={"30rem"}
         change={true}
       />
       <Modal>
