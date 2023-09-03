@@ -164,7 +164,7 @@ export const updateColumnsInformations = (
                 dataTable[cell.row.id]["TEN" + cell.column.id] = label;
                 setDataTable([...dataTable]);
               }}
-              readOnly={view}
+              readOnly={view || dataTable[cell.row.id]["MAGIAY"] === ""}
             />
           </div>
         );

@@ -66,7 +66,7 @@ export const INFO_COLS_DONHANG = [
   {
     header: "Tên giày",
     key: "TENGIAY",
-    width: 35 * rem_to_px,
+    width: 50 * rem_to_px,
   },
 ];
 

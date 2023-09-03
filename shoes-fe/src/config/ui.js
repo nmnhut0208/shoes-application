@@ -7,9 +7,9 @@ export const _style_component_table = {
   fontSize: "1.4rem",
   lineHeight: "2rem",
   fontFamily: "Arial",
-  borderRight: "0.15rem solid rgba(0, 0, 0, 0.3)",
-  borderBottom: "0.15rem solid rgba(0, 0, 0, 0.3)",
-  padding: "12px",
+  borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)",
+  borderBottom: "0.17rem solid rgba(0, 0, 0, 0.4)",
+  padding: "6px",
 };
 
 export const border_text_table_config = {
@@ -33,7 +33,7 @@ export const border_text_table_config = {
   muiTableContainerProps: {
     sx: {
       border: "none",
-      borderTop: "0.15rem solid rgba(0, 0, 0, 0.3)",
+      borderTop: "0.17rem solid rgba(0, 0, 0, 0.4)",
     },
   },
 };
