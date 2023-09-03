@@ -55,7 +55,8 @@ export const updateColumnsInformations = (
   dataTable,
   setDataTable,
   view,
-  listGiayUnique
+  listGiayUnique,
+  setIsSaveData
 ) => {
   const infoColumnsInit = [];
 
@@ -101,7 +102,13 @@ export const updateColumnsInformations = (
           type="number"
           value={cell.getValue().toString()}
           onChange={(e) =>
-            handleSaveCell(cell, e.target.value, dataTable, setDataTable)
+            handleSaveCell(
+              cell,
+              e.target.value,
+              dataTable,
+              setDataTable,
+              setIsSaveData
+            )
           }
           onKeyDown={handleDisableKeyDownUp}
           onKeyUp={handleDisableKeyDownUp}

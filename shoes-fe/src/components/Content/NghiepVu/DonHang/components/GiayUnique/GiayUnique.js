@@ -18,12 +18,15 @@ const GiayUnique = ({
   handleChangeDataTable,
   readOnly,
 }) => {
-  console.log("listGiayUnique: ", listGiayUnique);
+  // console.log("listGiayUnique: ", listGiayUnique);
   const [maMA, setMaMau] = useState(() => {
     if (init) {
       return init;
     } else return "";
   });
+  useEffect(() => {
+    setMaMau(init);
+  }, [init]);
   const [data, setData] = useState([]);
   const [labelMau, setLabelMau] = useState("");
   const [dataShow, setDataShow] = useState(() => {
@@ -34,7 +37,7 @@ const GiayUnique = ({
     setData(listGiayUnique);
     setDataShow(listGiayUnique);
   }, [listGiayUnique]);
-  console.log("labelMau: ", labelMau);
+  // console.log("labelMau: ", labelMau);
   useEffect(() => {
     // để đây, chứ nếu truyền vào hàm kia luôn thì nó
     // sẽ bị bug => quá deep update trong ReactDom
@@ -45,7 +48,7 @@ const GiayUnique = ({
     setMaMau(e.target.value);
     if (e.target.value.length > 0) {
       let a = searchInfo(e.target.value, data);
-      console.log(a);
+      // console.log(a);
       if (a.length > 0) {
         setDataShow(a);
       }

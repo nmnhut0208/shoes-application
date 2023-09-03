@@ -36,8 +36,12 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
   }, [labelMau]);
 
   useEffect(() => {
+    setMaMau(init);
+  }, [init]);
+
+  useEffect(() => {
     let a = searchInfo(fistLetterMaMau, data);
-    console.log(a);
+    // console.log(a);
     if (a.length > 0) {
       setDataShow(a);
     }

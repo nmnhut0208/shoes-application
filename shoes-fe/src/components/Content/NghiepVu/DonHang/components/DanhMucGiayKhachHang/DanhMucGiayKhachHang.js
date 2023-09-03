@@ -44,7 +44,16 @@ const DanhMucGiayKhachHang = ({
       }
     }
 
-    setInfoSelection([...dataOrigin, ...columns_selected]);
+    console.log("hello: ", [
+      ...dataOrigin.slice(0, dataOrigin.lenght - 1),
+      ...columns_selected,
+      ...dataOrigin.slice(-1),
+    ]);
+    setInfoSelection([
+      ...dataOrigin.slice(0, dataOrigin.lenght - 1),
+      ...columns_selected,
+      ...dataOrigin.slice(-1),
+    ]);
     setShowModal(false);
   };
 

@@ -45,10 +45,10 @@ const TableDonHang = ({ columns, data, setDataTable, readOnly }) => {
           )}
         </>
       )}
-      add
-      action
-      in
-      row
+      // add
+      // action
+      // in
+      // row
       enableRowActions={!readOnly}
       renderRowActions={({ row, table }) => (
         <Box
