@@ -80,7 +80,7 @@ const GiaoHangSub = ({ setIsSaveDataTruyVanGiaoHang, permission }) => {
       />
       {showForm && (
         <ModalForm setShowForm={setShowForm}>
-          <FormGiaoHang infoKH={sendData} setShowForm={setShowForm} />
+          <FormGiaoHang permission={permission} infoKH={sendData} setShowForm={setShowForm} />
         </ModalForm>
       )}
     </div>

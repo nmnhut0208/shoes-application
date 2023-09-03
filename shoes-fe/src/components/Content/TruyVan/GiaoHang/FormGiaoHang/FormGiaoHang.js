@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import MainTable from "./MainTable";
 import SubTable from "./SubTable";
 import styles from "./FormGiaoHang.module.scss";
 import { useUserContext, actions } from "~user";
@@ -225,13 +226,18 @@ const COLS_HAVE_SUM_FOOTER = [
   "THANHTIEN",
 ];
 
-const FormGiaoHang = ({ infoKH, setShowForm }) => {
+const FormGiaoHang = ({ permission, infoKH, setShowForm }) => {
   const [stateUser, dispatchUser] = useUserContext();
   const [userState, userDispatch] = useUserContext();
   const [stateTable, dispatchTable] = useTableContext();
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
+  const [curSelected, setCurSelected] = useState({});
+  const [mapSelected, setMapSelected] = useState({});
+  const [mapRowSelectedSub, setMapRowSelectedSub] = useState({});
+  const [isSaveDataNghiepVuGiaoHang, setIsSaveDataNghiepVuGiaoHang] = useState(true)
   const [rowSelection, setRowSelection] = useState({});
+  const [rowSelectionSub, setRowSelectionSub] = useState({});
   const [dataIn, setDataIn] = useState({});
   const [flag, setFlag] = useState(false);
   // const test_makh = "THU";
@@ -242,34 +248,77 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
   console.log("GiaoHang");
 
   const handleSave = () => {
-    const send_data = {
-      data: dataTableSub,
-      makh: infoKH.MAKH,
-      sophieu: infoKH.SOPHIEU,
-      diengiai: infoKH.DIENGIAIPHIEU,
-      user: userState.userName,
-    };
-    fetch("http://localhost:8000/savegiaohang", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(send_data),
-    })
-      .then((response) => {
-        return response.json();
+    if (
+      // userState.userPoolAccess.some(
+      //   (obj) => obj.MAFORM === maForm && obj.THEM === 1
+      // )
+      permission.THEM === 1
+    ) {
+      // const keys = Object.keys(rowSelectionSub);
+      const data = [];
+      // for (var i = 0; i < keys.length; i++) {
+      //   if (rowSelectionSub[keys[i]] === true) {
+      //     data.push(dataTableSub[keys[i]]);
+      //   }
+      // }
+      // filter data from dataTableSub with mapRowSelectedSub
+      const keys = Object.keys(mapRowSelectedSub);
+      for (var i = 0; i < keys.length; i++) {
+        const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
+        for (var j = 0; j < keys_sub.length; j++) {
+          if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
+            data.push(dataTableSub[keys[i]][keys_sub[j]]);
+          }
+        }
+      }
+      // console.log("size1: ", data);
+      const send_data = {
+        data: data,
+        makh: infoKH.MAKH,
+        sophieu: infoKH.SOPHIEU,
+        diengiai: infoKH.DIENGIAIPHIEU,
+        user: userState.userName,
+      };
+      fetch("http://localhost:8000/tv_savegiaohang", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(send_data),
       })
-      .then((data) => {
-        alert("Lưu thành công");
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          console.log("info: ", info);
+          if (info.status === "success") {
+            setIsSaveDataNghiepVuGiaoHang(true);
+            alert("Lưu thành công");
+          } else {
+            alert("Lưu thất bại");
+          }
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+    } else {
+      alert("Bạn không có quyền thêm");
+    }
   };
 
   const handleIn = () => {
     if (stateUser.userPoolAccess.some((obj) => obj.MAFORM === "F0033" && obj.IN === 1)) {
-      const table = dataTableSub.map((item) => {
+      const data = [];
+      const keys = Object.keys(mapRowSelectedSub);
+      for (var i = 0; i < keys.length; i++) {
+        const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
+        for (var j = 0; j < keys_sub.length; j++) {
+          if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
+            data.push(dataTableSub[keys[i]][keys_sub[j]]);
+          }
+        }
+      }
+      const table = data.map((item) => {
         const obj = {
           MAGIAY: item.MAGIAY,
           TENGIAY: item.TENGIAY,
@@ -280,14 +329,26 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
         };
         return obj;
       });
-      console.log("table: ", dataTableSub);
+      // console.log("table: ", dataTableSub);
+      // group table follow MAGIAY
+      const table_group = table.reduce((acc, curr) => {
+        const index = acc.findIndex((item) => item.MAGIAY === curr.MAGIAY);
+        if (index === -1) {
+          acc.push(curr);
+        } else {
+          acc[index].SOLUONG += curr.SOLUONG;
+          acc[index].THANHTIEN += curr.THANHTIEN;
+        }
+        return acc;
+      }, []);
+      // console.log("table group: ", table_group);
       setDataIn({
         MAKH: infoKH.MAKH,
         TENKH: infoKH.TENKH,
         DIACHI: infoKH.DIACHI,
         NGAYPHIEU: infoKH.NGAYPHIEU,
         SOPHIEU: infoKH.SOPHIEU,
-        table: table,
+        table: table_group,
       });
       setFlag(false);
       dispatchTable(actions_table.setModeShowModal(true));
@@ -298,7 +359,17 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
 
   const handleInCongNo = () => {
     if (stateUser.userPoolAccess.some((obj) => obj.MAFORM === "F0033" && obj.IN === 1)) {
-      const table = dataTableSub.map((item) => {
+      const data = [];
+      const keys = Object.keys(mapRowSelectedSub);
+      for (var i = 0; i < keys.length; i++) {
+        const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
+        for (var j = 0; j < keys_sub.length; j++) {
+          if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
+            data.push(dataTableSub[keys[i]][keys_sub[j]]);
+          }
+        }
+      }
+      const table = data.map((item) => {
         const obj = {
           MAGIAY: item.MAGIAY,
           TENGIAY: item.TENGIAY,
@@ -319,7 +390,17 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
           return response.json();
         })
         .then((data) => {
-          console.log("tong no : ", data[0]["TONGNO"]);
+          // console.log("tong no : ", data[0]["TONGNO"]);
+          const table_group = table.reduce((acc, curr) => {
+            const index = acc.findIndex((item) => item.MAGIAY === curr.MAGIAY);
+            if (index === -1) {
+              acc.push(curr);
+            } else {
+              acc[index].SOLUONG += curr.SOLUONG;
+              acc[index].THANHTIEN += curr.THANHTIEN;
+            }
+            return acc;
+          }, []);
           setDataIn({
             CONGNO: data[0]["TONGNO"],
             MAKH: infoKH.MAKH,
@@ -327,7 +408,7 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
             DIACHI: infoKH.DIACHI,
             NGAYPHIEU: infoKH.NGAYPHIEU,
             SOPHIEU: infoKH.SOPHIEU,
-            table: table,
+            table: table_group,
           });
           setFlag(true);
           dispatchTable(actions_table.setModeShowModal(true));
@@ -376,29 +457,29 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
     if (infoKH["MAKH"] == undefined) {
       return;
     }
-    const keys = Object.keys(rowSelection);
+    // const keys = Object.keys(rowSelection);
     // console.log("keys row: ", dataTable[keys[0]]);
-    let data = [];
-    for (var i = 0; i < keys.length; i++) {
-      if (rowSelection[keys[i]] === true) {
-        data.push(dataTable[keys[i]]["SODH"]);
-        // console.log("data: ", dataTable[keys[i]]);
-        // setDataTableSub([dataTable[keys[i]]]);
-        // const send_data = {
-        //   sodh: dataTable[keys[i]]["SODH"],
-        //   makh: test_makh,
-        // };
-      }
-    }
+    // let data = [];
+    // for (var i = 0; i < keys.length; i++) {
+    //   if (rowSelection[keys[i]] === true) {
+    //     data.push(dataTable[keys[i]]["SODH"]);
+    //     // console.log("data: ", dataTable[keys[i]]);
+    //     // setDataTableSub([dataTable[keys[i]]]);
+    //     // const send_data = {
+    //     //   sodh: dataTable[keys[i]]["SODH"],
+    //     //   makh: test_makh,
+    //     // };
+    //   }
+    // }
     const send_data = {
-      SODH: data,
+      // SODH: data,
       MAKH: infoKH["MAKH"],
       SOPHIEU: infoKH["SOPHIEU"],
     };
-    if (data.length === 0) {
-      setDataTableSub([]);
-      return;
-    }
+    // if (data.length === 0) {
+    //   setDataTableSub([]);
+    //   return;
+    // }
     fetch("http://localhost:8000/tv_giaohangsub", {
       method: "POST",
       headers: {
@@ -412,24 +493,40 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
       .then((info) => {
         console.log("info: ", info);
         setDataTableSub(info);
+        const keys = Object.keys(info);
+          const map = {};
+          for (var i = 0; i < keys.length; i++) {
+            map[i] = keys[i];
+          }
+        setMapSelected(map);
+        // fill all map row selected sub
+        const map_row_selected_sub = {};
+        for (var i = 0; i < keys.length; i++) {
+          const row_selected_sub = {};
+          for (var j = 0; j < info[keys[i]].length; j++) {
+            row_selected_sub[j] = true;
+          }
+          map_row_selected_sub[keys[i]] = row_selected_sub;
+        }
+        setMapRowSelectedSub(map_row_selected_sub);
       })
       .catch((err) => {
         console.log(":error: ", err);
       });
     // console.log("sub: ", data);
     // setDataTableSub([...data]);
-  }, [rowSelection]);
+  }, []);
 
   const infoColumnsSub = useMemo(() => {
     const infoColumnsSubInit = processingInfoColumnTableHaveFooter(
       list_key_sub,
       COLS_HAVE_SUM_FOOTER,
-      dataTableSub,
+      dataTableSub[mapSelected[curSelected]] ? dataTableSub[mapSelected[curSelected]] : [],
       false
     );
 
     return infoColumnsSubInit;
-  }, [dataTableSub]);
+  }, [curSelected]);
 
   useEffect(() => {
     if (infoKH["MAKH"] == undefined) {
@@ -448,17 +545,36 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
       .then((info) => {
         console.log("info dh: ", info);
         setDataTable(info);
-        const selected = {};
-        for (var i = 0; i < info.length; i++) {
-          selected[i] = true;
-        }
-        setRowSelection(selected);
+        // const selected = {};
+        // for (var i = 0; i < info.length; i++) {
+        //   selected[i] = true;
+        // }
+        // setRowSelection(selected);
       })
       .catch((err) => {
         console.log(":error: ", err);
       });
   }, [infoKH]);
 
+  useEffect(() => {
+    if (mapSelected[curSelected] !== undefined) {
+      setMapRowSelectedSub({
+        ...mapRowSelectedSub,
+        [mapSelected[curSelected]]: rowSelectionSub
+      }
+      )
+    }
+  }, [rowSelectionSub])
+
+  useEffect(() => {
+    if (mapSelected[curSelected] in mapRowSelectedSub) {
+      setRowSelectionSub(mapRowSelectedSub[mapSelected[curSelected]]);
+    } else {
+      setRowSelectionSub({});
+    }
+  }, [curSelected])
+
+  console.log("sub: ", dataTableSub[mapSelected[curSelected]])
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -507,22 +623,31 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
         </div>
       </div>
       <header className={styles.header_table}>Danh sách đơn hàng</header>
-      <SubTable
+      <MainTable
         columns={infoColumns}
         data={dataTable}
         rowSelection={rowSelection}
-        flag_rowSelection={false}
-        // setRowSelection={setRowSelection}
+        setCurSelected={setCurSelected}
+        flag_rowSelection={true}
+        setRowSelection={setRowSelection}
+        setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"24rem"}
+        change={false}
       />
       <header className={styles.header_table}>Chi tiết đơn hàng</header>
       <SubTable
+        key={curSelected}
         columns={infoColumnsSub}
-        data={dataTableSub}
-        rowSelection={{}}
-        flag_rowSelection={false}
-        // setRowSelection={setRowSelection}
-        maxHeight={"26rem"}
+        data={dataTableSub[mapSelected[curSelected]] ? dataTableSub[mapSelected[curSelected]] : []}
+        dataAll={dataTableSub}
+        curDH={mapSelected[curSelected]}
+        setDataTable={setDataTableSub}
+        rowSelection={mapRowSelectedSub[mapSelected[curSelected]] ? mapRowSelectedSub[mapSelected[curSelected]] : {}}
+        flag_rowSelection={true}
+        setRowSelection={setRowSelectionSub}
+        setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
+        maxHeight={"22rem"}
+        change={true}
       />
       <Modal>
         <In data={dataIn} flag={flag} />
@@ -533,6 +658,7 @@ const FormGiaoHang = ({ infoKH, setShowForm }) => {
           {/* <button>Nhập tiếp</button> */}
           <button onClick={handleIn}>In</button>
           <button onClick={handleInCongNo}>In Công Nợ</button>
+          <button onClick={handleSave}>Lưu</button>
           {/* <button
             onClick={() => {
               // dispatchTable(actions_table.setModeShowModal(false));
