@@ -106,6 +106,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
           return response.json();
         })
         .then((info) => {
+          console.log("info donhang: ", info);
           setDataTable([...info, renderDataEmpty(INFO_COLS_DONHANG, 1)[0]]);
           setFormInfoDonHang({
             SODH: info[0]["SODH"],
@@ -314,7 +315,8 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
         >
           <InDonHang
             infoHeader={formInfoDonHang}
-            dataTable={dataTable}
+            dataTable={dataTable.slice(0, dataTable.length - 1)}
+            // remove dòng cuối cùng
             setShowModal={setShowModal}
           />
         </Modal>

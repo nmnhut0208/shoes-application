@@ -24,7 +24,7 @@ const handleSaveCell = (cell, value, data, setDataTable, setIsSaveData) => {
     "SIZE0",
     "SIZE1",
   ];
-  if (list_size.includes(cell.column.id || cell.column.id === "GIABAN")) {
+  if (list_size.includes(cell.column.id) || cell.column.id === "GIABAN") {
     if (value === "") value = 0;
     row_current[cell.column.id] = parseInt(value);
 

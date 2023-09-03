@@ -32,7 +32,8 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
   useEffect(() => {
     // để đây, chứ nếu truyền vào hàm kia luôn thì nó
     // sẽ bị bug => quá deep update trong ReactDom
-    handleChangeDataTable(maMA, labelMau);
+    // nhưng nếu xóa hết, ko chọn MAMAU thì ko update lại được
+    if (labelMau !== "") handleChangeDataTable(maMA, labelMau);
   }, [labelMau]);
 
   useEffect(() => {
@@ -55,6 +56,7 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
       setDataShow(data);
       setFirstLetterMaMau("");
       setLabelMau("");
+      handleChangeDataTable("", "");
     }
   };
 
