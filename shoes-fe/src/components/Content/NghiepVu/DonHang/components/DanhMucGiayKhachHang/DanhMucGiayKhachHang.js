@@ -24,7 +24,7 @@ const DanhMucGiayKhachHang = ({
   }, [listGiayKH]);
 
   const handleSubmit = () => {
-    const columns_selected = [];
+    const columns_selected = dataOrigin.slice(0, dataOrigin.length - 1);
     for (let key in rowSelection) {
       if (!isNaN(key)) {
         const info = {
@@ -44,16 +44,7 @@ const DanhMucGiayKhachHang = ({
       }
     }
 
-    console.log("hello: ", [
-      ...dataOrigin.slice(0, dataOrigin.lenght - 1),
-      ...columns_selected,
-      ...dataOrigin.slice(-1),
-    ]);
-    setInfoSelection([
-      ...dataOrigin.slice(0, dataOrigin.lenght - 1),
-      ...columns_selected,
-      ...dataOrigin.slice(-1),
-    ]);
+    setInfoSelection([...columns_selected, dataOrigin[dataOrigin.length - 1]]);
     setShowModal(false);
   };
 

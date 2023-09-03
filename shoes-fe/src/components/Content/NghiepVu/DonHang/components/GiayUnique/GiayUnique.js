@@ -1,6 +1,5 @@
 import { useState, memo, useEffect } from "react";
 import { Popover, Space } from "antd";
-import { useItemsContext } from "~items_context";
 import Table from "./Table";
 
 const searchInfo = (firstLetter, data) => {
@@ -41,7 +40,7 @@ const GiayUnique = ({
   useEffect(() => {
     // để đây, chứ nếu truyền vào hàm kia luôn thì nó
     // sẽ bị bug => quá deep update trong ReactDom
-    handleChangeDataTable(maMA, labelMau);
+    if (labelMau !== "") handleChangeDataTable(maMA, labelMau);
   }, [labelMau]);
 
   const handleChangeMaMau = (e) => {
