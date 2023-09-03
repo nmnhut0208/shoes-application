@@ -10,7 +10,7 @@ import {
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 import { renderDataEmpty } from "~utils/processing_data_table";
 
-const handleSaveCell = (cell, value, data, setDataTable) => {
+const handleSaveCell = (cell, value, data, setDataTable, setIsSaveData) => {
   //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
   var row_current = data[cell.row.index];
   // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
@@ -48,6 +48,7 @@ const handleSaveCell = (cell, value, data, setDataTable) => {
     data.push(renderDataEmpty(INFO_COLS_DONHANG, 1)[0]);
   }
   setDataTable([...data]);
+  setIsSaveData(false);
 };
 
 export const updateColumnsInformations = (
