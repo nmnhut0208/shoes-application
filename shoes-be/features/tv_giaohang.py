@@ -89,6 +89,7 @@ def save(data: dict) -> RESPONSE:
     makh = data["makh"]
     sophieu = data["sophieu"]
     diengiai = data["diengiai"]
+    date = data["date"]
     user = data["user"].lower()
     # get 
     sql_delete = f"""delete FROM CONGNO
@@ -96,7 +97,8 @@ def save(data: dict) -> RESPONSE:
                     and LOAIPHIEU = 'BH' 
                     and MAKH = '{makh}'"""
     TVGH.execute_custom(sql_delete)
-    today = datetime.now()
+    # today = datetime.now()
+    today = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
     year = today.year
     madong = find_info_primary_key("CONGNO", "MD", today)
     gh = find_info_primary_key("CONGNO", "BH", today) + 1

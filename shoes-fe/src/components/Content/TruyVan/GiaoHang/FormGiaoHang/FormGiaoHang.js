@@ -12,6 +12,7 @@ import {
 } from "~utils/processing_data_table";
 import { convertDateForReport } from "~utils/processing_date";
 import { rem_to_px } from "~config/ui";
+import moment from "moment";
 
 const list_key = [
   { header: "Số đơn hàng", key: "SODH", width: 5 * rem_to_px },
@@ -226,7 +227,24 @@ const COLS_HAVE_SUM_FOOTER = [
   "THANHTIEN",
 ];
 
-const FormGiaoHang = ({ permission, infoKH, setShowForm }) => {
+const updateData = (year, setDataTable) => {
+  let url = "http://localhost:8000/tv_giaohang";
+  if (year != "" && year > 2020) {
+    url += "?YEAR=" + year;
+  }
+  fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((info) => {
+      setDataTable(info);
+    })
+    .catch((err) => {
+      console.log(":error: ", err);
+    });
+};
+
+const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, setShowForm }) => {
   const [stateUser, dispatchUser] = useUserContext();
   const [userState, userDispatch] = useUserContext();
   const [stateTable, dispatchTable] = useTableContext();
@@ -278,6 +296,7 @@ const FormGiaoHang = ({ permission, infoKH, setShowForm }) => {
         sophieu: infoKH.SOPHIEU,
         diengiai: infoKH.DIENGIAIPHIEU,
         user: userState.userName,
+        date: moment(infoKH.NGAYPHIEU).format("YYYY-MM-DD HH:mm:ss"),
       };
       fetch("http://localhost:8000/tv_savegiaohang", {
         method: "POST",
@@ -293,6 +312,7 @@ const FormGiaoHang = ({ permission, infoKH, setShowForm }) => {
           console.log("info: ", info);
           if (info.status === "success") {
             setIsSaveDataNghiepVuGiaoHang(true);
+            updateData(year, setDataTableBig);
             alert("Lưu thành công");
           } else {
             alert("Lưu thất bại");
@@ -607,9 +627,16 @@ const FormGiaoHang = ({ permission, infoKH, setShowForm }) => {
           <div className={styles.right_row}>
             <label>Ngày phiếu</label>
             <input
-              type="text"
+              type="datetime-local"
               className={styles.small}
               value={infoKH["NGAYPHIEU"]}
+              onChange={(e) => {
+                setInfoKH({
+                  ...infoKH,
+                  NGAYPHIEU: e.target.value,
+                });
+              }
+              }
             />
           </div>
           <div className={styles.right_row}>
@@ -618,6 +645,13 @@ const FormGiaoHang = ({ permission, infoKH, setShowForm }) => {
               type="text"
               value={infoKH["DIENGIAIPHIEU"]}
               className={styles.large}
+              onChange={(e) => {
+                setInfoKH({
+                  ...infoKH,
+                  DIENGIAIPHIEU: e.target.value,
+                });
+              }
+              }
             />
           </div>
         </div>
