@@ -46,9 +46,13 @@ const GiaoHangSub = ({ setIsSaveDataTruyVanGiaoHang, permission }) => {
 
   console.log("GiaoHang");
 
+  // useEffect(() => {
+  //   if (year === "") updateData(year, setDataTable);
+  // }, [year]);
+
   useEffect(() => {
-    if (year === "") updateData(year, setDataTable);
-  }, [year]);
+    updateData(year, setDataTable);
+  }, []);
 
   const handleTruyVan = () => {
     updateData(year, setDataTable);
@@ -80,7 +84,7 @@ const GiaoHangSub = ({ setIsSaveDataTruyVanGiaoHang, permission }) => {
       />
       {showForm && (
         <ModalForm setShowForm={setShowForm}>
-          <FormGiaoHang permission={permission} infoKH={sendData} setShowForm={setShowForm} />
+          <FormGiaoHang permission={permission} infoKH={sendData} setInfoKH={setSendData} year={year} setDataTableBig={setDataTable} setShowForm={setShowForm} />
         </ModalForm>
       )}
     </div>

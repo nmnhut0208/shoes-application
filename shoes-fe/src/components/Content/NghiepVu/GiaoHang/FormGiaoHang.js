@@ -269,6 +269,7 @@ const FormGiaoHang = ({
         sophieu: infoForm.SOPHIEU,
         diengiai: infoForm.DIENGIAI,
         user: userState.userName,
+        date: moment(infoForm.NGAYPHIEU).format("YYYY-MM-DD HH:mm:ss"),
       };
       fetch("http://localhost:8000/savegiaohang", {
         method: "POST",
@@ -742,8 +743,8 @@ const FormGiaoHang = ({
           <div className={styles.right_row}>
             <label>Ngày phiếu</label>
             <input
-              type="date"
-              value={convertDate(infoForm["NGAYPHIEU"])}
+              type="datetime-local"
+              value={infoForm["NGAYPHIEU"]}
               onChange={(e) => {
                 setInfoForm({ ...infoForm, NGAYPHIEU: e.target.value });
                 setIsSaveDataNghiepVuGiaoHang(false);
