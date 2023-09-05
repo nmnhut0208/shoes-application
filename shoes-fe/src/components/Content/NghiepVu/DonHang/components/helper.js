@@ -1,13 +1,16 @@
 import moment from "moment";
-import OptionMau from "./OptionMau";
+// import OptionMau from "./OptionMau";
+import GiayUnique from "./GiayUnique";
+import InputMau from "./InputMau/InputMau";
 import {
   INFO_COLS_DONHANG,
   COLS_HAVE_SUM_FOOTER,
   COLS_HAVE_SELECT_INPUT,
 } from "./ConstantVariable";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
+import { renderDataEmpty } from "~utils/processing_data_table";
 
-const handleSaveCell = (cell, value, data, setDataTable) => {
+const handleSaveCell = (cell, value, data, setDataTable, setIsSaveData) => {
   //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
   var row_current = data[cell.row.index];
   // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
@@ -21,30 +24,39 @@ const handleSaveCell = (cell, value, data, setDataTable) => {
     "SIZE0",
     "SIZE1",
   ];
-  if (list_size.includes(cell.column.id)) {
+  if (list_size.includes(cell.column.id) || cell.column.id === "GIABAN") {
     if (value === "") value = 0;
     row_current[cell.column.id] = parseInt(value);
 
+    if (row_current["GIABAN"] === "") row_current["GIABAN"] = 1;
     var so_luong = 0;
     for (let i = 0; i < list_size.length; i++) {
       so_luong += row_current[list_size[i]];
     }
     row_current["SOLUONG"] = so_luong;
+    console.log("row_current: ", row_current);
     row_current["THANHTIEN"] =
       row_current["SOLUONG"] * parseInt(row_current["GIABAN"]);
     data[cell.row.index] = row_current;
   } else {
     data[cell.row.index][cell.column.id] = value;
   }
-
+  // tìm số dòng có tổng số lượng == 0
+  // nếu chưa có dòng nào thì add thêm 1 dòng
+  let line_soluong_zero = data.filter((row) => row.SOLUONG === 0);
+  if (line_soluong_zero.length === 0) {
+    data.push(renderDataEmpty(INFO_COLS_DONHANG, 1)[0]);
+  }
   setDataTable([...data]);
+  setIsSaveData(false);
 };
 
 export const updateColumnsInformations = (
-  dataMau,
   dataTable,
   setDataTable,
-  view
+  view,
+  listGiayUnique,
+  setIsSaveData
 ) => {
   const infoColumnsInit = [];
 
@@ -57,6 +69,21 @@ export const updateColumnsInformations = (
       enableEditing: INFO_COLS_DONHANG[index]["enableEditing"],
       key: INFO_COLS_DONHANG[index]["key"].toLowerCase(),
     };
+
+    if (key === "MAGIAY") {
+      info["Cell"] = ({ cell }) => (
+        <GiayUnique
+          listGiayUnique={listGiayUnique}
+          init={dataTable[cell.row.id][cell.column.id]}
+          handleChangeDataTable={(value, label) => {
+            dataTable[cell.row.id][cell.column.id] = value;
+            dataTable[cell.row.id]["TENGIAY"] = label;
+            setDataTable([...dataTable]);
+          }}
+          readOnly={view}
+        />
+      );
+    }
 
     // Render input tag for edit cell
     if (key.includes("SIZE") || key === "GIABAN") {
@@ -71,11 +98,17 @@ export const updateColumnsInformations = (
             textAlign: "right",
             marginRight: "0.5rem",
           }}
-          readOnly={view}
+          readOnly={view || dataTable[cell.row.id]["MAGIAY"] === ""}
           type="number"
           value={cell.getValue().toString()}
           onChange={(e) =>
-            handleSaveCell(cell, e.target.value, dataTable, setDataTable)
+            handleSaveCell(
+              cell,
+              e.target.value,
+              dataTable,
+              setDataTable,
+              setIsSaveData
+            )
           }
           onKeyDown={handleDisableKeyDownUp}
           onKeyUp={handleDisableKeyDownUp}
@@ -123,19 +156,17 @@ export const updateColumnsInformations = (
     if (COLS_HAVE_SELECT_INPUT.includes(key)) {
       info["Cell"] = ({ cell }) => {
         return (
-          <OptionMau
-            init={dataTable[cell.row.id][cell.column.id]}
-            id_row={cell.row.id}
-            id_column={cell.column.id}
-            dataTable={dataTable}
-            dataMau={dataMau}
-            handleChange={(value, label) => {
-              dataTable[cell.row.id][cell.column.id] = value;
-              dataTable[cell.row.id]["TEN" + cell.column.id] = label;
-              setDataTable([...dataTable]);
-            }}
-            readOnly={view}
-          />
+          <div style={{ width: "80%", marginLeft: "10%", marginRight: "10%" }}>
+            <InputMau
+              init={dataTable[cell.row.id][cell.column.id]}
+              handleChangeDataTable={(value, label) => {
+                dataTable[cell.row.id][cell.column.id] = value;
+                dataTable[cell.row.id]["TEN" + cell.column.id] = label;
+                setDataTable([...dataTable]);
+              }}
+              readOnly={view || dataTable[cell.row.id]["MAGIAY"] === ""}
+            />
+          </div>
         );
       };
     }

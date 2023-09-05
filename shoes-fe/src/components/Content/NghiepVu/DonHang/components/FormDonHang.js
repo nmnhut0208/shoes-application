@@ -13,6 +13,7 @@ import DanhMucGiayKhachHang from "./DanhMucGiayKhachHang";
 import InDonHang from "./InDonHang";
 
 import styles from "./FormDonHang.module.scss";
+import { renderDataEmpty } from "~utils/processing_data_table";
 import {
   updateSODH,
   updateDanhSachMau,
@@ -20,6 +21,8 @@ import {
   updateFormDonHang,
   updateColumnsInformations,
 } from "./helper";
+
+import { INFO_COLS_DONHANG } from "./ConstantVariable";
 
 const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   const view = useMemo(() => {
@@ -30,7 +33,6 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
 
   const [stateUser, dispatchUser] = useUserContext();
   const [dataTable, setDataTable] = useState([]);
-  const [isUpdateFromDataView, setIsUpdateFromDataView] = useState(false);
 
   const [dataMau, setDataMau] = useState([]);
 
@@ -53,10 +55,46 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   });
 
   const [showModal, setShowModal] = useState(false);
+  const [listGiayUnique, setListGiayUnique] = useState([]);
+  const [listGiayKH, setListGiayKH] = useState([]);
 
   useEffect(() => {
-    updateDanhSachMau(setDataMau);
-  }, []); // them dieu kieu check mau thay doi
+    if (formInfoDonHang["MAKH"] !== "") {
+      fetch(
+        "http://localhost:8000/donhang/giay_unique/" + formInfoDonHang["MAKH"]
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          console.log("GiayKH", info);
+          setListGiayUnique(info);
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+
+      fetch(
+        "http://localhost:8000/donhang/khachhang/" +
+          formInfoDonHang["MAKH"] +
+          "/giay"
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((info) => {
+          console.log(info);
+          setListGiayKH(info);
+        })
+        .catch((err) => {
+          console.log(":error: ", err);
+        });
+    }
+  }, [formInfoDonHang["MAKH"]]);
+
+  // useEffect(() => {
+  //   updateDanhSachMau(setDataMau);
+  // }, []); // them dieu kieu check mau thay doi
 
   useEffect(() => {
     if (dataView) {
@@ -68,8 +106,8 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
           return response.json();
         })
         .then((info) => {
-          setIsUpdateFromDataView(true);
-          setDataTable(info);
+          console.log("info donhang: ", info);
+          setDataTable([...info, renderDataEmpty(INFO_COLS_DONHANG, 1)[0]]);
           setFormInfoDonHang({
             SODH: info[0]["SODH"],
             NGAYDH: info[0]["NGAYDH"],
@@ -84,6 +122,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
         });
     } else {
       updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
+      setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
     }
   }, [dataView]);
 
@@ -114,6 +153,8 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
     }
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
     setDataTable([]);
+    setListGiayKH([]);
+    setListGiayUnique([]);
     setIsSaveData(true);
   };
 
@@ -149,29 +190,21 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   };
 
   const infoColumns = useMemo(() => {
-    return updateColumnsInformations(dataMau, dataTable, setDataTable, view);
-  }, [dataTable, dataMau]);
+    return updateColumnsInformations(
+      dataTable,
+      setDataTable,
+      view,
+      listGiayUnique,
+      setIsSaveData
+    );
+  }, [dataTable, listGiayUnique]);
 
   useEffect(() => {
-    if (dataTable.length > 0) {
+    let _data = dataTable.filter((row) => row.SOLUONG > 0);
+    if (_data.length > 0) {
       setIsSaveData(false);
     }
   }, [formInfoDonHang]);
-
-  useEffect(() => {
-    if (dataTable.length > 0) {
-      if (isUpdateFromDataView) {
-        // Để lần update đầu tiên từ dataView thì trạng thái của page
-        // vẫn là chưa thay đổi => có thể đóng page mà ko cần save
-        setIsSaveData(true);
-        setIsUpdateFromDataView(false);
-      } else {
-        setIsSaveData(false);
-      }
-    } else {
-      setIsSaveData(true);
-    }
-  }, [dataTable]);
 
   const handleInDonHang = () => {
     if (dataTable.length == 0) return;
@@ -267,7 +300,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
           setShowModal={setShowModal}
         >
           <DanhMucGiayKhachHang
-            MAKH={formInfoDonHang["MAKH"]}
+            listGiayKH={listGiayKH}
             dataOrigin={dataTable}
             setInfoSelection={setDataTable}
             setShowModal={setShowModal}
@@ -282,7 +315,8 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
         >
           <InDonHang
             infoHeader={formInfoDonHang}
-            dataTable={dataTable}
+            dataTable={dataTable.slice(0, dataTable.length - 1)}
+            // remove dòng cuối cùng
             setShowModal={setShowModal}
           />
         </Modal>
