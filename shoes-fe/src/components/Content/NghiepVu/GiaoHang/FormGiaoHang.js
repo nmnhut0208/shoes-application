@@ -813,6 +813,7 @@ const FormGiaoHang = ({
                 // setIsSaveDataNghiepVuGiaoHang(false);
               }}
               className={styles.large}
+              autocomplete="off"
             />
           </div>
         </div>

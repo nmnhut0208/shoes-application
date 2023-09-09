@@ -654,7 +654,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
             <input
               name="MAKH"
               value={infoKH["MAKH"]}
-              // onChange={(e) => setFormInfoDonHang(e)}
+            // onChange={(e) => setFormInfoDonHang(e)}
             />
             <input
               type="text"
@@ -701,6 +701,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
                 });
               }
               }
+              autocomplete="off"
             />
           </div>
         </div>

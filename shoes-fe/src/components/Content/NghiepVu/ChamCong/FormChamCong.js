@@ -416,6 +416,7 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
                 setIsSaveDataNghiepVuChamCong(false);
               }}
               className={styles.large}
+              autocomplete="off"
             />
           </div>
         </div>

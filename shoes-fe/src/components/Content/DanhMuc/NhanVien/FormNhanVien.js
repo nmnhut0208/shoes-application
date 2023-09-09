@@ -102,6 +102,7 @@ const FormNhanVien = () => {
             name="MANVIEN"
             className={styles.item_size_small}
             readOnly={stateTable.inforShowTable.action_row === "edit"}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_first_row}>
@@ -111,6 +112,7 @@ const FormNhanVien = () => {
             onChange={(e) => handleChangeInformationForm(e)}
             name="TENNVIEN"
             className={styles.item_size_big}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_first_row}>

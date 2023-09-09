@@ -80,6 +80,7 @@ const FormKhachHang = () => {
           name="MAKH"
           value={inputForm["MAKH"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -89,6 +90,7 @@ const FormKhachHang = () => {
           name="TENKH"
           value={inputForm["TENKH"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -98,6 +100,7 @@ const FormKhachHang = () => {
           name="DIACHI"
           value={inputForm["DIACHI"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -107,6 +110,7 @@ const FormKhachHang = () => {
           name="TEL"
           value={inputForm["TEL"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -116,6 +120,7 @@ const FormKhachHang = () => {
           name="FAX"
           value={inputForm["FAX"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -125,6 +130,7 @@ const FormKhachHang = () => {
           name="EMAIL"
           value={inputForm["EMAIL"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -134,6 +140,7 @@ const FormKhachHang = () => {
           name="GHICHU"
           value={inputForm["GHICHU"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 

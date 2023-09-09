@@ -68,6 +68,7 @@ const FormKhoHang = () => {
             name="MAKHO"
             className={styles.item_size_middle}
             readOnly={stateTable.inforShowTable.action_row === "edit"}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_first_row}>
@@ -77,6 +78,7 @@ const FormKhoHang = () => {
             onChange={(e) => handleChangeInformationForm(e)}
             name="TENKHO"
             className={styles.item_size_big}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_first_row}>
@@ -86,6 +88,7 @@ const FormKhoHang = () => {
             onChange={(e) => handleChangeInformationForm(e)}
             name="GHICHU"
             className={styles.item_size_big}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_button}>

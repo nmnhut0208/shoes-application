@@ -80,6 +80,7 @@ const FormCa = () => {
             name="MACA"
             className={styles.item_size_middle}
             readOnly={stateTable.inforShowTable.action_row === "edit"}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_first_row}>
@@ -89,6 +90,7 @@ const FormCa = () => {
             onChange={(e) => handleChangeInformationForm(e)}
             name="TENCA"
             className={styles.item_size_big}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_first_row}>
@@ -98,6 +100,7 @@ const FormCa = () => {
             onChange={(e) => handleChangeInformationForm(e)}
             name="GHICHU"
             className={styles.item_size_big}
+            autocomplete="off"
           />
         </div>
       </div>

@@ -293,6 +293,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
         name="DIENGIAIDONG"
         value={form["DIENGIAIDONG"]}
         onChange={(e) => handleChangeForm(e)}
+        autocomplete="off"
       />
     </div>
   );

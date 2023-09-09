@@ -121,6 +121,7 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
                   handleChangeInformationForm({ TENGIAY: e.target.value })
                 }
                 className={styles.item_size_big}
+                autocomplete="off"
               />
             </div>
 
@@ -360,6 +361,7 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
                   handleChangeInformationForm({ GHICHU: e.target.value })
                 }
                 className={styles.item_size_big}
+                autocomplete="off"
               />
             </div>
 
