@@ -239,7 +239,7 @@ export const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
   })
     .then((response) => {
       console.log("response: ", response);
-      alert("Lưu thông tin thành công.");
+      // alert("Lưu thông tin thành công.");
     })
     .catch((error) => {
       console.log("error: ", error);

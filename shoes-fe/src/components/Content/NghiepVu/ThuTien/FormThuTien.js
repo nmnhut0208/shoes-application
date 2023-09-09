@@ -114,7 +114,7 @@ const FormThuTien = ({ dataView, type_action }) => {
         if (type_action === "add") {
           updateSOPHIEU(lastestSOPHIEU);
         }
-        alert("Lưu thông tin thành công.");
+        // alert("Lưu thông tin thành công.");
       })
       .catch((error) => {
         console.log("error: ", error);

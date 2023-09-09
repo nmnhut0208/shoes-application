@@ -76,8 +76,8 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
 
       fetch(
         "http://localhost:8000/donhang/khachhang/" +
-          formInfoDonHang["MAKH"] +
-          "/giay"
+        formInfoDonHang["MAKH"] +
+        "/giay"
       )
         .then((response) => {
           return response.json();
@@ -100,7 +100,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
     if (dataView) {
       fetch(
         "http://localhost:8000/donhang?SODH=" +
-          encodeURIComponent(dataView["SODH"])
+        encodeURIComponent(dataView["SODH"])
       )
         .then((response) => {
           return response.json();
@@ -161,7 +161,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
   const handleSaveDonHang = () => {
     if (isSaveData) return;
 
-    let dataDatHang = dataTable.filter((data) => data["SOLUONG"] > 0);
+    let dataDatHang = dataTable.filter((data) => data["SOLUONG"] > 0 && data["MAGIAY"] !== "");
     if (dataDatHang.length == 0) {
       alert("Bạn chưa đặt hàng hoặc chưa chọn số lượng mỗi loại giày cần đặt!");
       return;
@@ -315,7 +315,8 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
         >
           <InDonHang
             infoHeader={formInfoDonHang}
-            dataTable={dataTable.slice(0, dataTable.length - 1)}
+            // dataTable={dataTable.slice(0, dataTable.length - 1)}
+            dataTable={dataTable.filter((data) => data["SOLUONG"] > 0 && data["MAGIAY"] !== "")}
             // remove dòng cuối cùng
             setShowModal={setShowModal}
           />
