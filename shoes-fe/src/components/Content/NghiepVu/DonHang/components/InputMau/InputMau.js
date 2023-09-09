@@ -60,8 +60,10 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
 
   const handleChangeMaMau = (e) => {
     setMaMau(e.target.value);
-    if (e.target.value.length > 0)
+    if (e.target.value.length > 0) {
       setFirstLetterMaMau(e.target.value[0].toUpperCase());
+    }
+
     else {
       setDataShow(data);
       setFirstLetterMaMau("");

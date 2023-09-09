@@ -43,6 +43,8 @@ const TableShowMau = ({ columns, data, setInput, setLabel, closePopover }) => {
       // scroll to bottom
       muiTableContainerProps={{
         sx: { maxHeight: "30rem", maxWidth: "auto" },
+
+
       }}
     />
   );
