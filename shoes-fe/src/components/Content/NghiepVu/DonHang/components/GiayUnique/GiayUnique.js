@@ -17,7 +17,7 @@ const GiayUnique = ({
   handleChangeDataTable,
   readOnly,
 }) => {
-  // console.log("listGiayUnique: ", listGiayUnique);
+  const [clicked, setClicked] = useState(false);
   const [maMA, setMaMau] = useState(() => {
     if (init) {
       return init;
@@ -32,6 +32,15 @@ const GiayUnique = ({
     if (init) return searchInfo(init[0], listGiayUnique);
     else return listGiayUnique;
   });
+
+  const hide = () => {
+    setClicked(false);
+  };
+
+  const handleClickChange = (open) => {
+    setClicked(open);
+  };
+
   useEffect(() => {
     setData(listGiayUnique);
     setDataShow(listGiayUnique);
@@ -63,9 +72,11 @@ const GiayUnique = ({
         <Popover
           placement="bottomLeft"
           content={
-            <Table data={dataShow} setInput={setMaMau} setLabel={setLabelMau} />
+            <Table data={dataShow} setInput={setMaMau} setLabel={setLabelMau} closePopover={hide} />
           }
           trigger="click"
+          open={clicked}
+          onOpenChange={handleClickChange}
         >
           <input
             id="MAGIAY"

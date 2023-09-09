@@ -8,7 +8,7 @@ const MainTable = ({
   setDataTable,
   rowSelection,
   setCurSelected,
-  flag_rowSelection,
+  // flag_rowSelection,
   setRowSelection,
   setIsSaveData,
   maxHeight,

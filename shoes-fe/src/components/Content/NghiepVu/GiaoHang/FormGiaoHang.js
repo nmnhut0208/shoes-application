@@ -508,31 +508,33 @@ const FormGiaoHang = ({
         for (var i = 0; i < info.length; i++) {
           data.push(info[i]["SODH"]);
         }
-        const send_data = {
-          sodh: data,
-          makh: infoKH["MAKH"],
-        };
-        fetch("http://localhost:8000/giaohang/" + infoKH["MAKH"], {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(send_data),
-        })
-          .then((response) => {
-            return response.json();
+        if (data.length > 0) {
+          const send_data = {
+            sodh: data,
+            makh: infoKH["MAKH"],
+          };
+          fetch("http://localhost:8000/giaohang/" + infoKH["MAKH"], {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(send_data),
           })
-          .then((info) => {
-            console.log("info: ", info);
-            setDataTableSub(info);
-            // get keys of info to setMapSelected expample {0: key1, 1: key2, ...}
-            const keys = Object.keys(info);
-            const map = {};
-            for (var i = 0; i < keys.length; i++) {
-              map[i] = keys[i];
-            }
-            setMapSelected(map);
-          });
+            .then((response) => {
+              return response.json();
+            })
+            .then((info) => {
+              // console.log("info: ", info);
+              setDataTableSub(info);
+              // get keys of info to setMapSelected expample {0: key1, 1: key2, ...}
+              const keys = Object.keys(info);
+              const map = {};
+              for (var i = 0; i < keys.length; i++) {
+                map[i] = keys[i];
+              }
+              setMapSelected(map);
+            });
+        }
       })
       .catch((err) => {
         console.log(":error: ", err);
@@ -801,7 +803,7 @@ const FormGiaoHang = ({
               value={infoForm["DIENGIAI"]}
               onChange={(e) => {
                 setInfoForm({ ...infoForm, DIENGIAI: e.target.value });
-                setIsSaveDataNghiepVuGiaoHang(false);
+                // setIsSaveDataNghiepVuGiaoHang(false);
               }}
               className={styles.large}
             />
@@ -814,7 +816,7 @@ const FormGiaoHang = ({
         data={dataTable}
         rowSelection={rowSelection}
         setCurSelected={setCurSelected}
-        flag_rowSelection={true}
+        // flag_rowSelection={true}
         setRowSelection={setRowSelection}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"22rem"}

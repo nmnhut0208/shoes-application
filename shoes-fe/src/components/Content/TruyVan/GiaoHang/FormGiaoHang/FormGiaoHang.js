@@ -624,7 +624,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
       .catch((err) => {
         console.log(":error: ", err);
       });
-  }, [infoKH]);
+  }, [infoKH["MAKH"]]);
 
   // useEffect(() => {
   //   if (mapSelected[curSelected] !== undefined) {
@@ -711,7 +711,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
         data={dataTable}
         rowSelection={rowSelection}
         setCurSelected={setCurSelected}
-        flag_rowSelection={true}
+        // flag_rowSelection={true}
         setRowSelection={setRowSelection}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"24rem"}
@@ -730,12 +730,12 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
         dataAll={dataTableSub}
         curDH={mapSelected[curSelected]}
         setDataTable={setDataTableSub}
-        rowSelection={
-          mapRowSelectedSub[mapSelected[curSelected]]
-            ? mapRowSelectedSub[mapSelected[curSelected]]
-            : {}
-        }
-        flag_rowSelection={true}
+        // rowSelection={
+        //   mapRowSelectedSub[mapSelected[curSelected]]
+        //     ? mapRowSelectedSub[mapSelected[curSelected]]
+        //     : {}
+        // }
+        // flag_rowSelection={true}
         setRowSelection={setRowSelectionSub}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"30rem"}

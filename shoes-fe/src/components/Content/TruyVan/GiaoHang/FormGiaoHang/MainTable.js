@@ -8,14 +8,14 @@ const MainTable = ({
   setDataTable,
   rowSelection,
   setCurSelected,
-  flag_rowSelection,
+  // flag_rowSelection,
   setRowSelection,
   setIsSaveData,
   maxHeight,
   change,
   setKeys
 }) => {
-  //   console.log("data: ", data);
+  console.log("data: ", data);
   const handleSaveCell = (cell, value) => {
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
     var row_current = data[cell.row.index];
