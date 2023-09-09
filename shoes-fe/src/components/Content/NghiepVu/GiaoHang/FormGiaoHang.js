@@ -237,6 +237,7 @@ const FormGiaoHang = ({
     DIENGIAI: "",
     NGAYPHIEU: "",
   });
+  const [keys, setKeys] = useState(0);
 
   const handleSave = () => {
     if (
@@ -253,12 +254,24 @@ const FormGiaoHang = ({
       //   }
       // }
       // filter data from dataTableSub with mapRowSelectedSub
-      const keys = Object.keys(mapRowSelectedSub);
+      // const keys = Object.keys(mapRowSelectedSub);
+      // for (var i = 0; i < keys.length; i++) {
+      //   const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
+      //   for (var j = 0; j < keys_sub.length; j++) {
+      //     if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
+      //       data.push(dataTableSub[keys[i]][keys_sub[j]]);
+      //     }
+      //   }
+      // }
+      const keys = Object.keys(rowSelection);
       for (var i = 0; i < keys.length; i++) {
-        const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
-        for (var j = 0; j < keys_sub.length; j++) {
-          if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
-            data.push(dataTableSub[keys[i]][keys_sub[j]]);
+        if (rowSelection[keys[i]] === true) {
+          // get data from dataTableSub with mapSelected
+          const sodh = mapSelected[keys[i]];
+          const data_sub = dataTableSub[sodh];
+          const keys_sub = Object.keys(data_sub);
+          for (var j = 0; j < keys_sub.length; j++) {
+            data.push(data_sub[keys_sub[j]]);
           }
         }
       }
@@ -324,6 +337,7 @@ const FormGiaoHang = ({
     setRowSelection({});
     setRowSelectionSub({});
     setCurSelected(null);
+    setKeys(0);
     setMapSelected({});
     setMapRowSelectedSub({});
     setRowSelectionMaKH({});
@@ -486,6 +500,9 @@ const FormGiaoHang = ({
       })
       .then((info) => {
         setDataTable(info);
+        if (info.length > 0) {
+          setCurSelected(0);
+        }
         let data = [];
         for (var i = 0; i < info.length; i++) {
           data.push(info[i]["SODH"]);
@@ -536,12 +553,24 @@ const FormGiaoHang = ({
       //   }
       // }
       // filter data from dataTableSub with mapRowSelectedSub
-      const keys = Object.keys(mapRowSelectedSub);
+      // const keys = Object.keys(mapRowSelectedSub);
+      // for (var i = 0; i < keys.length; i++) {
+      //   const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
+      //   for (var j = 0; j < keys_sub.length; j++) {
+      //     if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
+      //       data.push(dataTableSub[keys[i]][keys_sub[j]]);
+      //     }
+      //   }
+      // }
+      const keys = Object.keys(rowSelection);
       for (var i = 0; i < keys.length; i++) {
-        const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
-        for (var j = 0; j < keys_sub.length; j++) {
-          if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
-            data.push(dataTableSub[keys[i]][keys_sub[j]]);
+        if (rowSelection[keys[i]] === true) {
+          // get data from dataTableSub with mapSelected
+          const sodh = mapSelected[keys[i]];
+          const data_sub = dataTableSub[sodh];
+          const keys_sub = Object.keys(data_sub);
+          for (var j = 0; j < keys_sub.length; j++) {
+            data.push(data_sub[keys_sub[j]]);
           }
         }
       }
@@ -607,12 +636,24 @@ const FormGiaoHang = ({
       //   }
       // }
       // filter data from dataTableSub with mapRowSelectedSub
-      const keys = Object.keys(mapRowSelectedSub);
+      // const keys = Object.keys(mapRowSelectedSub);
+      // for (var i = 0; i < keys.length; i++) {
+      //   const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
+      //   for (var j = 0; j < keys_sub.length; j++) {
+      //     if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
+      //       data.push(dataTableSub[keys[i]][keys_sub[j]]);
+      //     }
+      //   }
+      // }
+      const keys = Object.keys(rowSelection);
       for (var i = 0; i < keys.length; i++) {
-        const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
-        for (var j = 0; j < keys_sub.length; j++) {
-          if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
-            data.push(dataTableSub[keys[i]][keys_sub[j]]);
+        if (rowSelection[keys[i]] === true) {
+          // get data from dataTableSub with mapSelected
+          const sodh = mapSelected[keys[i]];
+          const data_sub = dataTableSub[sodh];
+          const keys_sub = Object.keys(data_sub);
+          for (var j = 0; j < keys_sub.length; j++) {
+            data.push(data_sub[keys_sub[j]]);
           }
         }
       }
@@ -679,22 +720,22 @@ const FormGiaoHang = ({
     }
   };
 
-  useEffect(() => {
-    if (mapSelected[curSelected] !== undefined) {
-      setMapRowSelectedSub({
-        ...mapRowSelectedSub,
-        [mapSelected[curSelected]]: rowSelectionSub,
-      });
-    }
-  }, [rowSelectionSub]);
+  // useEffect(() => {
+  //   if (mapSelected[curSelected] !== undefined) {
+  //     setMapRowSelectedSub({
+  //       ...mapRowSelectedSub,
+  //       [mapSelected[curSelected]]: rowSelectionSub,
+  //     });
+  //   }
+  // }, [rowSelectionSub]);
 
-  useEffect(() => {
-    if (mapSelected[curSelected] in mapRowSelectedSub) {
-      setRowSelectionSub(mapRowSelectedSub[mapSelected[curSelected]]);
-    } else {
-      setRowSelectionSub({});
-    }
-  }, [curSelected]);
+  // useEffect(() => {
+  //   if (mapSelected[curSelected] in mapRowSelectedSub) {
+  //     setRowSelectionSub(mapRowSelectedSub[mapSelected[curSelected]]);
+  //   } else {
+  //     setRowSelectionSub({});
+  //   }
+  // }, [curSelected]);
 
   console.log("sub: ", dataTableSub);
   return (
@@ -777,10 +818,11 @@ const FormGiaoHang = ({
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"22rem"}
         change={false}
+        setKeys={setKeys}
       />
       <header className={styles.header_table}>Chi tiết đơn hàng</header>
       <SubTable
-        key={curSelected}
+        key={keys}
         columns={infoColumnsSub}
         data={
           dataTableSub[mapSelected[curSelected]]
@@ -800,6 +842,7 @@ const FormGiaoHang = ({
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"30rem"}
         change={true}
+        setKeys={setKeys}
       />
       <Modal>
         <In data={dataIn} flag={flag} />

@@ -103,7 +103,7 @@ const SubTable = ({
                           .catch((err) => {
                             console.log(":error: ", err);
                           });
-                        alert("Xóa thành công");
+                        // alert("Xóa thành công");
                       } else {
                         alert("Xóa thất bại");
                       }

@@ -1,4 +1,4 @@
-import { MaterialReactTable } from "material-react-table";
+import MaterialReactTable from "material-react-table";
 
 import { memo, useState } from "react";
 import { rem_to_px } from "~config/ui";

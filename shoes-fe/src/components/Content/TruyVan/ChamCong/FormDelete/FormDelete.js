@@ -29,7 +29,7 @@ const FormDelete = ({ setShowModal }) => {
         })
         .then((info) => {
           if (info["status"] === "success") {
-            alert("Xóa thành công");
+            // alert("Xóa thành công");
             setShowModal(false);
           } else {
             alert("Xóa thất bại");

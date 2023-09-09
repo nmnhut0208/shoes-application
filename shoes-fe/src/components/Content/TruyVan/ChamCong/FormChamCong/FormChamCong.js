@@ -69,7 +69,7 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
               .catch((err) => {
                 console.log(err);
               });
-            alert("Xóa thành công");
+            // alert("Xóa thành công");
             setShowForm(false);
           } else {
             alert("Xóa thất bại");

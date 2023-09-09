@@ -2,6 +2,8 @@ import { memo } from "react";
 import MaterialReactTable from "material-react-table";
 import { border_text_table_config } from "~config/ui";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
+import { Delete } from "@mui/icons-material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 
 const SubTable = ({
   columns,
@@ -15,8 +17,9 @@ const SubTable = ({
   setIsSaveData,
   maxHeight,
   change,
+  setKeys
 }) => {
-  //   console.log("data: ", data);
+  console.log("render SubTable: ", data);
   const handleSaveCell = (cell, value) => {
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
     if ( dataAll.length === 0 ) return;
@@ -64,13 +67,13 @@ const SubTable = ({
       enableColumnActions={false}
       enableSorting={false}
       enableSelectAll={false}
-      enableRowSelection={flag_rowSelection}
+      // enableRowSelection={flag_rowSelection}
       //   getRowId={(row) => row.userId}
       onRowSelectionChange={(rows) => {
         setRowSelection(rows);
         setIsSaveData(false);
       }}
-      state={{ rowSelection }}
+      // state={{ rowSelection }}
       enableTopToolbar={false}
       enableBottomToolbar={false}
       enablePagination={false}
@@ -78,6 +81,7 @@ const SubTable = ({
       enableRowVirtualization
       enableStickyFooter
       editingMode="table"
+      enableRowActions={true}
       enableEditing={change}
       muiTableBodyCellEditTextFieldProps={({ cell }) => ({
         //onBlur is more efficient, but could use onChange instead
@@ -100,6 +104,30 @@ const SubTable = ({
           },
         },
       })}
+      // renderRowActions Delete
+      renderRowActions={({ row, table }) => (
+        <Box>
+          <Tooltip arrow placement="right" title="Delete">
+            <IconButton
+              color="error"
+              onClick={() => {
+                // console.log("delete:", row.index);
+                // delete SODH in dataAll
+                let data_new = dataAll[curDH];
+                const index = row.index;
+                data_new = data_new.filter((_, i) => i !== index);
+                dataAll[curDH] = data_new;
+                setDataTable({...dataAll});
+                setKeys(prev => prev + 1)
+                setIsSaveData(false);
+              }
+              }
+            >
+              <Delete />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
     />
   );
 };

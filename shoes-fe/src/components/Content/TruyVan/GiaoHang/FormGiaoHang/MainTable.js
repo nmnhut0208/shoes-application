@@ -13,6 +13,7 @@ const MainTable = ({
   setIsSaveData,
   maxHeight,
   change,
+  setKeys
 }) => {
   //   console.log("data: ", data);
   const handleSaveCell = (cell, value) => {
@@ -60,10 +61,10 @@ const MainTable = ({
       enableSelectAll={false}
       // enableRowSelection={flag_rowSelection}
       //   getRowId={(row) => row.userId}
-      // onRowSelectionChange={(rows) => {
-      //   setRowSelection(rows);
-      //   setIsSaveData(false);
-      // }}
+      onRowSelectionChange={(rows) => {
+        setRowSelection(rows);
+        setIsSaveData(false);
+      }}
       muiTableBodyRowProps={({ row }) => ({
         //implement row selection click events manually
         onClick: () => {
@@ -72,6 +73,7 @@ const MainTable = ({
             [row.id]: !prev[row.id],
           }));
           setCurSelected(row.id);
+          setKeys(prev => prev + 1)
         },
         selected: rowSelection[row.id],
         sx: {

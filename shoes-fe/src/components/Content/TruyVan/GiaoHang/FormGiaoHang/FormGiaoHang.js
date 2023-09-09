@@ -259,6 +259,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
   const [rowSelectionSub, setRowSelectionSub] = useState({});
   const [dataIn, setDataIn] = useState({});
   const [flag, setFlag] = useState(false);
+  const [keys, setKeys] = useState(0);
   // const test_makh = "THU";
   // const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
   // const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
@@ -281,12 +282,24 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
       //   }
       // }
       // filter data from dataTableSub with mapRowSelectedSub
-      const keys = Object.keys(mapRowSelectedSub);
+      // const keys = Object.keys(mapRowSelectedSub);
+      // for (var i = 0; i < keys.length; i++) {
+      //   const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
+      //   for (var j = 0; j < keys_sub.length; j++) {
+      //     if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
+      //       data.push(dataTableSub[keys[i]][keys_sub[j]]);
+      //     }
+      //   }
+      // }
+      const keys = Object.keys(rowSelection);
       for (var i = 0; i < keys.length; i++) {
-        const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
-        for (var j = 0; j < keys_sub.length; j++) {
-          if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
-            data.push(dataTableSub[keys[i]][keys_sub[j]]);
+        if (rowSelection[keys[i]] === true) {
+          // get data from dataTableSub with mapSelected
+          const sodh = mapSelected[keys[i]];
+          const data_sub = dataTableSub[sodh];
+          const keys_sub = Object.keys(data_sub);
+          for (var j = 0; j < keys_sub.length; j++) {
+            data.push(data_sub[keys_sub[j]]);
           }
         }
       }
@@ -334,12 +347,24 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
       )
     ) {
       const data = [];
-      const keys = Object.keys(mapRowSelectedSub);
+      // const keys = Object.keys(mapRowSelectedSub);
+      // for (var i = 0; i < keys.length; i++) {
+      //   const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
+      //   for (var j = 0; j < keys_sub.length; j++) {
+      //     if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
+      //       data.push(dataTableSub[keys[i]][keys_sub[j]]);
+      //     }
+      //   }
+      // }
+      const keys = Object.keys(rowSelection);
       for (var i = 0; i < keys.length; i++) {
-        const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
-        for (var j = 0; j < keys_sub.length; j++) {
-          if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
-            data.push(dataTableSub[keys[i]][keys_sub[j]]);
+        if (rowSelection[keys[i]] === true) {
+          // get data from dataTableSub with mapSelected
+          const sodh = mapSelected[keys[i]];
+          const data_sub = dataTableSub[sodh];
+          const keys_sub = Object.keys(data_sub);
+          for (var j = 0; j < keys_sub.length; j++) {
+            data.push(data_sub[keys_sub[j]]);
           }
         }
       }
@@ -389,12 +414,24 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
       )
     ) {
       const data = [];
-      const keys = Object.keys(mapRowSelectedSub);
+      // const keys = Object.keys(mapRowSelectedSub);
+      // for (var i = 0; i < keys.length; i++) {
+      //   const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
+      //   for (var j = 0; j < keys_sub.length; j++) {
+      //     if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
+      //       data.push(dataTableSub[keys[i]][keys_sub[j]]);
+      //     }
+      //   }
+      // }
+      const keys = Object.keys(rowSelection);
       for (var i = 0; i < keys.length; i++) {
-        const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
-        for (var j = 0; j < keys_sub.length; j++) {
-          if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
-            data.push(dataTableSub[keys[i]][keys_sub[j]]);
+        if (rowSelection[keys[i]] === true) {
+          // get data from dataTableSub with mapSelected
+          const sodh = mapSelected[keys[i]];
+          const data_sub = dataTableSub[sodh];
+          const keys_sub = Object.keys(data_sub);
+          for (var j = 0; j < keys_sub.length; j++) {
+            data.push(data_sub[keys_sub[j]]);
           }
         }
       }
@@ -556,7 +593,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
     );
 
     return infoColumnsSubInit;
-  }, [curSelected]);
+  }, [curSelected, dataTableSub]);
 
   useEffect(() => {
     if (infoKH["MAKH"] == undefined) {
@@ -575,35 +612,38 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
       .then((info) => {
         console.log("info dh: ", info);
         setDataTable(info);
-        // const selected = {};
-        // for (var i = 0; i < info.length; i++) {
-        //   selected[i] = true;
-        // }
-        // setRowSelection(selected);
+        const selected = {};
+        for (var i = 0; i < info.length; i++) {
+          selected[i] = true;
+        }
+        setRowSelection(selected);
+        if (info.length > 0) {
+          setCurSelected(0);
+        }
       })
       .catch((err) => {
         console.log(":error: ", err);
       });
   }, [infoKH]);
 
-  useEffect(() => {
-    if (mapSelected[curSelected] !== undefined) {
-      setMapRowSelectedSub({
-        ...mapRowSelectedSub,
-        [mapSelected[curSelected]]: rowSelectionSub,
-      });
-    }
-  }, [rowSelectionSub]);
+  // useEffect(() => {
+  //   if (mapSelected[curSelected] !== undefined) {
+  //     setMapRowSelectedSub({
+  //       ...mapRowSelectedSub,
+  //       [mapSelected[curSelected]]: rowSelectionSub,
+  //     });
+  //   }
+  // }, [rowSelectionSub]);
 
-  useEffect(() => {
-    if (mapSelected[curSelected] in mapRowSelectedSub) {
-      setRowSelectionSub(mapRowSelectedSub[mapSelected[curSelected]]);
-    } else {
-      setRowSelectionSub({});
-    }
-  }, [curSelected]);
+  // useEffect(() => {
+  //   if (mapSelected[curSelected] in mapRowSelectedSub) {
+  //     setRowSelectionSub(mapRowSelectedSub[mapSelected[curSelected]]);
+  //   } else {
+  //     setRowSelectionSub({});
+  //   }
+  // }, [curSelected]);
 
-  console.log("sub: ", dataTableSub[mapSelected[curSelected]]);
+  console.log("sub: ", curSelected, rowSelection);
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -676,10 +716,11 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"24rem"}
         change={false}
+        setKeys={setKeys}
       />
       <header className={styles.header_table}>Chi tiết đơn hàng</header>
       <SubTable
-        key={curSelected}
+        key={keys}
         columns={infoColumnsSub}
         data={
           dataTableSub[mapSelected[curSelected]]
@@ -699,6 +740,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"30rem"}
         change={true}
+        setKeys={setKeys}
       />
       <Modal>
         <In data={dataIn} flag={flag} />
