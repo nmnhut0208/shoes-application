@@ -8,7 +8,7 @@ const searchInfo = (firstLetter, data) => {
   for (let i = 0; i < data.length; i++) {
     if (
       data[i]["value"] !== "" &&
-      data[i]["value"][0].toUpperCase() === firstLetter
+      data[i]["firstLetter"] === firstLetter
     )
       result.push(data[i]);
   }

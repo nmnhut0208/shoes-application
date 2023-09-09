@@ -92,11 +92,12 @@ export const getListMau = (dispatchItem) => {
     })
     .then((info) => {
       let listOptional = info.map(function (ob) {
-        return { label: ob.TENMAU, value: ob.MAMAU };
+        return { label: ob.TENMAU, value: ob.MAMAU, firstLetter: ob.MAMAU[0].toUpperCase() };
       });
+
       dispatchItem(
         actions_items_context.setInfoMau([
-          { label: "", value: "" },
+          { label: "", value: "", firstLetter: "" },
           ...listOptional,
         ])
       );
