@@ -65,6 +65,7 @@ const GiayUnique = ({
           content={
             <Table data={dataShow} setInput={setMaMau} setLabel={setLabelMau} />
           }
+          trigger="click"
         >
           <input
             id="MAGIAY"
@@ -72,6 +73,7 @@ const GiayUnique = ({
             onChange={handleChangeMaMau}
             autoComplete="off"
             style={{ border: "none" }}
+            tabindex="-1"
           />
         </Popover>
       ) : (

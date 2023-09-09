@@ -19,6 +19,7 @@ const KhachHang = ({
         <Popover
           placement="bottomLeft"
           content={<ListKhachHang setValue={setValue} setLabel={setLabel} />}
+          trigger="click"
         >
           <input
             name="MAKH"

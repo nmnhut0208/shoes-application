@@ -124,6 +124,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             vertical: "bottom",
             horizontal: "left",
           }}
+          trigger="click"
         >
           <Typography sx={{ p: 2 }}>
             <DetailInfoGiay

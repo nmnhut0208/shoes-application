@@ -129,6 +129,7 @@ export const updateColumnsInformations = (
             textAlign: "right",
             marginRight: "0.5rem",
           }}
+          tabindex="-1"
           value={parseFloat(cell.getValue()).toLocaleString("en")}
         />
       );
@@ -145,6 +146,7 @@ export const updateColumnsInformations = (
           }}
           readOnly={view}
           type="text"
+          tabindex="-1"
           value={cell.getValue()}
           onChange={(e) => {
             dataTable[cell.row.id][cell.column.id] = e.target.value;

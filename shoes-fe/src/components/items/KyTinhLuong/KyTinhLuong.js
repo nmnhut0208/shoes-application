@@ -19,6 +19,7 @@ const KyTinhLuong = ({
         <Popover
           placement="bottomLeft"
           content={<ListKyTinhLuong setValue={setValue} setLabel={setLabel} />}
+          trigger="click"
         >
           <input
             name="MAKY"

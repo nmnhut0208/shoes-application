@@ -488,6 +488,7 @@ const FormGiaoHang = ({
       // setDataTable([]);
       return;
     }
+    console.log("Call API");
     fetch("http://localhost:8000/giaohang", {
       method: "POST",
       headers: {
@@ -522,7 +523,7 @@ const FormGiaoHang = ({
             return response.json();
           })
           .then((info) => {
-            // console.log("info: ", info);
+            console.log("info: ", info);
             setDataTableSub(info);
             // get keys of info to setMapSelected expample {0: key1, 1: key2, ...}
             const keys = Object.keys(info);
@@ -536,7 +537,7 @@ const FormGiaoHang = ({
       .catch((err) => {
         console.log(":error: ", err);
       });
-  }, [infoKH]);
+  }, [infoKH["MAKH"]]);
 
   const handleIn = () => {
     if (
@@ -832,12 +833,12 @@ const FormGiaoHang = ({
         dataAll={dataTableSub}
         curDH={mapSelected[curSelected]}
         setDataTable={setDataTableSub}
-        rowSelection={
-          mapRowSelectedSub[mapSelected[curSelected]]
-            ? mapRowSelectedSub[mapSelected[curSelected]]
-            : {}
-        }
-        flag_rowSelection={true}
+        // rowSelection={
+        //   mapRowSelectedSub[mapSelected[curSelected]]
+        //     ? mapRowSelectedSub[mapSelected[curSelected]]
+        //     : {}
+        // }
+        // flag_rowSelection={true}
         setRowSelection={setRowSelectionSub}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
         maxHeight={"30rem"}

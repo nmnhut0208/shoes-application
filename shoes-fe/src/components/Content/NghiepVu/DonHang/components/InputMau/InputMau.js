@@ -65,6 +65,7 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
       {readOnly !== true ? (
         <Popover
           placement="bottomLeft"
+          trigger="click"
           content={
             <TableShowMau
               data={dataShow}
@@ -79,6 +80,7 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
             onChange={handleChangeMaMau}
             autoComplete="off"
             style={{ border: "none" }}
+            tabindex="-1"
           />
         </Popover>
       ) : (

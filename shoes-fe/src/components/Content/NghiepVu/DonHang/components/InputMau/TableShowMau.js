@@ -27,8 +27,6 @@ const TableShowMau = ({ columns, data, setInput, setLabel }) => {
       columns={cols}
       data={data}
       enableMultiRowSelection={false} //use radio buttons instead of checkboxes
-      //   enableRowSelection
-      //   getRowId={(row) => row.userId} //give each row a more useful id
       muiTableBodyRowProps={({ row }) => ({
         onClick: () => {
           row.getToggleSelectedHandler();
@@ -37,13 +35,11 @@ const TableShowMau = ({ columns, data, setInput, setLabel }) => {
         },
         sx: { cursor: "pointer" },
       })}
-      //   onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
-      //   state={{ rowSelection }} //pass our managed row selection state to the table to use
+
       // enable phân trang
       enablePagination={false}
       //   enableBottomToolbar={true}
       // scroll to bottom
-      //   enableRowVirtualization // tắt cái này đi thì nó hiển thị ổn áp hơn
       muiTableContainerProps={{
         sx: { maxHeight: "30rem", maxWidth: "auto" },
       }}
