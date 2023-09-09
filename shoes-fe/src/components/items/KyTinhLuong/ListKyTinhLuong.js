@@ -5,7 +5,7 @@ import { COL_KYTINHLUONG } from "./ConstantVariable";
 import { useItemsContext } from "~items_context";
 import { border_text_table_config } from "~config/ui";
 
-const ListKyTinhLuong = ({ setValue, setLabel }) => {
+const ListKyTinhLuong = ({ setValue, setLabel, closePopover }) => {
   const [data, setData] = useState([]);
   const [stateItem, dispatchItem] = useItemsContext();
   const [rowSelection, setRowSelection] = useState({});
@@ -17,6 +17,7 @@ const ListKyTinhLuong = ({ setValue, setLabel }) => {
     if (keys.length > 0) {
       setValue(data[keys[0]]["MAKY"]);
       if (setLabel) setLabel(data[keys[0]]["TENKY"]);
+      closePopover();
     }
   }, [rowSelection]);
 

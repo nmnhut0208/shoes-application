@@ -1,5 +1,5 @@
 import { useState, memo, useEffect } from "react";
-import { Popover, Space } from "antd";
+import { Popover } from "antd";
 import { useItemsContext } from "~items_context";
 import TableShowMau from "./TableShowMau";
 

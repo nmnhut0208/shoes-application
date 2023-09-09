@@ -13,13 +13,23 @@ const KyTinhLuong = ({
   size_span,
 }) => {
   console.log("re-render ItemKyTinhLuong");
+  const [clicked, setClicked] = useState(false);
+  const hide = () => {
+    setClicked(false);
+  };
+
+  const handleClickChange = (open) => {
+    setClicked(open);
+  };
   return (
     <Space>
       {!readOnly && (
         <Popover
           placement="bottomLeft"
-          content={<ListKyTinhLuong setValue={setValue} setLabel={setLabel} />}
+          content={<ListKyTinhLuong setValue={setValue} setLabel={setLabel} closePopover={hide} />}
           trigger="click"
+          open={clicked}
+          onOpenChange={handleClickChange}
         >
           <input
             name="MAKY"
