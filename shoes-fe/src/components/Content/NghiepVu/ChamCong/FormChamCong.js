@@ -53,7 +53,7 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
   const [userState, userDispatch] = useUserContext();
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
-  const [rowSelection, setRowSelection] = useState({0: true});
+  const [rowSelection, setRowSelection] = useState({ 0: true });
   const [dataTableKY, setDataTableKY] = useState([]);
   const [rowSelectionMaKY, setRowSelectionMaKY] = useState({});
   // const [infoKY, setInfoKY] = useState({});
@@ -156,7 +156,7 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       setInfoForm({ ...infoForm, ...info });
       setDataTable([]);
       setDataTableSub([]);
-      setRowSelection({0: true});
+      setRowSelection({ 0: true });
     }
   }, [rowSelectionMaKY]);
 
@@ -190,7 +190,7 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       setInfoForm({ ...infoForm, ...info });
       setDataTable([]);
       setDataTableSub([]);
-      setRowSelection({0: true});
+      setRowSelection({ 0: true });
     }
   }, [rowSelectionMaNVIEN]);
 
@@ -323,6 +323,11 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
 
   console.log("selected: ", rowSelection)
 
+  // start: add to change Popover's behavior 
+  const [clickedPopoverMaKy, setClickedPopoverMaKy] = useState(false);
+  const [clickedPopoverMaNV, setClickedPopoverMaNV] = useState(false);
+  // end: add to change Popover's behavior 
+
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -333,12 +338,16 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
 
             <Popover
               placement="bottomLeft"
+              trigger="click"
+              open={clickedPopoverMaKy}
+              onOpenChange={(open) => setClickedPopoverMaKy(open)}
               content={
                 <TableMaKY
                   setRowSelection={setRowSelectionMaKY}
                   rowSelection={rowSelectionMaKY}
                   data={dataTableKY}
                   setIsSaveData={setIsSaveDataNghiepVuChamCong}
+                  setClickedPopover={setClickedPopoverMaKy}
                 />
               }
             >
@@ -358,12 +367,16 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
             <label>Mã nhân viên</label>
             <Popover
               placement="bottomLeft"
+              trigger="click"
+              open={clickedPopoverMaNV}
+              onOpenChange={(open) => setClickedPopoverMaNV(open)}
               content={
                 <TableMaNVIEN
                   setRowSelection={setRowSelectionMaNVIEN}
                   rowSelection={rowSelectionMaNVIEN}
                   data={dataTableNhanVien}
                   setIsSaveData={setIsSaveDataNghiepVuChamCong}
+                  setClickedPopover={setClickedPopoverMaNV}
                 />
               }
             >

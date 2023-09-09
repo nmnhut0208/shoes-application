@@ -26,7 +26,7 @@ const KyTinhLuong = ({
       {!readOnly && (
         <Popover
           placement="bottomLeft"
-          content={<ListKyTinhLuong setValue={setValue} setLabel={setLabel} closePopover={hide} />}
+          content={<ListKyTinhLuong setValue={setValue} setLabel={setLabel} showPopover={setClicked} />}
           trigger="click"
           open={clicked}
           onOpenChange={handleClickChange}

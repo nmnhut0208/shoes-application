@@ -19,7 +19,7 @@ const COL_KY = [
 ];
 
 let columns_ky = processingInfoColumnTable(COL_KY);
-const TableMaKY = ({ data, rowSelection, setRowSelection, setIsSaveData }) => {
+const TableMaKY = ({ data, rowSelection, setRowSelection, setIsSaveData, setClickedPopover }) => {
   console.log("re-render sub table when hover", data);
   return (
     <div style={{ height: "auto" }}>
@@ -40,6 +40,7 @@ const TableMaKY = ({ data, rowSelection, setRowSelection, setIsSaveData }) => {
         onRowSelectionChange={(rows) => {
           setRowSelection(rows);
           setIsSaveData(false);
+          setClickedPopover(false);
         }}
         state={{ rowSelection }}
         muiTableContainerProps={{ sx: { maxHeight: "400px" } }}

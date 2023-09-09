@@ -5,7 +5,7 @@ import { COL_KHACHHANG } from "./ConstantVariable";
 import { useItemsContext } from "~items_context";
 import { border_text_table_config } from "~config/ui";
 
-const ListKhachHang = ({ setValue, setLabel, closePopover }) => {
+const ListKhachHang = ({ setValue, setLabel, showPopover }) => {
   const [data, setData] = useState([]);
   const [stateItem, dispatchItem] = useItemsContext();
   const [rowSelection, setRowSelection] = useState({});
@@ -17,7 +17,7 @@ const ListKhachHang = ({ setValue, setLabel, closePopover }) => {
     if (keys.length > 0) {
       setValue(data[keys[0]]["MAKH"]);
       if (setLabel) setLabel(data[keys[0]]["TENKH"]);
-      closePopover();
+      showPopover(false);
     }
   }, [rowSelection]);
 

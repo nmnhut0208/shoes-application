@@ -14,22 +14,15 @@ const KhachHang = ({
 }) => {
   console.log("re-render ItemKhachHang");
   const [clicked, setClicked] = useState(false);
-  const hide = () => {
-    setClicked(false);
-  };
-
-  const handleClickChange = (open) => {
-    setClicked(open);
-  };
   return (
     <Space>
       {!readOnly && (
         <Popover
           placement="bottomLeft"
-          content={<ListKhachHang setValue={setValue} setLabel={setLabel} closePopover={hide} />}
+          content={<ListKhachHang setValue={setValue} setLabel={setLabel} showPopover={setClicked} />}
           trigger="click"
           open={clicked}
-          onOpenChange={handleClickChange}
+          onOpenChange={(open) => setClicked(open)}
         >
           <input
             name="MAKH"

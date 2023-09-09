@@ -741,6 +741,9 @@ const FormGiaoHang = ({
   // }, [curSelected]);
 
   console.log("sub: ", dataTableSub);
+  // start: add to change Popover's behavior 
+  const [clickedPopoverMaKH, setClickedPopoverMaKH] = useState(false);
+  // end: add to change Popover's behavior 
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -751,6 +754,9 @@ const FormGiaoHang = ({
             {/* <input type="text" className={styles.small} value={test_makh} /> */}
             <Popover
               placement="bottomLeft"
+              trigger="click"
+              open={clickedPopoverMaKH}
+              onOpenChange={(open) => setClickedPopoverMaKH(open)}
               content={
                 <TableMaKH
                   data={dataTableKhachHang}
@@ -758,6 +764,7 @@ const FormGiaoHang = ({
                   setRowSelection={setRowSelectionMaKH}
                   isSaveData={isSaveData}
                   setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
+                  setClickedPopover={setClickedPopoverMaKH}
                 />
               }
             >

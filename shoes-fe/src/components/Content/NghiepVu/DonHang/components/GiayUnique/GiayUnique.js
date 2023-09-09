@@ -33,14 +33,6 @@ const GiayUnique = ({
     else return listGiayUnique;
   });
 
-  const hide = () => {
-    setClicked(false);
-  };
-
-  const handleClickChange = (open) => {
-    setClicked(open);
-  };
-
   useEffect(() => {
     setData(listGiayUnique);
     setDataShow(listGiayUnique);
@@ -72,11 +64,11 @@ const GiayUnique = ({
         <Popover
           placement="bottomLeft"
           content={
-            <Table data={dataShow} setInput={setMaMau} setLabel={setLabelMau} closePopover={hide} />
+            <Table data={dataShow} setInput={setMaMau} setLabel={setLabelMau} showPopover={setClicked} />
           }
           trigger="click"
           open={clicked}
-          onOpenChange={handleClickChange}
+          onOpenChange={(open) => setClicked(open)}
         >
           <input
             id="MAGIAY"

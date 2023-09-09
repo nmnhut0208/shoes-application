@@ -85,7 +85,7 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
               data={dataShow}
               setInput={setMaMau}
               setLabel={setLabelMau}
-              closePopover={hide}
+              showPopover={setClicked}
             />
           }
         >

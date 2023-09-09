@@ -25,6 +25,7 @@ const TableMaNVIEN = ({
   rowSelection,
   setRowSelection,
   setIsSaveData,
+  setClickedPopover
 }) => {
   console.log("re-render sub table when hover", data);
   return (
@@ -46,6 +47,7 @@ const TableMaNVIEN = ({
         onRowSelectionChange={(rows) => {
           setRowSelection(rows);
           setIsSaveData(false);
+          setClickedPopover(false);
         }}
         state={{ rowSelection }}
         muiTableContainerProps={{ sx: { maxHeight: "400px" } }}
