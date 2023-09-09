@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
@@ -17,7 +17,7 @@ const SubTable = ({
   //   setRowSelection,
   maxHeight,
 }) => {
-  //   console.log("data: ", data);
+    // console.log("databig: ", data);
   const [stateUser, dispatchUser] = useUserContext();
   const maForm = "F0033";
   const [stateTable, dispatchTable] = useTableContext();
@@ -125,4 +125,4 @@ const SubTable = ({
   );
 };
 
-export default SubTable;
+export default memo(SubTable);
