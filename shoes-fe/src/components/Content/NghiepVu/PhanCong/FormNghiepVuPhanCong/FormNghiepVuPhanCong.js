@@ -142,7 +142,7 @@ const FormNghiepVuPhanCong = ({
             // update setDataDonHangDaPhanCong
             fetch(
               "http://localhost:8000/phancong/get_info_donhang?SOPHIEU=" +
-                encodeURIComponent(dataView["SOPHIEU"])
+              encodeURIComponent(dataView["SOPHIEU"])
             )
               .then((response) => {
                 return response.json();
@@ -169,7 +169,7 @@ const FormNghiepVuPhanCong = ({
       // update dataChiTietPhanCong
       fetch(
         "http://localhost:8000/phancong?SOPHIEU=" +
-          encodeURIComponent(dataView["SOPHIEU"])
+        encodeURIComponent(dataView["SOPHIEU"])
       )
         .then((response) => {
           return response.json();
@@ -245,19 +245,19 @@ const FormNghiepVuPhanCong = ({
     for (let i = 0; i < dataSave.length; i++) {
       dataSave[i] = { ...dataSave[i], ...infoPhieu };
     }
-    fetch("http://localhost:8000/phancong", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dataSave),
-    })
-      .then((response) => {
-        console.log("response: ", response);
-        alert("Lưu thành công!");
-      })
-      .catch((error) => {
-        console.log("error: ", error);
-        alert("Lỗi! Chưa lưu được!");
-      });
+    // fetch("http://localhost:8000/phancong", {
+    //   method: "post",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(dataSave),
+    // })
+    //   .then((response) => {
+    //     console.log("response: ", response);
+    //     alert("Lưu thành công!");
+    //   })
+    //   .catch((error) => {
+    //     console.log("error: ", error);
+    //     alert("Lỗi! Chưa lưu được!");
+    //   });
 
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);
     setListMaDongPhanCongAddButWaitSave([]);
@@ -270,7 +270,7 @@ const FormNghiepVuPhanCong = ({
       dataChiTietPhanCong.length == 0 ||
       Object.keys(rowSelectionChiTietPhanCong).length == 0 ||
       parseInt(Object.keys(rowSelectionChiTietPhanCong)[0]) >=
-        dataChiTietPhanCong.length
+      dataChiTietPhanCong.length
     ) {
       return false;
     }
@@ -391,7 +391,7 @@ const FormNghiepVuPhanCong = ({
           <FormDonHang
             dataView={
               dataChiTietPhanCong[
-                parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])
+              parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])
               ]
             }
             isSaveData={true}
