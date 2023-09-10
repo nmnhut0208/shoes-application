@@ -14,9 +14,6 @@ const KyTinhLuong = ({
 }) => {
   console.log("re-render ItemKyTinhLuong");
   const [clicked, setClicked] = useState(false);
-  const hide = () => {
-    setClicked(false);
-  };
 
   const handleClickChange = (open) => {
     setClicked(open);

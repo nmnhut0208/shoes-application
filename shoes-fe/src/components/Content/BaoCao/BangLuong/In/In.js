@@ -48,7 +48,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
   useLayoutEffect(() => {
     fetch(
       "http://localhost:8000/chamcong/salary_compute?" +
-        `MAKY=${data["MAKY"]}&TYPE=${data["TYPE"]}`
+      `MAKY=${data["MAKY"]}&TYPE=${data["TYPE"]}`
     )
       .then((response) => response.json())
       .then((info) => {
@@ -78,12 +78,16 @@ const In = ({ data, setShowModal, stylePrint }) => {
       console.log("all_pages: ", all_pages);
       setInfoEachEmployer(all_pages);
     }
+    else {
+      setShowModal(false);
+      alert("Chưa có thông tin để xem hoặc in.");
+    }
   }, [dataTable]);
 
   useLayoutEffect(() => {
     if (infoEachEmployer.length > 0) {
-      setShowModal(false);
-      if (Object.keys(stylePrint).length == 0) handelPrint();
+
+      if (Object.keys(stylePrint).length == 0) { setShowModal(false); handelPrint() };
     }
   }, [infoEachEmployer]);
 

@@ -241,23 +241,24 @@ const FormNghiepVuPhanCong = ({
 
   const handleClickSave = () => {
     if (isSaveData) return;
-    let dataSave = dataChiTietPhanCong;
-    for (let i = 0; i < dataSave.length; i++) {
-      dataSave[i] = { ...dataSave[i], ...infoPhieu };
-    }
-    // fetch("http://localhost:8000/phancong", {
-    //   method: "post",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(dataSave),
-    // })
-    //   .then((response) => {
-    //     console.log("response: ", response);
-    //     alert("Lưu thành công!");
-    //   })
-    //   .catch((error) => {
-    //     console.log("error: ", error);
-    //     alert("Lỗi! Chưa lưu được!");
-    //   });
+    // let dataSave = dataChiTietPhanCong;
+    // for (let i = 0; i < dataSave.length; i++) {
+    //   dataSave[i] = { ...dataSave[i], ...infoPhieu };
+    // }
+    // chỉ update thông tin header (infoPhieu) thôi 
+    fetch("http://localhost:8000/phancong/update_header", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(infoPhieu),
+    })
+      .then((response) => {
+        console.log("response: ", response);
+        alert("Lưu thành công!");
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+        // alert("Lỗi! Chưa lưu được!");
+      });
 
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);
     setListMaDongPhanCongAddButWaitSave([]);

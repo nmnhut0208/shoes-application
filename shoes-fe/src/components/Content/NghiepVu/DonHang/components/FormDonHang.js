@@ -24,7 +24,7 @@ import {
 
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
 
-const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
+const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action = 'add' }) => {
   const view = useMemo(() => {
     if (permission && permission.THEM === 0 && permission.SUA === 0)
       return true;
@@ -223,6 +223,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission }) => {
         formInfoDonHang={formInfoDonHang}
         setFormInfoDonHang={setFormInfoDonHang}
         view={view}
+        action={action}
       />
       <Tooltip arrow title="Add">
         <IconButton onClick={handleClickMaGiay}>
