@@ -78,6 +78,10 @@ const In = ({ data, setShowModal, stylePrint }) => {
       console.log("all_pages: ", all_pages);
       setInfoEachEmployer(all_pages);
     }
+    else {
+      setShowModal(false);
+      alert("Chưa có thông tin để xem hoặc in.");
+    }
   }, [dataTable]);
 
   useLayoutEffect(() => {
