@@ -48,7 +48,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
   useLayoutEffect(() => {
     fetch(
       "http://localhost:8000/chamcong/salary_compute?" +
-        `MAKY=${data["MAKY"]}&TYPE=${data["TYPE"]}`
+      `MAKY=${data["MAKY"]}&TYPE=${data["TYPE"]}`
     )
       .then((response) => response.json())
       .then((info) => {
@@ -82,8 +82,8 @@ const In = ({ data, setShowModal, stylePrint }) => {
 
   useLayoutEffect(() => {
     if (infoEachEmployer.length > 0) {
-      setShowModal(false);
-      if (Object.keys(stylePrint).length == 0) handelPrint();
+
+      if (Object.keys(stylePrint).length == 0) { setShowModal(false); handelPrint() };
     }
   }, [infoEachEmployer]);
 
