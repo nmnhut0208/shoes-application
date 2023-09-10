@@ -257,6 +257,7 @@ const FormNghiepVuPhanCong = ({
       })
       .catch((error) => {
         console.log("error: ", error);
+        // alert("Lỗi! Chưa lưu được!");
       });
 
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);

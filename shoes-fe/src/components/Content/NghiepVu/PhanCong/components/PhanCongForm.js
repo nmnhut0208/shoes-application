@@ -47,7 +47,7 @@ const listSubInforGiay = [
 
 const columnsSubInfoGiay = processingInfoColumnTable(listSubInforGiay);
 
-const DetailInfoGiay = ({ data, rowSelection, setRowSelection }) => {
+const DetailInfoGiay = ({ data, setRowSelection }) => {
   return (
     <div style={{ height: "auto" }}>
       <MaterialReactTable
@@ -130,7 +130,6 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
           <Typography sx={{ p: 2 }}>
             <DetailInfoGiay
               data={listGiayWillPhanCong}
-              rowSelection={{}}
               setRowSelection={setRowSelection}
             />
           </Typography>
