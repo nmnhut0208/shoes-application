@@ -62,17 +62,21 @@ const DetailInfoGiay = ({ data, rowSelection, setRowSelection }) => {
         enablePagination={false}
         enableBottomToolbar={true}
         // row selection
-        enableMultiRowSelection={false}
-        enableRowSelection
-        onRowSelectionChange={setRowSelection}
-        state={{ rowSelection }}
+        enableMultiRowSelection={false} //use radio buttons instead of checkboxes
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => {
+            row.getToggleSelectedHandler();
+            setRowSelection(row.id);
+          },
+          sx: { cursor: "pointer" },
+        })}
       />
     </div>
   );
 };
 
 const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
-  const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState(0);
   const handleChangeForm = (e) => {
     const data = { ...form };
     if (e.target.name.includes("Size")) {
@@ -92,14 +96,11 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
     setAnchorEl(null);
   };
   useEffect(() => {
-    let keys = Object.keys(rowSelection);
-    if (keys.length > 0) {
-      setChiTietPhanCong({
-        ...listGiayWillPhanCong[keys[0]],
-        THODE: form["THODE"],
-        THOQUAI: form["THOQUAI"],
-      });
-    }
+    setChiTietPhanCong({
+      ...listGiayWillPhanCong[rowSelection],
+      THODE: form["THODE"],
+      THOQUAI: form["THOQUAI"],
+    });
     setAnchorEl(null);
   }, [rowSelection]);
 
