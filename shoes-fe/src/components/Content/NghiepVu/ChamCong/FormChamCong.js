@@ -114,19 +114,56 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
           if (data["status"] === "success") {
             setIsSaveDataNghiepVuChamCong(true);
             // remove dataTable with index in rowSelection
-            const keys = Object.keys(rowSelection);
+            let keys = Object.keys(rowSelection);
             const new_dataTable = dataTable.filter(
               (item, index) => !keys.includes(index.toString())
             );
             setDataTable(new_dataTable);
             // console.log("keys: ", keys, dataTable.length);
             if (parseInt(keys[0]) === dataTable.length - 1) {
-              const new_key = parseInt(keys[0]) - 1;
+              // const new_key = parseInt(keys[0]) - 1;
+              keys = [String(parseInt(keys[0]) - 1)];
               // console.log("new_key: ", new_key);
-              setRowSelection({ [new_key]: true });
+              setRowSelection({ [keys[0]]: true });
             }
             if (new_dataTable.length === 0) {
               setDataTableSub([]);
+            } else {
+              // console.log("keys: ", keys, dataTableSub);
+              const data = [];
+              for (var i = 0; i < keys.length; i++) {
+                  data.push(new_dataTable[keys[i]]["SOPHIEU"]);
+                  setInfoForm({
+                    ...infoForm,
+                    SOPHIEU: new_dataTable[keys[i]]["SOPHIEU"],
+                  });
+              }
+              const send_data = {
+                MANVIEN: infoForm["MANVIEN"],
+                MAKY: infoForm["MAKY"],
+                PHIEUPC: data,
+              };
+              // console.log("send_data: ", send_data);
+              fetch("http://localhost:8000/chamcong/" + infoForm["MANVIEN"], {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(send_data),
+              })
+                .then((response) => {
+                  return response.json();
+                }
+                )
+                .then((info) => {
+                  setDataTableSub(info);
+                  // console.log("abc: ", info);
+                }
+                )
+                .catch((err) => {
+                  console.log(":error: ", err);
+                }
+                );
             }
             // console.log("data: ", dataTable);
             alert("Lưu thành công");
@@ -321,7 +358,7 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       });
   }, [infoForm["MANVIEN"], infoForm["MAKY"]]);
 
-  console.log("selected: ", rowSelection)
+  console.log("selected: ", rowSelection, dataTableSub)
 
   // start: add to change Popover's behavior 
   const [clickedPopoverMaKy, setClickedPopoverMaKy] = useState(false);

@@ -851,7 +851,7 @@ const FormGiaoHang = ({
         // flag_rowSelection={true}
         setRowSelection={setRowSelectionSub}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
-        maxHeight={"30rem"}
+        maxHeight={"25rem"}
         change={true}
         setKeys={setKeys}
       />
