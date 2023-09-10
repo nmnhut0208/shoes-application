@@ -83,6 +83,12 @@ class RESPONSE_GIAYTHEOKHACHHANG(BaseModel):
     NGAYDH: Optional[str] = None
     NGAYGH: Optional[str] = None
 
+class ITEM_HEADER_PHANCONG(BaseModel):
+    SOPHIEU: str
+    NGAYPHIEU: str 
+    DIENGIAIPHIEU: Optional[str] = ""
+    MAKY: str
+
 router = APIRouter()
 
 class PHANCONG(BaseClass):
@@ -275,44 +281,44 @@ def read(SOPHIEU: str) -> List[RESPONSE_PHANCONG]:
     return result
 
 
-@router.post("/phancong")
-def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
-    # delete SOPHIEU cu, insert SDH moi
-    # cho trường hợp chú chỉ chỉnh sửa đơn hàng thôi, chứ ko add mới
-    # Không thể biết được bao nhiêu giày được add mới
-    # nên đành xóa dữ liệu cũ, add lại dữ liệu mới thôi
+# @router.post("/phancong")
+# def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
+#     # delete SOPHIEU cu, insert SDH moi
+#     # cho trường hợp chú chỉ chỉnh sửa đơn hàng thôi, chứ ko add mới
+#     # Không thể biết được bao nhiêu giày được add mới
+#     # nên đành xóa dữ liệu cũ, add lại dữ liệu mới thôi
 
-    sql_delete = f"""delete PHANCONG
-                    where SOPHIEU = '{data[0].SOPHIEU}'"""
-    phancong.execute_custom(sql_delete)
+#     sql_delete = f"""delete PHANCONG
+#                     where SOPHIEU = '{data[0].SOPHIEU}'"""
+#     phancong.execute_custom(sql_delete)
 
-    # find common information
-    today = datetime.now()
-    year = today.year
-    MADONG = find_info_primary_key("PHANCONG","MD", today)
-    PHIEU = find_info_primary_key("PHANCONG", "PHIEU", today) + 1
-    MAPHIEU = f"PC{year}{str(PHIEU).zfill(12)}"
-    day_created = today.strftime("%Y-%m-%d %H:%M:%S")
+#     # find common information
+#     today = datetime.now()
+#     year = today.year
+#     MADONG = find_info_primary_key("PHANCONG","MD", today)
+#     PHIEU = find_info_primary_key("PHANCONG", "PHIEU", today) + 1
+#     MAPHIEU = f"PC{year}{str(PHIEU).zfill(12)}"
+#     day_created = today.strftime("%Y-%m-%d %H:%M:%S")
 
-    for i in range(len(data)):
-        _data = dict(data[i])
-        MADONG += 1
-        _data["NGAYTAO"] = day_created
-        _data["NGAYSUA"] = day_created
-        _data["MAPHIEU"] = MAPHIEU
-        _data["MADONG"] = f"MD{year}{str(MADONG).zfill(12)}"
+#     for i in range(len(data)):
+#         _data = dict(data[i])
+#         MADONG += 1
+#         _data["NGAYTAO"] = day_created
+#         _data["NGAYSUA"] = day_created
+#         _data["MAPHIEU"] = MAPHIEU
+#         _data["MADONG"] = f"MD{year}{str(MADONG).zfill(12)}"
         
-        _data = convert_data_to_save_database(_data)
-        _c = ",".join([k for k, v in _data.items() if v is not None])
-        _v = ",".join([v for v in _data.values() if v is not None])
-        # phòng trường hợp những record khác nhau có số lượng
-        # cột insert khác nhau nên phải insert từng dòng như thế này
-        phancong.add(_c, _v)
+#         _data = convert_data_to_save_database(_data)
+#         _c = ",".join([k for k, v in _data.items() if v is not None])
+#         _v = ",".join([v for v in _data.values() if v is not None])
+#         # phòng trường hợp những record khác nhau có số lượng
+#         # cột insert khác nhau nên phải insert từng dòng như thế này
+#         phancong.add(_c, _v)
 
-    # lưu lại thông tin mã dòng và mã đơn hàng
-    save_info_primary_key("PHANCONG","PC", year, PHIEU)
-    save_info_primary_key("PHANCONG","MD", year, MADONG)
-    return 1
+#     # lưu lại thông tin mã dòng và mã đơn hàng
+#     save_info_primary_key("PHANCONG","PC", year, PHIEU)
+#     save_info_primary_key("PHANCONG","MD", year, MADONG)
+#     return 1
 
 
 @router.post("/phancong/add_phancong")
@@ -420,3 +426,14 @@ def delete(MADONG: list = Query([])) -> RESPONSE:
     ds_madong = ds_madong[:-1]
     condition = f"MADONG in ({ds_madong})"
     return phancong.delete(condition)
+
+
+@router.post("/phancong/update_header")
+def add(data: ITEM_HEADER_PHANCONG) -> RESPONSE:
+    data = convert_data_to_save_database(dict(data))  
+    val = ", ".join([f"{k} = {v}" for k, v in data.items() \
+                     if v is not None])
+    condition = f"SOPHIEU = {data['SOPHIEU']}"
+    phancong.update(val, condition)
+    return 1
+
