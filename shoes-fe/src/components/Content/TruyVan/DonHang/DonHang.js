@@ -123,6 +123,7 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
           isSaveData={isSaveData}
           setIsSaveData={setIsSaveData}
           permission={permission}
+          action='edit'
         />
       </Modal>
     </>
