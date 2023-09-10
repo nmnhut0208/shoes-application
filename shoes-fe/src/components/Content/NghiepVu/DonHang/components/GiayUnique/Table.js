@@ -19,7 +19,7 @@ const INFO_COLS_DONHANG = [
 
 const cols = processingInfoColumnTable(INFO_COLS_DONHANG);
 
-const TableShowMau = ({ columns, data, setInput, setLabel }) => {
+const TableShowMau = ({ columns, data, setInput, setLabel, showPopover }) => {
   //   const [rowSelection, setRowSelection] = useState({});
   //   console.log("rowSelection: ", rowSelection);
   return (
@@ -34,6 +34,7 @@ const TableShowMau = ({ columns, data, setInput, setLabel }) => {
           row.getToggleSelectedHandler();
           setInput(data[row.id]["MAGIAY"]);
           setLabel(data[row.id]["TENGIAY"]);
+          showPopover(false);
         },
         sx: { cursor: "pointer" },
       })}

@@ -162,6 +162,7 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
               //   setInfoForm({ ...infoForm, DIENGIAI: e.target.value });
               // }}
               className={styles.medium}
+              autocomplete="off"
             />
           </div>
         </div>

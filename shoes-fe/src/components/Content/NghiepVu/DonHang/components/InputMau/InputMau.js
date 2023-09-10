@@ -1,5 +1,5 @@
 import { useState, memo, useEffect } from "react";
-import { Popover, Space } from "antd";
+import { Popover } from "antd";
 import { useItemsContext } from "~items_context";
 import TableShowMau from "./TableShowMau";
 
@@ -8,7 +8,7 @@ const searchInfo = (firstLetter, data) => {
   for (let i = 0; i < data.length; i++) {
     if (
       data[i]["value"] !== "" &&
-      data[i]["value"][0].toUpperCase() === firstLetter
+      data[i]["firstLetter"] === firstLetter
     )
       result.push(data[i]);
   }
@@ -16,6 +16,7 @@ const searchInfo = (firstLetter, data) => {
 };
 
 const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
+  const [clicked, setClicked] = useState(false);
   const [stateItem, dispatchItem] = useItemsContext();
   const [fistLetterMaMau, setFirstLetterMaMau] = useState("");
   const [data, setData] = useState(() => stateItem.infoItemMau);
@@ -29,6 +30,15 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
     if (init) return searchInfo(init[0], stateItem.infoItemMau);
     else return stateItem.infoItemMau;
   });
+
+  const hide = () => {
+    setClicked(false);
+  };
+
+  const handleClickChange = (open) => {
+    setClicked(open);
+  };
+
   useEffect(() => {
     // để đây, chứ nếu truyền vào hàm kia luôn thì nó
     // sẽ bị bug => quá deep update trong ReactDom
@@ -50,8 +60,10 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
 
   const handleChangeMaMau = (e) => {
     setMaMau(e.target.value);
-    if (e.target.value.length > 0)
+    if (e.target.value.length > 0) {
       setFirstLetterMaMau(e.target.value[0].toUpperCase());
+    }
+
     else {
       setDataShow(data);
       setFirstLetterMaMau("");
@@ -65,11 +77,15 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
       {readOnly !== true ? (
         <Popover
           placement="bottomLeft"
+          trigger="click"
+          open={clicked}
+          onOpenChange={handleClickChange}
           content={
             <TableShowMau
               data={dataShow}
               setInput={setMaMau}
               setLabel={setLabelMau}
+              showPopover={setClicked}
             />
           }
         >
@@ -79,6 +95,7 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
             onChange={handleChangeMaMau}
             autoComplete="off"
             style={{ border: "none" }}
+            tabindex="-1"
           />
         </Popover>
       ) : (

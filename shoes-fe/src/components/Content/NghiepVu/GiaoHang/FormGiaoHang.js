@@ -488,6 +488,7 @@ const FormGiaoHang = ({
       // setDataTable([]);
       return;
     }
+    console.log("Call API");
     fetch("http://localhost:8000/giaohang", {
       method: "POST",
       headers: {
@@ -533,7 +534,7 @@ const FormGiaoHang = ({
               }
               setMapSelected(map);
             });
-        }       
+        }
       })
       .catch((err) => {
         console.log(":error: ", err);
@@ -740,6 +741,9 @@ const FormGiaoHang = ({
   // }, [curSelected]);
 
   console.log("sub: ", dataTableSub);
+  // start: add to change Popover's behavior 
+  const [clickedPopoverMaKH, setClickedPopoverMaKH] = useState(false);
+  // end: add to change Popover's behavior 
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -750,6 +754,9 @@ const FormGiaoHang = ({
             {/* <input type="text" className={styles.small} value={test_makh} /> */}
             <Popover
               placement="bottomLeft"
+              trigger="click"
+              open={clickedPopoverMaKH}
+              onOpenChange={(open) => setClickedPopoverMaKH(open)}
               content={
                 <TableMaKH
                   data={dataTableKhachHang}
@@ -757,6 +764,7 @@ const FormGiaoHang = ({
                   setRowSelection={setRowSelectionMaKH}
                   isSaveData={isSaveData}
                   setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
+                  setClickedPopover={setClickedPopoverMaKH}
                 />
               }
             >
@@ -805,6 +813,7 @@ const FormGiaoHang = ({
                 // setIsSaveDataNghiepVuGiaoHang(false);
               }}
               className={styles.large}
+              autocomplete="off"
             />
           </div>
         </div>

@@ -153,7 +153,7 @@ export const processing_button_add = (
       dataDonHang.splice(index_del, 1);
       setDataDonHang([...dataDonHang]);
       if (dataDonHang.length > 0 && index_del > 0) {
-        index_del -= 1;
+        if (dataDonHang.length == index_del) index_del -= 1;
         const _row = {};
         _row[index_del] = true;
         setRowSelectionDonHangToPhanCong(_row);
@@ -189,7 +189,7 @@ export const updateMaGiayWillPhanCong = (
       // nhớ xử lý vụ size nữa nè
       fetch(
         "http://localhost:8000/phancong/get_chitietdonhang_dephancong?SODH=" +
-          encodeURIComponent(idDonHang)
+        encodeURIComponent(idDonHang)
       )
         .then((response) => {
           return response.json();
@@ -257,7 +257,7 @@ export const processing_button_delete = (
 
   fetch(
     "http://localhost:8000/phancong/by_list_MADONG/?MADONG=" +
-      data_delete["MADONG"],
+    data_delete["MADONG"],
     {
       method: "delete",
     }

@@ -64,6 +64,7 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
           value={infoPhieu["DIENGIAIPHIEU"]}
           onChange={(e) => handleChangeInfoPhieu(e)}
           readOnly={view}
+          autocomplete="off"
         />
       </div>
     </div>

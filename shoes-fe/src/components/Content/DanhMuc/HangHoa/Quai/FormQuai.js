@@ -119,6 +119,7 @@ const FormQuai = () => {
               name="MAQUAI"
               value={inputForm["MAQUAI"]}
               onChange={(e) => handleChangeInformationForm(e)}
+              autocomplete="off"
             />
           </div>
 
@@ -129,6 +130,7 @@ const FormQuai = () => {
               name="TENQUAI"
               value={inputForm["TENQUAI"]}
               onChange={(e) => handleChangeInformationForm(e)}
+              autocomplete="off"
             />
           </div>
 
@@ -153,6 +155,7 @@ const FormQuai = () => {
               name="GHICHU"
               value={inputForm["GHICHU"]}
               onChange={(e) => handleChangeInformationForm(e)}
+              autocomplete="off"
             />
           </div>
         </div>

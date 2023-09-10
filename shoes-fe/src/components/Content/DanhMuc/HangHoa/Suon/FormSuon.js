@@ -117,7 +117,7 @@ const FormSuon = () => {
         <div className={styles.items_container}>
           <div className={styles.item}>
             <label>Mã sườn</label>
-            <input name="MASUON" readOnly={true} value={inputForm["MASUON"]} />
+            <input name="MASUON" readOnly={true} value={inputForm["MASUON"]} autocomplete="off" />
           </div>
 
           <div className={styles.item}>
@@ -126,6 +126,7 @@ const FormSuon = () => {
               readOnly={true}
               name="TENSUON"
               value={inputForm["TENSUON"]}
+              autocomplete="off"
             />
           </div>
 
@@ -176,6 +177,7 @@ const FormSuon = () => {
               onChange={(e) =>
                 handleChangeInformationForm({ GHICHU: e.target.value })
               }
+              autocomplete="off"
             />
           </div>
         </div>

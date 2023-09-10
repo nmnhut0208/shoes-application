@@ -124,6 +124,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             vertical: "bottom",
             horizontal: "left",
           }}
+          trigger="click"
         >
           <Typography sx={{ p: 2 }}>
             <DetailInfoGiay
@@ -292,6 +293,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
         name="DIENGIAIDONG"
         value={form["DIENGIAIDONG"]}
         onChange={(e) => handleChangeForm(e)}
+        autocomplete="off"
       />
     </div>
   );

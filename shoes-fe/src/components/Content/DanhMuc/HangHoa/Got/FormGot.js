@@ -115,6 +115,7 @@ const FormGot = () => {
               readOnly={stateTable.inforShowTable.action_row === "edit" || view}
               value={inputForm["MAGOT"]}
               onChange={(e) => handleChangeInformationForm(e)}
+              autocomplete="off"
             />
           </div>
 
@@ -125,6 +126,7 @@ const FormGot = () => {
               name="TENGOT"
               value={inputForm["TENGOT"]}
               onChange={(e) => handleChangeInformationForm(e)}
+              autocomplete="off"
             />
           </div>
 
@@ -135,6 +137,7 @@ const FormGot = () => {
               name="GHICHU"
               value={inputForm["GHICHU"]}
               onChange={(e) => handleChangeInformationForm(e)}
+              autocomplete="off"
             />
           </div>
         </div>
