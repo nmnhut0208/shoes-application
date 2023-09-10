@@ -715,7 +715,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
         // flag_rowSelection={true}
         setRowSelection={setRowSelection}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
-        maxHeight={"24rem"}
+        maxHeight={"22rem"}
         change={false}
         setKeys={setKeys}
       />
@@ -739,7 +739,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
         // flag_rowSelection={true}
         setRowSelection={setRowSelectionSub}
         setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
-        maxHeight={"30rem"}
+        maxHeight={"25rem"}
         change={true}
         setKeys={setKeys}
       />
