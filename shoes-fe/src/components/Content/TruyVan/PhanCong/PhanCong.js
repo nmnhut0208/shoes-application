@@ -140,6 +140,7 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
           setListMaDongPhanCongAddButWaitSave={
             setListMaDongPhanCongAddButWaitSave
           }
+          action="edit"
         />
       </Modal>
 

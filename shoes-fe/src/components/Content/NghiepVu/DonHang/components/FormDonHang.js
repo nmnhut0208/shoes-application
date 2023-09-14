@@ -258,9 +258,9 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
             In
           </button>
 
-          <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
+          {action === 'add' && (<button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
             Nhập tiếp
-          </button>
+          </button>)}
           <button onClick={handleSaveDonHang} disabled={view}>
             Lưu
           </button>

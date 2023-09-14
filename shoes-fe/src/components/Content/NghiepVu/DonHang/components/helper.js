@@ -9,6 +9,13 @@ import {
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 import { renderDataEmpty } from "~utils/processing_data_table";
 
+const convert_to_int = (value) =>
+{
+  if(value==="") return 0;
+  if (!value) return 0;
+  return parseFloat(value);
+}
+
 const handleSaveCell = (cell, value, data, setDataTable, setIsSaveData) => {
   //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
   var row_current = data[cell.row.index];
@@ -174,7 +181,7 @@ export const updateColumnsInformations = (
 
     if (key === "MAGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
     if (COLS_HAVE_SUM_FOOTER.includes(key)) {
-      let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
+      let sum_value = dataTable.reduce((total, row) => total + convert_to_int(row[key]), 0);
       info["Footer"] = () => (
         <input
           style={{
