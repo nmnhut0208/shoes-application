@@ -1,6 +1,8 @@
 import { useEffect, useState, useMemo, memo } from "react";
 import { IconButton, Tooltip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import moment from "moment";
+
 
 import { useUserContext } from "~user";
 import Modal from "./Modal";
@@ -16,8 +18,8 @@ import styles from "./FormDonHang.module.scss";
 import { renderDataEmpty } from "~utils/processing_data_table";
 import {
   updateSODH,
-  updateDanhSachMau,
   saveDonDatHang,
+  updateDanhSachMau,
   updateFormDonHang,
   updateColumnsInformations,
 } from "./helper";
@@ -35,6 +37,8 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
   const [dataTable, setDataTable] = useState([]);
 
   const [dataMau, setDataMau] = useState([]);
+
+  const [rerenderMau, setRerenderMau] = useState(()=>moment().format("YYYY-MM-DDTHH:mm:ss"));
 
   const [formInfoDonHang, setFormInfoDonHang] = useState({
     SODH: "",
@@ -57,6 +61,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
   const [showModal, setShowModal] = useState(false);
   const [listGiayUnique, setListGiayUnique] = useState([]);
   const [listGiayKH, setListGiayKH] = useState([]);
+  const [isAddNewGiay, setIsAddNewGiay] = useState(false);
 
   useEffect(() => {
     if (formInfoDonHang["MAKH"] !== "") {
@@ -90,7 +95,9 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
           console.log(":error: ", err);
         });
     }
-  }, [formInfoDonHang["MAKH"]]);
+  }, [formInfoDonHang["MAKH"], isAddNewGiay]);
+
+  const [firstRender, setFirstRender] = useState(false);
 
   // useEffect(() => {
   //   updateDanhSachMau(setDataMau);
@@ -124,7 +131,11 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
       updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
       setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
     }
+    setIsSaveData(true);
+    setFirstRender(true);
   }, [dataView]);
+
+  console.log("issavedata: ", isSaveData)
 
   const handleThemGiay = () => {
     setInfoFormWillShow({
@@ -144,6 +155,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
       inDonHang: false,
     });
     setShowModal(true);
+    
   };
 
   const handleNhapTiep = () => {
@@ -195,16 +207,22 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
       setDataTable,
       view,
       listGiayUnique,
-      setIsSaveData
-    );
+      rerenderMau
+          );
   }, [dataTable, listGiayUnique]);
 
   useEffect(() => {
     let _data = dataTable.filter((row) => row.SOLUONG > 0);
-    if (_data.length > 0) {
+    if (_data.length > 0 && !firstRender) {
       setIsSaveData(false);
+      
     }
-  }, [formInfoDonHang]);
+    if (_data.length > 0 && firstRender)
+    {
+      setFirstRender(false);
+    }
+
+  }, [formInfoDonHang, dataTable]);
 
   const handleInDonHang = () => {
     if (dataTable.length == 0) return;
@@ -278,7 +296,9 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
           status={showModal}
           setShowModal={setShowModal}
         >
-          <FormGiay setShowModal={setShowModal} />
+          <FormGiay setShowModal={setShowModal} 
+          setIsAddNewGiay={setIsAddNewGiay}
+          isAddNewGiay={isAddNewGiay} />
         </Modal>
       )}
       {!view && infoFormWillShow["mau"] && (
@@ -291,6 +311,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
             dataMau={dataMau}
             setDataMau={setDataMau}
             setShowModal={setShowModal}
+            setRerenderMau={setRerenderMau}
           />
         </Modal>
       )}

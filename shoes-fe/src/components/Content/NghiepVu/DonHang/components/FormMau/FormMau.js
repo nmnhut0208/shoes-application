@@ -1,10 +1,17 @@
 import { useState } from "react";
 import styles from "./FormMau.module.scss";
 import { FormMauBasic } from "~hang_hoa";
-import { useItemsContext } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
+import moment from "moment";
 
-const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
+
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
+
+
+const FormMau = ({ dataMau, setDataMau, setShowModal, setRerenderMau }) => {
   const [dataForm, setDataForm] = useState({});
   const [stateItem, dispatchItem] = useItemsContext();
 
@@ -34,6 +41,13 @@ const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
       ...dataMau,
       { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
     ]);
+    dispatchItem(
+      actions_items_context.setInfoMau([
+        ...stateItem.infoItemMau,
+        { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
+      ])
+    );
+    setRerenderMau(moment().format("YYYY-MM-DDTHH:mm:ss"));
     setShowModal(false);
   };
 

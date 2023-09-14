@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FormGiayBasic } from "~hang_hoa";
 import styles from "./FormGiay.module.scss";
 
-const FormGiay = ({ setShowModal }) => {
+const FormGiay = ({ setShowModal, setIsAddNewGiay, isAddNewGiay }) => {
   const [dataForm, setDataForm] = useState({});
 
   const handleSaveFrom = async () => {
@@ -34,6 +34,7 @@ const FormGiay = ({ setShowModal }) => {
       .catch((error) => {
         console.log("error: ", error);
       });
+    setIsAddNewGiay(!isAddNewGiay);
     setShowModal(false);
   };
 

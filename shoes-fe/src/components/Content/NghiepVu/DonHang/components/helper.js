@@ -16,7 +16,7 @@ const convert_to_int = (value) =>
   return parseFloat(value);
 }
 
-const handleSaveCell = (cell, value, data, setDataTable, setIsSaveData) => {
+const handleSaveCell = (cell, value, data, setDataTable) => {
   //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
   var row_current = data[cell.row.index];
   // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
@@ -54,7 +54,6 @@ const handleSaveCell = (cell, value, data, setDataTable, setIsSaveData) => {
     data.push(renderDataEmpty(INFO_COLS_DONHANG, 1)[0]);
   }
   setDataTable([...data]);
-  setIsSaveData(false);
 };
 
 export const updateColumnsInformations = (
@@ -62,7 +61,7 @@ export const updateColumnsInformations = (
   setDataTable,
   view,
   listGiayUnique,
-  setIsSaveData
+  rerenderMau
 ) => {
   const infoColumnsInit = [];
 
@@ -112,8 +111,7 @@ export const updateColumnsInformations = (
               cell,
               e.target.value,
               dataTable,
-              setDataTable,
-              setIsSaveData
+              setDataTable
             )
           }
           onKeyDown={handleDisableKeyDownUp}
@@ -173,6 +171,7 @@ export const updateColumnsInformations = (
                 setDataTable([...dataTable]);
               }}
               readOnly={view || dataTable[cell.row.id]["MAGIAY"] === ""}
+              rerender={rerenderMau}
             />
           </div>
         );

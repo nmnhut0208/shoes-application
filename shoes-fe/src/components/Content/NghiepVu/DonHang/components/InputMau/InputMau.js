@@ -15,7 +15,7 @@ const searchInfo = (firstLetter, data) => {
   return result;
 };
 
-const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
+const InputMau = ({ init, handleChangeDataTable, readOnly, rerender }) => {
   const [clicked, setClicked] = useState(false);
   const [stateItem, dispatchItem] = useItemsContext();
   const [fistLetterMaMau, setFirstLetterMaMau] = useState("");
@@ -25,15 +25,17 @@ const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
       return init;
     } else return "";
   });
+
+  useEffect(()=>{
+    setData(stateItem.infoItemMau);
+  }, rerender)
+  
   const [labelMau, setLabelMau] = useState("");
   const [dataShow, setDataShow] = useState(() => {
     if (init) return searchInfo(init[0], stateItem.infoItemMau);
     else return stateItem.infoItemMau;
   });
 
-  const hide = () => {
-    setClicked(false);
-  };
 
   const handleClickChange = (open) => {
     setClicked(open);
