@@ -20,8 +20,6 @@ const INFO_COLS_DONHANG = [
 const cols = processingInfoColumnTable(INFO_COLS_DONHANG);
 
 const TableShowMau = ({ columns, data, setInput, setLabel, showPopover }) => {
-  //   const [rowSelection, setRowSelection] = useState({});
-  //   console.log("rowSelection: ", rowSelection);
   return (
     <MaterialReactTable
       columns={cols}

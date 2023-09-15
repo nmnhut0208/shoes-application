@@ -44,7 +44,7 @@ const FormMau = ({ dataMau, setDataMau, setShowModal, setRerenderMau }) => {
     dispatchItem(
       actions_items_context.setInfoMau([
         ...stateItem.infoItemMau,
-        { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
+        { label: dataForm["TENMAU"], value: dataForm["MAMAU"], firstLetter: dataForm["MAMAU"][0].toUpperCase() },
       ])
     );
     setRerenderMau(moment().format("YYYY-MM-DDTHH:mm:ss"));

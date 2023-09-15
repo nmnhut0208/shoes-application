@@ -19,16 +19,11 @@ const InputMau = ({ init, handleChangeDataTable, readOnly, rerender }) => {
   const [clicked, setClicked] = useState(false);
   const [stateItem, dispatchItem] = useItemsContext();
   const [fistLetterMaMau, setFirstLetterMaMau] = useState("");
-  const [data, setData] = useState(() => stateItem.infoItemMau);
   const [maMA, setMaMau] = useState(() => {
     if (init) {
       return init;
     } else return "";
   });
-
-  useEffect(()=>{
-    setData(stateItem.infoItemMau);
-  }, rerender)
   
   const [labelMau, setLabelMau] = useState("");
   const [dataShow, setDataShow] = useState(() => {
@@ -53,21 +48,21 @@ const InputMau = ({ init, handleChangeDataTable, readOnly, rerender }) => {
   }, [init]);
 
   useEffect(() => {
-    let a = searchInfo(fistLetterMaMau, data);
-    // console.log(a);
+    let a = searchInfo(fistLetterMaMau, stateItem.infoItemMau);
+
+    console.log("a: ", a);
     if (a.length > 0) {
       setDataShow(a);
     }
-  }, [fistLetterMaMau]);
+  }, [fistLetterMaMau, rerender]);
 
   const handleChangeMaMau = (e) => {
     setMaMau(e.target.value);
     if (e.target.value.length > 0) {
       setFirstLetterMaMau(e.target.value[0].toUpperCase());
     }
-
     else {
-      setDataShow(data);
+      setDataShow(stateItem.infoItemMau);
       setFirstLetterMaMau("");
       setLabelMau("");
       handleChangeDataTable("", "");
