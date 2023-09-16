@@ -1,4 +1,6 @@
 import { actions as actions_items_context } from "~items_context";
+import { specialCharString, nof_length_value } from "~config/mau";
+
 export const getListDe = (dispatchItem) => {
   fetch("http://localhost:8000/de")
     .then((response) => {
@@ -92,12 +94,21 @@ export const getListMau = (dispatchItem) => {
     })
     .then((info) => {
       let listOptional = info.map(function (ob) {
-        return { label: ob.TENMAU, value: ob.MAMAU, firstLetter: ob.MAMAU[0].toUpperCase() };
+        let len = nof_length_value - ob.MAMAU.length;
+        console.log(
+          "len: ",
+          ob.MAMAU + specialCharString.repeat(len) + " - " + ob.TENMAU
+        );
+        if (len <= 0) len = 1;
+        return {
+          label: ob.MAMAU + specialCharString.repeat(len) + " - " + ob.TENMAU,
+          value: ob.MAMAU,
+        };
       });
 
       dispatchItem(
         actions_items_context.setInfoMau([
-          { label: "", value: "", firstLetter: "" },
+          // { label: "", value: "", firstLetter: "" },
           ...listOptional,
         ])
       );
