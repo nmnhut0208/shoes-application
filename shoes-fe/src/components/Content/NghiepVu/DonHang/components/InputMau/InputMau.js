@@ -3,6 +3,8 @@ import { Popover } from "antd";
 import { useItemsContext } from "~items_context";
 import { Select } from "antd";
 
+const { Option } = Select;
+
 const InputMau = ({ handleChangeDataTable, readOnly, rerender, init = "" }) => {
   const [clicked, setClicked] = useState(false);
   const [stateItem, dispatchItem] = useItemsContext();
@@ -35,11 +37,15 @@ const InputMau = ({ handleChangeDataTable, readOnly, rerender, init = "" }) => {
     var choice = stateItem.infoItemMau.filter((e) => e.value === value);
     setLabelMau(choice[0]["lable"]);
   };
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  const filterOption = (input, option) => {
+    console.log("option: ", option);
+    return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
+  };
 
-  console.log("stateItem.infoItemMau: ", stateItem.infoItemMau[100]);
-
+  const customOptionStyle = {
+    borderBottom: "1px solid #000", // Add a border line at the bottom of each option
+    padding: "4px 0", // Adjust padding as needed
+  };
   return (
     <>
       {readOnly !== true ? (
@@ -58,9 +64,23 @@ const InputMau = ({ handleChangeDataTable, readOnly, rerender, init = "" }) => {
               }}
               defaultValue={init}
               onChange={handleChange}
-              options={stateItem.infoItemMau}
               filterOption={filterOption}
-            />
+            >
+              {stateItem.infoItemMau.map((e) => (
+                <Option style={customOptionStyle} value={e["value"]}>
+                  <span
+                    style={{
+                      width: "100px",
+                      display: "inline-block",
+                      borderRight: "1px solid #000",
+                    }}
+                  >
+                    {e["value"]}
+                  </span>
+                  <span style={{ paddingLeft: "10px" }}>{e["label"]}</span>
+                </Option>
+              ))}
+            </Select>
           }
         >
           <input

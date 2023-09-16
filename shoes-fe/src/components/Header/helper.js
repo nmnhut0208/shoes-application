@@ -1,5 +1,9 @@
 import { actions as actions_items_context } from "~items_context";
-import { specialCharString, nof_length_value } from "~config/mau";
+import {
+  specialCharString,
+  nof_length_value,
+  between_charactor,
+} from "~config/mau";
 
 export const getListDe = (dispatchItem) => {
   fetch("http://localhost:8000/de")
@@ -94,14 +98,15 @@ export const getListMau = (dispatchItem) => {
     })
     .then((info) => {
       let listOptional = info.map(function (ob) {
-        let len = nof_length_value - ob.MAMAU.length;
-        console.log(
-          "len: ",
-          ob.MAMAU + specialCharString.repeat(len) + " - " + ob.TENMAU
-        );
-        if (len <= 0) len = 1;
+        // let len = nof_length_value - ob.MAMAU.length;
+        // console.log(
+        //   "len: ",
+        //   ob.MAMAU + specialCharString.repeat(len) + " - " + ob.TENMAU
+        // );
+        // if (len <= 0) len = 1;
         return {
-          label: ob.MAMAU + specialCharString.repeat(len) + " - " + ob.TENMAU,
+          // label: ob.MAMAU + between_charactor + ob.TENMAU,
+          label: ob.TENMAU,
           value: ob.MAMAU,
         };
       });
