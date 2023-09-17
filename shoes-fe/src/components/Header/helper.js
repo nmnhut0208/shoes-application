@@ -98,14 +98,7 @@ export const getListMau = (dispatchItem) => {
     })
     .then((info) => {
       let listOptional = info.map(function (ob) {
-        // let len = nof_length_value - ob.MAMAU.length;
-        // console.log(
-        //   "len: ",
-        //   ob.MAMAU + specialCharString.repeat(len) + " - " + ob.TENMAU
-        // );
-        // if (len <= 0) len = 1;
         return {
-          // label: ob.MAMAU + between_charactor + ob.TENMAU,
           label: ob.TENMAU,
           value: ob.MAMAU,
         };
@@ -113,7 +106,7 @@ export const getListMau = (dispatchItem) => {
 
       dispatchItem(
         actions_items_context.setInfoMau([
-          // { label: "", value: "", firstLetter: "" },
+          // { label: "", value: ""},
           ...listOptional,
         ])
       );

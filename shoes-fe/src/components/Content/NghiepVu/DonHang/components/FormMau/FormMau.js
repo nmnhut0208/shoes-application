@@ -5,12 +5,10 @@ import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import moment from "moment";
 import { specialCharString, nof_length_value } from "~config/mau";
 
-
 import {
   useItemsContext,
   actions as actions_items_context,
 } from "~items_context";
-
 
 const FormMau = ({ dataMau, setDataMau, setShowModal, setRerenderMau }) => {
   const [dataForm, setDataForm] = useState({});
@@ -43,11 +41,11 @@ const FormMau = ({ dataMau, setDataMau, setShowModal, setRerenderMau }) => {
       { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
     ]);
     let len = nof_length_value - dataForm["MAMAU"].length;
-        if (len <= 0) len = 1;
+    if (len <= 0) len = 1;
     dispatchItem(
       actions_items_context.setInfoMau([
         ...stateItem.infoItemMau,
-        { label: dataForm["MAMAU"] + specialCharString.repeat(len) +" - " + dataForm["TENMAU"], value: dataForm["MAMAU"] },
+        { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
       ])
     );
     setRerenderMau(moment().format("YYYY-MM-DDTHH:mm:ss"));
