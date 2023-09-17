@@ -9,12 +9,11 @@ import {
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 import { renderDataEmpty } from "~utils/processing_data_table";
 
-const convert_to_int = (value) =>
-{
-  if(value==="") return 0;
+const convert_to_int = (value) => {
+  if (value === "") return 0;
   if (!value) return 0;
   return parseFloat(value);
-}
+};
 
 const handleSaveCell = (cell, value, data, setDataTable) => {
   //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
@@ -107,12 +106,7 @@ export const updateColumnsInformations = (
           type="number"
           value={cell.getValue().toString()}
           onChange={(e) =>
-            handleSaveCell(
-              cell,
-              e.target.value,
-              dataTable,
-              setDataTable
-            )
+            handleSaveCell(cell, e.target.value, dataTable, setDataTable)
           }
           onKeyDown={handleDisableKeyDownUp}
           onKeyUp={handleDisableKeyDownUp}
@@ -162,7 +156,7 @@ export const updateColumnsInformations = (
     if (COLS_HAVE_SELECT_INPUT.includes(key)) {
       info["Cell"] = ({ cell }) => {
         return (
-          <div style={{ width: "80%", marginLeft: "10%", marginRight: "10%" }}>
+          <div style={{ width: "80%", marginLeft: "8%", marginRight: "8%" }}>
             <InputMau
               init={dataTable[cell.row.id][cell.column.id]}
               handleChangeDataTable={(value, label) => {
@@ -180,7 +174,10 @@ export const updateColumnsInformations = (
 
     if (key === "MAGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
     if (COLS_HAVE_SUM_FOOTER.includes(key)) {
-      let sum_value = dataTable.reduce((total, row) => total + convert_to_int(row[key]), 0);
+      let sum_value = dataTable.reduce(
+        (total, row) => total + convert_to_int(row[key]),
+        0
+      );
       info["Footer"] = () => (
         <input
           style={{

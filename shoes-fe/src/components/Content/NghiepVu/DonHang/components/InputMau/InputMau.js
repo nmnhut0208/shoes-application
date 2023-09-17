@@ -1,12 +1,18 @@
 import { useState, memo, useEffect } from "react";
-import { Popover } from "antd";
 import { useItemsContext } from "~items_context";
 import { Select } from "antd";
 
 const { Option } = Select;
 
+const customOptionStyle = {
+  borderBottom: "1px solid #000", // Add a border line at the bottom of each option
+  padding: "4px 0", // Adjust padding as needed
+};
+
+const filterOption = (input, option) => {
+  return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
+};
 const InputMau = ({ handleChangeDataTable, readOnly, rerender, init = "" }) => {
-  const [clicked, setClicked] = useState(false);
   const [stateItem, dispatchItem] = useItemsContext();
   const [maMA, setMaMau] = useState(() => {
     if (init) {
@@ -16,85 +22,91 @@ const InputMau = ({ handleChangeDataTable, readOnly, rerender, init = "" }) => {
 
   const [labelMau, setLabelMau] = useState("");
 
-  const handleClickChange = (open) => {
-    setClicked(open);
-  };
-
   useEffect(() => {
     if (labelMau !== "") handleChangeDataTable(maMA, labelMau);
   }, [labelMau]);
 
   useEffect(() => {
     setMaMau(init);
-    for (let i = 0; i < stateItem.infoItemMau.length; i++) {
-      console.log(stateItem.infoItemMau[i]["label"].length);
-    }
   }, [init]);
 
   const handleChange = (value) => {
-    setClicked(false);
     setMaMau(value);
     var choice = stateItem.infoItemMau.filter((e) => e.value === value);
     setLabelMau(choice[0]["lable"]);
-  };
-  const filterOption = (input, option) => {
-    console.log("option: ", option);
-    return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
+    setShowInput(true);
+    setShowSelection(false);
   };
 
-  const customOptionStyle = {
-    borderBottom: "1px solid #000", // Add a border line at the bottom of each option
-    padding: "4px 0", // Adjust padding as needed
+  const [showSelection, setShowSelection] = useState(false);
+  const [showInput, setShowInput] = useState(true);
+  const handleFocusInput = () => {
+    setShowSelection(true);
+    setShowInput(false);
+  };
+  const handleClickSelection = () => {
+    setShowSelection(false);
+    setShowInput(true);
   };
   return (
-    <>
-      {readOnly !== true ? (
-        <Popover
-          placement="bottomLeft"
-          trigger="click"
-          open={clicked}
-          onOpenChange={handleClickChange}
-          content={
-            <Select
-              showSearch
-              defaultOpen={true}
-              optionFilterProp="children"
-              style={{
-                width: "400px",
-              }}
-              defaultValue={init}
-              onChange={handleChange}
-              filterOption={filterOption}
-            >
-              {stateItem.infoItemMau.map((e) => (
-                <Option style={customOptionStyle} value={e["value"]}>
-                  <span
-                    style={{
-                      width: "100px",
-                      display: "inline-block",
-                      borderRight: "1px solid #000",
-                    }}
-                  >
-                    {e["value"]}
-                  </span>
-                  <span style={{ paddingLeft: "10px" }}>{e["label"]}</span>
-                </Option>
-              ))}
-            </Select>
-          }
-        >
-          <input
-            id="MAMAU"
-            value={maMA}
-            autoComplete="off"
-            style={{ border: "none" }}
-            tabindex="-1"
-          />
-        </Popover>
-      ) : (
-        <input value={maMA} readOnly={readOnly} style={{ border: "none" }} />
+    <div
+      style={{
+        width: "90%",
+        //  marginLeft: "8%", marginRight: "8%"
+      }}
+    >
+      {showInput && (
+        <input
+          id="MAMAU"
+          value={maMA}
+          // autoComplete="off"
+          tabindex="-1"
+          onFocus={handleFocusInput}
+          onClick={handleFocusInput}
+          style={{
+            width: "90%",
+            // marginLeft: "8%",
+            // marginRight: "8%",
+            border: "none",
+          }}
+        />
       )}
-    </>
+
+      {showSelection && !readOnly && (
+        <Select
+          showSearch={true}
+          optionFilterProp="children"
+          style={{
+            width: 400,
+            // marginLeft: "8%",
+            // marginRight: "8%",
+          }}
+          value={maMA}
+          onChange={handleChange}
+          filterOption={filterOption}
+          key="maMA"
+          autoFocus={true}
+          defaultOpen={true}
+          onBlur={handleClickSelection}
+          onClick={handleClickSelection}
+        >
+          {stateItem.infoItemMau.map((e) => (
+            <Option style={customOptionStyle} value={e["value"]}>
+              <span
+                style={{
+                  width: "100px",
+                  display: "inline-block",
+                  borderRight: "1px solid #000",
+                }}
+              >
+                {e["value"]}
+              </span>
+              <span style={{ paddingLeft: "10px" }}>{e["label"]}</span>
+            </Option>
+          ))}
+        </Select>
+      )}
+    </div>
   );
 };
 

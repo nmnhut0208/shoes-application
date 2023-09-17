@@ -3,7 +3,6 @@ import styles from "./FormMau.module.scss";
 import { FormMauBasic } from "~hang_hoa";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import moment from "moment";
-import { specialCharString, nof_length_value } from "~config/mau";
 
 import {
   useItemsContext,
@@ -40,8 +39,7 @@ const FormMau = ({ dataMau, setDataMau, setShowModal, setRerenderMau }) => {
       ...dataMau,
       { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
     ]);
-    let len = nof_length_value - dataForm["MAMAU"].length;
-    if (len <= 0) len = 1;
+
     dispatchItem(
       actions_items_context.setInfoMau([
         ...stateItem.infoItemMau,

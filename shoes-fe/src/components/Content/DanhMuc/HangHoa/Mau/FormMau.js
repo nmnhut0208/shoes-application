@@ -7,7 +7,6 @@ import {
   actions as actions_items_context,
 } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
-import { specialCharString, nof_length_value } from "~config/mau";
 
 const FormMau = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -43,8 +42,7 @@ const FormMau = () => {
           dataForm,
         ])
       );
-      let len = nof_length_value - dataForm["MAMAU"].length;
-      if (len <= 0) len = 1;
+
       dispatchItem(
         actions_items_context.setInfoMau([
           ...stateItem.infoItemMau,

@@ -1,9 +1,4 @@
 import { actions as actions_items_context } from "~items_context";
-import {
-  specialCharString,
-  nof_length_value,
-  between_charactor,
-} from "~config/mau";
 
 export const getListDe = (dispatchItem) => {
   fetch("http://localhost:8000/de")
