@@ -9,7 +9,7 @@ import {
   actions as actions_items_context,
 } from "~items_context";
 
-const FormMau = ({ dataMau, setDataMau, setShowModal, setRerenderMau }) => {
+const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
   const [dataForm, setDataForm] = useState({});
   const [stateItem, dispatchItem] = useItemsContext();
 
@@ -46,7 +46,6 @@ const FormMau = ({ dataMau, setDataMau, setShowModal, setRerenderMau }) => {
         { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
       ])
     );
-    setRerenderMau(moment().format("YYYY-MM-DDTHH:mm:ss"));
     setShowModal(false);
   };
 

@@ -12,7 +12,7 @@ const customOptionStyle = {
 const filterOption = (input, option) => {
   return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
 };
-const InputMau = ({ handleChangeDataTable, readOnly, rerender, init = "" }) => {
+const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
   const [stateItem, dispatchItem] = useItemsContext();
   const [maMA, setMaMau] = useState(() => {
     if (init) {
@@ -20,20 +20,14 @@ const InputMau = ({ handleChangeDataTable, readOnly, rerender, init = "" }) => {
     } else return "";
   });
 
-  const [labelMau, setLabelMau] = useState("");
-
-  useEffect(() => {
-    if (labelMau !== "") handleChangeDataTable(maMA, labelMau);
-  }, [labelMau]);
-
   useEffect(() => {
     setMaMau(init);
   }, [init]);
 
   const handleChange = (value) => {
     setMaMau(value);
-    var choice = stateItem.infoItemMau.filter((e) => e.value === value);
-    setLabelMau(choice[0]["lable"]);
+    let choice = stateItem.infoItemMau.filter((e) => e.value === value);
+    handleChangeDataTable(maMA, choice[0]["label"]);
     setShowInput(true);
     setShowSelection(false);
   };
@@ -49,24 +43,16 @@ const InputMau = ({ handleChangeDataTable, readOnly, rerender, init = "" }) => {
     setShowInput(true);
   };
   return (
-    <div
-      style={{
-        width: "90%",
-        //  marginLeft: "8%", marginRight: "8%"
-      }}
-    >
+    <>
       {showInput && (
         <input
           id="MAMAU"
           value={maMA}
-          // autoComplete="off"
           tabindex="-1"
           onFocus={handleFocusInput}
           onClick={handleFocusInput}
           style={{
             width: "90%",
-            // marginLeft: "8%",
-            // marginRight: "8%",
             border: "none",
           }}
         />
@@ -78,8 +64,6 @@ const InputMau = ({ handleChangeDataTable, readOnly, rerender, init = "" }) => {
           optionFilterProp="children"
           style={{
             width: 400,
-            // marginLeft: "8%",
-            // marginRight: "8%",
           }}
           value={maMA}
           onChange={handleChange}
@@ -106,7 +90,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, rerender, init = "" }) => {
           ))}
         </Select>
       )}
-    </div>
+    </>
   );
 };
 

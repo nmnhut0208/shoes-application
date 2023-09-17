@@ -59,8 +59,7 @@ export const updateColumnsInformations = (
   dataTable,
   setDataTable,
   view,
-  listGiayUnique,
-  rerenderMau
+  listGiayUnique
 ) => {
   const infoColumnsInit = [];
 
@@ -165,7 +164,6 @@ export const updateColumnsInformations = (
                 setDataTable([...dataTable]);
               }}
               readOnly={view || dataTable[cell.row.id]["MAGIAY"] === ""}
-              rerender={rerenderMau}
             />
           </div>
         );

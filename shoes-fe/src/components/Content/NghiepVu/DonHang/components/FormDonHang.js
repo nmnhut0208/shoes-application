@@ -3,7 +3,6 @@ import { IconButton, Tooltip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import moment from "moment";
 
-
 import { useUserContext } from "~user";
 import Modal from "./Modal";
 
@@ -26,7 +25,13 @@ import {
 
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
 
-const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action = 'add' }) => {
+const FormDonHang = ({
+  dataView,
+  isSaveData,
+  setIsSaveData,
+  permission,
+  action = "add",
+}) => {
   const view = useMemo(() => {
     if (permission && permission.THEM === 0 && permission.SUA === 0)
       return true;
@@ -38,7 +43,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
 
   const [dataMau, setDataMau] = useState([]);
 
-  const [rerenderMau, setRerenderMau] = useState(()=>moment().format("YYYY-MM-DDTHH:mm:ss"));
+  // const [rerenderMau, setRerenderMau] = useState(()=>moment().format("YYYY-MM-DDTHH:mm:ss"));
 
   const [formInfoDonHang, setFormInfoDonHang] = useState({
     SODH: "",
@@ -81,8 +86,8 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
 
       fetch(
         "http://localhost:8000/donhang/khachhang/" +
-        formInfoDonHang["MAKH"] +
-        "/giay"
+          formInfoDonHang["MAKH"] +
+          "/giay"
       )
         .then((response) => {
           return response.json();
@@ -107,7 +112,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
     if (dataView) {
       fetch(
         "http://localhost:8000/donhang?SODH=" +
-        encodeURIComponent(dataView["SODH"])
+          encodeURIComponent(dataView["SODH"])
       )
         .then((response) => {
           return response.json();
@@ -135,7 +140,7 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
     setFirstRender(true);
   }, [dataView]);
 
-  console.log("issavedata: ", isSaveData)
+  console.log("issavedata: ", isSaveData);
 
   const handleThemGiay = () => {
     setInfoFormWillShow({
@@ -155,7 +160,6 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
       inDonHang: false,
     });
     setShowModal(true);
-    
   };
 
   const handleNhapTiep = () => {
@@ -173,7 +177,9 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
   const handleSaveDonHang = () => {
     if (isSaveData) return;
 
-    let dataDatHang = dataTable.filter((data) => data["SOLUONG"] > 0 && data["MAGIAY"] !== "");
+    let dataDatHang = dataTable.filter(
+      (data) => data["SOLUONG"] > 0 && data["MAGIAY"] !== ""
+    );
     if (dataDatHang.length == 0) {
       alert("Bạn chưa đặt hàng hoặc chưa chọn số lượng mỗi loại giày cần đặt!");
       return;
@@ -206,22 +212,18 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
       dataTable,
       setDataTable,
       view,
-      listGiayUnique,
-      rerenderMau
-          );
+      listGiayUnique
+    );
   }, [dataTable, listGiayUnique]);
 
   useEffect(() => {
     let _data = dataTable.filter((row) => row.SOLUONG > 0);
     if (_data.length > 0 && !firstRender) {
       setIsSaveData(false);
-      
     }
-    if (_data.length > 0 && firstRender)
-    {
+    if (_data.length > 0 && firstRender) {
       setFirstRender(false);
     }
-
   }, [formInfoDonHang, dataTable]);
 
   const handleInDonHang = () => {
@@ -276,9 +278,11 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
             In
           </button>
 
-          {action === 'add' && (<button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
-            Nhập tiếp
-          </button>)}
+          {action === "add" && (
+            <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
+              Nhập tiếp
+            </button>
+          )}
           <button onClick={handleSaveDonHang} disabled={view}>
             Lưu
           </button>
@@ -296,9 +300,11 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
           status={showModal}
           setShowModal={setShowModal}
         >
-          <FormGiay setShowModal={setShowModal} 
-          setIsAddNewGiay={setIsAddNewGiay}
-          isAddNewGiay={isAddNewGiay} />
+          <FormGiay
+            setShowModal={setShowModal}
+            setIsAddNewGiay={setIsAddNewGiay}
+            isAddNewGiay={isAddNewGiay}
+          />
         </Modal>
       )}
       {!view && infoFormWillShow["mau"] && (
@@ -311,7 +317,6 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
             dataMau={dataMau}
             setDataMau={setDataMau}
             setShowModal={setShowModal}
-            setRerenderMau={setRerenderMau}
           />
         </Modal>
       )}
@@ -338,7 +343,9 @@ const FormDonHang = ({ dataView, isSaveData, setIsSaveData, permission, action =
           <InDonHang
             infoHeader={formInfoDonHang}
             // dataTable={dataTable.slice(0, dataTable.length - 1)}
-            dataTable={dataTable.filter((data) => data["SOLUONG"] > 0 && data["MAGIAY"] !== "")}
+            dataTable={dataTable.filter(
+              (data) => data["SOLUONG"] > 0 && data["MAGIAY"] !== ""
+            )}
             // remove dòng cuối cùng
             setShowModal={setShowModal}
           />
