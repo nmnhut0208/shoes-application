@@ -9,7 +9,9 @@ const customOptionStyle = {
 };
 
 const filterOption = (input, option) => {
-  return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
+  return (option?.value ?? "")
+    .toLowerCase()
+    .startsWith(input.trim().toLowerCase());
 };
 
 const GiayUnique = ({
@@ -26,8 +28,6 @@ const GiayUnique = ({
   const [showSelection, setShowSelection] = useState(false);
   const [showInput, setShowInput] = useState(true);
 
-  console.log("listGiayUnique: ", listGiayUnique);
-
   useEffect(() => {
     setMaMau(init);
   }, [init]);
@@ -35,7 +35,7 @@ const GiayUnique = ({
   const handleChange = (value) => {
     setMaMau(value);
     let choice = listGiayUnique.filter((e) => e.MAGIAY === value);
-    handleChangeDataTable(maMA, choice[0]["TENGIAY"]);
+    handleChangeDataTable(value, choice[0]["TENGIAY"]);
     setShowInput(true);
     setShowSelection(false);
   };
@@ -71,7 +71,7 @@ const GiayUnique = ({
           showSearch={true}
           optionFilterProp="children"
           style={{
-            width: 750, // 600
+            width: 750,
             // marginLeft: 200, // 600,
             position: "absolute",
             top: 0,

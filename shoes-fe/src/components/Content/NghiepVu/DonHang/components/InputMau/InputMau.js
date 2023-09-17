@@ -28,9 +28,14 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
   }, [init]);
 
   const handleChange = (value) => {
+    if (value === " ") {
+      value = "";
+      handleChangeDataTable("", "");
+    } else {
+      let choice = stateItem.infoItemMau.filter((e) => e.value === value);
+      handleChangeDataTable(value, choice[0]["label"]);
+    }
     setMaMau(value);
-    let choice = stateItem.infoItemMau.filter((e) => e.value === value);
-    handleChangeDataTable(maMA, choice[0]["label"]);
     setShowInput(true);
     setShowSelection(false);
   };

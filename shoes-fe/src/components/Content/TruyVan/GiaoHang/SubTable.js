@@ -17,7 +17,7 @@ const SubTable = ({
   //   setRowSelection,
   maxHeight,
 }) => {
-    // console.log("databig: ", data);
+  // console.log("databig: ", data);
   const [stateUser, dispatchUser] = useUserContext();
   const maForm = "F0033";
   const [stateTable, dispatchTable] = useTableContext();
@@ -39,6 +39,7 @@ const SubTable = ({
       //   onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
       //   state={{ rowSelection }}
       enableTopToolbar={true}
+      initialState={{ showColumnFilters: true }}
       enableBottomToolbar={false}
       enablePagination={false}
       muiTableContainerProps={{ sx: { maxHeight: { maxHeight } } }}

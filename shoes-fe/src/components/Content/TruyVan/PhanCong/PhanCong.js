@@ -52,7 +52,8 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
     <>
       <MaterialReactTable
         {...border_text_table_config}
-        // enableTopToolbar={false} // show tool to filter
+        enableTopToolbar={true} // show tool to filter
+        initialState={{ showColumnFilters: true }}
         columns={columns}
         data={data}
         // components

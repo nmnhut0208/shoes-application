@@ -1,7 +1,4 @@
 import { useEffect, useState, useMemo, memo } from "react";
-import { IconButton, Tooltip } from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import moment from "moment";
 
 import { useUserContext } from "~user";
 import Modal from "./Modal";
@@ -63,7 +60,6 @@ const FormDonHang = ({
   const [showModal, setShowModal] = useState(false);
   const [listGiayUnique, setListGiayUnique] = useState([]);
   const [listGiayKH, setListGiayKH] = useState([]);
-  const [isAddNewGiay, setIsAddNewGiay] = useState(false);
 
   useEffect(() => {
     if (formInfoDonHang["MAKH"] !== "") {
@@ -97,7 +93,7 @@ const FormDonHang = ({
           console.log(":error: ", err);
         });
     }
-  }, [formInfoDonHang["MAKH"], isAddNewGiay]);
+  }, [formInfoDonHang["MAKH"]]);
 
   const [firstRender, setFirstRender] = useState(false);
 
@@ -238,20 +234,21 @@ const FormDonHang = ({
         view={view}
         action={action}
       />
-      <Tooltip arrow title="Add">
-        <IconButton onClick={handleClickMaGiay}>
-          <AddCircleIcon style={{ color: "green", fontSize: "3rem" }} />
-        </IconButton>
-      </Tooltip>
 
-      <lable
+      <button
         style={{
-          fontSize: "1.5rem",
+          backgroundColor: "#b5e550",
+          fontSize: "1.7rem",
           fontFamily: "Arial",
+          height: "2.8rem",
+          width: "20rem",
+          marginBottom: "1.5rem",
         }}
+        onClick={handleClickMaGiay}
       >
-        (Thêm giày vào đơn hàng)
-      </lable>
+        Thêm giày vào đơn hàng
+      </button>
+
       <div style={{ width: "85vw" }}>
         <TableDonHang
           columns={infoColumns}
@@ -295,8 +292,9 @@ const FormDonHang = ({
         >
           <FormGiay
             setShowModal={setShowModal}
-            setIsAddNewGiay={setIsAddNewGiay}
-            isAddNewGiay={isAddNewGiay}
+            listGiayUnique={listGiayUnique}
+            setListGiayUnique={setListGiayUnique}
+            MAKH={formInfoDonHang["MAKH"]}
           />
         </Modal>
       )}
