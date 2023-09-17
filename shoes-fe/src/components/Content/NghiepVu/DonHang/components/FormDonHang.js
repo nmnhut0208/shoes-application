@@ -18,7 +18,6 @@ import { renderDataEmpty } from "~utils/processing_data_table";
 import {
   updateSODH,
   saveDonDatHang,
-  updateDanhSachMau,
   updateFormDonHang,
   updateColumnsInformations,
 } from "./helper";
@@ -42,8 +41,6 @@ const FormDonHang = ({
   const [dataTable, setDataTable] = useState([]);
 
   const [dataMau, setDataMau] = useState([]);
-
-  // const [rerenderMau, setRerenderMau] = useState(()=>moment().format("YYYY-MM-DDTHH:mm:ss"));
 
   const [formInfoDonHang, setFormInfoDonHang] = useState({
     SODH: "",
@@ -103,10 +100,6 @@ const FormDonHang = ({
   }, [formInfoDonHang["MAKH"], isAddNewGiay]);
 
   const [firstRender, setFirstRender] = useState(false);
-
-  // useEffect(() => {
-  //   updateDanhSachMau(setDataMau);
-  // }, []); // them dieu kieu check mau thay doi
 
   useEffect(() => {
     if (dataView) {

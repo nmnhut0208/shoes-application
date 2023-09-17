@@ -207,26 +207,6 @@ export const updateSODH = (sodh) => {
   });
 };
 
-export const updateDanhSachMau = (setDataMau) => {
-  fetch("http://localhost:8000/mau")
-    .then((response) => {
-      return response.json();
-    })
-    .then((info) => {
-      let listMau = info.map(function (ob) {
-        return { label: ob.TENMAU, value: ob.MAMAU };
-      });
-      let listMauDefault = [
-        { lable: "", value: null },
-        { label: "", value: "" },
-      ];
-      setDataMau([...listMauDefault, ...listMau]);
-    })
-    .catch((err) => {
-      console.log(":error: ", err);
-    });
-};
-
 export const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
   for (let i = 0; i < dataDatHang.length; i++) {
     dataDatHang[i] = { ...dataDatHang[i], ...formInfoDonHang };
