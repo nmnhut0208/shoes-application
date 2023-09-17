@@ -101,7 +101,7 @@ export const updateColumnsInformations = (
             textAlign: "right",
             marginRight: "0.5rem",
           }}
-          readOnly={view || dataTable[cell.row.id]["MAGIAY"] === ""}
+          readOnly={view} // || dataTable[cell.row.id]["MAGIAY"] === ""}
           type="number"
           value={cell.getValue().toString()}
           onChange={(e) =>
@@ -155,7 +155,13 @@ export const updateColumnsInformations = (
     if (COLS_HAVE_SELECT_INPUT.includes(key)) {
       info["Cell"] = ({ cell }) => {
         return (
-          <div style={{ width: "80%", marginLeft: "8%", marginRight: "8%" }}>
+          <div
+            style={{
+              width: "80%",
+              marginLeft: "8%",
+              marginRight: "8%",
+            }}
+          >
             <InputMau
               init={dataTable[cell.row.id][cell.column.id]}
               handleChangeDataTable={(value, label) => {
@@ -163,7 +169,7 @@ export const updateColumnsInformations = (
                 dataTable[cell.row.id]["TEN" + cell.column.id] = label;
                 setDataTable([...dataTable]);
               }}
-              readOnly={view || dataTable[cell.row.id]["MAGIAY"] === ""}
+              readOnly={view} // || dataTable[cell.row.id]["MAGIAY"] === ""}
             />
           </div>
         );

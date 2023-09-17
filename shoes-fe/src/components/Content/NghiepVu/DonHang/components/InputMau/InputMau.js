@@ -14,6 +14,9 @@ const filterOption = (input, option) => {
 };
 const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
   const [stateItem, dispatchItem] = useItemsContext();
+  const [showSelection, setShowSelection] = useState(false);
+  const [showInput, setShowInput] = useState(true);
+
   const [maMA, setMaMau] = useState(() => {
     if (init) {
       return init;
@@ -32,8 +35,6 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
     setShowSelection(false);
   };
 
-  const [showSelection, setShowSelection] = useState(false);
-  const [showInput, setShowInput] = useState(true);
   const handleFocusInput = () => {
     setShowSelection(true);
     setShowInput(false);
@@ -42,14 +43,21 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
     setShowSelection(false);
     setShowInput(true);
   };
+
+  const handleBlurSelection = () => {
+    setShowSelection(false);
+    setShowInput(true);
+    console.log("haiz, blur selection ne");
+  };
   return (
-    <>
+    <div style={{ position: "relative" }}>
       {showInput && (
         <input
           id="MAMAU"
           value={maMA}
           tabindex="-1"
-          onFocus={handleFocusInput}
+          readOnly="true"
+          onFocus={handleBlurSelection}
           onClick={handleFocusInput}
           style={{
             width: "90%",
@@ -64,8 +72,11 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
           optionFilterProp="children"
           style={{
             width: 400,
+            marginLeft: 78,
+            position: "absolute",
+            // top: 0,
           }}
-          value={maMA}
+          value={init}
           onChange={handleChange}
           filterOption={filterOption}
           key="maMA"
@@ -73,9 +84,16 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
           defaultOpen={true}
           onBlur={handleClickSelection}
           onClick={handleClickSelection}
+          bordered={false}
+          autoComplete="off"
+          placement="bottomLeft"
         >
           {stateItem.infoItemMau.map((e) => (
-            <Option style={customOptionStyle} value={e["value"]}>
+            <Option
+              style={customOptionStyle}
+              value={e["value"]}
+              key={e["value"]}
+            >
               <span
                 style={{
                   width: "100px",
@@ -90,7 +108,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
           ))}
         </Select>
       )}
-    </>
+    </div>
   );
 };
 
