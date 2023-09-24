@@ -41,6 +41,7 @@ const GiayUnique = ({
   };
 
   const handleFocusInput = () => {
+    if (readOnly) return;
     setShowSelection(true);
     setShowInput(false);
   };

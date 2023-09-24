@@ -29,7 +29,12 @@ const FormDonHang = ({
   action = "add",
 }) => {
   const view = useMemo(() => {
-    if (permission && permission.THEM === 0 && permission.SUA === 0)
+    if (
+      action !== "add" &&
+      permission &&
+      permission.XEM === 1 &&
+      permission.SUA === 0
+    )
       return true;
     else return false;
   }, []);
