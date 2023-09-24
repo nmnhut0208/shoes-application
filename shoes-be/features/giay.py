@@ -14,7 +14,7 @@ class ITEM_GIAY(BaseModel):
     TENGIAY: str
     MADE: str
     MASUON: str
-    MACA: str
+    MACA: Optional[str] = None
     MAQUAI: str
     GHICHU: Optional[str] = None
     DONGIA: int 
@@ -41,7 +41,7 @@ class RESPONSE_GIAY(BaseModel):
     TENDE: Optional[str] = ""
     MASUON: str
     TENSUON: Optional[str] = ""
-    MACA: str
+    MACA: Optional[str] = ""
     TENCA: Optional[str] = ""
     MAQUAI: str
     TENQUAI: Optional[str] = ""
