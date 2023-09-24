@@ -7,6 +7,11 @@ import {
 } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
+const list_input_required = {
+  MAKH: "Mã khách hàng",
+  TENKH: "Tên khách hàng",
+};
+
 const FormKhachHang = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateItem, dispatchItem] = useItemsContext();
@@ -19,6 +24,12 @@ const FormKhachHang = () => {
   };
 
   const handleSaveFrom = () => {
+    for (let key in list_input_required) {
+      if (inputForm[key] === undefined || inputForm[key] === "") {
+        alert("Nhập " + list_input_required[key]);
+        return false;
+      }
+    }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
