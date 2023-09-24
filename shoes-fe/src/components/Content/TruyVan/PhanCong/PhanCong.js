@@ -103,20 +103,18 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
                 </IconButton>
               </Tooltip>
             )}
-            {permission.XEM === 1 &&
-              permission.THEM === 0 &&
-              permission.SUA === 0 && (
-                <Tooltip arrow placement="right" title="View Detail">
-                  <IconButton
-                    onClick={() => {
-                      setRowInfo(row.original);
-                      handleEditRow();
-                    }}
-                  >
-                    <VisibilityOutlinedIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
+            {permission.XEM === 1 && permission.SUA === 0 && (
+              <Tooltip arrow placement="right" title="View Detail">
+                <IconButton
+                  onClick={() => {
+                    setRowInfo(row.original);
+                    handleEditRow();
+                  }}
+                >
+                  <VisibilityOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+            )}
           </Box>
         )}
       />
