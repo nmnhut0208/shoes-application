@@ -114,6 +114,12 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
     }
   };
 
+  const handleDeleteImage = (e) => {
+    setImageBase64("");
+    setImageURL("");
+    setDataForm({ ...form, HINHANH: "" });
+  };
+
   console.log("form: ", form);
   return (
     <div className={styles.form}>
@@ -228,8 +234,13 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
                 onChange={(e) => changeImage(e)}
               />
               <img src={image_base64} />
+
+              <button onClick={handleDeleteImage} style={{ border: "none" }}>
+                Xoá hình ảnh
+              </button>
             </div>
           </div>
+          <br />
         </div>
 
         <div className={styles.group_second}>

@@ -145,6 +145,12 @@ const FormSuon = () => {
     }
   };
 
+  const handleDeleteImage = (e) => {
+    setImageBase64("");
+    setImageURL("");
+    setInputForm({ ...inputForm, HINHANH: "" });
+  };
+
   return (
     <div className={styles.form}>
       <div className={styles.content}>
@@ -238,6 +244,10 @@ const FormSuon = () => {
             onChange={(e) => changeImage(e)}
           />
           <img src={image_base64} />
+
+          <button onClick={handleDeleteImage} style={{ border: "none" }}>
+            Xoá hình ảnh
+          </button>
         </div>
       </div>
 
