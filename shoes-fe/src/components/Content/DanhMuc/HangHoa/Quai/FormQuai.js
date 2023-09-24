@@ -95,13 +95,46 @@ const FormQuai = () => {
   const changeImage = (e) => {
     if (e.target.value !== "") {
       var reader = new FileReader();
-      reader.onload = function () {
-        let base64String = reader.result
-          .replace("data:", "")
-          .replace(/^.+,/, "");
-        let image = "data:image/png;base64,".concat(base64String);
-        setImageBase64(image);
-        setInputForm({ ...inputForm, HINHANH: image });
+      reader.onload = (e) => {
+        var imgElement = document.createElement("img");
+        imgElement.src = e.target.result;
+        imgElement.onload = function () {
+          var canvas = document.createElement("canvas");
+          var ctx = canvas.getContext("2d");
+
+          // Set new dimensions for the canvas (and therefore the compressed image)
+          var maxWidth = 1200; // example, change this size to fit your requirements
+          var maxHeight = 1200; // example, change this size to fit your requirements
+          var width = imgElement.width;
+          var height = imgElement.height;
+
+          if (width > height) {
+            if (width > maxWidth) {
+              height *= maxWidth / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width *= maxHeight / height;
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          // Draw the resized image onto the canvas
+          ctx.drawImage(imgElement, 0, 0, width, height);
+
+          // Get the image from the canvas with lower quality (quality from 0.1 to 1.0)
+          var compressedDataURL = canvas.toDataURL("image/jpeg", 0.7); // Quality 50%
+
+          // Remove the data URL prefix to get the pure base64 string
+          var base64String = compressedDataURL.split(",")[1];
+          let image = "data:image/png;base64,".concat(base64String);
+          setImageBase64(image);
+          setInputForm({ ...inputForm, HINHANH: image });
+        };
       };
       reader.readAsDataURL(e.target.files[0]);
       setImageURL("");
