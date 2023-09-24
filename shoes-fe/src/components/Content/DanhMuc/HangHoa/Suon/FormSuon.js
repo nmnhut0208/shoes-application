@@ -9,6 +9,11 @@ import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { ItemGot, ItemMui } from "~items";
 import { getImageOfDanhMuc } from "~utils/api_get_image";
 
+const list_input_required = {
+  MAGOT: "Mã gót",
+  MAMUI: "Mã mũi",
+};
+
 const FormSuon = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
@@ -44,6 +49,12 @@ const FormSuon = () => {
   };
 
   const handleSaveFrom = () => {
+    for (let key in list_input_required) {
+      if (inputForm[key] === undefined || inputForm[key] === "") {
+        alert("Nhập " + list_input_required[key]);
+        return false;
+      }
+    }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";

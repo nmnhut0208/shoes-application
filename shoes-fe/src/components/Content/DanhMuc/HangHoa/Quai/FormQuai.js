@@ -10,6 +10,12 @@ import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { getImageOfDanhMuc } from "~utils/api_get_image";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 
+const list_input_required = {
+  MAQUAI: "Mã quai",
+  TENQUAI: "Tên quai",
+  DONGIA: "Đơn giá quai",
+};
+
 const FormQuai = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateItem, dispatchItem] = useItemsContext();
@@ -37,9 +43,11 @@ const FormQuai = () => {
   };
 
   const handleSaveFrom = () => {
-    if (inputForm["DONGIA"] == "") {
-      alert("Nhập đơn giá quai!!!");
-      return false;
+    for (let key in list_input_required) {
+      if (inputForm[key] === undefined || inputForm[key] === "") {
+        alert("Nhập " + list_input_required[key]);
+        return false;
+      }
     }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
