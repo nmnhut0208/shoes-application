@@ -1,14 +1,17 @@
 import { useState, memo, useEffect } from "react";
-import { Popover, Space } from "antd";
-import Table from "./Table";
 
-const searchInfo = (firstLetter, data) => {
-  let result = [];
-  for (let i = 0; i < data.length; i++) {
-    if (data[i]["MAGIAY"].toUpperCase().includes(firstLetter.toUpperCase()))
-      result.push(data[i]);
-  }
-  return result;
+import { Select } from "antd";
+const { Option } = Select;
+
+const customOptionStyle = {
+  borderBottom: "1px solid #000", // Add a border line at the bottom of each option
+  padding: "4px 0", // Adjust padding as needed
+};
+
+const filterOption = (input, option) => {
+  return (option?.value ?? "")
+    .toLowerCase()
+    .startsWith(input.trim().toLowerCase());
 };
 
 const GiayUnique = ({
@@ -17,73 +20,95 @@ const GiayUnique = ({
   handleChangeDataTable,
   readOnly,
 }) => {
-  const [clicked, setClicked] = useState(false);
   const [maMA, setMaMau] = useState(() => {
     if (init) {
       return init;
     } else return "";
   });
+  const [showSelection, setShowSelection] = useState(false);
+  const [showInput, setShowInput] = useState(true);
+
   useEffect(() => {
     setMaMau(init);
   }, [init]);
-  const [data, setData] = useState([]);
-  const [labelMau, setLabelMau] = useState("");
-  const [dataShow, setDataShow] = useState(() => {
-    if (init) return searchInfo(init[0], listGiayUnique);
-    else return listGiayUnique;
-  });
 
-  useEffect(() => {
-    setData(listGiayUnique);
-    setDataShow(listGiayUnique);
-  }, [listGiayUnique]);
-  // console.log("labelMau: ", labelMau);
-  useEffect(() => {
-    // để đây, chứ nếu truyền vào hàm kia luôn thì nó
-    // sẽ bị bug => quá deep update trong ReactDom
-    if (labelMau !== "") handleChangeDataTable(maMA, labelMau);
-  }, [labelMau]);
+  const handleChange = (value) => {
+    setMaMau(value);
+    let choice = listGiayUnique.filter((e) => e.MAGIAY === value);
+    handleChangeDataTable(value, choice[0]["TENGIAY"]);
+    setShowInput(true);
+    setShowSelection(false);
+  };
 
-  const handleChangeMaMau = (e) => {
-    setMaMau(e.target.value);
-    if (e.target.value.length > 0) {
-      let a = searchInfo(e.target.value, data);
-      // console.log(a);
-      if (a.length > 0) {
-        setDataShow(a);
-      }
-    } else {
-      setDataShow(data);
-      setLabelMau("");
-    }
+  const handleFocusInput = () => {
+    setShowSelection(true);
+    setShowInput(false);
+  };
+  const handleClickSelection = () => {
+    setShowSelection(false);
+    setShowInput(true);
   };
 
   return (
-    <>
-      {readOnly !== true ? (
-        <Popover
-          placement="bottomLeft"
-          content={
-            <Table data={dataShow} setInput={setMaMau} setLabel={setLabelMau} showPopover={setClicked} />
-          }
-          trigger="click"
-          open={clicked}
-          onOpenChange={(open) => setClicked(open)}
-        >
-          <input
-            id="MAGIAY"
-            value={maMA}
-            onChange={handleChangeMaMau}
-            autoComplete="off"
-            style={{ border: "none" }}
-            tabindex="-1"
-          />
-        </Popover>
-      ) : (
-        <input value={maMA} readOnly={readOnly} style={{ border: "none" }} />
+    <div style={{ position: "relative" }}>
+      {showInput && (
+        <input
+          id="MAGIAY"
+          value={maMA}
+          tabindex="-1"
+          onFocus={handleFocusInput}
+          onClick={handleFocusInput}
+          readOnly="true"
+          style={{
+            width: "90%",
+            border: "none",
+          }}
+        />
       )}
-    </>
+
+      {showSelection && !readOnly && (
+        <Select
+          showSearch={true}
+          optionFilterProp="children"
+          style={{
+            width: 750,
+            // marginLeft: 200, // 600,
+            position: "absolute",
+            top: 0,
+          }}
+          value={maMA}
+          onChange={handleChange}
+          filterOption={filterOption}
+          key="maMA"
+          autoFocus={true}
+          defaultOpen={true}
+          onBlur={handleClickSelection}
+          onClick={handleClickSelection}
+        >
+          {listGiayUnique.map((e) => (
+            <Option
+              style={customOptionStyle}
+              value={e["MAGIAY"]}
+              key={e["MAGIAY"]}
+            >
+              <span
+                style={{
+                  width: "200px",
+                  display: "inline-block",
+                  borderRight: "1px solid #000",
+                }}
+              >
+                {e["MAGIAY"]}
+              </span>
+              <span style={{ paddingLeft: "10px", width: "auto" }}>
+                {e["TENGIAY"]}
+              </span>
+            </Option>
+          ))}
+        </Select>
+      )}
+    </div>
   );
 };
 
-export default GiayUnique;
+export default memo(GiayUnique);

@@ -9,7 +9,7 @@ export const _style_component_table = {
   fontFamily: "Arial",
   borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)",
   borderBottom: "0.17rem solid rgba(0, 0, 0, 0.4)",
-  padding: "6px",
+  padding: "6px 2px 6px 2px",
 };
 
 export const border_text_table_config = {

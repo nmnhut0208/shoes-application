@@ -18,7 +18,7 @@ const TableDonHang = ({ columns, data, setDataTable, readOnly }) => {
   return (
     <MaterialReactTable
       {...border_text_table_config}
-      enableTopToolbar={false}
+      enableTopToolbar={true}
       columns={columns}
       data={data}
       enableColumnActions={false}
@@ -45,10 +45,6 @@ const TableDonHang = ({ columns, data, setDataTable, readOnly }) => {
           )}
         </>
       )}
-      // add
-      // action
-      // in
-      // row
       enableRowActions={!readOnly}
       renderRowActions={({ row, table }) => (
         <Box

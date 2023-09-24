@@ -53,20 +53,24 @@ const DanhMucGiayKhachHang = ({
       <MaterialReactTable
         columns={infoColumns}
         data={dataTable}
+        enableTopToolbar={true}
         {...border_text_table_config}
         // row selection
         enableRowSelection
         onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
         state={{ rowSelection }} //pass our managed row selection state to the table to use
         // knmhgk
-        enableTopToolbar={false}
         enablePagination={false}
         // scroll to bottom
         enableRowVirtualization
         muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
         // group Mã giày
         enableGrouping
-        initialState={{ grouping: ["MAGIAY"], expanded: true }}
+        initialState={{
+          grouping: ["MAGIAY"],
+          expanded: true,
+          showColumnFilters: true,
+        }}
       />
       <div className={styles.group_button}>
         <button onClick={handleSubmit}>Đồng ý</button>

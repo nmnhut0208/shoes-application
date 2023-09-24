@@ -49,6 +49,7 @@ const Table = ({ columns, data, setData, permission }) => {
           },
         }}
         enableTopToolbar={true}
+        initialState={{ showColumnFilters: true }}
         columns={columns}
         data={data}
         // components

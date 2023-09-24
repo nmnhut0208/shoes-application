@@ -9,7 +9,13 @@ import {
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 import { renderDataEmpty } from "~utils/processing_data_table";
 
-const handleSaveCell = (cell, value, data, setDataTable, setIsSaveData) => {
+const convert_to_int = (value) => {
+  if (value === "") return 0;
+  if (!value) return 0;
+  return parseFloat(value);
+};
+
+const handleSaveCell = (cell, value, data, setDataTable) => {
   //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
   var row_current = data[cell.row.index];
   // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
@@ -47,15 +53,13 @@ const handleSaveCell = (cell, value, data, setDataTable, setIsSaveData) => {
     data.push(renderDataEmpty(INFO_COLS_DONHANG, 1)[0]);
   }
   setDataTable([...data]);
-  setIsSaveData(false);
 };
 
 export const updateColumnsInformations = (
   dataTable,
   setDataTable,
   view,
-  listGiayUnique,
-  setIsSaveData
+  listGiayUnique
 ) => {
   const infoColumnsInit = [];
 
@@ -97,17 +101,11 @@ export const updateColumnsInformations = (
             textAlign: "right",
             marginRight: "0.5rem",
           }}
-          readOnly={view || dataTable[cell.row.id]["MAGIAY"] === ""}
+          readOnly={view} // || dataTable[cell.row.id]["MAGIAY"] === ""}
           type="number"
           value={cell.getValue().toString()}
           onChange={(e) =>
-            handleSaveCell(
-              cell,
-              e.target.value,
-              dataTable,
-              setDataTable,
-              setIsSaveData
-            )
+            handleSaveCell(cell, e.target.value, dataTable, setDataTable)
           }
           onKeyDown={handleDisableKeyDownUp}
           onKeyUp={handleDisableKeyDownUp}
@@ -157,7 +155,13 @@ export const updateColumnsInformations = (
     if (COLS_HAVE_SELECT_INPUT.includes(key)) {
       info["Cell"] = ({ cell }) => {
         return (
-          <div style={{ width: "80%", marginLeft: "10%", marginRight: "10%" }}>
+          <div
+            style={{
+              width: "80%",
+              marginLeft: "8%",
+              marginRight: "8%",
+            }}
+          >
             <InputMau
               init={dataTable[cell.row.id][cell.column.id]}
               handleChangeDataTable={(value, label) => {
@@ -165,7 +169,7 @@ export const updateColumnsInformations = (
                 dataTable[cell.row.id]["TEN" + cell.column.id] = label;
                 setDataTable([...dataTable]);
               }}
-              readOnly={view || dataTable[cell.row.id]["MAGIAY"] === ""}
+              readOnly={view} // || dataTable[cell.row.id]["MAGIAY"] === ""}
             />
           </div>
         );
@@ -174,7 +178,10 @@ export const updateColumnsInformations = (
 
     if (key === "MAGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
     if (COLS_HAVE_SUM_FOOTER.includes(key)) {
-      let sum_value = dataTable.reduce((total, row) => total + row[key], 0);
+      let sum_value = dataTable.reduce(
+        (total, row) => total + convert_to_int(row[key]),
+        0
+      );
       info["Footer"] = () => (
         <input
           style={{
@@ -204,26 +211,6 @@ export const updateSODH = (sodh) => {
   }).catch((error) => {
     console.log("error: ", error);
   });
-};
-
-export const updateDanhSachMau = (setDataMau) => {
-  fetch("http://localhost:8000/mau")
-    .then((response) => {
-      return response.json();
-    })
-    .then((info) => {
-      let listMau = info.map(function (ob) {
-        return { label: ob.TENMAU, value: ob.MAMAU };
-      });
-      let listMauDefault = [
-        { lable: "", value: null },
-        { label: "", value: "" },
-      ];
-      setDataMau([...listMauDefault, ...listMau]);
-    })
-    .catch((err) => {
-      console.log(":error: ", err);
-    });
 };
 
 export const saveDonDatHang = (formInfoDonHang, dataDatHang) => {

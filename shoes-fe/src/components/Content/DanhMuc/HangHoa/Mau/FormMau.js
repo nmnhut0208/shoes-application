@@ -42,10 +42,14 @@ const FormMau = () => {
           dataForm,
         ])
       );
+
       dispatchItem(
         actions_items_context.setInfoMau([
           ...stateItem.infoItemMau,
-          { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
+          {
+            label: dataForm["TENMAU"],
+            value: dataForm["MAMAU"],
+          },
         ])
       );
     }

@@ -43,7 +43,8 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
     <>
       <MaterialReactTable
         {...border_text_table_config}
-        // enableTopToolbar={false}
+        enableTopToolbar={true}
+        initialState={{ showColumnFilters: true }}
         columns={columns}
         data={data}
         // components
@@ -123,7 +124,7 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
           isSaveData={isSaveData}
           setIsSaveData={setIsSaveData}
           permission={permission}
-          action='edit'
+          action="edit"
         />
       </Modal>
     </>

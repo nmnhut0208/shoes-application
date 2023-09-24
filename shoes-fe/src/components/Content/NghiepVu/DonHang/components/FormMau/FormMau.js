@@ -1,8 +1,13 @@
 import { useState } from "react";
 import styles from "./FormMau.module.scss";
 import { FormMauBasic } from "~hang_hoa";
-import { useItemsContext } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
+import moment from "moment";
+
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
 
 const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
   const [dataForm, setDataForm] = useState({});
@@ -34,6 +39,13 @@ const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
       ...dataMau,
       { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
     ]);
+
+    dispatchItem(
+      actions_items_context.setInfoMau([
+        ...stateItem.infoItemMau,
+        { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
+      ])
+    );
     setShowModal(false);
   };
 

@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { FormGiayBasic } from "~hang_hoa";
 import styles from "./FormGiay.module.scss";
 
-const FormGiay = ({ setShowModal }) => {
+const FormGiay = ({
+  setShowModal,
+  MAKH,
+  listGiayUnique,
+  setListGiayUnique,
+}) => {
   const [dataForm, setDataForm] = useState({});
 
   const handleSaveFrom = async () => {
@@ -34,17 +39,22 @@ const FormGiay = ({ setShowModal }) => {
       .catch((error) => {
         console.log("error: ", error);
       });
+
+    if (MAKH == dataForm["MAKH"])
+      setListGiayUnique([
+        ...listGiayUnique,
+        { MAGIAY: dataForm["MAGIAY"], TENGIAY: dataForm["TENGIAY"] },
+      ]);
     setShowModal(false);
   };
 
-  const handleNhapTiep = () => {
-    var form_emty = {};
-    for (let key in dataForm) {
-      console.log(key, form_emty[key]);
-      form_emty[key] = "";
-    }
-    setDataForm(form_emty);
-  };
+  // const handleNhapTiep = () => {
+  //   var form_emty = {};
+  //   for (let key in dataForm) {
+  //     form_emty[key] = "";
+  //   }
+  //   setDataForm(form_emty);
+  // };
 
   return (
     <>
@@ -53,7 +63,7 @@ const FormGiay = ({ setShowModal }) => {
         <div className={styles.group_button}>
           <div>
             <button onClick={handleSaveFrom}>Lưu</button>
-            <button onClick={handleNhapTiep}>Nhập tiếp</button>
+            {/* <button onClick={handleNhapTiep}>Nhập tiếp</button> */}
           </div>
         </div>
       </div>

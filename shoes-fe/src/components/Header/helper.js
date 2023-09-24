@@ -1,4 +1,5 @@
 import { actions as actions_items_context } from "~items_context";
+
 export const getListDe = (dispatchItem) => {
   fetch("http://localhost:8000/de")
     .then((response) => {
@@ -92,12 +93,15 @@ export const getListMau = (dispatchItem) => {
     })
     .then((info) => {
       let listOptional = info.map(function (ob) {
-        return { label: ob.TENMAU, value: ob.MAMAU, firstLetter: ob.MAMAU[0].toUpperCase() };
+        return {
+          label: ob.TENMAU,
+          value: ob.MAMAU,
+        };
       });
 
       dispatchItem(
         actions_items_context.setInfoMau([
-          { label: "", value: "", firstLetter: "" },
+          { label: "Không chọn màu", value: " " },
           ...listOptional,
         ])
       );

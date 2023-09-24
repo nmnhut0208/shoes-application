@@ -1,107 +1,119 @@
 import { useState, memo, useEffect } from "react";
-import { Popover } from "antd";
 import { useItemsContext } from "~items_context";
-import TableShowMau from "./TableShowMau";
+import { Select } from "antd";
 
-const searchInfo = (firstLetter, data) => {
-  let result = [];
-  for (let i = 0; i < data.length; i++) {
-    if (
-      data[i]["value"] !== "" &&
-      data[i]["firstLetter"] === firstLetter
-    )
-      result.push(data[i]);
-  }
-  return result;
+const { Option } = Select;
+
+const customOptionStyle = {
+  borderBottom: "1px solid #000", // Add a border line at the bottom of each option
+  padding: "4px 0", // Adjust padding as needed
 };
 
-const InputMau = ({ init, handleChangeDataTable, readOnly }) => {
-  const [clicked, setClicked] = useState(false);
+const filterOption = (input, option) => {
+  return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
+};
+const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
   const [stateItem, dispatchItem] = useItemsContext();
-  const [fistLetterMaMau, setFirstLetterMaMau] = useState("");
-  const [data, setData] = useState(() => stateItem.infoItemMau);
+  const [showSelection, setShowSelection] = useState(false);
+  const [showInput, setShowInput] = useState(true);
+
   const [maMA, setMaMau] = useState(() => {
     if (init) {
       return init;
     } else return "";
   });
-  const [labelMau, setLabelMau] = useState("");
-  const [dataShow, setDataShow] = useState(() => {
-    if (init) return searchInfo(init[0], stateItem.infoItemMau);
-    else return stateItem.infoItemMau;
-  });
-
-  const hide = () => {
-    setClicked(false);
-  };
-
-  const handleClickChange = (open) => {
-    setClicked(open);
-  };
-
-  useEffect(() => {
-    // để đây, chứ nếu truyền vào hàm kia luôn thì nó
-    // sẽ bị bug => quá deep update trong ReactDom
-    // nhưng nếu xóa hết, ko chọn MAMAU thì ko update lại được
-    if (labelMau !== "") handleChangeDataTable(maMA, labelMau);
-  }, [labelMau]);
 
   useEffect(() => {
     setMaMau(init);
   }, [init]);
 
-  useEffect(() => {
-    let a = searchInfo(fistLetterMaMau, data);
-    // console.log(a);
-    if (a.length > 0) {
-      setDataShow(a);
-    }
-  }, [fistLetterMaMau]);
-
-  const handleChangeMaMau = (e) => {
-    setMaMau(e.target.value);
-    if (e.target.value.length > 0) {
-      setFirstLetterMaMau(e.target.value[0].toUpperCase());
-    }
-
-    else {
-      setDataShow(data);
-      setFirstLetterMaMau("");
-      setLabelMau("");
+  const handleChange = (value) => {
+    if (value === " ") {
+      value = "";
       handleChangeDataTable("", "");
+    } else {
+      let choice = stateItem.infoItemMau.filter((e) => e.value === value);
+      handleChangeDataTable(value, choice[0]["label"]);
     }
+    setMaMau(value);
+    setShowInput(true);
+    setShowSelection(false);
   };
 
+  const handleFocusInput = () => {
+    setShowSelection(true);
+    setShowInput(false);
+  };
+  const handleClickSelection = () => {
+    setShowSelection(false);
+    setShowInput(true);
+  };
+
+  const handleBlurSelection = () => {
+    setShowSelection(false);
+    setShowInput(true);
+    console.log("haiz, blur selection ne");
+  };
   return (
-    <>
-      {readOnly !== true ? (
-        <Popover
-          placement="bottomLeft"
-          trigger="click"
-          open={clicked}
-          onOpenChange={handleClickChange}
-          content={
-            <TableShowMau
-              data={dataShow}
-              setInput={setMaMau}
-              setLabel={setLabelMau}
-              showPopover={setClicked}
-            />
-          }
-        >
-          <input
-            id="MAMAU"
-            value={maMA}
-            onChange={handleChangeMaMau}
-            autoComplete="off"
-            style={{ border: "none" }}
-            tabindex="-1"
-          />
-        </Popover>
-      ) : (
-        <input value={maMA} readOnly={readOnly} style={{ border: "none" }} />
+    <div style={{ position: "relative" }}>
+      {showInput && (
+        <input
+          id="MAMAU"
+          value={maMA}
+          tabindex="-1"
+          readOnly="true"
+          onFocus={handleBlurSelection}
+          onClick={handleFocusInput}
+          style={{
+            width: "90%",
+            border: "none",
+          }}
+        />
       )}
-    </>
+
+      {showSelection && !readOnly && (
+        <Select
+          showSearch={true}
+          optionFilterProp="children"
+          style={{
+            width: 400,
+            marginLeft: 78,
+            position: "absolute",
+            // top: 0,
+          }}
+          value={init}
+          onChange={handleChange}
+          filterOption={filterOption}
+          key="maMA"
+          autoFocus={true}
+          defaultOpen={true}
+          onBlur={handleClickSelection}
+          onClick={handleClickSelection}
+          bordered={false}
+          autoComplete="off"
+          placement="bottomLeft"
+        >
+          {stateItem.infoItemMau.map((e) => (
+            <Option
+              style={customOptionStyle}
+              value={e["value"]}
+              key={e["value"]}
+            >
+              <span
+                style={{
+                  width: "100px",
+                  display: "inline-block",
+                  borderRight: "1px solid #000",
+                }}
+              >
+                {e["value"]}
+              </span>
+              <span style={{ paddingLeft: "10px" }}>{e["label"]}</span>
+            </Option>
+          ))}
+        </Select>
+      )}
+    </div>
   );
 };
 
