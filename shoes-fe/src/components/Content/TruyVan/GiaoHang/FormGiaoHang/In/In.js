@@ -10,7 +10,12 @@ const COLS_HAVE_SUM_FOOTER = ["SOLUONG", "THANHTIEN"];
 const LIST_FORMAT_NUMBER = ["DONGIA", "THANHTIEN", "SOLUONG"];
 
 const infoColumns = [
-  { header: "Mã Hàng", key: "MAGIAY", width: 25 * rem_to_px, textAlign: "center" },
+  {
+    header: "Mã Hàng",
+    key: "MAGIAY",
+    width: 25 * rem_to_px,
+    textAlign: "center",
+  },
   // { header: "Tên Hàng", key: "TENGIAY", width: 29 * rem_to_px },
   {
     header: "SL",
@@ -30,14 +35,19 @@ const infoColumns = [
     width: 15 * rem_to_px,
     textAlign: "right",
   },
-  { header: "Số đơn hàng", key: "SODH", width: 25 * rem_to_px, textAlign: "center" },
+  {
+    header: "Số đơn hàng",
+    key: "SODH",
+    width: 25 * rem_to_px,
+    textAlign: "center",
+  },
 ];
 
 const In = ({ data, flag }) => {
   const [stateTable, dispatchTable] = useTableContext();
   const handelPrint = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: "Thông tin phân công",
+    documentTitle: "Giao hàng",
   });
   const componentRef = useRef();
 

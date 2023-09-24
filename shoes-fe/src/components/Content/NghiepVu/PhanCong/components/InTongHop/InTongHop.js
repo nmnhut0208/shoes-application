@@ -13,7 +13,7 @@ const InTongHop = ({ sophieu, data }) => {
   const componentRef = useRef();
   const handelPrint = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: "Thông tin đơn hàng",
+    documentTitle: "Phân công",
   });
   useLayoutEffect(() => {
     let ma_giay_checked = [];

@@ -21,7 +21,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
   const componentRef = useRef();
   const handelPrint = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: "Thông tin phân công",
+    documentTitle: "Đơn hàng",
   });
 
   useLayoutEffect(() => {
