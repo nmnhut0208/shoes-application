@@ -153,7 +153,7 @@ const FormDonHang = ({
 
   const handleNhapTiep = () => {
     if (!isSaveData) {
-      alert("Lưu thông tin trước khi reset page!");
+      alert("Lưu thông tin trước khi nhập tiếp đơn khác!");
       return;
     }
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
