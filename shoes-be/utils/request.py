@@ -45,7 +45,7 @@ class ITEM_KYTINHLUONG(BaseModel):
 class ITEM_MAU(BaseModel):
     MAMAU: str
     TENMAU: str
-    GHICHU: str
+    GHICHU: str = ""
 
 
 class ITEM_SUON(BaseModel):

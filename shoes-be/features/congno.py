@@ -132,7 +132,9 @@ def add(data: dict):
     date_from = datetime.strptime(date_from, "%Y-%m-%d %H:%M:%S")
     date_from = date_from.strftime("%Y-%m-%d 00:00:00")
     date_to = data["DATE_TO"]
-
+    date_to = datetime.strptime(date_to, "%Y-%m-%d %H:%M:%S")
+    date_to = date_to.strftime("%Y-%m-%d 23:59:59")
+    # print("date:", date_from, date_to)
     sql_tongno = f"""
                 select V_TONGHOP.MAKH, DMKHACHHANG.TENKH, SUM(THANHTIENQD) as TONGNO
                 from V_TONGHOP

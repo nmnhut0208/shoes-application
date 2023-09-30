@@ -1,0 +1,47 @@
+@import "~common_scss/form.module.scss";
+
+@page {
+  size: auto;
+  margin: 2rem;
+}
+
+.print_page {
+  width: 79rem;
+}
+
+.invoice {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.invoice__info_header {
+  align-self: flex-end;
+}
+
+.invoice__header {
+  display: flex;
+  flex-direction: column; //this will allow flex-end to move item to the right
+  align-items: center;
+}
+
+.congno {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  break-inside: avoid;
+}
+
+.congno_left {
+  align-self: flex-end;
+  margin-right: 10rem;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 15rem;
+  margin-right: 15rem;
+  margin-top: 1rem;
+  break-inside: avoid;
+}

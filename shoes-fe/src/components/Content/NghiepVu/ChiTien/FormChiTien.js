@@ -41,7 +41,7 @@ const FormChiTien = () => {
           </div>
           <div className={styles.group_second_row}>
             <label>Diễn giải</label>
-            <input name="Diễn giải" className={styles.item_size_big} />
+            <input name="Diễn giải" className={styles.item_size_big} autocomplete="off" />
           </div>
         </div>
         <div className={styles.group_button}>

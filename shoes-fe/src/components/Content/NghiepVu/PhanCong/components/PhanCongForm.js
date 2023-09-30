@@ -47,7 +47,7 @@ const listSubInforGiay = [
 
 const columnsSubInfoGiay = processingInfoColumnTable(listSubInforGiay);
 
-const DetailInfoGiay = ({ data, rowSelection, setRowSelection }) => {
+const DetailInfoGiay = ({ data, setRowSelection }) => {
   return (
     <div style={{ height: "auto" }}>
       <MaterialReactTable
@@ -62,17 +62,21 @@ const DetailInfoGiay = ({ data, rowSelection, setRowSelection }) => {
         enablePagination={false}
         enableBottomToolbar={true}
         // row selection
-        enableMultiRowSelection={false}
-        enableRowSelection
-        onRowSelectionChange={setRowSelection}
-        state={{ rowSelection }}
+        enableMultiRowSelection={false} //use radio buttons instead of checkboxes
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => {
+            row.getToggleSelectedHandler();
+            setRowSelection(row.id);
+          },
+          sx: { cursor: "pointer" },
+        })}
       />
     </div>
   );
 };
 
 const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
-  const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState(0);
   const handleChangeForm = (e) => {
     const data = { ...form };
     if (e.target.name.includes("Size")) {
@@ -92,14 +96,11 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
     setAnchorEl(null);
   };
   useEffect(() => {
-    let keys = Object.keys(rowSelection);
-    if (keys.length > 0) {
-      setChiTietPhanCong({
-        ...listGiayWillPhanCong[keys[0]],
-        THODE: form["THODE"],
-        THOQUAI: form["THOQUAI"],
-      });
-    }
+    setChiTietPhanCong({
+      ...listGiayWillPhanCong[rowSelection],
+      THODE: form["THODE"],
+      THOQUAI: form["THOQUAI"],
+    });
     setAnchorEl(null);
   }, [rowSelection]);
 
@@ -124,11 +125,11 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             vertical: "bottom",
             horizontal: "left",
           }}
+          trigger="click"
         >
           <Typography sx={{ p: 2 }}>
             <DetailInfoGiay
               data={listGiayWillPhanCong}
-              rowSelection={{}}
               setRowSelection={setRowSelection}
             />
           </Typography>
@@ -193,7 +194,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             name="SIZE0"
             type="number"
             min="0"
-            readOnly={form["SIZE0"] !== "" && parseInt(form["SIZE0"]) == 0}
+            // readOnly={form["SIZE0"] !== "" && parseInt(form["SIZE0"]) == 0}
             value={form["SIZE0"]}
             onChange={(e) => handleChangeForm(e)}
             onKeyDown={handleDisableKeyDownUp}
@@ -207,7 +208,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             name="SIZE1"
             type="number"
             min="0"
-            readOnly={form["SIZE1"] !== "" && parseInt(form["SIZE1"]) == 0}
+            // readOnly={form["SIZE1"] !== "" && parseInt(form["SIZE1"]) == 0}
             value={form["SIZE1"]}
             onChange={(e) => handleChangeForm(e)}
             onKeyDown={handleDisableKeyDownUp}
@@ -222,7 +223,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             value={form["SIZE5"]}
             type="number"
             min="0"
-            readOnly={form["SIZE5"] !== "" && parseInt(form["SIZE5"]) == 0}
+            // readOnly={form["SIZE5"] !== "" && parseInt(form["SIZE5"]) == 0}
             onChange={(e) => handleChangeForm(e)}
             onKeyDown={handleDisableKeyDownUp}
             onKeyUp={handleDisableKeyDownUp}
@@ -236,7 +237,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             value={form["SIZE6"]}
             type="number"
             min="0"
-            readOnly={form["SIZE6"] !== "" && parseInt(form["SIZE6"]) == 0}
+            // readOnly={form["SIZE6"] !== "" && parseInt(form["SIZE6"]) == 0}
             onChange={(e) => handleChangeForm(e)}
             onKeyDown={handleDisableKeyDownUp}
             onKeyUp={handleDisableKeyDownUp}
@@ -250,7 +251,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             value={form["SIZE7"]}
             type="number"
             min="0"
-            readOnly={form["SIZE7"] !== "" && parseInt(form["SIZE7"]) == 0}
+            // readOnly={form["SIZE7"] !== "" && parseInt(form["SIZE7"]) == 0}
             onChange={(e) => handleChangeForm(e)}
             onKeyDown={handleDisableKeyDownUp}
             onKeyUp={handleDisableKeyDownUp}
@@ -264,7 +265,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             value={form["SIZE8"]}
             type="number"
             min="0"
-            readOnly={form["SIZE8"] !== "" && parseInt(form["SIZE8"]) == 0}
+            // readOnly={form["SIZE8"] !== "" && parseInt(form["SIZE8"]) == 0}
             onChange={(e) => handleChangeForm(e)}
             onKeyDown={handleDisableKeyDownUp}
             onKeyUp={handleDisableKeyDownUp}
@@ -278,7 +279,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
             value={form["SIZE9"]}
             type="number"
             min="0"
-            readOnly={form["SIZE9"] !== "" && parseInt(form["SIZE9"]) == 0}
+            // readOnly={form["SIZE9"] !== "" && parseInt(form["SIZE9"]) == 0}
             onChange={(e) => handleChangeForm(e)}
             onKeyDown={handleDisableKeyDownUp}
             onKeyUp={handleDisableKeyDownUp}
@@ -292,6 +293,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
         name="DIENGIAIDONG"
         value={form["DIENGIAIDONG"]}
         onChange={(e) => handleChangeForm(e)}
+        autocomplete="off"
       />
     </div>
   );

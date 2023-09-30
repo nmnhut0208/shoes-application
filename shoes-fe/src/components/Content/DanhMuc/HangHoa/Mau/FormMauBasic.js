@@ -25,6 +25,7 @@ const FormMauBasic = ({ initForm, setDataForm, mode }) => {
             name="MAMAU"
             value={form["MAMAU"]}
             onChange={(e) => handleChangeInformationForm(e)}
+            autocomplete="off"
           />
         </div>
 
@@ -34,6 +35,7 @@ const FormMauBasic = ({ initForm, setDataForm, mode }) => {
             name="TENMAU"
             value={form["TENMAU"]}
             onChange={(e) => handleChangeInformationForm(e)}
+            autocomplete="off"
           />
         </div>
 
@@ -43,6 +45,7 @@ const FormMauBasic = ({ initForm, setDataForm, mode }) => {
             name="GHICHU"
             value={form["GHICHU"]}
             onChange={(e) => handleChangeInformationForm(e)}
+            autocomplete="off"
           />
         </div>
       </div>

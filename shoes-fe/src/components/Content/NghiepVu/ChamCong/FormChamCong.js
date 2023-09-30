@@ -53,7 +53,7 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
   const [userState, userDispatch] = useUserContext();
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
-  const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState({ 0: true });
   const [dataTableKY, setDataTableKY] = useState([]);
   const [rowSelectionMaKY, setRowSelectionMaKY] = useState({});
   // const [infoKY, setInfoKY] = useState({});
@@ -113,6 +113,59 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
         .then((data) => {
           if (data["status"] === "success") {
             setIsSaveDataNghiepVuChamCong(true);
+            // remove dataTable with index in rowSelection
+            let keys = Object.keys(rowSelection);
+            const new_dataTable = dataTable.filter(
+              (item, index) => !keys.includes(index.toString())
+            );
+            setDataTable(new_dataTable);
+            // console.log("keys: ", keys, dataTable.length);
+            if (parseInt(keys[0]) === dataTable.length - 1) {
+              // const new_key = parseInt(keys[0]) - 1;
+              keys = [String(parseInt(keys[0]) - 1)];
+              // console.log("new_key: ", new_key);
+              setRowSelection({ [keys[0]]: true });
+            }
+            if (new_dataTable.length === 0) {
+              setDataTableSub([]);
+            } else {
+              // console.log("keys: ", keys, dataTableSub);
+              const data = [];
+              for (var i = 0; i < keys.length; i++) {
+                  data.push(new_dataTable[keys[i]]["SOPHIEU"]);
+                  setInfoForm({
+                    ...infoForm,
+                    SOPHIEU: new_dataTable[keys[i]]["SOPHIEU"],
+                  });
+              }
+              const send_data = {
+                MANVIEN: infoForm["MANVIEN"],
+                MAKY: infoForm["MAKY"],
+                PHIEUPC: data,
+              };
+              // console.log("send_data: ", send_data);
+              fetch("http://localhost:8000/chamcong/" + infoForm["MANVIEN"], {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(send_data),
+              })
+                .then((response) => {
+                  return response.json();
+                }
+                )
+                .then((info) => {
+                  setDataTableSub(info);
+                  // console.log("abc: ", info);
+                }
+                )
+                .catch((err) => {
+                  console.log(":error: ", err);
+                }
+                );
+            }
+            // console.log("data: ", dataTable);
             alert("Lưu thành công");
           }
         })
@@ -140,7 +193,7 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       setInfoForm({ ...infoForm, ...info });
       setDataTable([]);
       setDataTableSub([]);
-      setRowSelection({});
+      setRowSelection({ 0: true });
     }
   }, [rowSelectionMaKY]);
 
@@ -174,7 +227,7 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       setInfoForm({ ...infoForm, ...info });
       setDataTable([]);
       setDataTableSub([]);
-      setRowSelection({});
+      setRowSelection({ 0: true });
     }
   }, [rowSelectionMaNVIEN]);
 
@@ -194,7 +247,7 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
 
   useEffect(() => {
     const keys = Object.keys(rowSelection);
-    if (keys.length === 0) {
+    if (keys.length === 0 || dataTable.length === 0) {
       setDataTableSub([]);
       return;
     }
@@ -259,11 +312,58 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       })
       .then((info) => {
         setDataTable(info);
+        // fill data for dataTableSub with first row of dataTable
+        if (info.length > 0) {
+          const keys = Object.keys(rowSelection);
+          if (keys.length > 0) {
+            const data = [];
+            for (var i = 0; i < keys.length; i++) {
+              if (rowSelection[keys[i]] === true) {
+                data.push(info[keys[i]]["SOPHIEU"]);
+                setInfoForm({
+                  ...infoForm,
+                  SOPHIEU: info[keys[i]]["SOPHIEU"],
+                });
+                //     // console.log("data: ", dataTable[keys[i]]);
+                //     // setDataTableSub([dataTable[keys[i]]]);
+              }
+            }
+            const send_data = {
+              MANVIEN: infoForm["MANVIEN"],
+              MAKY: infoForm["MAKY"],
+              PHIEUPC: data,
+            };
+            fetch("http://localhost:8000/chamcong/" + infoForm["MANVIEN"], {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(send_data),
+            })
+              .then((response) => {
+                return response.json();
+              })
+              .then((info) => {
+                setDataTableSub(info);
+                // console.log("abc: ", info);
+              })
+              .catch((err) => {
+                console.log(":error: ", err);
+              });
+          }
+        }
       })
       .catch((err) => {
         console.log(":error: ", err);
       });
   }, [infoForm["MANVIEN"], infoForm["MAKY"]]);
+
+  console.log("selected: ", rowSelection, dataTableSub)
+
+  // start: add to change Popover's behavior 
+  const [clickedPopoverMaKy, setClickedPopoverMaKy] = useState(false);
+  const [clickedPopoverMaNV, setClickedPopoverMaNV] = useState(false);
+  // end: add to change Popover's behavior 
 
   return (
     <div className={styles.container}>
@@ -275,12 +375,16 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
 
             <Popover
               placement="bottomLeft"
+              trigger="click"
+              open={clickedPopoverMaKy}
+              onOpenChange={(open) => setClickedPopoverMaKy(open)}
               content={
                 <TableMaKY
                   setRowSelection={setRowSelectionMaKY}
                   rowSelection={rowSelectionMaKY}
                   data={dataTableKY}
                   setIsSaveData={setIsSaveDataNghiepVuChamCong}
+                  setClickedPopover={setClickedPopoverMaKy}
                 />
               }
             >
@@ -300,12 +404,16 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
             <label>Mã nhân viên</label>
             <Popover
               placement="bottomLeft"
+              trigger="click"
+              open={clickedPopoverMaNV}
+              onOpenChange={(open) => setClickedPopoverMaNV(open)}
               content={
                 <TableMaNVIEN
                   setRowSelection={setRowSelectionMaNVIEN}
                   rowSelection={rowSelectionMaNVIEN}
                   data={dataTableNhanVien}
                   setIsSaveData={setIsSaveDataNghiepVuChamCong}
+                  setClickedPopover={setClickedPopoverMaNV}
                 />
               }
             >
@@ -345,6 +453,7 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
                 setIsSaveDataNghiepVuChamCong(false);
               }}
               className={styles.large}
+              autocomplete="off"
             />
           </div>
         </div>

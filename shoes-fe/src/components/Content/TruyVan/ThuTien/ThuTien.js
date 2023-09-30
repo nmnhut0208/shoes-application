@@ -49,6 +49,7 @@ const Table = ({ columns, data, setData, permission }) => {
           },
         }}
         enableTopToolbar={true}
+        initialState={{ showColumnFilters: true }}
         columns={columns}
         data={data}
         // components
@@ -122,21 +123,19 @@ const Table = ({ columns, data, setData, permission }) => {
                 </IconButton>
               </Tooltip>
             )}
-            {permission.XEM === 1 &&
-              permission.THEM === 0 &&
-              permission.SUA === 0 && (
-                <Tooltip arrow placement="right" title="View Detail">
-                  <IconButton
-                    onClick={() => {
-                      setTypeAction("view");
-                      setRowInfo(row.original);
-                      handleCheckDonHang();
-                    }}
-                  >
-                    <VisibilityOutlinedIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
+            {permission.XEM === 1 && permission.SUA === 0 && (
+              <Tooltip arrow placement="right" title="View Detail">
+                <IconButton
+                  onClick={() => {
+                    setTypeAction("view");
+                    setRowInfo(row.original);
+                    handleCheckDonHang();
+                  }}
+                >
+                  <VisibilityOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+            )}
           </Box>
         )}
       />

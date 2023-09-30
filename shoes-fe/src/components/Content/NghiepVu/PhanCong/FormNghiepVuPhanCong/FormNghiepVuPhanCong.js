@@ -46,10 +46,10 @@ const FormNghiepVuPhanCong = ({
   setListMaDongPhanCongAddButWaitSave,
   dataDeleteButWaitSave,
   setDataDeleteButWaitSave,
+  action = "add",
 }) => {
   const view = useMemo(() => {
-    if (permission && permission.THEM === 0 && permission.SUA === 0)
-      return true;
+    if (action != "add" && permission && permission.SUA === 0) return true;
     else return false;
   }, []);
 
@@ -241,14 +241,11 @@ const FormNghiepVuPhanCong = ({
 
   const handleClickSave = () => {
     if (isSaveData) return;
-    let dataSave = dataChiTietPhanCong;
-    for (let i = 0; i < dataSave.length; i++) {
-      dataSave[i] = { ...dataSave[i], ...infoPhieu };
-    }
-    fetch("http://localhost:8000/phancong", {
+    // chỉ update thông tin header (infoPhieu) thôi
+    fetch("http://localhost:8000/phancong/update_header", {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dataSave),
+      body: JSON.stringify(infoPhieu),
     })
       .then((response) => {
         console.log("response: ", response);
@@ -256,7 +253,7 @@ const FormNghiepVuPhanCong = ({
       })
       .catch((error) => {
         console.log("error: ", error);
-        alert("Lỗi! Chưa lưu được!");
+        // alert("Lỗi! Chưa lưu được!");
       });
 
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);
@@ -328,6 +325,37 @@ const FormNghiepVuPhanCong = ({
     }
   }, [infoPhieu]);
 
+  const handleNhapTiep = () => {
+    if (!isSaveData) {
+      alert("Lưu thông tin trước khi reset page!");
+      return;
+    }
+    updateInfoPhieuPhanCong(infoPhieu, setInfoPhieu, setLastestSOPHIEU);
+    fetch("http://localhost:8000/phancong/donhangchuaphancong")
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        setDataDonHang(info);
+        if (info.length > 0)
+          setRowSelectionDonHangToPhanCong({
+            0: true,
+          });
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+    setDataChiTietPhanCong([]);
+    setListGiayWillPhanCong([]);
+    setFormPhanCong([]);
+    setListDonHangDonePhanCong([]);
+    setDataDonHangDaPhanCong([]);
+    setRowSelectionChiTietPhanCong([]);
+    resetForm();
+
+    setIsSaveData(true);
+  };
+
   return (
     <div className={styles.container}>
       <InfoPhieu
@@ -381,8 +409,12 @@ const FormNghiepVuPhanCong = ({
           <button onClick={handleClickSave} disabled={view}>
             Lưu
           </button>
-          {/* button Lưu để lưu thông tin đã phân công */}
-          {/* sau khi phân công xong sẽ lưu hết nguyên bảng chi tiết phân công lại */}
+
+          {action === "add" && (
+            <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
+              Nhập tiếp
+            </button>
+          )}
         </div>
       </div>
 
