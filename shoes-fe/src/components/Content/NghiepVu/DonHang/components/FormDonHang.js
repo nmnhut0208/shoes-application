@@ -157,14 +157,16 @@ const FormDonHang = ({
   };
 
   const handleNhapTiep = () => {
+    if (dataTable.length == 0) {
+      setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
+      return;
+    }
     if (!isSaveData) {
       alert("Lưu thông tin trước khi nhập tiếp đơn khác!");
       return;
     }
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
-    setDataTable([]);
-    setListGiayKH([]);
-    setListGiayUnique([]);
+    setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
     setIsSaveData(true);
   };
 
@@ -211,12 +213,14 @@ const FormDonHang = ({
   }, [dataTable, listGiayUnique]);
 
   useEffect(() => {
-    let _data = dataTable.filter((row) => row.SOLUONG > 0);
-    if (_data.length > 0 && !firstRender) {
-      setIsSaveData(false);
-    }
-    if (_data.length > 0 && firstRender) {
-      setFirstRender(false);
+    if (dataTable.length > 0) {
+      let _data = dataTable.filter((row) => row.SOLUONG > 0);
+      if (_data.length > 0 && !firstRender) {
+        setIsSaveData(false);
+      }
+      if (_data.length > 0 && firstRender) {
+        setFirstRender(false);
+      }
     }
   }, [formInfoDonHang, dataTable]);
 
