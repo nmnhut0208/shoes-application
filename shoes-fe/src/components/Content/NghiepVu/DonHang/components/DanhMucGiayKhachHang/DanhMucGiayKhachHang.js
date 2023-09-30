@@ -63,7 +63,7 @@ const DanhMucGiayKhachHang = ({
         enablePagination={false}
         // scroll to bottom
         enableRowVirtualization
-        muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+        muiTableContainerProps={{ sx: { maxHeight: "450px" } }}
         // group Mã giày
         enableGrouping
         initialState={{
