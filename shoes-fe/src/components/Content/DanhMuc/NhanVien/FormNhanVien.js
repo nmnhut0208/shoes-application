@@ -7,6 +7,12 @@ import {
 } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
+const list_input_required = {
+  MANVIEN: "Mã nhân viên",
+  TENNVIEN: "Tên nhân viên",
+  LOAINVIEN: "Loại nhân viên",
+};
+
 const FormNhanVien = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
@@ -20,18 +26,13 @@ const FormNhanVien = () => {
   };
 
   const handleSaveFrom = () => {
-    if (inputForm["LOAINVIEN"] == "") {
-      alert("Chọn loại nhân viên!!!");
-      return false;
+    for (let key in list_input_required) {
+      if (inputForm[key] === undefined || inputForm[key] === "") {
+        alert("Nhập " + list_input_required[key]);
+        return false;
+      }
     }
-    if (inputForm["TENNVIEN"] == "") {
-      alert("Nhập tên nhân viên!!!");
-      return false;
-    }
-    if (inputForm["MANVIEN"] == "") {
-      alert("Nhập mã nhân viên!!!");
-      return false;
-    }
+
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";

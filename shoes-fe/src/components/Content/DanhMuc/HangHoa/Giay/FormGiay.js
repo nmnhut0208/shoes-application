@@ -4,6 +4,17 @@ import FormGiayBasic from "./FormGiayBasic";
 import styles from "./FormGiayBasic.module.scss";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
+const list_input_required = {
+  MAGIAY: "Mã giày",
+  TENGIAY: "Tên giày",
+  MADE: "Mã đế",
+  MASUON: "Mã sườn",
+  MAQUAI: "Mã quai",
+  DONGIA: "Đơn giá",
+  MAKH: "Mã khách hàng",
+  SortID: "Mã tham chiếu",
+};
+
 const FormGiay = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [isSaveData, setIsSaveData] = useState(true);
@@ -35,10 +46,13 @@ const FormGiay = () => {
   }, [dataForm]);
 
   const handleSaveFrom = () => {
-    if (dataForm["DONGIA"] === undefined || dataForm["DONGIA"] === "") {
-      alert("Nhập đơn giá!!!");
-      return false;
+    for (let key in list_input_required) {
+      if (dataForm[key] === undefined || dataForm[key] === "") {
+        alert("Nhập " + list_input_required[key]);
+        return false;
+      }
     }
+
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";

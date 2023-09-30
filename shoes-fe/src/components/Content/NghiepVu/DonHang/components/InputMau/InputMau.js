@@ -41,6 +41,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
   };
 
   const handleFocusInput = () => {
+    if (readOnly) return;
     setShowSelection(true);
     setShowInput(false);
   };
@@ -50,9 +51,9 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
   };
 
   const handleBlurSelection = () => {
+    if (readOnly) return;
     setShowSelection(false);
     setShowInput(true);
-    console.log("haiz, blur selection ne");
   };
   return (
     <div style={{ position: "relative" }}>

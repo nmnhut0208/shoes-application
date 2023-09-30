@@ -24,6 +24,7 @@
 }
 
 .group_second {
+  margin-top: 0.6rem;
   .group_second_row {
     @extend .flex_row_space-between;
     margin-bottom: var(--margin-bottom-config);

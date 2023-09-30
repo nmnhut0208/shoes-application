@@ -178,10 +178,12 @@ export const updateColumnsInformations = (
 
     if (key === "MAGIAY") info["Footer"] = () => <div>Tổng cộng</div>;
     if (COLS_HAVE_SUM_FOOTER.includes(key)) {
-      let sum_value = dataTable.reduce(
-        (total, row) => total + convert_to_int(row[key]),
-        0
-      );
+      let sum_value = 0;
+      if (dataTable.length > 0)
+        sum_value = dataTable.reduce(
+          (total, row) => total + convert_to_int(row[key]),
+          0
+        );
       info["Footer"] = () => (
         <input
           style={{
@@ -225,7 +227,7 @@ export const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
   })
     .then((response) => {
       console.log("response: ", response);
-      // alert("Lưu thông tin thành công.");
+      alert("Lưu thông tin thành công.");
     })
     .catch((error) => {
       console.log("error: ", error);

@@ -9,6 +9,11 @@ import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { ItemGot, ItemMui } from "~items";
 import { getImageOfDanhMuc } from "~utils/api_get_image";
 
+const list_input_required = {
+  MAGOT: "Mã gót",
+  MAMUI: "Mã mũi",
+};
+
 const FormSuon = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
@@ -44,6 +49,12 @@ const FormSuon = () => {
   };
 
   const handleSaveFrom = () => {
+    for (let key in list_input_required) {
+      if (inputForm[key] === undefined || inputForm[key] === "") {
+        alert("Nhập " + list_input_required[key]);
+        return false;
+      }
+    }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -99,25 +110,70 @@ const FormSuon = () => {
   const changeImage = (e) => {
     if (e.target.value !== "") {
       var reader = new FileReader();
-      reader.onload = function () {
-        let base64String = reader.result
-          .replace("data:", "")
-          .replace(/^.+,/, "");
-        let image = "data:image/png;base64,".concat(base64String);
-        setImageBase64(image);
-        setInputForm({ ...inputForm, HINHANH: image });
+      reader.onload = (e) => {
+        var imgElement = document.createElement("img");
+        imgElement.src = e.target.result;
+        imgElement.onload = function () {
+          var canvas = document.createElement("canvas");
+          var ctx = canvas.getContext("2d");
+
+          // Set new dimensions for the canvas (and therefore the compressed image)
+          var maxWidth = 1200; // example, change this size to fit your requirements
+          var maxHeight = 1200; // example, change this size to fit your requirements
+          var width = imgElement.width;
+          var height = imgElement.height;
+
+          if (width > height) {
+            if (width > maxWidth) {
+              height *= maxWidth / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width *= maxHeight / height;
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          // Draw the resized image onto the canvas
+          ctx.drawImage(imgElement, 0, 0, width, height);
+
+          // Get the image from the canvas with lower quality (quality from 0.1 to 1.0)
+          var compressedDataURL = canvas.toDataURL("image/jpeg", 0.7); // Quality 50%
+
+          // Remove the data URL prefix to get the pure base64 string
+          var base64String = compressedDataURL.split(",")[1];
+          let image = "data:image/png;base64,".concat(base64String);
+          setImageBase64(image);
+          setInputForm({ ...inputForm, HINHANH: image });
+        };
       };
       reader.readAsDataURL(e.target.files[0]);
       setImageURL("");
     }
   };
+
+  const handleDeleteImage = (e) => {
+    setImageBase64("");
+    setImageURL("");
+    setInputForm({ ...inputForm, HINHANH: "" });
+  };
+
   return (
     <div className={styles.form}>
       <div className={styles.content}>
         <div className={styles.items_container}>
           <div className={styles.item}>
             <label>Mã sườn</label>
-            <input name="MASUON" readOnly={true} value={inputForm["MASUON"]} autocomplete="off" />
+            <input
+              name="MASUON"
+              readOnly={true}
+              value={inputForm["MASUON"]}
+              autocomplete="off"
+            />
           </div>
 
           <div className={styles.item}>
@@ -199,6 +255,10 @@ const FormSuon = () => {
             onChange={(e) => changeImage(e)}
           />
           <img src={image_base64} />
+
+          <button onClick={handleDeleteImage} style={{ border: "none" }}>
+            Xoá hình ảnh
+          </button>
         </div>
       </div>
 

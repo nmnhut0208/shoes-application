@@ -114,7 +114,7 @@ const FormThuTien = ({ dataView, type_action }) => {
         if (type_action === "add") {
           updateSOPHIEU(lastestSOPHIEU);
         }
-        // alert("Lưu thông tin thành công.");
+        alert("Lưu thông tin thành công.");
       })
       .catch((error) => {
         console.log("error: ", error);
@@ -158,6 +158,7 @@ const FormThuTien = ({ dataView, type_action }) => {
           <div className="styles.group_first_row_between">
             <label>Ngày phiếu</label>
             <input
+              readOnly={view}
               type="datetime-local"
               name="NGAYPHIEU"
               value={form["NGAYPHIEU"]}
@@ -195,6 +196,7 @@ const FormThuTien = ({ dataView, type_action }) => {
             onKeyUp={handleDisableKeyDownUp}
             onFocus={handleFocus}
             className={styles.item_size_small}
+            readOnly={view}
           />
         </div>
         <div className={styles.group_second_row}>
@@ -206,6 +208,7 @@ const FormThuTien = ({ dataView, type_action }) => {
               handleChangeInformationForm({ DIENGIAIPHIEU: e.target.value })
             }
             className={styles.item_size_big}
+            readOnly={view}
           />
         </div>
       </div>

@@ -46,11 +46,10 @@ const FormNghiepVuPhanCong = ({
   setListMaDongPhanCongAddButWaitSave,
   dataDeleteButWaitSave,
   setDataDeleteButWaitSave,
-  action = 'add'
+  action = "add",
 }) => {
   const view = useMemo(() => {
-    if (permission && permission.THEM === 0 && permission.SUA === 0)
-      return true;
+    if (action != "add" && permission && permission.SUA === 0) return true;
     else return false;
   }, []);
 
@@ -143,7 +142,7 @@ const FormNghiepVuPhanCong = ({
             // update setDataDonHangDaPhanCong
             fetch(
               "http://localhost:8000/phancong/get_info_donhang?SOPHIEU=" +
-              encodeURIComponent(dataView["SOPHIEU"])
+                encodeURIComponent(dataView["SOPHIEU"])
             )
               .then((response) => {
                 return response.json();
@@ -170,7 +169,7 @@ const FormNghiepVuPhanCong = ({
       // update dataChiTietPhanCong
       fetch(
         "http://localhost:8000/phancong?SOPHIEU=" +
-        encodeURIComponent(dataView["SOPHIEU"])
+          encodeURIComponent(dataView["SOPHIEU"])
       )
         .then((response) => {
           return response.json();
@@ -242,7 +241,7 @@ const FormNghiepVuPhanCong = ({
 
   const handleClickSave = () => {
     if (isSaveData) return;
-    // chỉ update thông tin header (infoPhieu) thôi 
+    // chỉ update thông tin header (infoPhieu) thôi
     fetch("http://localhost:8000/phancong/update_header", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -268,7 +267,7 @@ const FormNghiepVuPhanCong = ({
       dataChiTietPhanCong.length == 0 ||
       Object.keys(rowSelectionChiTietPhanCong).length == 0 ||
       parseInt(Object.keys(rowSelectionChiTietPhanCong)[0]) >=
-      dataChiTietPhanCong.length
+        dataChiTietPhanCong.length
     ) {
       return false;
     }
@@ -332,28 +331,28 @@ const FormNghiepVuPhanCong = ({
       return;
     }
     updateInfoPhieuPhanCong(infoPhieu, setInfoPhieu, setLastestSOPHIEU);
-      fetch("http://localhost:8000/phancong/donhangchuaphancong")
-        .then((response) => {
-          return response.json();
-        })
-        .then((info) => {
-          setDataDonHang(info);
-          if (info.length > 0)
-            setRowSelectionDonHangToPhanCong({
-              0: true,
-            });
-        })
-        .catch((err) => {
-          console.log(":error: ", err);
-        });
-        setDataChiTietPhanCong([]);
-        setListGiayWillPhanCong([]);
-        setFormPhanCong([]);
-        setListDonHangDonePhanCong([]);
-        setDataDonHangDaPhanCong([]);
-        setRowSelectionChiTietPhanCong([]);
-        resetForm();
-        
+    fetch("http://localhost:8000/phancong/donhangchuaphancong")
+      .then((response) => {
+        return response.json();
+      })
+      .then((info) => {
+        setDataDonHang(info);
+        if (info.length > 0)
+          setRowSelectionDonHangToPhanCong({
+            0: true,
+          });
+      })
+      .catch((err) => {
+        console.log(":error: ", err);
+      });
+    setDataChiTietPhanCong([]);
+    setListGiayWillPhanCong([]);
+    setFormPhanCong([]);
+    setListDonHangDonePhanCong([]);
+    setDataDonHangDaPhanCong([]);
+    setRowSelectionChiTietPhanCong([]);
+    resetForm();
+
     setIsSaveData(true);
   };
 
@@ -411,10 +410,11 @@ const FormNghiepVuPhanCong = ({
             Lưu
           </button>
 
-          {action === 'add' && (<button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
-            Nhập tiếp
-          </button>)}
-          
+          {action === "add" && (
+            <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
+              Nhập tiếp
+            </button>
+          )}
         </div>
       </div>
 
@@ -423,7 +423,7 @@ const FormNghiepVuPhanCong = ({
           <FormDonHang
             dataView={
               dataChiTietPhanCong[
-              parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])
+                parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])
               ]
             }
             isSaveData={true}
