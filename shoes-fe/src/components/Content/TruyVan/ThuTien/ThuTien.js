@@ -1,8 +1,5 @@
 import MaterialReactTable from "material-react-table";
 import { useMemo, useState, useEffect } from "react";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Delete, Edit } from "@mui/icons-material";
 import { Popconfirm } from "antd";
 
 import { useUserContext } from "~user";
@@ -108,7 +105,7 @@ const Table = ({ columns, data, setData, permission }) => {
                   handleCheckDonHang();
                 }}
               >
-                <Edit />
+                Sửa
               </button>
             )}
             {permission.XOA === 1 && (

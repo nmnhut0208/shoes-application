@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import MaterialReactTable from "material-react-table";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import { Box } from "@mui/material";
 import { Popconfirm } from "antd";
 
 import { Modal } from "~common_tag";
@@ -321,23 +320,25 @@ const TableContent = ({ info_other_column }) => {
                       <button className={styles.delete_button}>Xoá</button>
                     </Popconfirm>
                   )}
+                </Box>
+
+                <Box>
                   {permission.XEM === 1 &&
                     permission.THEM === 0 &&
                     permission.SUA === 0 &&
                     listFormHaveViewDetail.includes(maForm) && (
-                      <Tooltip arrow placement="right" title="View Detail">
-                        <IconButton
-                          onClick={() => {
-                            dispatchTable(
-                              actions_table.setInforRecordTable(row.original)
-                            );
-                            dispatchTable(actions_table.setActionForm("view"));
-                            dispatchTable(actions_table.setModeShowModal(true));
-                          }}
-                        >
-                          <VisibilityOutlinedIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <button
+                        className={styles.edit_button}
+                        onClick={() => {
+                          dispatchTable(
+                            actions_table.setInforRecordTable(row.original)
+                          );
+                          dispatchTable(actions_table.setActionForm("view"));
+                          dispatchTable(actions_table.setModeShowModal(true));
+                        }}
+                      >
+                        Xem
+                      </button>
                     )}
                 </Box>
               </div>

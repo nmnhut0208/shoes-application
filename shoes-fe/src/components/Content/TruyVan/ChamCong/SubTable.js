@@ -1,8 +1,6 @@
-import { useState } from "react";
 import MaterialReactTable from "material-react-table";
 import { Popconfirm } from "antd";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
+import { Box } from "@mui/material";
 import { useTableContext, actions_table } from "~table_context";
 import { useUserContext, actions } from "~user";
 import { border_text_table_config } from "~config/ui";
@@ -59,76 +57,81 @@ const SubTable = ({
             marginRight: "0.2rem",
           }}
         >
-          <button
-            className={styles.edit_button}
-            style={{ borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)" }}
-            onClick={() => {
-              if (
-                stateUser.userPoolAccess.some(
-                  (obj) => obj.MAFORM === maForm && obj.SUA === 1
-                )
-              ) {
-                setShowForm(true);
-                setSendData(row.original);
-                dispatchTable(actions_table.setModeShowModal(true));
-              } else {
-                CustomAlert("Bạn không có quyền sửa");
-              }
-            }}
-          >
-            <Edit />
-          </button>
-          {allowDelete && (
-            <Popconfirm
-              title="Xác nhận hành động"
-              description="Bạn thực sự muốn xoá thông tin này?"
-              onConfirm={() => {
+          <Box>
+            <button
+              className={styles.edit_button}
+              style={{ borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)" }}
+              onClick={() => {
                 if (
                   stateUser.userPoolAccess.some(
-                    (obj) => obj.MAFORM === maForm && obj.XOA === 1
+                    (obj) => obj.MAFORM === maForm && obj.SUA === 1
                   )
                 ) {
-                  fetch("http://localhost:8000/tv_chamcong", {
-                    method: "DELETE",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(row.original),
-                  })
-                    .then((response) => {
-                      return response.json();
-                    })
-                    .then((data) => {
-                      if (data["status"] === "success") {
-                        fetch("http://localhost:8000/tv_chamcong")
-                          .then((response) => {
-                            return response.json();
-                          })
-                          .then((info) => {
-                            setData(info);
-                          })
-                          .catch((err) => {
-                            console.log(err);
-                          });
-                        // CustomAlert("Xóa thành công");
-                      } else {
-                        CustomAlert("Xóa thất bại");
-                      }
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
+                  setShowForm(true);
+                  setSendData(row.original);
+                  dispatchTable(actions_table.setModeShowModal(true));
                 } else {
-                  CustomAlert("Bạn không có quyền xóa");
+                  CustomAlert("Bạn không có quyền sửa");
                 }
               }}
-              onCancel={() => {}}
-              okText="Đồng ý"
-              cancelText="Không đồng ý"
             >
-              <button className={styles.delete_button}>Xoá</button>
-            </Popconfirm>
-          )}
+              Sửa
+            </button>
+          </Box>
+
+          <Box>
+            {allowDelete && (
+              <Popconfirm
+                title="Xác nhận hành động"
+                description="Bạn thực sự muốn xoá thông tin này?"
+                onConfirm={() => {
+                  if (
+                    stateUser.userPoolAccess.some(
+                      (obj) => obj.MAFORM === maForm && obj.XOA === 1
+                    )
+                  ) {
+                    fetch("http://localhost:8000/tv_chamcong", {
+                      method: "DELETE",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(row.original),
+                    })
+                      .then((response) => {
+                        return response.json();
+                      })
+                      .then((data) => {
+                        if (data["status"] === "success") {
+                          fetch("http://localhost:8000/tv_chamcong")
+                            .then((response) => {
+                              return response.json();
+                            })
+                            .then((info) => {
+                              setData(info);
+                            })
+                            .catch((err) => {
+                              console.log(err);
+                            });
+                          // CustomAlert("Xóa thành công");
+                        } else {
+                          CustomAlert("Xóa thất bại");
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  } else {
+                    CustomAlert("Bạn không có quyền xóa");
+                  }
+                }}
+                onCancel={() => {}}
+                okText="Đồng ý"
+                cancelText="Không đồng ý"
+              >
+                <button className={styles.delete_button}>Xoá</button>
+              </Popconfirm>
+            )}
+          </Box>
         </div>
       )}
     />

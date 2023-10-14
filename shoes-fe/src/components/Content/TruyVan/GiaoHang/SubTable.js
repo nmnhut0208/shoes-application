@@ -1,9 +1,6 @@
 import { useState, memo } from "react";
-import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
 import { Popconfirm } from "antd";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
 import { useTableContext, actions_table } from "~table_context";
 import { useUserContext, actions } from "~user";
 import { border_text_table_config } from "~config/ui";
