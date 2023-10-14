@@ -2,8 +2,6 @@ import { memo } from "react";
 import MaterialReactTable from "material-react-table";
 import { border_text_table_config } from "~config/ui";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
-import { Delete } from "@mui/icons-material";
-import { Box, IconButton, Tooltip } from "@mui/material";
 import styles from "./SubTable.module.scss";
 
 const SubTable = ({
