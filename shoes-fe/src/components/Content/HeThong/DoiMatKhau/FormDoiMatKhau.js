@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Form, Input, Button } from "antd";
 import { useUserContext, actions } from "~user";
 import { useTaskContext, resetHeader } from "~task";
+import { CustomAlert } from "~utils/alert_custom";
 
 function FormDoiMatKhau() {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -15,11 +16,11 @@ function FormDoiMatKhau() {
     setLoading(true);
     form.validateFields().then((values) => {
       if (values["current-password"] !== stateUser.userPassword) {
-        alert("Mật khẩu hiện tại không đúng");
+        CustomAlert("Mật khẩu hiện tại không đúng");
         setLoading(false);
         return;
       } else if (values["new-password"] !== values["confirm-password"]) {
-        alert("Mật khẩu mới không trùng nhau");
+        CustomAlert("Mật khẩu mới không trùng nhau");
         setLoading(false);
         return;
       } else {
@@ -40,10 +41,10 @@ function FormDoiMatKhau() {
             if (data.status === "success") {
               dispatchUser(actions.setUserPassword(values["new-password"]));
               setLoading(false);
-              alert("Đổi mật khẩu thành công");
+              CustomAlert("Đổi mật khẩu thành công");
               resetHeader(dispatchTask);
             } else {
-              alert("Đổi mật khẩu thất bại");
+              CustomAlert("Đổi mật khẩu thất bại");
               setLoading(false);
             }
           })
@@ -60,19 +61,22 @@ function FormDoiMatKhau() {
         name="current-password"
         rules={[
           { required: true, message: "Please enter your current password" },
-        ]}>
+        ]}
+      >
         <Input.Password placeholder="Current Password" />
       </Form.Item>
       <Form.Item
         name="new-password"
-        rules={[{ required: true, message: "Please enter your new password" }]}>
+        rules={[{ required: true, message: "Please enter your new password" }]}
+      >
         <Input.Password placeholder="New Password" />
       </Form.Item>
       <Form.Item
         name="confirm-password"
         rules={[
           { required: true, message: "Please enter your new password again" },
-        ]}>
+        ]}
+      >
         <Input.Password placeholder="Confirm Password" />
       </Form.Item>
       <Form.Item>

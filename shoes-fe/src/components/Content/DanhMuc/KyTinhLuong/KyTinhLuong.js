@@ -11,12 +11,23 @@ import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { IconButton, Tooltip } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { convertDateForReport } from "~utils/processing_date";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_key = [
   { header: "Mã kỳ", key: "MAKY", width: 3 * rem_to_px },
   { header: "Tên kỳ", key: "TENKY", width: 5 * rem_to_px },
-  { header: "Từ ngày", key: "TUNGAY", width: 15 * rem_to_px , Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,},
-  { header: "Đến ngày", key: "DENNGAY", width: 15 * rem_to_px , Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,},
+  {
+    header: "Từ ngày",
+    key: "TUNGAY",
+    width: 15 * rem_to_px,
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
+  },
+  {
+    header: "Đến ngày",
+    key: "DENNGAY",
+    width: 15 * rem_to_px,
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
+  },
 ];
 
 const infoColumns = processingInfoColumnTable(list_key, false);
@@ -33,10 +44,10 @@ const KyTinhLuong = () => {
       })
       .then((info) => {
         if (info["status"] === "success") {
-          alert("Update thành công");
+          CustomAlert("Update thành công");
           setCount(count + 1);
         } else {
-          alert("Update thất bại");
+          CustomAlert("Update thất bại");
         }
       })
       .catch((err) => {

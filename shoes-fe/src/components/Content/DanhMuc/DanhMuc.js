@@ -4,6 +4,7 @@ import NhanVien from "./NhanVien";
 import KyTinhLuong from "./KyTinhLuong";
 import KhachHang from "./KhachHang";
 import { useUserContext } from "~user";
+import { CustomAlert } from "~utils/alert_custom";
 
 const DanhMuc = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -61,7 +62,7 @@ const DanhMuc = () => {
         return <KhachHang />;
       break;
   }
-  alert("Bạn không có quyền truy cập vào chức năng này!");
+  CustomAlert("Bạn không có quyền truy cập vào chức năng này!");
   return <></>;
 };
 

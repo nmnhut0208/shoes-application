@@ -7,6 +7,7 @@ import { rem_to_px } from "~config/ui";
 import { convertDate } from "~utils/processing_date";
 import moment from "moment";
 import { useUserContext } from "~user";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_key = [
   { header: "Mã giày", key: "MAGIAY" },
@@ -69,17 +70,17 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
               .catch((err) => {
                 console.log(err);
               });
-            // alert("Xóa thành công");
+            // CustomAlert("Xóa thành công");
             setShowForm(false);
           } else {
-            alert("Xóa thất bại");
+            CustomAlert("Xóa thất bại");
           }
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      alert("Bạn không có quyền xóa");
+      CustomAlert("Bạn không có quyền xóa");
     }
   };
 

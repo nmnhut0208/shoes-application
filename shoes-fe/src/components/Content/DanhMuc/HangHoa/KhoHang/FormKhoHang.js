@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./FormKhoHang.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_input_required = {
   MAMAU: "Mã màu",
@@ -21,7 +22,7 @@ const FormKhoHang = () => {
   const handleSaveFrom = () => {
     for (let key in list_input_required) {
       if (inputForm[key] === undefined || inputForm[key] === "") {
-        alert("Nhập " + list_input_required[key]);
+        CustomAlert("Nhập " + list_input_required[key]);
         return false;
       }
     }
@@ -43,7 +44,7 @@ const FormKhoHang = () => {
           "MAKHO"
         )
       ) {
-        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        CustomAlert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
         return false;
       }
       method = "POST";

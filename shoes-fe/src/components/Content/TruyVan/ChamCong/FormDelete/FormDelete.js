@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./FormDelete.module.scss";
+import { CustomAlert } from "~utils/alert_custom";
 
 const FormDelete = ({ setShowModal }) => {
   const [MAKY, setMAKY] = useState("");
@@ -8,7 +9,7 @@ const FormDelete = ({ setShowModal }) => {
 
   const handleDelete = () => {
     if (MAKY === "") {
-      alert("Mã kỳ không được để trống");
+      CustomAlert("Nhập mã kỳ");
       return;
     } else {
       let text = "Bạn thực sự muốn xóa thông tin này không!";
@@ -29,10 +30,10 @@ const FormDelete = ({ setShowModal }) => {
         })
         .then((info) => {
           if (info["status"] === "success") {
-            // alert("Xóa thành công");
+            // CustomAlert("Xóa thành công");
             setShowModal(false);
           } else {
-            alert("Xóa thất bại");
+            CustomAlert("Xóa thất bại");
           }
         })
         .catch((err) => {

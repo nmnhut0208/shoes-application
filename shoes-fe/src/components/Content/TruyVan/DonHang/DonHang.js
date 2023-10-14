@@ -13,6 +13,7 @@ import { FormDonHang, Modal } from "~nghiep_vu/DonHang/";
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
 import styles from "./DonHang.module.scss";
 import clsx from "clsx";
+import { CustomAlert } from "~utils/alert_custom";
 
 const Table = ({ columns, data, setDataDonHang, permission }) => {
   console.log("permission: ", permission);
@@ -177,7 +178,7 @@ const DonHang = () => {
     Object.keys(permission).length === 0 ||
     permission.XEM + permission.SUA + permission.XOA + permission.IN === 0
   ) {
-    alert(stateUser.userName + " không có quyền xem Truy Vấn Đơn Hàng");
+    CustomAlert(stateUser.userName + " không có quyền xem Truy Vấn Đơn Hàng");
     return <></>;
   }
   const handleTruyVan = () => {

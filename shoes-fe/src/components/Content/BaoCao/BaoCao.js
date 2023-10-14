@@ -5,6 +5,7 @@ import DonHang from "./DonHang";
 import CongNo from "./CongNo";
 import BangLuong from "./BangLuong";
 import DonHangMau from "./DonHangMau";
+import { CustomAlert } from "~utils/alert_custom";
 
 const BaoCao = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -18,7 +19,7 @@ const BaoCao = () => {
       if (userAccess.some((obj) => obj.MAFORM === "F0046" && obj.XEM === 1)) {
         return <CongNo />;
       } else {
-        alert("Bạn không có quyền truy cập vào chức năng này!");
+        CustomAlert("Bạn không có quyền truy cập vào chức năng này!");
         return <></>;
       }
     case "Bảng lương":

@@ -5,7 +5,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { Delete, Edit } from "@mui/icons-material";
 
 import { useUserContext } from "~user";
-
+import { CustomAlert } from "~utils/alert_custom";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 
 import { FormThuTien, ModalMain } from "~nghiep_vu/ThuTien/";
@@ -199,7 +199,7 @@ const ThuTien = () => {
     Object.keys(permission).length === 0 ||
     permission.XEM + permission.SUA + permission.XOA + permission.IN === 0
   ) {
-    alert(stateUser.userName + " không có quyền xem Truy Vấn Phiếu Thu");
+    CustomAlert(stateUser.userName + " không có quyền xem Truy Vấn Phiếu Thu");
     return <></>;
   }
   const handleTruyVan = () => {

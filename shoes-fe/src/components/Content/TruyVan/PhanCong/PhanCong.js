@@ -12,6 +12,7 @@ import { INFO_COLS_PHANCONG } from "./ConstantVariable";
 import { border_text_table_config } from "~config/ui";
 import styles from "./PhanCong.module.scss";
 import clsx from "clsx";
+import { CustomAlert } from "~utils/alert_custom";
 
 const Table = ({ columns, data, setDataPhanCong, permission }) => {
   console.log("vao table phan cong ne");
@@ -205,7 +206,7 @@ const PhanCong = () => {
     Object.keys(permission).length === 0 ||
     permission.XEM + permission.SUA + permission.XOA + permission.IN === 0
   ) {
-    alert(stateUser.userName + " không có quyền xem Truy Vấn Phân Công");
+    CustomAlert(stateUser.userName + " không có quyền xem Truy Vấn Phân Công");
     return <></>;
   }
 

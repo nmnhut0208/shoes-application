@@ -18,6 +18,7 @@ import {
   updateFormDonHang,
   updateColumnsInformations,
 } from "./helper";
+import { CustomAlert } from "~utils/alert_custom";
 
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
 
@@ -162,7 +163,7 @@ const FormDonHang = ({
       return;
     }
     if (!isSaveData) {
-      alert("Lưu thông tin trước khi nhập tiếp đơn khác!");
+      CustomAlert("Lưu thông tin trước khi nhập tiếp đơn khác!");
       return;
     }
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
@@ -177,7 +178,9 @@ const FormDonHang = ({
       (data) => data["SOLUONG"] > 0 && data["MAGIAY"] !== ""
     );
     if (dataDatHang.length == 0) {
-      alert("Bạn chưa đặt hàng hoặc chưa chọn số lượng mỗi loại giày cần đặt!");
+      CustomAlert(
+        "Bạn chưa đặt hàng hoặc chưa chọn số lượng mỗi loại giày cần đặt!"
+      );
       return;
     } else {
       saveDonDatHang(formInfoDonHang, dataDatHang);
@@ -191,7 +194,7 @@ const FormDonHang = ({
 
   const handleClickMaGiay = () => {
     if (formInfoDonHang["MAKH"] === "") {
-      alert("Vui lòng chọn khách hàng!");
+      CustomAlert("Vui lòng chọn khách hàng!");
       return;
     }
     setInfoFormWillShow({

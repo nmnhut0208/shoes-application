@@ -6,6 +6,7 @@ import { ItemsProvider } from "~items_context";
 import FormLogin from "./components/Content/HeThong/DangNhap/FormLogin";
 import Modal from "./components/Content/HeThong/DangNhap/Modal";
 import { useUserContext } from "~user";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [stateUser, dispatchUser] = useUserContext();
@@ -27,6 +28,7 @@ function App() {
           </section>
         </ProviderTable>
       </ItemsProvider>
+      <ToastContainer />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import { useTableContext, actions_table } from "~table_context";
 import { useUserContext, actions } from "~user";
 import { border_text_table_config } from "~config/ui";
+import { CustomAlert } from "~utils/alert_custom";
 
 const SubTable = ({
   columns,
@@ -63,7 +64,7 @@ const SubTable = ({
                   // dispatchTable(actions_table.setActionForm("add"));
                   // dispatchTable(actions_table.setModeShowModal(true));
                 } else {
-                  alert("Bạn không có quyền sửa");
+                  CustomAlert("Bạn không có quyền sửa");
                 }
               }}
             >
@@ -104,16 +105,16 @@ const SubTable = ({
                           .catch((err) => {
                             console.log(":error: ", err);
                           });
-                        // alert("Xóa thành công");
+                        // CustomAlert("Xóa thành công");
                       } else {
-                        alert("Xóa thất bại");
+                        CustomAlert("Xóa thất bại");
                       }
                     })
                     .catch((error) => {
                       console.error("Error:", error);
                     });
                 } else {
-                  alert("Bạn không có quyền xóa");
+                  CustomAlert("Bạn không có quyền xóa");
                 }
               }}
             >

@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./FormMau.module.scss";
 import { FormMauBasic } from "~hang_hoa";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
+import { CustomAlert } from "~utils/alert_custom";
 
 import {
   useItemsContext,
@@ -20,14 +21,14 @@ const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
   const handleSaveFrom = () => {
     for (let key in list_input_required) {
       if (dataForm[key] === undefined || dataForm[key] === "") {
-        alert("Nhập " + list_input_required[key]);
+        CustomAlert("Nhập " + list_input_required[key]);
         return false;
       }
     }
     if (
       checkMaDanhMucExisted(dataForm["MAMAU"], stateItem.infoItemMau, "value")
     ) {
-      alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+      CustomAlert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
       return false;
     }
     fetch("http://localhost:8000/mau", {

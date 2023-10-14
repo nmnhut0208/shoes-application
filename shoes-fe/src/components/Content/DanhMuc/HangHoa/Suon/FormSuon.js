@@ -8,6 +8,7 @@ import {
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { ItemGot, ItemMui } from "~items";
 import { getImageOfDanhMuc } from "~utils/api_get_image";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_input_required = {
   MAGOT: "Mã gót",
@@ -51,7 +52,7 @@ const FormSuon = () => {
   const handleSaveFrom = () => {
     for (let key in list_input_required) {
       if (inputForm[key] === undefined || inputForm[key] === "") {
-        alert("Nhập " + list_input_required[key]);
+        CustomAlert("Nhập " + list_input_required[key]);
         return false;
       }
     }
@@ -73,7 +74,7 @@ const FormSuon = () => {
           "MASUON"
         )
       ) {
-        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        CustomAlert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
         return false;
       }
       method = "POST";
@@ -98,11 +99,11 @@ const FormSuon = () => {
     })
       .then((response) => {
         console.log("response: ", response);
-        alert("Lưu thành công.");
+        CustomAlert("Lưu thành công.");
       })
       .catch((error) => {
         console.log("error: ", error);
-        alert("Xảy ra lỗi. Chưa lưu được.");
+        CustomAlert("Xảy ra lỗi. Chưa lưu được.");
       });
     dispatchTable(actions_table.setModeShowModal(false));
   };

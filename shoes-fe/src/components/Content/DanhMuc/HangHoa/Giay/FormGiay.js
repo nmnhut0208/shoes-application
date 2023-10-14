@@ -3,6 +3,7 @@ import { useTableContext, actions_table } from "~table_context";
 import FormGiayBasic from "./FormGiayBasic";
 import styles from "./FormGiayBasic.module.scss";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_input_required = {
   MAGIAY: "Mã giày",
@@ -48,7 +49,7 @@ const FormGiay = () => {
   const handleSaveFrom = () => {
     for (let key in list_input_required) {
       if (dataForm[key] === undefined || dataForm[key] === "") {
-        alert("Nhập " + list_input_required[key]);
+        CustomAlert("Nhập " + list_input_required[key]);
         return false;
       }
     }
@@ -71,7 +72,7 @@ const FormGiay = () => {
           "MAGIAY"
         )
       ) {
-        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        CustomAlert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
         return false;
       }
       method = "POST";
@@ -90,11 +91,11 @@ const FormGiay = () => {
     })
       .then((response) => {
         console.log("response: ", response);
-        alert("Lưu thông tin thành công!");
+        CustomAlert("Lưu thông tin thành công!");
       })
       .catch((error) => {
         console.log("error: ", error);
-        alert("Xảy ra lỗi, chưa lưu được thông tin!");
+        CustomAlert("Xảy ra lỗi, chưa lưu được thông tin!");
       });
 
     // Không tắt form => để user thực hiện các hành động khác
