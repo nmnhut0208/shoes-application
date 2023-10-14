@@ -204,7 +204,7 @@ const TableContent = ({ info_other_column }) => {
     <>
       {inforShowTable.showTable && (
         <div>
-          <header>{inforShowTable.title}</header>
+          {/* <header>{inforShowTable.title}</header> */}
           <MaterialReactTable
             columns={inforShowTable.infoColumnTable}
             data={inforShowTable.infoTable}

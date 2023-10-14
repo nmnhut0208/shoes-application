@@ -247,18 +247,8 @@ const FormDonHang = ({
         action={action}
       />
 
-      <button
-        style={{
-          backgroundColor: "#b5e550",
-          fontSize: "1.7rem",
-          fontFamily: "Arial",
-          height: "2.8rem",
-          width: "20rem",
-          marginBottom: "1.5rem",
-        }}
-        onClick={handleClickMaGiay}
-      >
-        Thêm giày vào đơn hàng
+      <button className={styles.update_button} onClick={handleClickMaGiay}>
+        Thêm giày đã đặt vào đơn hàng
       </button>
 
       <div style={{ width: "85vw" }}>

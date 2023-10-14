@@ -12,6 +12,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { convertDateForReport } from "~utils/processing_date";
 import { CustomAlert } from "~utils/alert_custom";
+import styles from "./KyTinhLuong.module.scss";
 
 const list_key = [
   { header: "Mã kỳ", key: "MAKY", width: 3 * rem_to_px },
@@ -77,15 +78,15 @@ const KyTinhLuong = () => {
 
   return (
     <>
-      <Tooltip arrow title="Update">
-        <IconButton
-          onClick={() => {
-            handleUpdate();
-          }}
-        >
-          <Edit style={{ color: "green" }} fontSize="large" />
-        </IconButton>
-      </Tooltip>
+      <button
+        className={styles.update_button}
+        onClick={() => {
+          handleUpdate();
+        }}
+      >
+        Chỉnh sửa thông tin Kỳ tính lương
+      </button>
+
       {renderUI && <TableContent info_other_column={{ action: 24, stt: 15 }} />}
     </>
   );

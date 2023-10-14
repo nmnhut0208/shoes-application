@@ -12,3 +12,18 @@
   height: 90vh;
   width: 85vw;
 }
+
+.update_button {
+  padding: 5px 10px;
+  background-color:  #28a745;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: medium;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-left: 40%;
+}
+
+.update_button:hover {
+  opacity: 0.7;
+}
