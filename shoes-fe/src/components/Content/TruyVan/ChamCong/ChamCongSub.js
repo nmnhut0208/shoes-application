@@ -67,8 +67,6 @@ const ChamCongSub = () => {
 
   //   const [rowSelection, setRowSelection] = useState({});
 
-  console.log("GiaoHang");
-
   const handleDelete = () => {
     if (
       stateUser.userPoolAccess.some(
@@ -111,15 +109,14 @@ const ChamCongSub = () => {
 
       <br />
       {allowDelete && (
-        <Tooltip arrow title="Delete">
-          <IconButton
-            onClick={() => {
-              handleDelete();
-            }}
-          >
-            <Delete style={{ color: "red" }} fontSize="large" />
-          </IconButton>
-        </Tooltip>
+        <button
+          className={styles.delete_button}
+          onClick={() => {
+            handleDelete();
+          }}
+        >
+          Xoá thông tin chấm công theo Kỳ
+        </button>
       )}
       <SubTable
         columns={infoColumns}
