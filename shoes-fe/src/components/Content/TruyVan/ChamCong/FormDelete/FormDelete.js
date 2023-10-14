@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./FormDelete.module.scss";
 import { CustomAlert } from "~utils/alert_custom";
+import { Popconfirm } from "antd";
 
 const FormDelete = ({ setShowModal }) => {
   const [MAKY, setMAKY] = useState("");
@@ -12,10 +13,6 @@ const FormDelete = ({ setShowModal }) => {
       CustomAlert("Nhập mã kỳ");
       return;
     } else {
-      let text = "Bạn thực sự muốn xóa thông tin này không!";
-      if (!window.confirm(text)) {
-        return;
-      }
       fetch("http://localhost:8000/delete_ky", {
         method: "DELETE",
         headers: {
@@ -90,7 +87,16 @@ const FormDelete = ({ setShowModal }) => {
       </div>
       <div className={styles.group_button}>
         <div>
-          <button onClick={handleDelete}>Xóa</button>
+          <Popconfirm
+            title="Xác nhận hành động"
+            description="Bạn thực sự muốn xoá thông tin này?"
+            onConfirm={handleDelete}
+            onCancel={() => {}}
+            okText="Đồng ý"
+            cancelText="Không đồng ý"
+          >
+            <button>Xóa</button>
+          </Popconfirm>
         </div>
       </div>
     </div>

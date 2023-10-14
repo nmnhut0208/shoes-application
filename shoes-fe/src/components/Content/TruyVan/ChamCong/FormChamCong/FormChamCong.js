@@ -6,6 +6,8 @@ import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { rem_to_px } from "~config/ui";
 import { convertDate } from "~utils/processing_date";
 import moment from "moment";
+import { Popconfirm } from "antd";
+
 import { useUserContext } from "~user";
 import { CustomAlert } from "~utils/alert_custom";
 
@@ -39,10 +41,6 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
         (obj) => obj.MAFORM === "F0042" && obj.XOA === 1
       )
     ) {
-      let text = "Bạn thực sự muốn xóa thông tin này không!";
-      if (!window.confirm(text)) {
-        return;
-      }
       const send_data = {
         MAKY: infoForm["MAKY"],
         MANVIEN: infoForm["MANVIEN"],
@@ -179,7 +177,16 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
       />
       <div className={styles.group_button}>
         <div>
-          <button onClick={handleDelete}>Xóa</button>
+          <Popconfirm
+            title="Xác nhận hành động"
+            description="Bạn thực sự muốn xoá thông tin này?"
+            onConfirm={handleDelete}
+            onCancel={() => {}}
+            okText="Đồng ý"
+            cancelText="Không đồng ý"
+          >
+            <button>Xoá</button>
+          </Popconfirm>
         </div>
       </div>
     </div>

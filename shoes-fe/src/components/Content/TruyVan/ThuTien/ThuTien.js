@@ -3,6 +3,7 @@ import { useMemo, useState, useEffect } from "react";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { Delete, Edit } from "@mui/icons-material";
+import { Popconfirm } from "antd";
 
 import { useUserContext } from "~user";
 import { CustomAlert } from "~utils/alert_custom";
@@ -23,10 +24,6 @@ const Table = ({ columns, data, setData, permission }) => {
     setShowModal(true);
   };
   const handleDeleteRow = (row) => {
-    let text = "Bạn thực sự muốn xóa thông tin này không!";
-    if (!window.confirm(text)) {
-      return;
-    }
     let url =
       "http://localhost:8000/congno/phieuthu?SOPHIEU=" +
       encodeURIComponent(row["SOPHIEU"]);
@@ -92,51 +89,53 @@ const Table = ({ columns, data, setData, permission }) => {
         }}
         //
         renderRowActions={({ row, table }) => (
-          <Box
-            sx={{
-              display: "flex",
-              "align-content": "center",
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              columnGap: "0.3rem",
+              marginLeft: "0.2rem",
+              marginRight: "0.2rem",
             }}
           >
             {permission.SUA === 1 && (
-              <Tooltip arrow title="Edit" placement="right">
-                <IconButton
-                  onClick={() => {
-                    setTypeAction("edit");
-                    setRowInfo(row.original);
-                    handleCheckDonHang();
-                  }}
-                >
-                  <Edit />
-                </IconButton>
-              </Tooltip>
+              <button
+                className={styles.edit_button}
+                style={{ borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)" }}
+                onClick={() => {
+                  setTypeAction("edit");
+                  setRowInfo(row.original);
+                  handleCheckDonHang();
+                }}
+              >
+                <Edit />
+              </button>
             )}
             {permission.XOA === 1 && (
-              <Tooltip arrow placement="right" title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={() => {
-                    handleDeleteRow(row.original);
-                  }}
-                >
-                  <Delete />
-                </IconButton>
-              </Tooltip>
+              <Popconfirm
+                title="Xác nhận hành động"
+                description="Bạn thực sự muốn xoá thông tin này?"
+                onConfirm={() => handleDeleteRow(row.original)}
+                onCancel={() => {}}
+                okText="Đồng ý"
+                cancelText="Không đồng ý"
+              >
+                <button className={styles.delete_button}>Xoá</button>
+              </Popconfirm>
             )}
             {permission.XEM === 1 && permission.SUA === 0 && (
-              <Tooltip arrow placement="right" title="View Detail">
-                <IconButton
-                  onClick={() => {
-                    setTypeAction("view");
-                    setRowInfo(row.original);
-                    handleCheckDonHang();
-                  }}
-                >
-                  <VisibilityOutlinedIcon />
-                </IconButton>
-              </Tooltip>
+              <button
+                className={styles.view_button}
+                onClick={() => {
+                  setTypeAction("view");
+                  setRowInfo(row.original);
+                  handleCheckDonHang();
+                }}
+              >
+                Xem
+              </button>
             )}
-          </Box>
+          </div>
         )}
       />
 

@@ -1,10 +1,8 @@
 import { useMemo, useState } from "react";
 import MaterialReactTable from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Delete, Edit } from "@mui/icons-material";
-import { message, Popconfirm, Space } from "antd";
+import { Popconfirm } from "antd";
 
 import { Modal } from "~common_tag";
 import { border_text_table_config } from "~config/ui";

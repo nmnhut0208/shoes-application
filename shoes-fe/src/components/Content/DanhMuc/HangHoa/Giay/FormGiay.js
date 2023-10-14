@@ -112,10 +112,6 @@ const FormGiay = () => {
   };
 
   const handleNhanBan = () => {
-    // let text = "Lưu thông tin hiện tại trước khi nhân bản!";
-    // if (window.confirm(text)) {
-    //   handleSaveFrom();
-    // }
     dispatchTable(actions_table.setActionForm("add"));
   };
 
