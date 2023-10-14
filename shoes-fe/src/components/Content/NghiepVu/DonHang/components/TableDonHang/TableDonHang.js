@@ -1,8 +1,6 @@
 import { memo } from "react";
-import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import styles from "./TableDonHang.module.scss";
 
 import { border_text_table_config } from "~config/ui";
 
@@ -33,35 +31,28 @@ const TableDonHang = ({ columns, data, setDataTable, readOnly }) => {
       // enablePinning // enable pinning
       // footer sum
       enableStickyFooter
-      renderBottomToolbarCustomActions={() => (
-        <>
-          {!readOnly && (
-            <Typography
-              sx={{ fontStyle: "italic", p: "0 1rem" }}
-              variant="body2"
-            >
-              Click a Cell to Edit
-            </Typography>
-          )}
-        </>
-      )}
+      // renderBottomToolbarCustomActions={() => (
+      //   <>
+      //     {!readOnly && (
+      //       <Typography
+      //         sx={{ fontStyle: "italic", p: "0 1rem" }}
+      //         variant="body2"
+      //       ></Typography>
+      //     )}
+      //   </>
+      // )}
       enableRowActions={!readOnly}
       renderRowActions={({ row, table }) => (
-        <Box
-          sx={{
-            display: "flex",
-            "align-content": "center",
-            // "flex-direction": "row",
-          }}
-        >
+        <div>
           {row.original["MAGIAY"] !== "" && (
-            <Tooltip arrow title="Delete">
-              <IconButton color="error" onClick={() => handleDeleteRow(row)}>
-                <Delete />
-              </IconButton>
-            </Tooltip>
+            <button
+              className={styles.delete_button}
+              onClick={() => handleDeleteRow(row)}
+            >
+              Xoá
+            </button>
           )}
-        </Box>
+        </div>
       )}
     />
   );
