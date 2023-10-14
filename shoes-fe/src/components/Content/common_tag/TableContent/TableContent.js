@@ -15,6 +15,7 @@ import {
   useItemsContext,
   actions as actions_items_context,
 } from "~items_context";
+import styles from "./TableContent.module.scss";
 
 const listFormHaveViewDetail = ["F0024", "F0020", "F0013", "F0018"];
 
@@ -189,7 +190,6 @@ const TableContent = ({ info_other_column }) => {
       headers: {
         "Content-Type": "application/json",
       },
-      // body: JSON.stringify(row),
     })
       .then((res) => console.log("response: ", res))
       .catch((err) => console.log("error: ", err));
@@ -224,8 +224,7 @@ const TableContent = ({ info_other_column }) => {
             enableEditing={showActionColumn}
             displayColumnDefOptions={{
               "mrt-row-actions": {
-                sx: { minSize: actionSttInfo["action"] },
-                // minSize: actionSttInfo["action"], //set custom width
+                minSize: actionSttInfo["action"], //set custom width
                 // minSize: 24,
                 muiTableHeadCellProps: {
                   align: "center", //change head cell props
@@ -248,92 +247,23 @@ const TableContent = ({ info_other_column }) => {
                 },
               },
             }}
-            // renderRowActions={({ row, table }) => (
-            //   <Box
-            //     sx={{
-            //       display: "flex",
-            //       justifyContent: "center",
-            //       paddingLeft: "5px",
-            //       paddingRight: "5px",
-            //     }}
-            //   >
-            //     {permission.THEM === 1 && (
-            //       <Tooltip arrow placement="right" title="Add">
-            //         <IconButton
-            //           onClick={() => {
-            //             dispatchTable(
-            //               actions_table.setInforRecordTable(emptyData)
-            //             );
-            //             dispatchTable(actions_table.setActionForm("add"));
-            //             dispatchTable(actions_table.setModeShowModal(true));
-            //           }}
-            //         >
-            //           <AddCircleIcon />
-            //         </IconButton>
-            //       </Tooltip>
-            //     )}
-            //     {permission.SUA === 1 && (
-            //       <Tooltip arrow placement="right" title="Edit">
-            //         <IconButton
-            //           onClick={() => {
-            //             dispatchTable(
-            //               actions_table.setInforRecordTable(row.original)
-            //             );
-            //             dispatchTable(actions_table.setActionForm("edit"));
-            //             dispatchTable(actions_table.setModeShowModal(true));
-            //           }}
-            //         >
-            //           <Edit />
-            //         </IconButton>
-            //       </Tooltip>
-            //     )}
-            //     {permission.XOA === 1 && (
-            //       <Popconfirm
-            //         title="Xác nhận hành động"
-            //         description="Bạn thực sự muốn xoá thông tin này?"
-            //         onConfirm={() => handleDeleteRow(row.original)}
-            //         onCancel={() => {}}
-            //         okText="Đồng ý"
-            //         cancelText="Không đồng ý"
-            //       >
-            //         <Tooltip arrow placement="right" title="Delete">
-            //           <IconButton color="error">
-            //             <Delete />
-            //           </IconButton>
-            //         </Tooltip>
-            //       </Popconfirm>
-            //     )}
-            //     {permission.XEM === 1 &&
-            //       permission.THEM === 0 &&
-            //       permission.SUA === 0 &&
-            //       listFormHaveViewDetail.includes(maForm) && (
-            //         <Tooltip arrow placement="right" title="View Detail">
-            //           <IconButton
-            //             onClick={() => {
-            //               dispatchTable(
-            //                 actions_table.setInforRecordTable(row.original)
-            //               );
-            //               dispatchTable(actions_table.setActionForm("view"));
-            //               dispatchTable(actions_table.setModeShowModal(true));
-            //             }}
-            //           >
-            //             <VisibilityOutlinedIcon />
-            //           </IconButton>
-            //         </Tooltip>
-            //       )}
-            //   </Box>
-            // )}
-
             renderRowActions={({ row, table }) => (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  paddingLeft: "5px",
-                  paddingRight: "5px",
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  columnGap: "0.1rem",
                 }}
               >
-                <Space>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)",
+                  }}
+                >
                   {permission.THEM === 1 && (
                     <button
                       onClick={() => {
@@ -343,12 +273,21 @@ const TableContent = ({ info_other_column }) => {
                         dispatchTable(actions_table.setActionForm("add"));
                         dispatchTable(actions_table.setModeShowModal(true));
                       }}
+                      className={styles.add_button}
                     >
                       Thêm
                     </button>
                   )}
-                </Space>
-                <Space>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)",
+                  }}
+                >
                   {permission.SUA === 1 && (
                     <button
                       onClick={() => {
@@ -358,44 +297,52 @@ const TableContent = ({ info_other_column }) => {
                         dispatchTable(actions_table.setActionForm("edit"));
                         dispatchTable(actions_table.setModeShowModal(true));
                       }}
+                      className={styles.edit_button}
                     >
                       Sửa
                     </button>
                   )}
-                </Space>
-
-                {permission.XOA === 1 && (
-                  <Popconfirm
-                    title="Xác nhận hành động"
-                    description="Bạn thực sự muốn xoá thông tin này?"
-                    onConfirm={() => handleDeleteRow(row.original)}
-                    onCancel={() => {}}
-                    okText="Đồng ý"
-                    cancelText="Không đồng ý"
-                  >
-                    <button>Xoá</button>
-                  </Popconfirm>
-                )}
-
-                {permission.XEM === 1 &&
-                  permission.THEM === 0 &&
-                  permission.SUA === 0 &&
-                  listFormHaveViewDetail.includes(maForm) && (
-                    <Tooltip arrow placement="right" title="View Detail">
-                      <IconButton
-                        onClick={() => {
-                          dispatchTable(
-                            actions_table.setInforRecordTable(row.original)
-                          );
-                          dispatchTable(actions_table.setActionForm("view"));
-                          dispatchTable(actions_table.setModeShowModal(true));
-                        }}
-                      >
-                        <VisibilityOutlinedIcon />
-                      </IconButton>
-                    </Tooltip>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                  }}
+                >
+                  {permission.XOA === 1 && (
+                    <Popconfirm
+                      title="Xác nhận hành động"
+                      description="Bạn thực sự muốn xoá thông tin này?"
+                      onConfirm={() => handleDeleteRow(row.original)}
+                      onCancel={() => {}}
+                      okText="Đồng ý"
+                      cancelText="Không đồng ý"
+                    >
+                      <button className={styles.delete_button}>Xoá</button>
+                    </Popconfirm>
                   )}
-              </Box>
+                  {permission.XEM === 1 &&
+                    permission.THEM === 0 &&
+                    permission.SUA === 0 &&
+                    listFormHaveViewDetail.includes(maForm) && (
+                      <Tooltip arrow placement="right" title="View Detail">
+                        <IconButton
+                          onClick={() => {
+                            dispatchTable(
+                              actions_table.setInforRecordTable(row.original)
+                            );
+                            dispatchTable(actions_table.setActionForm("view"));
+                            dispatchTable(actions_table.setModeShowModal(true));
+                          }}
+                        >
+                          <VisibilityOutlinedIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                </Box>
+              </div>
             )}
           />
         </div>
