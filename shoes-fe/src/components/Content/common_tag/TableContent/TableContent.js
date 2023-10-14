@@ -4,6 +4,7 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { Delete, Edit } from "@mui/icons-material";
+import { message, Popconfirm, Space } from "antd";
 
 import { Modal } from "~common_tag";
 import { border_text_table_config } from "~config/ui";
@@ -58,48 +59,48 @@ const TableContent = ({ info_other_column }) => {
   }, []);
 
   const handleDeleteRow = (row) => {
-    let text = "Bạn thực sự muốn xóa thông tin này không!";
-    if (!window.confirm(text)) {
-      return;
-    }
+    let Key = "";
     let url = "";
     switch (stateTask.inforCurrentTask.infoDetail) {
       case "Kho hàng":
+        Key = "MAKHO";
         url = "http://localhost:8000/khohang";
         break;
       case "Mũi":
+        Key = "MAMUI";
         url = "http://localhost:8000/mui";
         dispatchItem(
           actions_items_context.setInfoMui(
-            stateItem.infoItemMui.filter(
-              (item) => item["value"] != row["MAMUI"]
-            )
+            stateItem.infoItemMui.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Đế":
+        Key = "MADE";
         url = "http://localhost:8000/de";
         dispatchItem(
           actions_items_context.setInfoDe(
-            stateItem.infoItemDe.filter((item) => item["value"] != row["MADE"])
+            stateItem.infoItemDe.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Cá":
+        Key = "MACA";
         url = "http://localhost:8000/ca";
         dispatchItem(
           actions_items_context.setInfoCa(
-            stateItem.infoItemCa.filter((item) => item["value"] != row["MACA"])
+            stateItem.infoItemCa.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Nhân viên":
+        Key = "MANV";
         url = "http://localhost:8000/nhanvien";
         if (row["LOAINVIEN"] === "TD") {
           dispatchItem(
             actions_items_context.setInfoThoDe(
               stateItem.infoItemThoDe.filter(
-                (item) => item["value"] != row["MANVIEN"]
+                (item) => item["value"] != row[Key]
               )
             )
           );
@@ -108,94 +109,96 @@ const TableContent = ({ info_other_column }) => {
           dispatchItem(
             actions_items_context.setInfoThoQuai(
               stateItem.infoItemThoQuai.filter(
-                (item) => item["value"] != row["MANVIEN"]
+                (item) => item["value"] != row[Key]
               )
             )
           );
         }
         break;
       case "Kỳ tính lương":
+        Key = "MAKY";
         url = "http://localhost:8000/kytinhluong";
         dispatchItem(
           actions_items_context.setInfoKyTinhLuong(
             stateItem.infoItemKyTinhLuong.filter(
-              (item) => item["value"] != row["MAKY"]
+              (item) => item["value"] != row[Key]
             )
           )
         );
         break;
       case "Giày":
+        Key = "MAGIAY";
         url = "http://localhost:8000/giay";
         break;
       case "Màu":
+        Key = "MAMAU";
         url = "http://localhost:8000/mau";
         dispatchItem(
           actions_items_context.setInfoMau(
-            stateItem.infoItemMau.filter(
-              (item) => item["value"] != row["MAMAU"]
-            )
+            stateItem.infoItemMau.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Sườn":
+        Key = "MASUON";
         url = "http://localhost:8000/suon";
         dispatchItem(
           actions_items_context.setInfoSuon(
-            stateItem.infoItemSuon.filter(
-              (item) => item["value"] != row["MASUON"]
-            )
+            stateItem.infoItemSuon.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Gót":
+        Key = "MAGOT";
         url = "http://localhost:8000/got";
         dispatchItem(
           actions_items_context.setInfoGot(
-            stateItem.infoItemGot.filter(
-              (item) => item["value"] != row["MAGOT"]
-            )
+            stateItem.infoItemGot.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Quai":
+        Key = "MAQUAI";
         url = "http://localhost:8000/quai";
         dispatchItem(
           actions_items_context.setInfoQuai(
-            stateItem.infoItemQuai.filter(
-              (item) => item["value"] != row["MAQUAI"]
-            )
+            stateItem.infoItemQuai.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Khách hàng":
+        Key = "MAKH";
         url = "http://localhost:8000/khachhang";
         dispatchItem(
           actions_items_context.setInfoKhachHang(
             stateItem.infoItemKhachHang.filter(
-              (item) => item["MAKH"] != row["MAKH"]
+              (item) => item["MAKH"] != row[Key]
             )
           )
         );
         break;
       case "Phân quyền":
-        url = "http://localhost:8000/phanquyen";
-        break;
+        return;
     }
-    fetch(url, {
+    console.log(
+      "url + encodeURIComponent(row[Key]): ",
+      url + encodeURIComponent(row[Key])
+    );
+    fetch(url + "?ID=" + encodeURIComponent(row[Key]), {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(row),
+      // body: JSON.stringify(row),
     })
       .then((res) => console.log("response: ", res))
       .catch((err) => console.log("error: ", err));
 
-    const newData = inforShowTable.infoTable.filter((item) => item != row);
+    const newData = inforShowTable.infoTable.filter(
+      (item) => item[Key] != row[Key]
+    );
     dispatchTable(actions_table.setInforTable(newData));
   };
-
-  console.log("stateItem.infoItemDe: ", stateItem.infoItemDe);
 
   return (
     <>
@@ -245,6 +248,82 @@ const TableContent = ({ info_other_column }) => {
                 },
               },
             }}
+            // renderRowActions={({ row, table }) => (
+            //   <Box
+            //     sx={{
+            //       display: "flex",
+            //       justifyContent: "center",
+            //       paddingLeft: "5px",
+            //       paddingRight: "5px",
+            //     }}
+            //   >
+            //     {permission.THEM === 1 && (
+            //       <Tooltip arrow placement="right" title="Add">
+            //         <IconButton
+            //           onClick={() => {
+            //             dispatchTable(
+            //               actions_table.setInforRecordTable(emptyData)
+            //             );
+            //             dispatchTable(actions_table.setActionForm("add"));
+            //             dispatchTable(actions_table.setModeShowModal(true));
+            //           }}
+            //         >
+            //           <AddCircleIcon />
+            //         </IconButton>
+            //       </Tooltip>
+            //     )}
+            //     {permission.SUA === 1 && (
+            //       <Tooltip arrow placement="right" title="Edit">
+            //         <IconButton
+            //           onClick={() => {
+            //             dispatchTable(
+            //               actions_table.setInforRecordTable(row.original)
+            //             );
+            //             dispatchTable(actions_table.setActionForm("edit"));
+            //             dispatchTable(actions_table.setModeShowModal(true));
+            //           }}
+            //         >
+            //           <Edit />
+            //         </IconButton>
+            //       </Tooltip>
+            //     )}
+            //     {permission.XOA === 1 && (
+            //       <Popconfirm
+            //         title="Xác nhận hành động"
+            //         description="Bạn thực sự muốn xoá thông tin này?"
+            //         onConfirm={() => handleDeleteRow(row.original)}
+            //         onCancel={() => {}}
+            //         okText="Đồng ý"
+            //         cancelText="Không đồng ý"
+            //       >
+            //         <Tooltip arrow placement="right" title="Delete">
+            //           <IconButton color="error">
+            //             <Delete />
+            //           </IconButton>
+            //         </Tooltip>
+            //       </Popconfirm>
+            //     )}
+            //     {permission.XEM === 1 &&
+            //       permission.THEM === 0 &&
+            //       permission.SUA === 0 &&
+            //       listFormHaveViewDetail.includes(maForm) && (
+            //         <Tooltip arrow placement="right" title="View Detail">
+            //           <IconButton
+            //             onClick={() => {
+            //               dispatchTable(
+            //                 actions_table.setInforRecordTable(row.original)
+            //               );
+            //               dispatchTable(actions_table.setActionForm("view"));
+            //               dispatchTable(actions_table.setModeShowModal(true));
+            //             }}
+            //           >
+            //             <VisibilityOutlinedIcon />
+            //           </IconButton>
+            //         </Tooltip>
+            //       )}
+            //   </Box>
+            // )}
+
             renderRowActions={({ row, table }) => (
               <Box
                 sx={{
@@ -254,9 +333,9 @@ const TableContent = ({ info_other_column }) => {
                   paddingRight: "5px",
                 }}
               >
-                {permission.THEM === 1 && (
-                  <Tooltip arrow placement="right" title="Add">
-                    <IconButton
+                <Space>
+                  {permission.THEM === 1 && (
+                    <button
                       onClick={() => {
                         dispatchTable(
                           actions_table.setInforRecordTable(emptyData)
@@ -265,13 +344,13 @@ const TableContent = ({ info_other_column }) => {
                         dispatchTable(actions_table.setModeShowModal(true));
                       }}
                     >
-                      <AddCircleIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
-                {permission.SUA === 1 && (
-                  <Tooltip arrow placement="right" title="Edit">
-                    <IconButton
+                      Thêm
+                    </button>
+                  )}
+                </Space>
+                <Space>
+                  {permission.SUA === 1 && (
+                    <button
                       onClick={() => {
                         dispatchTable(
                           actions_table.setInforRecordTable(row.original)
@@ -280,21 +359,22 @@ const TableContent = ({ info_other_column }) => {
                         dispatchTable(actions_table.setModeShowModal(true));
                       }}
                     >
-                      <Edit />
-                    </IconButton>
-                  </Tooltip>
-                )}
+                      Sửa
+                    </button>
+                  )}
+                </Space>
+
                 {permission.XOA === 1 && (
-                  <Tooltip arrow placement="right" title="Delete">
-                    <IconButton
-                      color="error"
-                      onClick={() => {
-                        handleDeleteRow(row.original);
-                      }}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </Tooltip>
+                  <Popconfirm
+                    title="Xác nhận hành động"
+                    description="Bạn thực sự muốn xoá thông tin này?"
+                    onConfirm={() => handleDeleteRow(row.original)}
+                    onCancel={() => {}}
+                    okText="Đồng ý"
+                    cancelText="Không đồng ý"
+                  >
+                    <button>Xoá</button>
+                  </Popconfirm>
                 )}
 
                 {permission.XEM === 1 &&

@@ -5,8 +5,8 @@ import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { CustomAlert } from "~utils/alert_custom";
 
 const list_input_required = {
-  MAMAU: "Mã màu",
-  TENMAU: "Tên màu",
+  MAKHO: "Mã kho",
+  TENKHO: "Tên kho",
 };
 
 const FormKhoHang = () => {

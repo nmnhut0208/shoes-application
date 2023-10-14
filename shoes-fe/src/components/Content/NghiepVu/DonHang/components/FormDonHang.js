@@ -85,7 +85,7 @@ const FormDonHang = ({
 
       fetch(
         "http://localhost:8000/donhang/khachhang/" +
-          formInfoDonHang["MAKH"] +
+          encodeURIComponent(formInfoDonHang["MAKH"]) +
           "/giay"
       )
         .then((response) => {
