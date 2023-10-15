@@ -92,7 +92,7 @@ const TableContent = ({ info_other_column }) => {
         );
         break;
       case "Nhân viên":
-        Key = "MANV";
+        Key = "MANVIEN";
         url = "http://localhost:8000/nhanvien";
         if (row["LOAINVIEN"] === "TD") {
           dispatchItem(
