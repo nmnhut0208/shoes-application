@@ -64,6 +64,7 @@ const GiayUnique = ({
           style={{
             width: "90%",
             border: "none",
+            fontSize: "1.6rem",
           }}
         />
       )}
@@ -95,7 +96,7 @@ const GiayUnique = ({
             >
               <span
                 style={{
-                  width: "200px",
+                  width: "250px",
                   display: "inline-block",
                   borderRight: "1px solid #000",
                 }}

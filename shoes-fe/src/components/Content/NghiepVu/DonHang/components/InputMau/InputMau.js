@@ -69,6 +69,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
           style={{
             width: "90%",
             border: "none",
+            fontSize: "1.6rem",
           }}
         />
       )}
@@ -103,7 +104,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
             >
               <span
                 style={{
-                  width: "100px",
+                  width: "115px",
                   display: "inline-block",
                   borderRight: "1px solid #000",
                 }}
