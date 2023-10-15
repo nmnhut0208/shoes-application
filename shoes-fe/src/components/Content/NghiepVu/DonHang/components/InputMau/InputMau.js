@@ -7,7 +7,7 @@ const { Option } = Select;
 const customOptionStyle = {
   borderBottom: "1px solid #000", // Add a border line at the bottom of each option
   padding: "4px 0", // Adjust padding as needed
-  fontSize: "1.5rem",
+  fontSize: "1.7rem",
 };
 
 const filterOption = (input, option) => {
