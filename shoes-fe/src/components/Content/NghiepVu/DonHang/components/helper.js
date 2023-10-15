@@ -104,7 +104,7 @@ export const updateColumnsInformations = (
           }}
           readOnly={view} // || dataTable[cell.row.id]["MAGIAY"] === ""}
           type="number"
-          value={cell.getValue().toString()}
+          value={cell.getValue()}
           onChange={(e) =>
             handleSaveCell(cell, e.target.value, dataTable, setDataTable)
           }

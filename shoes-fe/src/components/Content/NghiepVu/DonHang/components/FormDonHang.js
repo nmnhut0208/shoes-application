@@ -66,6 +66,7 @@ const FormDonHang = ({
   const [showModal, setShowModal] = useState(false);
   const [listGiayUnique, setListGiayUnique] = useState([]);
   const [listGiayKH, setListGiayKH] = useState([]);
+  const [clickNhapTiep, setClickNhapTiep] = useState(false);
 
   useEffect(() => {
     if (formInfoDonHang["MAKH"] !== "") {
@@ -99,7 +100,7 @@ const FormDonHang = ({
           console.log(":error: ", err);
         });
     }
-  }, [formInfoDonHang["MAKH"]]);
+  }, [formInfoDonHang["MAKH"], clickNhapTiep]);
 
   const [firstRender, setFirstRender] = useState(false);
 
@@ -158,6 +159,7 @@ const FormDonHang = ({
   };
 
   const handleNhapTiep = () => {
+    setClickNhapTiep(!clickNhapTiep);
     if (dataTable.length == 0) {
       setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
       return;
