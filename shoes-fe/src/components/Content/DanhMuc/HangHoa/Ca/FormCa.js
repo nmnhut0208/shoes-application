@@ -5,8 +5,8 @@ import {
   useItemsContext,
   actions as actions_items_context,
 } from "~items_context";
-
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_input_required = {
   MACA: "Mã cá",
@@ -27,7 +27,7 @@ const FormCa = () => {
   const handleSaveFrom = () => {
     for (let key in list_input_required) {
       if (inputForm[key] === undefined || inputForm[key] === "") {
-        alert("Nhập " + list_input_required[key]);
+        CustomAlert("Nhập " + list_input_required[key]);
         return false;
       }
     }
@@ -49,7 +49,7 @@ const FormCa = () => {
           "MACA"
         )
       ) {
-        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        CustomAlert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
         return false;
       }
       method = "POST";

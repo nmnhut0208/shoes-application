@@ -1,11 +1,11 @@
 import { useState, memo } from "react";
-import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
+import { Popconfirm } from "antd";
 import { useTableContext, actions_table } from "~table_context";
 import { useUserContext, actions } from "~user";
 import { border_text_table_config } from "~config/ui";
+import { CustomAlert } from "~utils/alert_custom";
+import styles from "./SubTable.module.scss";
 
 const SubTable = ({
   columns,
@@ -46,81 +46,82 @@ const SubTable = ({
       enableRowVirtualization
       enableStickyFooter
       renderRowActions={({ row, table }) => (
-        <Box sx={{ display: "flex", gap: "1rem" }}>
-          <Tooltip arrow placement="right" title="Edit">
-            <IconButton
-              onClick={() => {
-                if (
-                  stateUser.userPoolAccess.some(
-                    (obj) => obj.MAFORM === maForm && obj.SUA === 1
-                  )
-                ) {
-                  setShowForm(true);
-                  setSendData(row.original);
-                  // dispatchTable(actions_table.setModeShowModal(true));
-                  // console.log("row: ", row.original);
-                  // dispatchTable(actions_table.setInforRecordTable(emptyData));
-                  // dispatchTable(actions_table.setActionForm("add"));
-                  // dispatchTable(actions_table.setModeShowModal(true));
-                } else {
-                  alert("Bạn không có quyền sửa");
-                }
-              }}
-            >
-              <Edit />
-            </IconButton>
-          </Tooltip>
-          <Tooltip arrow placement="right" title="Delete">
-            <IconButton
-              color="error"
-              onClick={() => {
-                console.log("delete: ", row.original);
-                if (
-                  stateUser.userPoolAccess.some(
-                    (obj) => obj.MAFORM === maForm && obj.XOA === 1
-                  )
-                ) {
-                  let text = "Bạn thực sự muốn xóa thông tin này không!";
-                  if (!window.confirm(text)) {
-                    return;
-                  }
-                  fetch("http://localhost:8000/tv_giaohang", {
-                    method: "DELETE",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(row.original),
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            columnGap: "0.3rem",
+            marginLeft: "0.2rem",
+            marginRight: "0.2rem",
+          }}
+        >
+          <button
+            className={styles.edit_button}
+            style={{ borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)" }}
+            onClick={() => {
+              if (
+                stateUser.userPoolAccess.some(
+                  (obj) => obj.MAFORM === maForm && obj.SUA === 1
+                )
+              ) {
+                setShowForm(true);
+                setSendData(row.original);
+              } else {
+                CustomAlert("Bạn không có quyền sửa");
+              }
+            }}
+          >
+            Sửa
+          </button>
+          <Popconfirm
+            title="Xác nhận hành động"
+            description="Bạn thực sự muốn xoá thông tin này?"
+            onConfirm={() => {
+              console.log("delete: ", row.original);
+              if (
+                stateUser.userPoolAccess.some(
+                  (obj) => obj.MAFORM === maForm && obj.XOA === 1
+                )
+              ) {
+                fetch("http://localhost:8000/tv_giaohang", {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(row.original),
+                })
+                  .then((res) => res.json())
+                  .then((data) => {
+                    if (data.status === "success") {
+                      fetch("http://localhost:8000/tv_giaohang")
+                        .then((response) => {
+                          return response.json();
+                        })
+                        .then((info) => {
+                          setDataTable(info);
+                        })
+                        .catch((err) => {
+                          console.log(":error: ", err);
+                        });
+                      // CustomAlert("Xóa thành công");
+                    } else {
+                      CustomAlert("Xóa thất bại");
+                    }
                   })
-                    .then((res) => res.json())
-                    .then((data) => {
-                      if (data.status === "success") {
-                        fetch("http://localhost:8000/tv_giaohang")
-                          .then((response) => {
-                            return response.json();
-                          })
-                          .then((info) => {
-                            setDataTable(info);
-                          })
-                          .catch((err) => {
-                            console.log(":error: ", err);
-                          });
-                        // alert("Xóa thành công");
-                      } else {
-                        alert("Xóa thất bại");
-                      }
-                    })
-                    .catch((error) => {
-                      console.error("Error:", error);
-                    });
-                } else {
-                  alert("Bạn không có quyền xóa");
-                }
-              }}
-            >
-              <Delete />
-            </IconButton>
-          </Tooltip>
-        </Box>
+                  .catch((error) => {
+                    console.error("Error:", error);
+                  });
+              } else {
+                CustomAlert("Bạn không có quyền xóa");
+              }
+            }}
+            onCancel={() => {}}
+            okText="Đồng ý"
+            cancelText="Không đồng ý"
+          >
+            <button className={styles.delete_button}>Xoá</button>
+          </Popconfirm>
+        </div>
       )}
     />
   );

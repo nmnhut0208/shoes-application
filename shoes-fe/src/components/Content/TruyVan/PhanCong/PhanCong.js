@@ -1,8 +1,6 @@
 import MaterialReactTable from "material-react-table";
 import { useMemo, useState, useEffect } from "react";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Delete, Edit } from "@mui/icons-material";
+import { Popconfirm } from "antd";
 
 import { useUserContext } from "~user";
 
@@ -12,6 +10,7 @@ import { INFO_COLS_PHANCONG } from "./ConstantVariable";
 import { border_text_table_config } from "~config/ui";
 import styles from "./PhanCong.module.scss";
 import clsx from "clsx";
+import { CustomAlert } from "~utils/alert_custom";
 
 const Table = ({ columns, data, setDataPhanCong, permission }) => {
   console.log("vao table phan cong ne");
@@ -32,10 +31,6 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
     setShowModal(true);
   };
   const handleDeleteRow = (row) => {
-    let text = "Bạn thực sự muốn xóa thông tin này không!";
-    if (!window.confirm(text)) {
-      return;
-    }
     let url =
       "http://localhost:8000/phancong?SOPHIEU=" +
       encodeURIComponent(row["SOPHIEU"]);
@@ -72,50 +67,52 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
         // add action in row
         enableRowActions={true}
         renderRowActions={({ row, table }) => (
-          <Box
-            sx={{
-              display: "flex",
-              "align-content": "center",
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              columnGap: "0.3rem",
+              marginLeft: "0.2rem",
+              marginRight: "0.2rem",
             }}
           >
             {permission.SUA === 1 && (
-              <Tooltip arrow title="Edit">
-                <IconButton
-                  onClick={() => {
-                    setRowInfo(row.original);
-                    handleEditRow();
-                  }}
-                >
-                  <Edit />
-                </IconButton>
-              </Tooltip>
+              <button
+                className={styles.edit_button}
+                style={{ borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)" }}
+                onClick={() => {
+                  setRowInfo(row.original);
+                  handleEditRow();
+                }}
+              >
+                Sửa
+              </button>
             )}
 
             {permission.XOA === 1 && (
-              <Tooltip arrow placement="right" title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={() => {
-                    handleDeleteRow(row.original);
-                  }}
-                >
-                  <Delete />
-                </IconButton>
-              </Tooltip>
+              <Popconfirm
+                title="Xác nhận hành động"
+                description="Bạn thực sự muốn xoá thông tin này?"
+                onConfirm={() => handleDeleteRow(row.original)}
+                onCancel={() => {}}
+                okText="Đồng ý"
+                cancelText="Không đồng ý"
+              >
+                <button className={styles.delete_button}>Xoá</button>
+              </Popconfirm>
             )}
             {permission.XEM === 1 && permission.SUA === 0 && (
-              <Tooltip arrow placement="right" title="View Detail">
-                <IconButton
-                  onClick={() => {
-                    setRowInfo(row.original);
-                    handleEditRow();
-                  }}
-                >
-                  <VisibilityOutlinedIcon />
-                </IconButton>
-              </Tooltip>
+              <button
+                className={styles.view_button}
+                onClick={() => {
+                  setRowInfo(row.original);
+                  handleEditRow();
+                }}
+              >
+                Xem
+              </button>
             )}
-          </Box>
+          </div>
         )}
       />
 
@@ -205,7 +202,7 @@ const PhanCong = () => {
     Object.keys(permission).length === 0 ||
     permission.XEM + permission.SUA + permission.XOA + permission.IN === 0
   ) {
-    alert(stateUser.userName + " không có quyền xem Truy Vấn Phân Công");
+    CustomAlert(stateUser.userName + " không có quyền xem Truy Vấn Phân Công");
     return <></>;
   }
 

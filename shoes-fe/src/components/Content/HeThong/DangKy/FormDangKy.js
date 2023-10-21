@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Form, Input, Button, Select } from "antd";
 import { useUserContext, actions } from "~user";
 import { useTaskContext, resetHeader } from "~task";
+import { CustomAlert } from "~utils/alert_custom";
 
 function FormDangKy() {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -25,7 +26,7 @@ function FormDangKy() {
     setLoading(true);
 
     if (values.password !== values.confirmPassword) {
-      alert("Mật khẩu không trùng nhau");
+      CustomAlert("Mật khẩu không trùng nhau");
       setLoading(false);
     } else {
       const send_data = {
@@ -44,10 +45,10 @@ function FormDangKy() {
         .then((data) => {
           if (data.status === "success") {
             setLoading(false);
-            alert("Đăng ký thành công");
+            CustomAlert("Đăng ký thành công");
             resetHeader(dispatchTask);
           } else {
-            alert("Đăng ký thất bại");
+            CustomAlert("Đăng ký thất bại");
             setLoading(false);
           }
         })

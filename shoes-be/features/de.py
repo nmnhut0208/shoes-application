@@ -45,7 +45,6 @@ def update(data: ITEM_DE) -> RESPONSE:
 
 
 @router.delete("/de")
-def delete(data: ITEM_DE) -> RESPONSE:
-    data = dict(data)
-    condition = f"MADE = '{data['MADE']}'"
+def delete(ID: str) -> RESPONSE:
+    condition = f"MADE = '{ID}'"
     return D.delete(condition)

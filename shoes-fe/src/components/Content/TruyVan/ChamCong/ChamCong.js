@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import Modal from "./Modal";
 import ChamCongSub from "./ChamCongSub";
 import { useUserContext } from "~user";
+import { CustomAlert } from "~utils/alert_custom";
 
 const MAFORM_CHAMCONG = "F0042";
 
@@ -17,7 +18,7 @@ const ChamCong = () => {
     return phanquyen;
   }, []);
   // if (permission.THEM === 0) {
-  //   alert(stateUser.userName + " không có quyền thêm Giao Hàng");
+  //   CustomAlert(stateUser.userName + " không có quyền thêm Giao Hàng");
   //   return null;
   // }
   // Việc xem, xóa, sửa đơn hàng sẽ từ bên truy vấn => đơn hàng

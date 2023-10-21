@@ -8,6 +8,7 @@ import {
 } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { convertDate } from "~utils/processing_date";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_input_required = {
   MAKY: "Mã kỳ",
@@ -38,7 +39,7 @@ const FormKyTinhLuong = () => {
   const handleSaveFrom = () => {
     for (let key in list_input_required) {
       if (inputForm[key] === undefined || inputForm[key] === "") {
-        alert("Nhập " + list_input_required[key]);
+        CustomAlert("Nhập " + list_input_required[key]);
         return false;
       }
     }
@@ -60,7 +61,7 @@ const FormKyTinhLuong = () => {
           "MAKY"
         )
       ) {
-        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        CustomAlert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
         return false;
       }
       method = "POST";

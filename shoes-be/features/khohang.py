@@ -44,7 +44,6 @@ def update(data: ITEM_KHOHANG) -> RESPONSE:
 
 
 @router.delete("/khohang")
-def delete(data: ITEM_KHOHANG) -> RESPONSE:
-    data = dict(data)
-    condition = f"MAKHO = '{data['MAKHO']}'"
+def delete(ID: str) -> RESPONSE:
+    condition = f"MAKHO = '{ID}'"
     return KH.delete(condition)

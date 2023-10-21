@@ -1,3 +1,4 @@
+import { Popconfirm } from "antd";
 import styles from "./Modal.module.scss";
 import { useTaskContext, resetHeader } from "~task";
 
@@ -20,21 +21,27 @@ const Modal = ({
       <div className={styles.model__body}>
         <div className={styles.header_modal}>
           <label className={styles.title_modal}>{title}</label>
-          <button
-            className={styles.button_close_modal}
-            onClick={() => {
-              if (!isSaveData) {
-                let text = "Bạn muốn tắt Form mà không lưu thay đổi!";
-                if (window.confirm(text)) {
-                  setShowModal(false);
-                }
-                return;
-              }
-              setShowModal(false);
-            }}
-          >
-            X
-          </button>
+          {!isSaveData ? (
+            <Popconfirm
+              title="Xác nhận hành động"
+              description="Bạn muốn tắt mà không lưu thay đổi?"
+              onConfirm={() => setShowModal(false)}
+              onCancel={() => {}}
+              okText="Đồng ý"
+              cancelText="Không đồng ý"
+            >
+              <button className={styles.button_close_modal}>X</button>
+            </Popconfirm>
+          ) : (
+            <button
+              className={styles.button_close_modal}
+              onClick={() => {
+                setShowModal(false);
+              }}
+            >
+              X
+            </button>
+          )}
         </div>
         <div className={styles.content_modal}>{children}</div>
       </div>

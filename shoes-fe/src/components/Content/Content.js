@@ -23,7 +23,7 @@ const Content = () => {
     case "Báo cáo":
       return <BaoCao />;
     default:
-      alert("Chua xu ly ngoai Danh Muc");
+      return <></>;
   }
 };
 

@@ -8,15 +8,25 @@ import {
 } from "~table_context";
 import { rem_to_px } from "~config/ui";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
-import { IconButton, Tooltip } from "@mui/material";
-import { Edit } from "@mui/icons-material";
 import { convertDateForReport } from "~utils/processing_date";
+import { CustomAlert } from "~utils/alert_custom";
+import styles from "./KyTinhLuong.module.scss";
 
 const list_key = [
   { header: "Mã kỳ", key: "MAKY", width: 3 * rem_to_px },
   { header: "Tên kỳ", key: "TENKY", width: 5 * rem_to_px },
-  { header: "Từ ngày", key: "TUNGAY", width: 15 * rem_to_px , Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,},
-  { header: "Đến ngày", key: "DENNGAY", width: 15 * rem_to_px , Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,},
+  {
+    header: "Từ ngày",
+    key: "TUNGAY",
+    width: 15 * rem_to_px,
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
+  },
+  {
+    header: "Đến ngày",
+    key: "DENNGAY",
+    width: 15 * rem_to_px,
+    Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
+  },
 ];
 
 const infoColumns = processingInfoColumnTable(list_key, false);
@@ -33,10 +43,10 @@ const KyTinhLuong = () => {
       })
       .then((info) => {
         if (info["status"] === "success") {
-          alert("Update thành công");
+          CustomAlert("Update thành công");
           setCount(count + 1);
         } else {
-          alert("Update thất bại");
+          CustomAlert("Update thất bại");
         }
       })
       .catch((err) => {
@@ -66,15 +76,15 @@ const KyTinhLuong = () => {
 
   return (
     <>
-      <Tooltip arrow title="Update">
-        <IconButton
-          onClick={() => {
-            handleUpdate();
-          }}
-        >
-          <Edit style={{ color: "green" }} fontSize="large" />
-        </IconButton>
-      </Tooltip>
+      <button
+        className={styles.update_button}
+        onClick={() => {
+          handleUpdate();
+        }}
+      >
+        Chỉnh sửa thông tin Kỳ tính lương
+      </button>
+
       {renderUI && <TableContent info_other_column={{ action: 24, stt: 15 }} />}
     </>
   );

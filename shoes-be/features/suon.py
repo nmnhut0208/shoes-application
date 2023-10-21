@@ -49,9 +49,8 @@ def update(data: ITEM_SUON) -> RESPONSE:
 
 
 @router.delete("/suon")
-def delete(data: ITEM_SUON) -> RESPONSE:
-    data = dict(data)
-    condition = f"MASUON = '{data['MASUON']}'"
+def delete(ID: str) -> RESPONSE:
+    condition = f"MASUON = '{ID}'"
     return suon.delete(condition)
 
 @router.get("/suon/get_HINHANH")

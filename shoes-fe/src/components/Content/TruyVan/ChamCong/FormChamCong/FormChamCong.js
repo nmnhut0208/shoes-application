@@ -6,7 +6,10 @@ import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { rem_to_px } from "~config/ui";
 import { convertDate } from "~utils/processing_date";
 import moment from "moment";
+import { Popconfirm } from "antd";
+
 import { useUserContext } from "~user";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_key = [
   { header: "Mã giày", key: "MAGIAY" },
@@ -38,10 +41,6 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
         (obj) => obj.MAFORM === "F0042" && obj.XOA === 1
       )
     ) {
-      let text = "Bạn thực sự muốn xóa thông tin này không!";
-      if (!window.confirm(text)) {
-        return;
-      }
       const send_data = {
         MAKY: infoForm["MAKY"],
         MANVIEN: infoForm["MANVIEN"],
@@ -69,17 +68,17 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
               .catch((err) => {
                 console.log(err);
               });
-            // alert("Xóa thành công");
+            // CustomAlert("Xóa thành công");
             setShowForm(false);
           } else {
-            alert("Xóa thất bại");
+            CustomAlert("Xóa thất bại");
           }
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      alert("Bạn không có quyền xóa");
+      CustomAlert("Bạn không có quyền xóa");
     }
   };
 
@@ -178,7 +177,16 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
       />
       <div className={styles.group_button}>
         <div>
-          <button onClick={handleDelete}>Xóa</button>
+          <Popconfirm
+            title="Xác nhận hành động"
+            description="Bạn thực sự muốn xoá thông tin này?"
+            onConfirm={handleDelete}
+            onCancel={() => {}}
+            okText="Đồng ý"
+            cancelText="Không đồng ý"
+          >
+            <button>Xoá</button>
+          </Popconfirm>
         </div>
       </div>
     </div>

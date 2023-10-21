@@ -39,7 +39,6 @@ def update(data: ITEM_MUI) -> RESPONSE:
 
 
 @router.delete("/mui")
-def delete(data: ITEM_MUI) -> RESPONSE:
-    data = dict(data)
-    condition = f"MAMUI = '{data['MAMUI']}'"
+def delete(ID: str) -> RESPONSE:
+    condition = f"MAMUI = '{ID}'"
     return M.delete(condition)

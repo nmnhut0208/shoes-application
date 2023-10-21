@@ -7,6 +7,7 @@ import {
 } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_input_required = {
   MADE: "Mã đế",
@@ -28,7 +29,7 @@ const FormDe = () => {
   const handleSaveFrom = () => {
     for (let key in list_input_required) {
       if (inputForm[key] === undefined || inputForm[key] === "") {
-        alert("Nhập " + list_input_required[key]);
+        CustomAlert("Nhập " + list_input_required[key]);
         return false;
       }
     }
@@ -50,7 +51,7 @@ const FormDe = () => {
           "MADE"
         )
       ) {
-        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        CustomAlert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
         return false;
       }
       method = "POST";

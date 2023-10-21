@@ -1,5 +1,4 @@
 import { useState, memo } from "react";
-import { Typography } from "@mui/material";
 import { border_text_table_config } from "~config/ui";
 import MaterialReactTable from "material-react-table";
 

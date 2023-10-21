@@ -70,7 +70,6 @@ def update(data: ITEM_NHANVIEN) -> RESPONSE:
 
 
 @router.delete("/nhanvien")
-def delete(data: ITEM_NHANVIEN) -> RESPONSE:
-    data = dict(data)
-    condition = f"MANVIEN = '{data['MANVIEN']}'"
+def delete(ID: str) -> RESPONSE:
+    condition = f"MANVIEN = '{ID}'"
     return NV.delete(condition)

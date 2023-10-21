@@ -13,6 +13,7 @@ import {
 import { convertDateForReport } from "~utils/processing_date";
 import { rem_to_px } from "~config/ui";
 import moment from "moment";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_key = [
   { header: "Số đơn hàng", key: "SODH", width: 5 * rem_to_px },
@@ -244,7 +245,14 @@ const updateData = (year, setDataTable) => {
     });
 };
 
-const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, setShowForm }) => {
+const FormGiaoHang = ({
+  permission,
+  infoKH,
+  setInfoKH,
+  year,
+  setDataTableBig,
+  setShowForm,
+}) => {
   const [stateUser, dispatchUser] = useUserContext();
   const [userState, userDispatch] = useUserContext();
   const [stateTable, dispatchTable] = useTableContext();
@@ -327,16 +335,16 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
           if (info.status === "success") {
             setIsSaveDataNghiepVuGiaoHang(true);
             updateData(year, setDataTableBig);
-            alert("Lưu thành công");
+            CustomAlert("Lưu thành công");
           } else {
-            alert("Lưu thất bại");
+            CustomAlert("Lưu thất bại");
           }
         })
         .catch((err) => {
           console.log(":error: ", err);
         });
     } else {
-      alert("Bạn không có quyền thêm");
+      CustomAlert("Bạn không có quyền thêm");
     }
   };
 
@@ -403,7 +411,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
       setFlag(false);
       dispatchTable(actions_table.setModeShowModal(true));
     } else {
-      alert("Bạn không có quyền in");
+      CustomAlert("Bạn không có quyền in");
     }
   };
 
@@ -483,7 +491,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
           console.log(":error: ", err);
         });
     } else {
-      alert("Bạn không có quyền in");
+      CustomAlert("Bạn không có quyền in");
     }
   };
 
@@ -654,7 +662,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
             <input
               name="MAKH"
               value={infoKH["MAKH"]}
-            // onChange={(e) => setFormInfoDonHang(e)}
+              // onChange={(e) => setFormInfoDonHang(e)}
             />
             <input
               type="text"
@@ -684,8 +692,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
                   ...infoKH,
                   NGAYPHIEU: e.target.value,
                 });
-              }
-              }
+              }}
             />
           </div>
           <div className={styles.right_row}>
@@ -699,8 +706,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
                   ...infoKH,
                   DIENGIAIPHIEU: e.target.value,
                 });
-              }
-              }
+              }}
               autocomplete="off"
             />
           </div>

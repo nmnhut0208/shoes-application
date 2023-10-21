@@ -7,6 +7,7 @@ const { Option } = Select;
 const customOptionStyle = {
   borderBottom: "1px solid #000", // Add a border line at the bottom of each option
   padding: "4px 0", // Adjust padding as needed
+  fontSize: "1.7rem",
 };
 
 const filterOption = (input, option) => {
@@ -68,6 +69,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
           style={{
             width: "90%",
             border: "none",
+            fontSize: "1.6rem",
           }}
         />
       )}
@@ -102,7 +104,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
             >
               <span
                 style={{
-                  width: "100px",
+                  width: "115px",
                   display: "inline-block",
                   borderRight: "1px solid #000",
                 }}

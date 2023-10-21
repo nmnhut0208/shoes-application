@@ -18,6 +18,7 @@ import {
   updateFormDonHang,
   updateColumnsInformations,
 } from "./helper";
+import { CustomAlert } from "~utils/alert_custom";
 
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
 
@@ -85,7 +86,7 @@ const FormDonHang = ({
 
       fetch(
         "http://localhost:8000/donhang/khachhang/" +
-          formInfoDonHang["MAKH"] +
+          encodeURIComponent(formInfoDonHang["MAKH"]) +
           "/giay"
       )
         .then((response) => {
@@ -164,7 +165,7 @@ const FormDonHang = ({
       return;
     }
     if (!isSaveData) {
-      alert("Lưu thông tin trước khi nhập tiếp đơn khác!");
+      CustomAlert("Lưu thông tin trước khi nhập tiếp đơn khác!");
       return;
     }
     updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
@@ -179,7 +180,9 @@ const FormDonHang = ({
       (data) => data["SOLUONG"] > 0 && data["MAGIAY"] !== ""
     );
     if (dataDatHang.length == 0) {
-      alert("Bạn chưa đặt hàng hoặc chưa chọn số lượng mỗi loại giày cần đặt!");
+      CustomAlert(
+        "Bạn chưa đặt hàng hoặc chưa chọn số lượng mỗi loại giày cần đặt!"
+      );
       return;
     } else {
       saveDonDatHang(formInfoDonHang, dataDatHang);
@@ -193,7 +196,7 @@ const FormDonHang = ({
 
   const handleClickMaGiay = () => {
     if (formInfoDonHang["MAKH"] === "") {
-      alert("Vui lòng chọn khách hàng!");
+      CustomAlert("Vui lòng chọn khách hàng!");
       return;
     }
     setInfoFormWillShow({
@@ -246,18 +249,8 @@ const FormDonHang = ({
         action={action}
       />
 
-      <button
-        style={{
-          backgroundColor: "#b5e550",
-          fontSize: "1.7rem",
-          fontFamily: "Arial",
-          height: "2.8rem",
-          width: "20rem",
-          marginBottom: "1.5rem",
-        }}
-        onClick={handleClickMaGiay}
-      >
-        Thêm giày vào đơn hàng
+      <button className={styles.update_button} onClick={handleClickMaGiay}>
+        Thêm giày đã đặt vào đơn hàng
       </button>
 
       <div style={{ width: "85vw" }}>
