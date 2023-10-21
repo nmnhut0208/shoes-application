@@ -22,5 +22,5 @@ export const COLUMNS = [
       <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
     ),
   },
-  { header: "Diễn giải", key: "DIENGIAIPHIEU", width: 20 * rem_to_px },
+  { header: "Diễn giải", key: "DIENGIAIPHIEU", width: 15 * rem_to_px },
 ];
