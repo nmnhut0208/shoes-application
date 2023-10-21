@@ -194,7 +194,7 @@ const DonHang = () => {
     updateInfo(permission, year, setDataDonHang);
   };
   return (
-    <>
+    <div style={{ width: "90%", marginLeft: "5%" }}>
       <div className={clsx(styles.form, styles.info_query)}>
         <label>Xem dữ liệu năm</label>
         <input
@@ -212,7 +212,7 @@ const DonHang = () => {
         setDataDonHang={setDataDonHang}
         permission={permission}
       />
-    </>
+    </div>
   );
 };
 

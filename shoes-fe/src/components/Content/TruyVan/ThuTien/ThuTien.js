@@ -203,7 +203,7 @@ const ThuTien = () => {
     updateInfo(permission, year, setData);
   };
   return (
-    <>
+    <div style={{ width: "90%", marginLeft: "5%" }}>
       <h1>Thu Tiền</h1>
       <div className={clsx(styles.form, styles.info_query)}>
         <label>Xem dữ liệu năm</label>
@@ -222,7 +222,7 @@ const ThuTien = () => {
         setData={setData}
         permission={permission}
       />
-    </>
+    </div>
   );
 };
 
