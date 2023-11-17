@@ -29,7 +29,7 @@ import {
 import { FormDonHang } from "~nghiep_vu/DonHang/";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
-
+import { CustomAlert } from "~utils/alert_custom";
 import styles from "./FormNghiepVuPhanCong.module.scss";
 
 const infoTableDonHang = processingInfoColumnTable(INFO_COLS_DONHANG);
@@ -249,11 +249,11 @@ const FormNghiepVuPhanCong = ({
     })
       .then((response) => {
         console.log("response: ", response);
-        alert("Lưu thành công!");
+        CustomAlert("Lưu thành công!");
       })
       .catch((error) => {
         console.log("error: ", error);
-        // alert("Lỗi! Chưa lưu được!");
+        // CustomAlert("Lỗi! Chưa lưu được!");
       });
 
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);
@@ -327,7 +327,7 @@ const FormNghiepVuPhanCong = ({
 
   const handleNhapTiep = () => {
     if (!isSaveData) {
-      alert("Lưu thông tin trước khi reset page!");
+      CustomAlert("Lưu thông tin trước khi reset page!");
       return;
     }
     updateInfoPhieuPhanCong(infoPhieu, setInfoPhieu, setLastestSOPHIEU);

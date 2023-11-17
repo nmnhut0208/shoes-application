@@ -9,6 +9,7 @@ import TableMaNVIEN from "./TableMaNVIEN";
 import TableMaKY from "./TableMaKY";
 import { convertDateForReport } from "~utils/processing_date";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_key = [
   { header: "Số phiếu", key: "SOPHIEU" },
@@ -132,11 +133,11 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
               // console.log("keys: ", keys, dataTableSub);
               const data = [];
               for (var i = 0; i < keys.length; i++) {
-                  data.push(new_dataTable[keys[i]]["SOPHIEU"]);
-                  setInfoForm({
-                    ...infoForm,
-                    SOPHIEU: new_dataTable[keys[i]]["SOPHIEU"],
-                  });
+                data.push(new_dataTable[keys[i]]["SOPHIEU"]);
+                setInfoForm({
+                  ...infoForm,
+                  SOPHIEU: new_dataTable[keys[i]]["SOPHIEU"],
+                });
               }
               const send_data = {
                 MANVIEN: infoForm["MANVIEN"],
@@ -153,27 +154,24 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
               })
                 .then((response) => {
                   return response.json();
-                }
-                )
+                })
                 .then((info) => {
                   setDataTableSub(info);
                   // console.log("abc: ", info);
-                }
-                )
+                })
                 .catch((err) => {
                   console.log(":error: ", err);
-                }
-                );
+                });
             }
             // console.log("data: ", dataTable);
-            alert("Lưu thành công");
+            CustomAlert("Lưu thành công");
           }
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      alert("Bạn không có quyền thêm");
+      CustomAlert("Bạn không có quyền thêm");
     }
   };
 
@@ -358,12 +356,12 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       });
   }, [infoForm["MANVIEN"], infoForm["MAKY"]]);
 
-  console.log("selected: ", rowSelection, dataTableSub)
+  console.log("selected: ", rowSelection, dataTableSub);
 
-  // start: add to change Popover's behavior 
+  // start: add to change Popover's behavior
   const [clickedPopoverMaKy, setClickedPopoverMaKy] = useState(false);
   const [clickedPopoverMaNV, setClickedPopoverMaNV] = useState(false);
-  // end: add to change Popover's behavior 
+  // end: add to change Popover's behavior
 
   return (
     <div className={styles.container}>

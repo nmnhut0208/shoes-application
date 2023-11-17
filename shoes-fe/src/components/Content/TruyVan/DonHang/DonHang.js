@@ -1,9 +1,6 @@
 import MaterialReactTable from "material-react-table";
 import { useMemo, useState, useEffect } from "react";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Delete, Edit } from "@mui/icons-material";
-
+import { Popconfirm } from "antd";
 import { useUserContext } from "~user";
 
 import { processingInfoColumnTable } from "~utils/processing_data_table";
@@ -13,6 +10,7 @@ import { FormDonHang, Modal } from "~nghiep_vu/DonHang/";
 import { INFO_COLS_DONHANG } from "./ConstantVariable";
 import styles from "./DonHang.module.scss";
 import clsx from "clsx";
+import { CustomAlert } from "~utils/alert_custom";
 
 const Table = ({ columns, data, setDataDonHang, permission }) => {
   console.log("permission: ", permission);
@@ -25,10 +23,6 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
     setShowModal(true);
   };
   const handleDeleteRow = (row) => {
-    let text = "Bạn thực sự muốn xóa thông tin này không!";
-    if (!window.confirm(text)) {
-      return;
-    }
     let url =
       "http://localhost:8000/donhang?SODH=" + encodeURIComponent(row["SODH"]);
     fetch(url, {
@@ -62,51 +56,66 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
         // row number
         enableRowNumbers
         // add action in row
+        displayColumnDefOptions={{
+          "mrt-row-actions": {
+            minSize: 70, //set custom width
+            muiTableHeadCellProps: {
+              align: "center", //change head cell props
+            },
+            muiTableBodyCellProps: {
+              minSize: 70,
+            },
+            enableResizing: true,
+          },
+        }}
         enableRowActions={true}
         renderRowActions={({ row, table }) => (
-          <Box
-            sx={{
-              display: "flex",
-              "align-content": "center",
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              columnGap: "0.3rem",
+              marginLeft: "0.2rem",
+              marginRight: "0.2rem",
             }}
           >
             {permission.SUA === 1 && (
-              <Tooltip arrow title="Edit" placement="right">
-                <IconButton
-                  onClick={() => {
-                    setRowInfo(row.original);
-                    handleCheckDonHang();
-                  }}
-                >
-                  <Edit />
-                </IconButton>
-              </Tooltip>
+              <button
+                className={styles.edit_button}
+                style={{ borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)" }}
+                onClick={() => {
+                  setRowInfo(row.original);
+                  handleCheckDonHang();
+                }}
+              >
+                Sửa
+              </button>
             )}
+
             {permission.XOA === 1 && (
-              <Tooltip arrow placement="right" title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={() => {
-                    handleDeleteRow(row.original);
-                  }}
-                >
-                  <Delete />
-                </IconButton>
-              </Tooltip>
+              <Popconfirm
+                title="Xác nhận hành động"
+                description="Bạn thực sự muốn xoá thông tin này?"
+                onConfirm={() => handleDeleteRow(row.original)}
+                onCancel={() => {}}
+                okText="Đồng ý"
+                cancelText="Không đồng ý"
+              >
+                <button className={styles.delete_button}>Xoá</button>
+              </Popconfirm>
             )}
             {permission.XEM === 1 && permission.SUA === 0 && (
-              <Tooltip arrow placement="right" title="View Detail">
-                <IconButton
-                  onClick={() => {
-                    setRowInfo(row.original);
-                    handleCheckDonHang();
-                  }}
-                >
-                  <VisibilityOutlinedIcon />
-                </IconButton>
-              </Tooltip>
+              <button
+                className={styles.view_button}
+                onClick={() => {
+                  setRowInfo(row.original);
+                  handleCheckDonHang();
+                }}
+              >
+                Xem
+              </button>
             )}
-          </Box>
+          </div>
         )}
       />
 
@@ -177,7 +186,7 @@ const DonHang = () => {
     Object.keys(permission).length === 0 ||
     permission.XEM + permission.SUA + permission.XOA + permission.IN === 0
   ) {
-    alert(stateUser.userName + " không có quyền xem Truy Vấn Đơn Hàng");
+    CustomAlert(stateUser.userName + " không có quyền xem Truy Vấn Đơn Hàng");
     return <></>;
   }
   const handleTruyVan = () => {
@@ -185,7 +194,7 @@ const DonHang = () => {
     updateInfo(permission, year, setDataDonHang);
   };
   return (
-    <>
+    <div style={{ width: "90%", marginLeft: "5%" }}>
       <div className={clsx(styles.form, styles.info_query)}>
         <label>Xem dữ liệu năm</label>
         <input
@@ -203,7 +212,7 @@ const DonHang = () => {
         setDataDonHang={setDataDonHang}
         permission={permission}
       />
-    </>
+    </div>
   );
 };
 

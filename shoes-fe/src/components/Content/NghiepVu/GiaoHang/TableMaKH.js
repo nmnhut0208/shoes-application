@@ -2,6 +2,7 @@ import MaterialReactTable from "material-react-table";
 import { memo } from "react";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { rem_to_px, border_text_table_config } from "~config/ui";
+import { CustomAlert } from "~utils/alert_custom";
 
 const COL_KHACHHANG = [
   {
@@ -19,7 +20,14 @@ const COL_KHACHHANG = [
 ];
 
 let columns_kh = processingInfoColumnTable(COL_KHACHHANG);
-const TableMaKH = ({ data, rowSelection, setRowSelection, isSaveData, setIsSaveData, setClickedPopover }) => {
+const TableMaKH = ({
+  data,
+  rowSelection,
+  setRowSelection,
+  isSaveData,
+  setIsSaveData,
+  setClickedPopover,
+}) => {
   console.log("re-render sub table when hover", data);
   return (
     <div style={{ height: "auto" }}>
@@ -42,11 +50,12 @@ const TableMaKH = ({ data, rowSelection, setRowSelection, isSaveData, setIsSaveD
             setRowSelection(row);
             setClickedPopover(false);
           } else {
-            let text = "Bạn muốn chọn khách hàng khác mà không lưu thay đổi!";
-            if (window.confirm(text)) {
-              setRowSelection(row);
-              setIsSaveData(true);
-            }
+            CustomAlert("Lưu thông tin hiện tại trước khi đổi khách hàng!!!");
+            // let text = "Bạn muốn chọn khách hàng khác mà không lưu thay đổi!";
+            // if (window.confirm(text)) {
+            //   setRowSelection(row);
+            //   setIsSaveData(true);
+            // }
           }
         }}
         state={{ rowSelection }}

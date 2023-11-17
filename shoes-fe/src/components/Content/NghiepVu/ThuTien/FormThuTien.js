@@ -8,6 +8,7 @@ import styles from "./FormThuTien.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import { useUserContext } from "~user";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
+import { CustomAlert } from "~utils/alert_custom";
 
 const updateSOPHIEU = (sophieu) => {
   console.log("save so don hang");
@@ -18,6 +19,11 @@ const updateSOPHIEU = (sophieu) => {
   }).catch((error) => {
     console.log("error: ", error);
   });
+};
+
+const list_input_required = {
+  MAKH: "Mã khách hàng",
+  THANHTIEN: "Số tiền",
 };
 
 const FormThuTien = ({ dataView, type_action }) => {
@@ -88,13 +94,11 @@ const FormThuTien = ({ dataView, type_action }) => {
   };
 
   const handleSaveFrom = () => {
-    if (form["MAKH"] === "") {
-      alert("Nhập khách hàng!!!");
-      return false;
-    }
-    if (form["THANHTIEN"] === "" || form["THANHTIEN"] === undefined) {
-      alert("Nhập số tiền!!!");
-      return false;
+    for (let key in list_input_required) {
+      if (form[key] === undefined || form[key] === "") {
+        CustomAlert("Nhập " + list_input_required[key]);
+        return false;
+      }
     }
 
     console.log("Save form");
@@ -114,7 +118,7 @@ const FormThuTien = ({ dataView, type_action }) => {
         if (type_action === "add") {
           updateSOPHIEU(lastestSOPHIEU);
         }
-        alert("Lưu thông tin thành công.");
+        CustomAlert("Lưu thông tin thành công.");
       })
       .catch((error) => {
         console.log("error: ", error);

@@ -16,6 +16,7 @@ import { convertDateForReport } from "~utils/processing_date";
 import { Modal } from "~common_tag";
 import In from "./In";
 import { useTableContext, actions_table } from "~table_context";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_key = [
   {
@@ -311,23 +312,23 @@ const FormGiaoHang = ({
                 console.log("data: ", data);
                 if (data["status"] == "success") {
                   setIsSaveDataNghiepVuGiaoHang(true);
-                  alert("Lưu thành công");
+                  CustomAlert("Lưu thành công");
                 } else {
-                  alert("Lưu thất bại");
+                  CustomAlert("Lưu thất bại");
                 }
               })
               .catch((error) => {
                 console.log(error);
               });
           } else {
-            alert("Lưu thất bại");
+            CustomAlert("Lưu thất bại");
           }
         })
         .catch((error) => {
           console.log(error);
         });
     } else {
-      alert("Bạn không có quyền thêm");
+      CustomAlert("Bạn không có quyền thêm");
     }
   };
 
@@ -621,7 +622,7 @@ const FormGiaoHang = ({
       setFlag(false);
       dispatchTable(actions_table.setModeShowModal(true));
     } else {
-      alert("Bạn không có quyền in");
+      CustomAlert("Bạn không có quyền in");
     }
   };
 
@@ -719,7 +720,7 @@ const FormGiaoHang = ({
           console.log(":error: ", err);
         });
     } else {
-      alert("Bạn không có quyền in");
+      CustomAlert("Bạn không có quyền in");
     }
   };
 
@@ -741,9 +742,9 @@ const FormGiaoHang = ({
   // }, [curSelected]);
 
   console.log("sub: ", dataTableSub);
-  // start: add to change Popover's behavior 
+  // start: add to change Popover's behavior
   const [clickedPopoverMaKH, setClickedPopoverMaKH] = useState(false);
-  // end: add to change Popover's behavior 
+  // end: add to change Popover's behavior
   return (
     <div className={styles.container}>
       <div className={styles.form}>

@@ -80,7 +80,6 @@ def read(data: dict):
         if result["SODH"] not in results_group:
             results_group[result["SODH"]] = []
         results_group[result["SODH"]].append(result)
-    print(results_group)
     return results_group
 
 @router.post("/tv_savegiaohang")

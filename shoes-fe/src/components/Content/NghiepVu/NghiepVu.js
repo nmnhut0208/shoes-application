@@ -2,10 +2,10 @@ import { useTaskContext } from "~task";
 import { useUserContext } from "~user";
 import { DonHang } from "./DonHang";
 import { PhanCong } from "./PhanCong";
-// import ChiTien from "./ChiTien";
 import { ThuTien } from "./ThuTien";
 import { ChamCong } from "./ChamCong";
 import { GiaoHang } from "./GiaoHang";
+import { CustomAlert } from "~utils/alert_custom";
 
 const NghiepVu = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -18,26 +18,24 @@ const NghiepVu = () => {
       return <DonHang />;
     case "Phân công":
       return <PhanCong />;
-    // case "Chi tiền":
-    //   return <ChiTien />;
     case "Thu tiền":
       return <ThuTien />;
     case "Giao hàng":
       if (userAccess.some((obj) => obj.MAFORM === "F0034" && obj.XEM === 1)) {
         return <GiaoHang />;
       } else {
-        alert("Bạn không có quyền truy cập vào chức năng này!");
+        CustomAlert("Bạn không có quyền truy cập vào chức năng này!");
         return <></>;
       }
     case "Chấm công":
       if (userAccess.some((obj) => obj.MAFORM === "F0043" && obj.XEM === 1)) {
         return <ChamCong />;
       } else {
-        alert("Bạn không có quyền truy cập vào chức năng này!");
+        CustomAlert("Bạn không có quyền truy cập vào chức năng này!");
         return <></>;
       }
     default:
-      alert("Chua xu ly ngoai DonHang");
+      CustomAlert("Chức năng này không hợp lệ.");
   }
 };
 

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import ModalMain from "./ModalMain";
 import { useUserContext } from "~user";
 import FormThuTien from "./FormThuTien";
+import { CustomAlert } from "~utils/alert_custom";
 
 const MAFORM_THUTIEN = "F0036";
 
@@ -20,7 +21,7 @@ const ThuTien = () => {
     Object.keys(permission).length === 0 ||
     permission.THEM === 0
   ) {
-    alert(stateUser.userName + " không có quyền thêm Thu Tiền");
+    CustomAlert(stateUser.userName + " không có quyền thêm Thu Tiền");
     return null;
   }
 

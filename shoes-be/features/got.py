@@ -51,9 +51,8 @@ def update(data: ITEM_GOT) -> RESPONSE:
 
 
 @router.delete("/got")
-def delete(data: ITEM_GOT) -> RESPONSE:
-    data = dict(data)
-    condition = f"MAGOT = '{data['MAGOT']}'"
+def delete(ID: str) -> RESPONSE:
+    condition = f"MAGOT = '{ID}'"
     return got.delete(condition)
 
 @router.get("/got/get_HINHANH")

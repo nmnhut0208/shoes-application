@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Modal } from "./Modal";
 import GiaoHangSub from "./GiaoHangSub";
 import { useUserContext } from "~user";
+import { CustomAlert } from "~utils/alert_custom";
 
 const MAFORM_GIAOHANG = "F0033";
 
@@ -17,7 +18,7 @@ const GiaoHang = () => {
     return phanquyen;
   }, []);
   // if (permission.THEM === 0) {
-  //   alert(stateUser.userName + " không có quyền thêm Giao Hàng");
+  //   CustomAlert(stateUser.userName + " không có quyền thêm Giao Hàng");
   //   return null;
   // }
   // Việc xem, xóa, sửa đơn hàng sẽ từ bên truy vấn => đơn hàng

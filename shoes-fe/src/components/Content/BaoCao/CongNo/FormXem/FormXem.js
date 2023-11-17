@@ -5,13 +5,19 @@ import styles from "./FormXem.module.scss";
 import { TableToPrint } from "~common_tag/reports";
 import { rem_to_px } from "~config/ui";
 import { useUserContext } from "~user";
+import { CustomAlert } from "~utils/alert_custom";
 
 const COLS_HAVE_SUM_FOOTER = ["TONGNO", "TONGMUA", "TONGTRA", "CONGNO"];
 const LIST_FORMAT_NUMBER = ["TONGNO", "TONGMUA", "TONGTRA", "CONGNO"];
 
 const infoColumns = [
   { header: "MÃ KH", key: "MAKH", width: 14 * rem_to_px, textAlign: "center" },
-  { header: "TÊN KHÁCH HÀNG", key: "TENKH", width: 25 * rem_to_px, textAlign: "center" },
+  {
+    header: "TÊN KHÁCH HÀNG",
+    key: "TENKH",
+    width: 25 * rem_to_px,
+    textAlign: "center",
+  },
   {
     header: "NỢ ĐẦU KỲ",
     key: "TONGNO",
@@ -93,7 +99,7 @@ const FormXem = ({ data, setShowModal }) => {
           ) {
             handelPrint();
           } else {
-            alert("Bạn không có quyền truy cập vào chức năng này!");
+            CustomAlert("Bạn không có quyền truy cập vào chức năng này!");
           }
         }}
       >

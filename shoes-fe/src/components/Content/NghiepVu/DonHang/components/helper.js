@@ -8,6 +8,7 @@ import {
 } from "./ConstantVariable";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 import { renderDataEmpty } from "~utils/processing_data_table";
+import { CustomAlert } from "~utils/alert_custom";
 
 const convert_to_int = (value) => {
   if (value === "") return 0;
@@ -96,7 +97,7 @@ export const updateColumnsInformations = (
             border: "none",
             width: "100%",
             height: "100%",
-            fontSize: "1.4rem",
+            fontSize: "1.6rem",
             backgroundColor: "inherit",
             textAlign: "right",
             marginRight: "0.5rem",
@@ -121,7 +122,7 @@ export const updateColumnsInformations = (
             border: "none",
             width: "100%",
             height: "100%",
-            fontSize: "1.4rem",
+            fontSize: "1.6rem",
             backgroundColor: "inherit",
             textAlign: "right",
             marginRight: "0.5rem",
@@ -138,7 +139,7 @@ export const updateColumnsInformations = (
             border: "none",
             width: "100%",
             height: "100%",
-            fontSize: "1.4rem",
+            fontSize: "1.6rem",
             backgroundColor: "inherit",
           }}
           readOnly={view}
@@ -192,7 +193,7 @@ export const updateColumnsInformations = (
             width: "100%",
             border: "none",
             fontWeight: "bold",
-            fontSize: "1.4rem",
+            fontSize: "1.6rem",
             marginRight: "0.5rem",
           }}
           value={parseFloat(sum_value).toLocaleString("en")}
@@ -227,7 +228,7 @@ export const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
   })
     .then((response) => {
       console.log("response: ", response);
-      alert("Lưu thông tin thành công.");
+      CustomAlert("Lưu thông tin thành công.");
     })
     .catch((error) => {
       console.log("error: ", error);

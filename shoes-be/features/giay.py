@@ -142,9 +142,8 @@ def update(data: ITEM_GIAY) -> RESPONSE:
 
 
 @router.delete("/giay")
-def delete(data: ITEM_GIAY) -> RESPONSE:
-    data = dict(data)
-    condition = f"MAGIAY = '{data['MAGIAY']}'"
+def delete(ID: str) -> RESPONSE:
+    condition = f"MAGIAY = '{ID}'"
     return giay.delete(condition)
 
 @router.get("/giay/check_MAGIAY_existed")

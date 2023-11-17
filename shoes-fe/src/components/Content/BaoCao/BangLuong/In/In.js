@@ -7,6 +7,7 @@ import {
 } from "./ConstantVariable";
 import styles from "./In.module.scss";
 import { TableToPrint } from "~common_tag/reports";
+import { CustomAlert } from "~utils/alert_custom";
 
 const groupbyFunction = (data, key) => {
   let list_key = [];
@@ -73,7 +74,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
           setInfoEachEmployer(all_pages);
         } else {
           setShowModal(false);
-          alert("Chưa có thông tin để xem hoặc in.");
+          CustomAlert("Chưa có thông tin để xem hoặc in.");
         }
       })
       .catch((error) => {

@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import Modal from "./Modal";
 import FormNghiepVuPhanCong from "./FormNghiepVuPhanCong";
 import { useUserContext } from "~user";
+import { CustomAlert } from "~utils/alert_custom";
 
 const MAFORM_NGHIEPVU_PHANCONG = "F0037";
 
@@ -41,7 +42,7 @@ const PhanCong = () => {
     Object.keys(permission).length === 0 ||
     permission.THEM === 0
   ) {
-    alert(stateUser.userName + " không có quyền Phân Công");
+    CustomAlert(stateUser.userName + " không có quyền Phân Công");
     return null;
   }
   // Việc xem, xóa, sửa đơn hàng sẽ từ bên truy vấn => đơn hàng

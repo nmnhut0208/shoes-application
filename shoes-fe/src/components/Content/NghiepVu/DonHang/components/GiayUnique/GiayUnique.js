@@ -6,6 +6,7 @@ const { Option } = Select;
 const customOptionStyle = {
   borderBottom: "1px solid #000", // Add a border line at the bottom of each option
   padding: "4px 0", // Adjust padding as needed
+  fontSize: "1.7rem",
 };
 
 const filterOption = (input, option) => {
@@ -63,6 +64,7 @@ const GiayUnique = ({
           style={{
             width: "90%",
             border: "none",
+            fontSize: "1.6rem",
           }}
         />
       )}
@@ -94,7 +96,7 @@ const GiayUnique = ({
             >
               <span
                 style={{
-                  width: "200px",
+                  width: "250px",
                   display: "inline-block",
                   borderRight: "1px solid #000",
                 }}
