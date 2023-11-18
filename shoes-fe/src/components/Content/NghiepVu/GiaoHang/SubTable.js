@@ -22,7 +22,7 @@ const SubTable = ({
   const handleSaveCell = (cell, value) => {
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
     if (dataAll.length === 0) return;
-    let data_new = dataAll[curDH];
+    let data_new = [...dataAll[curDH]];
     // console.log("cell: ", data_new);
     var row_current = data_new[cell.row.index];
     // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
@@ -56,7 +56,7 @@ const SubTable = ({
     // console.log("dataAll: ", dataAll);
     setDataTable({ ...dataAll }); //re-render with new data
     setIsSaveData(false);
-    setKeys((prev) => prev + 1);
+    // setKeys((prev) => prev + 1);
   };
 
   return (
