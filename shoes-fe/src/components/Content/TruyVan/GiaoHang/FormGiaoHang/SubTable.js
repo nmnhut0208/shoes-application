@@ -36,7 +36,7 @@ const SubTable = ({
       "SIZE0",
       "SIZE1",
     ];
-    if (list_size.includes(cell.column.id)) {
+    if (list_size.includes(cell.column.id) || cell.column.id === "GIABAN") {
       if (value === "") value = 0;
       row_current[cell.column.id] = parseInt(value);
 
@@ -55,6 +55,7 @@ const SubTable = ({
     dataAll[curDH] = data_new;
     setDataTable({ ...dataAll }); //re-render with new data
     setIsSaveData(false);
+    setKeys((prev) => prev + 1);
   };
 
   return (

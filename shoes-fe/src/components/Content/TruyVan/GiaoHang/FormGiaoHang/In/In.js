@@ -59,46 +59,57 @@ const In = ({ data, flag }) => {
     return sum;
   }, [data["table"]]);
 
-  console.log("columns: ", data["table"].length);
-  useLayoutEffect(() => {
-    dispatchTable(actions_table.setModeShowModal(false));
-    handelPrint();
-  }, []);
+  // console.log("columns: ", data["table"].length);
+  // useLayoutEffect(() => {
+  //   dispatchTable(actions_table.setModeShowModal(false));
+  //   handelPrint();
+  // }, []);
   return (
-    <div ref={componentRef} className={styles.print_page}>
-      <div className={styles.invoice__header}>
-        <h1 className={styles.invoice}>Hóa Đơn</h1>
-        <div className={styles.invoice__info_header}>
-          <h2>Số: {data["SOPHIEU"]}</h2>
-          <h2>Ngày: {convertDateForReport(data["NGAYPHIEU"])}</h2>
+    <div className={styles.container}>
+      <div ref={componentRef} className={styles.print_page}>
+        <div className={styles.invoice__header}>
+          <h1 className={styles.invoice}>Hóa Đơn</h1>
+          <div className={styles.invoice__info_header}>
+            <h2>Số: {data["SOPHIEU"]}</h2>
+            <h2>Ngày: {convertDateForReport(data["NGAYPHIEU"])}</h2>
+          </div>
+        </div>
+        <h2>Khách Hàng: {data["TENKH"]}</h2>
+        <h2>Địa Chỉ: {data["DIACHI"]}</h2>
+        <br />
+        <TableToPrint
+          columns={infoColumns}
+          data={data["table"]}
+          listHaveFooterSum={COLS_HAVE_SUM_FOOTER}
+          LIST_FORMAT_NUMBER={LIST_FORMAT_NUMBER}
+          Col_Name_Footer="TENGIAY"
+        />
+        {flag && (
+          <div className={styles.congno}>
+            <h2 className={styles.congno_left}>
+              Nợ cũ: {parseFloat(data["CONGNO"]).toLocaleString("en")}
+            </h2>
+            <h2 className={styles.congno_left}>
+              Tổng nợ:{" "}
+              {parseFloat(data["CONGNO"] + sum_value).toLocaleString("en")}
+            </h2>
+          </div>
+        )}
+        <div className={styles.footer}>
+          <h2>Người nhận hàng</h2>
+          <h2>Người lập</h2>
         </div>
       </div>
-      <h2>Khách Hàng: {data["TENKH"]}</h2>
-      <h2>Địa Chỉ: {data["DIACHI"]}</h2>
-      <br />
-      <TableToPrint
-        columns={infoColumns}
-        data={data["table"]}
-        listHaveFooterSum={COLS_HAVE_SUM_FOOTER}
-        LIST_FORMAT_NUMBER={LIST_FORMAT_NUMBER}
-        Col_Name_Footer="TENGIAY"
-      />
-      {flag && (
-        <div className={styles.congno}>
-          <h2 className={styles.congno_left}>
-            Nợ cũ: {parseFloat(data["CONGNO"]).toLocaleString("en")}
-          </h2>
-          <h2 className={styles.congno_left}>
-            Tổng nợ:{" "}
-            {parseFloat(data["CONGNO"] + sum_value).toLocaleString("en")}
-          </h2>
-        </div>
-      )}
-      <div className={styles.footer}>
-        <h2>Người nhận hàng</h2>
-        <h2>Người lập</h2>
-      </div>
+      <button
+        className={styles.btn}
+        onClick={() => {
+          handelPrint();
+        }}
+      >
+        In
+      </button>
     </div>
+    
   );
 };
 

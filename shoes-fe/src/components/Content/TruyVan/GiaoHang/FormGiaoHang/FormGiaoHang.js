@@ -14,6 +14,7 @@ import { convertDateForReport } from "~utils/processing_date";
 import { rem_to_px } from "~config/ui";
 import moment from "moment";
 import { CustomAlert } from "~utils/alert_custom";
+import { convertDate } from "~utils/processing_date";
 
 const list_key = [
   { header: "Số đơn hàng", key: "SODH", width: 5 * rem_to_px },
@@ -34,9 +35,9 @@ const list_key = [
     header: "Số lượng",
     key: "SOLUONG",
     width: 5 * rem_to_px,
-    muiTableBodyCellProps: {
-      align: "right",
-    },
+    // muiTableBodyCellProps: {
+    //   align: "right",
+    // },
     Cell: ({ cell }) => (
       <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
     ),
@@ -49,7 +50,7 @@ const list_key_sub = [
   {
     header: "Mã Giày",
     key: "MAGIAY",
-    width: 21 * rem_to_px,
+    width: 20 * rem_to_px,
     enableEditing: false,
   },
   {
@@ -85,7 +86,7 @@ const list_key_sub = [
   {
     header: "Size 5",
     key: "SIZE5",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -97,7 +98,7 @@ const list_key_sub = [
   {
     header: "Size 6",
     key: "SIZE6",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -109,7 +110,7 @@ const list_key_sub = [
   {
     header: "Size 7",
     key: "SIZE7",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -121,7 +122,7 @@ const list_key_sub = [
   {
     header: "Size 8",
     key: "SIZE8",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -133,7 +134,7 @@ const list_key_sub = [
   {
     header: "Size 9",
     key: "SIZE9",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -145,7 +146,7 @@ const list_key_sub = [
   {
     header: "Size 0",
     key: "SIZE0",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -157,7 +158,7 @@ const list_key_sub = [
   {
     header: "Size 1",
     key: "SIZE1",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -182,7 +183,7 @@ const list_key_sub = [
     header: "Giá bán",
     key: "GIABAN",
     width: 10 * rem_to_px,
-    enableEditing: false,
+    enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
     },
@@ -651,7 +652,8 @@ const FormGiaoHang = ({
   //   }
   // }, [curSelected]);
 
-  console.log("sub: ", curSelected, rowSelection);
+  // console.log("sub: ", curSelected, rowSelection);
+  console.log("ngay phieu: ", infoKH["NGAYPHIEU"]);
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -684,9 +686,9 @@ const FormGiaoHang = ({
           <div className={styles.right_row}>
             <label>Ngày phiếu</label>
             <input
-              type="datetime-local"
+              type="date"
               className={styles.small}
-              value={infoKH["NGAYPHIEU"]}
+              value={convertDate(infoKH["NGAYPHIEU"])}
               onChange={(e) => {
                 setInfoKH({
                   ...infoKH,

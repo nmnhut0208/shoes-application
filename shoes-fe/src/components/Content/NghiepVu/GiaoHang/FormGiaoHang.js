@@ -42,17 +42,17 @@ const list_key = [
   {
     header: "Diễn giải",
     key: "DIENGIAIDONG",
-    width: 20 * rem_to_px,
+    width: 10 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Số lượng còn lại",
     key: "SOLUONGCONLAI",
-    width: 5 * rem_to_px,
+    width: 15 * rem_to_px,
     enableEditing: false,
-    muiTableBodyCellProps: {
-      align: "right",
-    },
+    // muiTableBodyCellProps: {
+    //   align: "right",
+    // },
     Cell: ({ cell }) => (
       <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
     ),
@@ -65,7 +65,7 @@ const list_key_sub = [
   {
     header: "Mã Giày",
     key: "MAGIAY",
-    width: 21 * rem_to_px,
+    width: 20 * rem_to_px,
     enableEditing: false,
   },
   {
@@ -101,13 +101,13 @@ const list_key_sub = [
   {
     header: "Size 5",
     key: "SIZE5",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Size 6",
     key: "SIZE6",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -119,31 +119,31 @@ const list_key_sub = [
   {
     header: "Size 7",
     key: "SIZE7",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Size 8",
     key: "SIZE8",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Size 9",
     key: "SIZE9",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Size 0",
     key: "SIZE0",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Size 1",
     key: "SIZE1",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
@@ -162,7 +162,7 @@ const list_key_sub = [
     header: "Giá bán",
     key: "GIABAN",
     width: 10 * rem_to_px,
-    enableEditing: false,
+    enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
     },
@@ -348,7 +348,7 @@ const FormGiaoHang = ({
       SOPHIEU: infoForm.SOPHIEU,
       LastestGH: infoForm.LastestGH,
       DIENGIAI: "",
-      NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+      NGAYPHIEU: moment().format("YYYY-MM-DD"),
     });
     setIsSaveDataNghiepVuGiaoHang(true);
   };
@@ -366,7 +366,7 @@ const FormGiaoHang = ({
           SOPHIEU: info["SOPHIEU"],
           LastestGH: info["LastestGH"],
           DIENGIAI: "",
-          NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+          NGAYPHIEU: moment().format("YYYY-MM-DD"),
         });
         setRowSelection({});
         setRowSelectionSub({});
@@ -795,7 +795,7 @@ const FormGiaoHang = ({
           <div className={styles.right_row}>
             <label>Ngày phiếu</label>
             <input
-              type="datetime-local"
+              type="date"
               value={infoForm["NGAYPHIEU"]}
               onChange={(e) => {
                 setInfoForm({ ...infoForm, NGAYPHIEU: e.target.value });
