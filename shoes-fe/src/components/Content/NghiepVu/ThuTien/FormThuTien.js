@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import moment from "moment";
+import { convertDate } from "~utils/processing_date";
 
 import { ItemKhachHang } from "~items";
 import ModalForButton from "./ModalForButton";
@@ -63,7 +64,7 @@ const FormThuTien = ({ dataView, type_action }) => {
             MAKH: "",
             TENKH: "",
             SOPHIEU: sophieu,
-            NGAYPHIEU: moment().format("YYYY-MM-DDTHH:mm:ss"),
+            NGAYPHIEU: moment().format("DD-MM-YYYY"),
           });
           setLastestSOPHIEU(data["LastestSOPHIEU"]);
         })
@@ -108,6 +109,7 @@ const FormThuTien = ({ dataView, type_action }) => {
     } else if (type_action === "add") {
       method = "POST";
     }
+    console.log("form: ", form);
     fetch("http://localhost:8000/congno/phieuthu", {
       method: method,
       headers: { "Content-Type": "application/json" },
@@ -137,7 +139,7 @@ const FormThuTien = ({ dataView, type_action }) => {
       NGUOISUA: stateUser.userName,
       DIENGIAIPHIEU: "",
       SOPHIEU: SOPHIEU_new,
-      NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+      NGAYPHIEU: moment().format("DD-MM-YYYY"),
     });
     setLastestSOPHIEU(lastestSOPHIEU + 1);
   };
@@ -163,9 +165,9 @@ const FormThuTien = ({ dataView, type_action }) => {
             <label>Ngày phiếu</label>
             <input
               readOnly={view}
-              type="datetime-local"
+              type="date"
               name="NGAYPHIEU"
-              value={form["NGAYPHIEU"]}
+              value={convertDate(form["NGAYPHIEU"])}
               onChange={handleChangeFormForTypeDate}
               className={styles.item_size_small}
             />

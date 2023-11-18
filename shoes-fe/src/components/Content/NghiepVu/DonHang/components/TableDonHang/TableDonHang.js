@@ -42,15 +42,47 @@ const TableDonHang = ({ columns, data, setDataTable, readOnly }) => {
       //   </>
       // )}
       enableRowActions={!readOnly}
+      displayColumnDefOptions={{
+        "mrt-row-actions": {
+          minSize: 110, //set custom width
+          // minSize: 24,
+          muiTableHeadCellProps: {
+            align: "center", //change head cell props
+          },
+          muiTableBodyCellProps: {
+            minSize: 110,
+          },
+          enableResizing: false,
+        },
+        "mrt-row-numbers": {
+          minSize: 20,
+          enableColumnOrdering: true, //turn on some features that are usually off
+          enableResizing: false,
+          muiTableHeadCellProps: {
+            align: "right",
+          },
+          muiTableBodyCellProps: {
+            align: "right",
+          },
+        },
+      }}
       renderRowActions={({ row, table }) => (
-        <div>
+        <div style={{ width: "100px" }}>
           {row.original["MAGIAY"] !== "" && (
-            <button
-              className={styles.delete_button}
-              onClick={() => handleDeleteRow(row)}
-            >
-              Xoá
-            </button>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <button
+                className={styles.delete_button}
+                onClick={() => handleDeleteRow(row)}
+              >
+                Xoá
+              </button>
+              <button
+                className={styles.copy_button}
+                onClick={() => handleDeleteRow(row)}
+              >
+                Copy
+              </button>
+            </div>
           )}
         </div>
       )}

@@ -158,9 +158,9 @@ export const updateColumnsInformations = (
         return (
           <div
             style={{
-              width: "80%",
-              marginLeft: "8%",
-              marginRight: "8%",
+              width: "95%",
+              marginLeft: "0%",
+              marginRight: "0%",
             }}
           >
             <InputMau
