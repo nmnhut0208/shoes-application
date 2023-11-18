@@ -17,10 +17,10 @@ const TableDonHang = ({ columns, data, setDataTable, readOnly }) => {
     let index = row.index;
     var newData = [...data];
     let indexAdd = newData.length - 1;
-    newData.splice(indexAdd, 0, data[index]);
-    console.log("data[index]: ", newData);
+    let objectCopy = { ...data[index] }; // to avoid refer old object
+    newData.splice(indexAdd, 0, objectCopy);
 
-    setDataTable(newData);
+    setDataTable([...newData]);
   };
 
   return (
