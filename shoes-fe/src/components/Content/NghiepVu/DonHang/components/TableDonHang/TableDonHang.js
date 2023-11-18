@@ -13,6 +13,16 @@ const TableDonHang = ({ columns, data, setDataTable, readOnly }) => {
     setDataTable([...data]);
   };
 
+  const handleCopyRow = (row) => {
+    let index = row.index;
+    var newData = [...data];
+    let indexAdd = newData.length - 1;
+    newData.splice(indexAdd, 0, data[index]);
+    console.log("data[index]: ", newData);
+
+    setDataTable(newData);
+  };
+
   return (
     <MaterialReactTable
       {...border_text_table_config}
@@ -78,7 +88,7 @@ const TableDonHang = ({ columns, data, setDataTable, readOnly }) => {
               </button>
               <button
                 className={styles.copy_button}
-                onClick={() => handleDeleteRow(row)}
+                onClick={() => handleCopyRow(row)}
               >
                 Copy
               </button>
