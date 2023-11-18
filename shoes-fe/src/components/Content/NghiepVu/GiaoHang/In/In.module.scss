@@ -45,3 +45,16 @@
   margin-top: 1rem;
   break-inside: avoid;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn {
+  margin-top: 3rem;
+  width: 10rem;
+  height: 3rem;
+  // right
+  align-self: flex-end;
+}
