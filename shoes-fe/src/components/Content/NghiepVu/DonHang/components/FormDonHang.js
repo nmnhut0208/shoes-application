@@ -191,6 +191,7 @@ const FormDonHang = ({
         updateSODH(lastestDH);
       }
       setIsSaveData(true);
+      setClickNhapTiep(!clickNhapTiep); // to reload list giày của khách hàng
     }
   };
 
