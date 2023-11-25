@@ -68,14 +68,19 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
         info_print.push(info);
       }
     }
-    Promise.all([getDiaChiKhachHang(infoHeader["MAKH"])]).then((values) => {
-      setHeader({
-        ...header,
-        ...values[0],
-        SL: compute_total(dataTable),
-      });
-      setDoneGetDiaChi(true);
+    // Promise.all([getDiaChiKhachHang(infoHeader["MAKH"])]).then((values) => {
+    //   setHeader({
+    //     ...header,
+    //     ...values[0],
+    //     SL: compute_total(dataTable),
+    //   });
+    //   setDoneGetDiaChi(true);
+    // });
+    setHeader({
+      ...header,
+      SL: compute_total(dataTable),
     });
+    setDoneGetDiaChi(true); // để hờ, ko cần thiết nữa vì ko cần lấy địa chỉ khách hàng
     Promise.all(list_promises).then((values) => {
       setListImage(values);
     });
@@ -103,7 +108,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
           <h1>Ngày: {convertDateForReport(header["NGAYDH"])}</h1>
           <h1>
             {header["SL"]}
-            {" | " + header["DIACHI"]}
+            {" | " + header["DIENGIAIPHIEU"]}
           </h1>
         </div>
         {dataPrint.length > 0 &&
