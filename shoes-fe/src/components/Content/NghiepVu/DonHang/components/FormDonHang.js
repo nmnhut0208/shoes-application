@@ -17,6 +17,7 @@ import {
   saveDonDatHang,
   updateFormDonHang,
   updateColumnsInformations,
+  numberSize,
 } from "./helper";
 import { CustomAlert } from "~utils/alert_custom";
 
@@ -53,7 +54,6 @@ const FormDonHang = ({
     NGAYGH: "",
     MAKH: "",
   });
-  console.log("formInfoDonHang: ", formInfoDonHang);
   const [lastestDH, setLastestDH] = useState(0);
 
   const [infoFormWillShow, setInfoFormWillShow] = useState({
@@ -67,6 +67,12 @@ const FormDonHang = ({
   const [listGiayUnique, setListGiayUnique] = useState([]);
   const [listGiayKH, setListGiayKH] = useState([]);
   const [clickNhapTiep, setClickNhapTiep] = useState(false);
+  const [arrayFocus, setArrayFocus] = useState([]);
+
+  const [positionFocus, setPositionFocus] = useState({ x: 0, y: 0 });
+  const [focusedRow, setFocusedRow] = useState(0);
+  const [focusedColumn, setFocusedColumn] = useState(0);
+  const [changeFocus, setChangeFocus] = useState(false);
 
   useEffect(() => {
     if (formInfoDonHang["MAKH"] !== "") {
@@ -214,7 +220,9 @@ const FormDonHang = ({
       dataTable,
       setDataTable,
       view,
-      listGiayUnique
+      listGiayUnique,
+      setFocusedRow,
+      setFocusedColumn
     );
   }, [dataTable, listGiayUnique]);
 
@@ -240,6 +248,69 @@ const FormDonHang = ({
     });
     setShowModal(true);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      console.log("================================================");
+      console.log("positionFocus: ", positionFocus);
+      let xNew = parseInt(focusedRow);
+      let yNew = parseInt(focusedColumn);
+      console.log("xOld: ", xNew);
+      console.log("yOld: ", yNew);
+
+      switch (e.key) {
+        case "ArrowLeft":
+          // Xử lý sự kiện mũi tên qua trái
+          console.log("ArrowLeft");
+          yNew = Math.max(yNew - 1, 0);
+          break;
+
+        case "ArrowRight":
+          // Xử lý sự kiện mũi tên qua phải
+          console.log("ArrowRight");
+          if (yNew < numberSize - 1) {
+            yNew = yNew + 1;
+          }
+          break;
+        case "ArrowUp":
+          // Xử lý sự kiện mũi tên lên trên
+          console.log("ArrowUp");
+          xNew = Math.max(xNew - 1, 0);
+          break;
+        case "ArrowDown":
+          // Xử lý sự kiện mũi tên xuống dưới
+          console.log("ArrowDown");
+          if (xNew < numberSize - 1) {
+            xNew = xNew + 1;
+          }
+          break;
+        default:
+          // Xử lý các phím khác nếu cần
+          break;
+      }
+      console.log("xNew: ", xNew);
+      console.log("yNew: ", yNew);
+      setPositionFocus({ x: xNew, y: yNew });
+      setFocusedRow(xNew);
+      setFocusedColumn(yNew);
+      setChangeFocus(!changeFocus);
+      var inputElement = document.getElementById(`size_${xNew}_${yNew}`);
+
+      // Kiểm tra xem phần tử tồn tại trước khi đặt focus
+      if (inputElement) {
+        inputElement.focus();
+      } else {
+        console.log("Không tìm thấy phần tử có ID là 'abc'");
+      }
+      // setArrayFocus(_arrayFocus);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      // Loại bỏ lắng nghe sự kiện bàn phím khi component unmount
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [focusedRow, focusedColumn, changeFocus]);
 
   return (
     <div className={styles.page}>
