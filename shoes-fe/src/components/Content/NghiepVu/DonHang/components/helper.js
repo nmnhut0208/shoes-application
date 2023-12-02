@@ -173,6 +173,7 @@ export const updateColumnsInformations = (
             marginRight: "0.5rem",
           }}
           tabindex="-1"
+          hidden={dataTable[cell.row.id]["MAGIAY"] === ""}
           value={parseFloat(cell.getValue()).toLocaleString("en")}
         />
       );
