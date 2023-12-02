@@ -381,12 +381,38 @@ const FormNghiepVuPhanCong = ({
         />
       )}
 
-      {!view && (
-        <div className={clsx(styles.button_group, styles.form)}>
-          <button onClick={handleClickAdd}>Thêm</button>
-          <button onClick={handleClickDelete}>Xóa</button>
+      {/* group button */}
+
+      <div className={styles.button_group_end_page}>
+        {!view && (
+          <div className={styles.button_left}>
+            <div>
+              <button onClick={handleClickAdd}>Thêm</button>
+              <button onClick={handleClickDelete}>Xóa</button>
+            </div>
+          </div>
+        )}
+
+        <div className={styles.button_right}>
+          <button
+            onClick={handleClickSave}
+            disabled={view}
+            className={styles.button_save}
+          >
+            Lưu
+          </button>
+          <button onClick={handleClickChiTietDonHang}>Chi tiết đơn hàng</button>
+          <button onClick={handle_in_tonghop}>In tổng hợp</button>
+          <button onClick={handle_in}>In</button>
+          <button onClick={handleClickXemPhanCong}>Xem phân công</button>
+
+          {action === "add" && (
+            <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
+              Nhập tiếp
+            </button>
+          )}
         </div>
-      )}
+      </div>
       <div style={{ width: "80vw" }}>
         <TableChiTietPhanCong
           columns={infoTableChiTietPhanCong}
@@ -395,27 +421,6 @@ const FormNghiepVuPhanCong = ({
           rowSelection={rowSelectionChiTietPhanCong}
           setRowSelection={setRowSelectionChiTietPhanCong}
         />
-      </div>
-
-      <div className={styles.button_group_end_page}>
-        <div className={styles.left}>
-          <button onClick={handleClickChiTietDonHang}>Chi tiết đơn hàng</button>
-          <button onClick={handle_in_tonghop}>In tổng hợp</button>
-        </div>
-
-        <div className={styles.right}>
-          <button onClick={handle_in}>In</button>
-          <button onClick={handleClickXemPhanCong}>Xem phân công</button>
-          <button onClick={handleClickSave} disabled={view}>
-            Lưu
-          </button>
-
-          {action === "add" && (
-            <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
-              Nhập tiếp
-            </button>
-          )}
-        </div>
       </div>
 
       {infoFormWillShow["chitiet_donhang"] && (
