@@ -93,9 +93,10 @@ export const updateColumnsInformations = (
         <GiayUnique
           listGiayUnique={listGiayUnique}
           init={dataTable[cell.row.id][cell.column.id]}
-          handleChangeDataTable={(value, label) => {
+          handleChangeDataTable={(value, label, giaban) => {
             dataTable[cell.row.id][cell.column.id] = value;
             dataTable[cell.row.id]["TENGIAY"] = label;
+            dataTable[cell.row.id]["GIABAN"] = giaban;
             setDataTable([...dataTable]);
           }}
           readOnly={view}
