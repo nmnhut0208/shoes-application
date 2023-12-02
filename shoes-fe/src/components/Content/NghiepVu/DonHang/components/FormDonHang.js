@@ -265,6 +265,9 @@ const FormDonHang = ({
         return;
       }
       let numberLine = dataTable.length - 1;
+      if (dataTable[numberLine]["MAGIAY"] !== "") {
+        numberLine = dataTable.length;
+      }
       console.log("================================================");
       let xNew = parseInt(focusedRow);
       let yNew = parseInt(focusedColumn);
@@ -275,14 +278,20 @@ const FormDonHang = ({
         case "ArrowLeft":
           // Xử lý sự kiện mũi tên qua trái
           console.log("ArrowLeft");
-          yNew = Math.max(yNew - 1, 0);
+          yNew = yNew - 1;
+          if (yNew < 0) {
+            yNew = numberSize - 1;
+            xNew = xNew - 1;
+          }
+          if (xNew < 0) {
+            xNew = 0;
+            yNew = 0;
+          }
           break;
 
         case "ArrowRight":
           console.log("ArrowRight");
-          if (yNew <= numberSize - 1) {
-            yNew = yNew + 1;
-          }
+          yNew = yNew + 1;
           if (yNew >= numberSize) {
             xNew = xNew + 1;
             yNew = 0;
@@ -294,13 +303,19 @@ const FormDonHang = ({
           break;
         case "ArrowUp":
           console.log("ArrowUp");
-          xNew = Math.max(xNew - 1, 0);
+          xNew = xNew - 1;
+          if (xNew < 0) {
+            xNew = numberLine - 1;
+            yNew = yNew - 1;
+          }
+          if (yNew < 0) {
+            yNew = 0;
+            xNew = 0;
+          }
           break;
         case "ArrowDown":
           console.log("ArrowDown");
-          if (xNew < numberLine) {
-            xNew = xNew + 1;
-          }
+          xNew = xNew + 1;
           if (xNew >= numberLine) {
             xNew = 0;
             yNew = yNew + 1;
@@ -323,6 +338,7 @@ const FormDonHang = ({
       if (inputElement) {
         inputElement.focus();
         if (yNew <= 7) {
+          // ko select toàn bộ text ở DIENGIAIDONG và INHIEU
           setTimeout(function () {
             inputElement.select();
           }, 10);
@@ -337,7 +353,7 @@ const FormDonHang = ({
       // Loại bỏ lắng nghe sự kiện bàn phím khi component unmount
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [focusedRow, focusedColumn, changeFocus]);
+  }, [focusedRow, focusedColumn, changeFocus, dataTable]);
 
   return (
     <div className={styles.page}>
