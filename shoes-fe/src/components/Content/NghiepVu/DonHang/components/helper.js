@@ -18,9 +18,12 @@ const dict_size_index = {
   SIZE9: 4,
   SIZE0: 5,
   SIZE1: 6,
+  GIABAN: 7,
+  DIENGIAIDONG: 8,
+  INHIEU: 9,
 };
 
-export const numberSize = 7;
+export const numberSize = 10;
 
 export const convert_to_int = (value) => {
   if (value === "") return 0;
@@ -108,6 +111,7 @@ export const updateColumnsInformations = (
     if (key === "GIABAN") {
       info["Cell"] = ({ cell }) => (
         <input
+          id={`size_${cell.row.id}_${dict_size_index[key]}`}
           style={{
             border: "none",
             width: "100%",
@@ -125,7 +129,12 @@ export const updateColumnsInformations = (
           }
           onKeyDown={handleDisableKeyDownUp}
           onKeyUp={handleDisableKeyDownUp}
-          onFocus={handleFocus}
+          onFocus={(event) => {
+            console.log("id: ", `size_${cell.row.id}_${dict_size_index[key]}`);
+            handleFocus(event);
+            setFocusedRow(cell.row.id);
+            setFocusedColumn(dict_size_index[key]);
+          }}
         />
       );
     }
@@ -189,6 +198,7 @@ export const updateColumnsInformations = (
             fontSize: "1.6rem",
             backgroundColor: "inherit",
           }}
+          id={`size_${cell.row.id}_${dict_size_index[key]}`}
           readOnly={view}
           type="text"
           tabindex="-1"
@@ -196,6 +206,11 @@ export const updateColumnsInformations = (
           onChange={(e) => {
             dataTable[cell.row.id][cell.column.id] = e.target.value;
             setDataTable([...dataTable]);
+          }}
+          onFocus={(event) => {
+            console.log("id: ", `size_${cell.row.id}_${dict_size_index[key]}`);
+            setFocusedRow(cell.row.id);
+            setFocusedColumn(dict_size_index[key]);
           }}
         />
       );

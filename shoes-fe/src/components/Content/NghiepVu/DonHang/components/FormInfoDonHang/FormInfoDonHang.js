@@ -10,12 +10,14 @@ const FormInfoDonHang = ({
   setFormInfoDonHang,
   view,
   action,
+  resetFocusStatus,
 }) => {
   console.log("re-render FormInfoDonHang");
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
+    resetFocusStatus();
   };
 
   const [maKH, setMaKH] = useState("");
@@ -34,6 +36,7 @@ const FormInfoDonHang = ({
       "YYYY-MM-DD HH:mm:ss"
     );
     setFormInfoDonHang(data);
+    resetFocusStatus();
   };
 
   return (

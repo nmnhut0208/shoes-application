@@ -68,8 +68,8 @@ const FormDonHang = ({
   const [listGiayKH, setListGiayKH] = useState([]);
   const [clickNhapTiep, setClickNhapTiep] = useState(false);
 
-  const [focusedRow, setFocusedRow] = useState(0);
-  const [focusedColumn, setFocusedColumn] = useState(0);
+  const [focusedRow, setFocusedRow] = useState(-1);
+  const [focusedColumn, setFocusedColumn] = useState(-1);
   const [changeFocus, setChangeFocus] = useState(false);
 
   useEffect(() => {
@@ -142,7 +142,13 @@ const FormDonHang = ({
 
   console.log("issavedata: ", isSaveData);
 
+  const resetFocusStatus = () => {
+    setFocusedColumn(-1);
+    setFocusedRow(-1);
+  };
+
   const handleThemGiay = () => {
+    resetFocusStatus();
     setInfoFormWillShow({
       giay: true,
       mau: false,
@@ -153,6 +159,7 @@ const FormDonHang = ({
   };
 
   const handleThemMau = () => {
+    resetFocusStatus();
     setInfoFormWillShow({
       giay: false,
       mau: true,
@@ -163,6 +170,7 @@ const FormDonHang = ({
   };
 
   const handleNhapTiep = () => {
+    resetFocusStatus();
     setClickNhapTiep(!clickNhapTiep);
     if (dataTable.length == 0) {
       setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
@@ -178,6 +186,7 @@ const FormDonHang = ({
   };
 
   const handleSaveDonHang = () => {
+    resetFocusStatus();
     if (isSaveData) return;
 
     let dataDatHang = dataTable.filter(
@@ -200,10 +209,12 @@ const FormDonHang = ({
   };
 
   const handleClickMaGiay = () => {
+    resetFocusStatus();
     if (formInfoDonHang["MAKH"] === "") {
       CustomAlert("Vui lòng chọn khách hàng!");
       return;
     }
+
     setInfoFormWillShow({
       giay: false,
       mau: false,
@@ -237,6 +248,7 @@ const FormDonHang = ({
   }, [formInfoDonHang, dataTable]);
 
   const handleInDonHang = () => {
+    resetFocusStatus();
     if (dataTable.length == 0) return;
     setInfoFormWillShow({
       giay: false,
@@ -249,6 +261,9 @@ const FormDonHang = ({
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (focusedColumn < 0 || focusedRow < 0) {
+        return;
+      }
       console.log("================================================");
       let xNew = parseInt(focusedRow);
       let yNew = parseInt(focusedColumn);
@@ -291,9 +306,11 @@ const FormDonHang = ({
       // Kiểm tra xem phần tử tồn tại trước khi đặt focus
       if (inputElement) {
         inputElement.focus();
-        setTimeout(function () {
-          inputElement.select();
-        }, 10);
+        if (yNew <= 7) {
+          setTimeout(function () {
+            inputElement.select();
+          }, 10);
+        }
       } else {
         console.log("Không tìm thấy phần tử có ID là 'abc'");
       }
@@ -313,6 +330,7 @@ const FormDonHang = ({
         setFormInfoDonHang={setFormInfoDonHang}
         view={view}
         action={action}
+        resetFocusStatus={resetFocusStatus}
       />
 
       <button className={styles.update_button} onClick={handleClickMaGiay}>
