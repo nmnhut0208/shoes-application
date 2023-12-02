@@ -264,6 +264,7 @@ const FormDonHang = ({
       if (focusedColumn < 0 || focusedRow < 0) {
         return;
       }
+      let numberLine = dataTable.length - 1;
       console.log("================================================");
       let xNew = parseInt(focusedRow);
       let yNew = parseInt(focusedColumn);
@@ -279,8 +280,16 @@ const FormDonHang = ({
 
         case "ArrowRight":
           console.log("ArrowRight");
-          if (yNew < numberSize - 1) {
+          if (yNew <= numberSize - 1) {
             yNew = yNew + 1;
+          }
+          if (yNew >= numberSize) {
+            xNew = xNew + 1;
+            yNew = 0;
+          }
+          if (xNew >= numberLine) {
+            xNew = 0;
+            yNew = 0;
           }
           break;
         case "ArrowUp":
@@ -289,8 +298,15 @@ const FormDonHang = ({
           break;
         case "ArrowDown":
           console.log("ArrowDown");
-          if (xNew < numberSize - 1) {
+          if (xNew < numberLine) {
             xNew = xNew + 1;
+          }
+          if (xNew >= numberLine) {
+            xNew = 0;
+            yNew = yNew + 1;
+          }
+          if (yNew >= numberSize) {
+            yNew = 0;
           }
           break;
         default:
