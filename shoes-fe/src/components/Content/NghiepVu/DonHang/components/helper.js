@@ -142,6 +142,7 @@ export const updateColumnsInformations = (
             marginRight: "0.5rem",
           }}
           readOnly={view} // || dataTable[cell.row.id]["MAGIAY"] === ""}
+          hidden={dataTable[cell.row.id]["MAGIAY"] === ""}
           type="number"
           value={cell.getValue()}
           onChange={(e) =>
