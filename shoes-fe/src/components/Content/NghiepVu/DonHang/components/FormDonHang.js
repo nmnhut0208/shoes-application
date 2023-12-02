@@ -67,9 +67,7 @@ const FormDonHang = ({
   const [listGiayUnique, setListGiayUnique] = useState([]);
   const [listGiayKH, setListGiayKH] = useState([]);
   const [clickNhapTiep, setClickNhapTiep] = useState(false);
-  const [arrayFocus, setArrayFocus] = useState([]);
 
-  const [positionFocus, setPositionFocus] = useState({ x: 0, y: 0 });
   const [focusedRow, setFocusedRow] = useState(0);
   const [focusedColumn, setFocusedColumn] = useState(0);
   const [changeFocus, setChangeFocus] = useState(false);
@@ -252,7 +250,6 @@ const FormDonHang = ({
   useEffect(() => {
     const handleKeyDown = (e) => {
       console.log("================================================");
-      console.log("positionFocus: ", positionFocus);
       let xNew = parseInt(focusedRow);
       let yNew = parseInt(focusedColumn);
       console.log("xOld: ", xNew);
@@ -266,31 +263,26 @@ const FormDonHang = ({
           break;
 
         case "ArrowRight":
-          // Xử lý sự kiện mũi tên qua phải
           console.log("ArrowRight");
           if (yNew < numberSize - 1) {
             yNew = yNew + 1;
           }
           break;
         case "ArrowUp":
-          // Xử lý sự kiện mũi tên lên trên
           console.log("ArrowUp");
           xNew = Math.max(xNew - 1, 0);
           break;
         case "ArrowDown":
-          // Xử lý sự kiện mũi tên xuống dưới
           console.log("ArrowDown");
           if (xNew < numberSize - 1) {
             xNew = xNew + 1;
           }
           break;
         default:
-          // Xử lý các phím khác nếu cần
-          break;
+          return;
       }
       console.log("xNew: ", xNew);
       console.log("yNew: ", yNew);
-      setPositionFocus({ x: xNew, y: yNew });
       setFocusedRow(xNew);
       setFocusedColumn(yNew);
       setChangeFocus(!changeFocus);
@@ -299,10 +291,12 @@ const FormDonHang = ({
       // Kiểm tra xem phần tử tồn tại trước khi đặt focus
       if (inputElement) {
         inputElement.focus();
+        setTimeout(function () {
+          inputElement.select();
+        }, 10);
       } else {
         console.log("Không tìm thấy phần tử có ID là 'abc'");
       }
-      // setArrayFocus(_arrayFocus);
     };
     window.addEventListener("keydown", handleKeyDown);
 

@@ -142,8 +142,7 @@ export const updateColumnsInformations = (
             marginRight: "0.5rem",
           }}
           readOnly={view} // || dataTable[cell.row.id]["MAGIAY"] === ""}
-          // type="number"
-          type="text"
+          type="number"
           value={cell.getValue()}
           onChange={(e) =>
             handleSaveCell(cell, e.target.value, dataTable, setDataTable)
