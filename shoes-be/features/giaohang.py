@@ -46,7 +46,7 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
     sodh = "(" + ", ".join([f"'{value}'" for value in data["sodh"]]) + ")"
     makh = data["makh"]
     sql = f"""SELECT SODH, THONGKE.MAGIAY, DMGIAY.TENGIAY, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, coalesce(SIZE1,0) AS SIZE1, MAUDE, MAUGOT, MAUSUON, MAUCA, MAUQUAI,
-                SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, THONGKE.GIABAN, (SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0)) * THONGKE.GIABAN AS THANHTIEN,
+                SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, DMGIAY.DONGIA AS GIABAN, (SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0)) * THONGKE.GIABAN AS THANHTIEN,
                 THONGKE.DIENGIAIPHIEU AS DIENGIAIDONG
                 FROM 
                 (
@@ -69,7 +69,7 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
                 DONHANG.SIZE5, DONHANG.SIZE6, DONHANG.SIZE7, DONHANG.SIZE8, DONHANG.SIZE9, DONHANG.SIZE0, DONHANG.SIZE1,
                 DONHANG.GIABAN, DONHANG.THANHTIEN, DONHANG.DIENGIAIPHIEU
                 ) AS THONGKE
-                left join (SELECT MAGIAY, TENGIAY FROM DMGIAY) as DMGIAY ON THONGKE.MAGIAY = DMGIAY.MAGIAY
+                left join (SELECT MAGIAY, TENGIAY, DONGIA FROM DMGIAY) as DMGIAY ON THONGKE.MAGIAY = DMGIAY.MAGIAY
                 WHERE SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) > 0
                 """
     # return GH.read_custom(sql)
