@@ -341,7 +341,7 @@ const FormDonHang = ({
           // ko select toàn bộ text ở DIENGIAIDONG và INHIEU
           setTimeout(function () {
             inputElement.select();
-          }, 10);
+          }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
         }
       } else {
         console.log("Không tìm thấy phần tử có ID là 'abc'");
