@@ -55,25 +55,25 @@ const BangLuong = () => {
           <legend>Nhóm thợ</legend>
           <div className={styles.group_ratio}>
             <div className={styles.info_ratio}>
-              <label for="THODE">Thợ đế</label>
+              <label for="TD">Thợ đế</label>
               <input
                 type="radio"
-                id="THODE"
+                id="TD"
                 name="option"
-                value="THODE"
-                checked={form["TYPE"] === "THODE"}
-                onChange={() => setForm({ ...form, TYPE: "THODE" })}
+                value="TD"
+                checked={form["TYPE"] === "TD"}
+                onChange={() => setForm({ ...form, TYPE: "TD" })}
               />
             </div>
             <div className={styles.info_ratio}>
-              <label for="THOQUAI">Thợ quai</label>
+              <label for="TQ">Thợ quai</label>
               <input
                 type="radio"
-                id="THOQUAI"
+                id="TQ"
                 name="option"
-                value="THOQUAI"
-                checked={form["TYPE"] === "THOQUAI"}
-                onChange={() => setForm({ ...form, TYPE: "THOQUAI" })}
+                value="TQ"
+                checked={form["TYPE"] === "TQ"}
+                onChange={() => setForm({ ...form, TYPE: "TQ" })}
               />
             </div>
             <div className={styles.info_ratio}>
