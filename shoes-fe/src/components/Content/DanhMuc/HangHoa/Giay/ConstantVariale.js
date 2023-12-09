@@ -23,7 +23,7 @@ export const list_key = [
   {
     header: "Mã giày",
     key: "MAGIAY",
-    width: 18 * rem_to_px,
+    width: 16 * rem_to_px,
     muiTableHeadCellProps: {
       align: "left",
     },
@@ -34,7 +34,7 @@ export const list_key = [
   {
     header: "Đơn giá",
     key: "DONGIA",
-    width: 5 * rem_to_px,
+    width: 6 * rem_to_px,
     header_custorm: <TextHeader value={"Đơn giá"} />,
     muiTableBodyCellProps: {
       align: "right",

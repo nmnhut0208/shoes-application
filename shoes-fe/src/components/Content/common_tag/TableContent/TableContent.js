@@ -8,6 +8,8 @@ import { border_text_table_config } from "~config/ui";
 import { useTableContext, actions_table } from "~table_context";
 import { useTaskContext } from "~task";
 import { useUserContext } from "~user";
+import { darken, lighten, useTheme } from "@mui/material";
+
 import {
   useItemsContext,
   actions as actions_items_context,
@@ -21,6 +23,18 @@ const TableContent = ({ info_other_column }) => {
     if (info_other_column) return info_other_column;
     else return { action: 30, stt: 15 };
   });
+
+  const theme = useTheme();
+
+  //light or dark green
+  const baseBackgroundColor =
+    // theme.palette.mode === "dark"
+    //   ? "rgba(3, 44, 43, 1)"
+    //   : "rgba(244, 255, 233, 1)";
+
+    theme.palette.mode === "dark"
+      ? "rgba(51, 204, 204, 1)"
+      : "rgba(255, 204, 204, 1)";
 
   console.log("actionSttInfo: ", actionSttInfo);
   const [stateTable, dispatchTable] = useTableContext();
@@ -207,11 +221,52 @@ const TableContent = ({ info_other_column }) => {
             data={inforShowTable.infoTable}
             {...border_text_table_config}
             // start
+            muiTableBodyProps={{
+              // sx: {
+              //   //stripe the rows, make odd rows a darker color
+              //   "& tr:nth-of-type(odd) > td": {
+              //     backgroundColor: "#e6fff2",
+              //   },
+              //   "& tr:nth-of-type(even) > td": {
+              //     backgroundColor: "#fff2e6",
+              //   },
+              // },
+              sx: (theme) => ({
+                '& tr:nth-of-type(odd):not([data-selected="true"]):not([data-pinned="true"]) > td':
+                  {
+                    // backgroundColor: darken(baseBackgroundColor, 0.1),
+                    backgroundColor: "#e6fff2",
+                  },
+                '& tr:nth-of-type(odd):not([data-selected="true"]):not([data-pinned="true"]):hover > td':
+                  {
+                    // backgroundColor: darken(baseBackgroundColor, 0.2),
+                    backgroundColor: "#ffcc99",
+                  },
+                '& tr:nth-of-type(even):not([data-selected="true"]):not([data-pinned="true"]) > td':
+                  {
+                    backgroundColor: "#ffddcc",
+                  },
+                '& tr:nth-of-type(even):not([data-selected="true"]):not([data-pinned="true"]):hover > td':
+                  {
+                    backgroundColor: "#ffcc99",
+                  },
+              }),
+              mrtTheme: (theme) => ({
+                baseBackgroundColor: baseBackgroundColor,
+                draggingBorderColor: theme.palette.secondary.main,
+              }),
+            }}
+            // muiTableBodyCellProps={{
+            //   sx: {
+            //     borderRight: "1px solid #e0e0e0", //add a border between columns
+            //   },
+            // }}
             muiTableProps={{
               sx: {
                 tableLayout: "fixed",
               },
             }}
+            initialState={{ showColumnFilters: true }}
             // end
             components
             // page Pagination
