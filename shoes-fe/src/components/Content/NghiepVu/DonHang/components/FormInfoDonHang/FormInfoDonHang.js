@@ -5,12 +5,19 @@ import { ItemKhachHang } from "~items";
 import { convertDate } from "~utils/processing_date";
 import styles from "./FormInfoDonHang.module.scss";
 
-const FormInfoDonHang = ({ formInfoDonHang, setFormInfoDonHang, view, action }) => {
+const FormInfoDonHang = ({
+  formInfoDonHang,
+  setFormInfoDonHang,
+  view,
+  action,
+  resetFocusStatus,
+}) => {
   console.log("re-render FormInfoDonHang");
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
     setFormInfoDonHang(data);
+    resetFocusStatus();
   };
 
   const [maKH, setMaKH] = useState("");
@@ -29,6 +36,7 @@ const FormInfoDonHang = ({ formInfoDonHang, setFormInfoDonHang, view, action }) 
       "YYYY-MM-DD HH:mm:ss"
     );
     setFormInfoDonHang(data);
+    resetFocusStatus();
   };
 
   return (
@@ -56,7 +64,7 @@ const FormInfoDonHang = ({ formInfoDonHang, setFormInfoDonHang, view, action }) 
               size_input={"15rem"}
               size_span={"29.7rem"}
               have_span={true}
-              readOnly={view || action === 'edit'}
+              readOnly={view} //|| action === 'edit'}
             />
           </div>
         </div>

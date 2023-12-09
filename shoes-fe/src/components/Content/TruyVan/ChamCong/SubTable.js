@@ -47,6 +47,18 @@ const SubTable = ({
       muiTableContainerProps={{ sx: { maxHeight: { maxHeight } } }}
       enableRowVirtualization
       enableStickyFooter
+      displayColumnDefOptions={{
+        "mrt-row-actions": {
+          minSize: 80, //set custom width
+          muiTableHeadCellProps: {
+            align: "center", //change head cell props
+          },
+          muiTableBodyCellProps: {
+            minSize: 80,
+          },
+          enableResizing: true,
+        },
+      }}
       renderRowActions={({ row, table }) => (
         <div
           style={{

@@ -64,24 +64,14 @@ const Table = ({ columns, data, setData, permission }) => {
         //
         displayColumnDefOptions={{
           "mrt-row-actions": {
-            size: 40, //set custom width
-            minSize: 24,
+            minSize: 70, //set custom width
             muiTableHeadCellProps: {
               align: "center", //change head cell props
             },
-            enableResizing: true,
-          },
-          "mrt-row-numbers": {
-            size: 30,
-            minSize: 12,
-            enableColumnOrdering: true, //turn on some features that are usually off
-            enableResizing: true,
-            muiTableHeadCellProps: {
-              align: "right",
-            },
             muiTableBodyCellProps: {
-              align: "right",
+              minSize: 70,
             },
+            enableResizing: true,
           },
         }}
         //

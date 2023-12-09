@@ -17,6 +17,7 @@ import {
   saveDonDatHang,
   updateFormDonHang,
   updateColumnsInformations,
+  numberSize,
 } from "./helper";
 import { CustomAlert } from "~utils/alert_custom";
 
@@ -53,7 +54,6 @@ const FormDonHang = ({
     NGAYGH: "",
     MAKH: "",
   });
-  console.log("formInfoDonHang: ", formInfoDonHang);
   const [lastestDH, setLastestDH] = useState(0);
 
   const [infoFormWillShow, setInfoFormWillShow] = useState({
@@ -67,6 +67,10 @@ const FormDonHang = ({
   const [listGiayUnique, setListGiayUnique] = useState([]);
   const [listGiayKH, setListGiayKH] = useState([]);
   const [clickNhapTiep, setClickNhapTiep] = useState(false);
+
+  const [focusedRow, setFocusedRow] = useState(-1);
+  const [focusedColumn, setFocusedColumn] = useState(-1);
+  const [changeFocus, setChangeFocus] = useState(false);
 
   useEffect(() => {
     if (formInfoDonHang["MAKH"] !== "") {
@@ -138,7 +142,13 @@ const FormDonHang = ({
 
   console.log("issavedata: ", isSaveData);
 
+  const resetFocusStatus = () => {
+    setFocusedColumn(-1);
+    setFocusedRow(-1);
+  };
+
   const handleThemGiay = () => {
+    resetFocusStatus();
     setInfoFormWillShow({
       giay: true,
       mau: false,
@@ -149,6 +159,7 @@ const FormDonHang = ({
   };
 
   const handleThemMau = () => {
+    resetFocusStatus();
     setInfoFormWillShow({
       giay: false,
       mau: true,
@@ -159,6 +170,7 @@ const FormDonHang = ({
   };
 
   const handleNhapTiep = () => {
+    resetFocusStatus();
     setClickNhapTiep(!clickNhapTiep);
     if (dataTable.length == 0) {
       setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
@@ -174,6 +186,7 @@ const FormDonHang = ({
   };
 
   const handleSaveDonHang = () => {
+    resetFocusStatus();
     if (isSaveData) return;
 
     let dataDatHang = dataTable.filter(
@@ -191,14 +204,17 @@ const FormDonHang = ({
         updateSODH(lastestDH);
       }
       setIsSaveData(true);
+      setClickNhapTiep(!clickNhapTiep); // to reload list giày của khách hàng
     }
   };
 
   const handleClickMaGiay = () => {
+    resetFocusStatus();
     if (formInfoDonHang["MAKH"] === "") {
       CustomAlert("Vui lòng chọn khách hàng!");
       return;
     }
+
     setInfoFormWillShow({
       giay: false,
       mau: false,
@@ -213,7 +229,9 @@ const FormDonHang = ({
       dataTable,
       setDataTable,
       view,
-      listGiayUnique
+      listGiayUnique,
+      setFocusedRow,
+      setFocusedColumn
     );
   }, [dataTable, listGiayUnique]);
 
@@ -230,6 +248,7 @@ const FormDonHang = ({
   }, [formInfoDonHang, dataTable]);
 
   const handleInDonHang = () => {
+    resetFocusStatus();
     if (dataTable.length == 0) return;
     setInfoFormWillShow({
       giay: false,
@@ -240,6 +259,102 @@ const FormDonHang = ({
     setShowModal(true);
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (focusedColumn < 0 || focusedRow < 0) {
+        return;
+      }
+      let numberLine = dataTable.length - 1;
+      if (dataTable[numberLine]["MAGIAY"] !== "") {
+        numberLine = dataTable.length;
+      }
+      console.log("================================================");
+      let xNew = parseInt(focusedRow);
+      let yNew = parseInt(focusedColumn);
+      console.log("xOld: ", xNew);
+      console.log("yOld: ", yNew);
+
+      switch (e.key) {
+        case "ArrowLeft":
+          // Xử lý sự kiện mũi tên qua trái
+          console.log("ArrowLeft");
+          yNew = yNew - 1;
+          if (yNew < 0) {
+            yNew = numberSize - 1;
+            xNew = xNew - 1;
+          }
+          if (xNew < 0) {
+            xNew = 0;
+            yNew = 0;
+          }
+          break;
+
+        case "ArrowRight":
+          console.log("ArrowRight");
+          yNew = yNew + 1;
+          if (yNew >= numberSize) {
+            xNew = xNew + 1;
+            yNew = 0;
+          }
+          if (xNew >= numberLine) {
+            xNew = 0;
+            yNew = 0;
+          }
+          break;
+        case "ArrowUp":
+          console.log("ArrowUp");
+          xNew = xNew - 1;
+          if (xNew < 0) {
+            xNew = numberLine - 1;
+            yNew = yNew - 1;
+          }
+          if (yNew < 0) {
+            yNew = 0;
+            xNew = 0;
+          }
+          break;
+        case "ArrowDown":
+          console.log("ArrowDown");
+          xNew = xNew + 1;
+          if (xNew >= numberLine) {
+            xNew = 0;
+            yNew = yNew + 1;
+          }
+          if (yNew >= numberSize) {
+            yNew = 0;
+          }
+          break;
+        default:
+          return;
+      }
+      console.log("xNew: ", xNew);
+      console.log("yNew: ", yNew);
+      setFocusedRow(xNew);
+      setFocusedColumn(yNew);
+      setChangeFocus(!changeFocus);
+      var inputElement = document.getElementById(`size_${xNew}_${yNew}`);
+
+      // Kiểm tra xem phần tử tồn tại trước khi đặt focus
+      if (inputElement) {
+        inputElement.focus();
+        if (yNew <= 7) {
+          // ko select toàn bộ text ở DIENGIAIDONG và INHIEU
+          setTimeout(function () {
+            inputElement.select();
+          }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
+        }
+      } else {
+        console.log("Không tìm thấy phần tử có ID là 'abc'");
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      // Loại bỏ lắng nghe sự kiện bàn phím khi component unmount
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [focusedRow, focusedColumn, changeFocus, dataTable]);
+
   return (
     <div className={styles.page}>
       <FormInfoDonHang
@@ -247,6 +362,7 @@ const FormDonHang = ({
         setFormInfoDonHang={setFormInfoDonHang}
         view={view}
         action={action}
+        resetFocusStatus={resetFocusStatus}
       />
 
       <button className={styles.update_button} onClick={handleClickMaGiay}>
