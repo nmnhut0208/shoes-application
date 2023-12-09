@@ -20,11 +20,21 @@ const TextHeader = ({ value }) => (
   <textarea value={value} style={{ ...textarea_style }} />
 );
 export const list_key = [
-  { header: "Mã giày", key: "MAGIAY", width: 20 * rem_to_px },
+  {
+    header: "Mã giày",
+    key: "MAGIAY",
+    width: 18 * rem_to_px,
+    muiTableHeadCellProps: {
+      align: "left",
+    },
+    muiTableBodyCellProps: {
+      align: "left",
+    },
+  },
   {
     header: "Đơn giá",
     key: "DONGIA",
-    width: 7 * rem_to_px,
+    width: 5 * rem_to_px,
     header_custorm: <TextHeader value={"Đơn giá"} />,
     muiTableBodyCellProps: {
       align: "right",
@@ -33,12 +43,24 @@ export const list_key = [
       <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
     ),
   },
-  { header: "Tên giày", key: "TENGIAY", width: 28 * rem_to_px },
+  {
+    header: "Tên giày",
+    key: "TENGIAY",
+    width: 28 * rem_to_px,
+
+    muiTableHeadCellProps: {
+      align: "left",
+    },
+    muiTableBodyCellProps: {
+      align: "left",
+    },
+  },
   {
     header: "Mã đế",
     key: "MADE",
     width: 5 * rem_to_px,
     header_custorm: <TextHeader value={"Mã đế"} />,
+    enableSorting: false,
   },
   // {
   //   header: "Tên đế",

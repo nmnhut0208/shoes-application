@@ -214,10 +214,18 @@ const TableContent = ({ info_other_column }) => {
             }}
             // end
             components
-            autoResetPageIndex={false}
+            // page Pagination
+            enablePagination={false}
+            enableBottomToolbar={true}
+            // scroll to bottom
+            enableRowVirtualization
+            muiTableContainerProps={{
+              sx: { maxHeight: "65rem" },
+            }}
+            // autoResetPageIndex={false}
             // resize width of each column
             enableColumnResizing
-            // enableRowNumbers
+            enableRowNumbers
             enableEditing={showActionColumn}
             displayColumnDefOptions={{
               "mrt-row-actions": {
