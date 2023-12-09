@@ -5,7 +5,7 @@ import "./alert.css";
 export function CustomAlert(message) {
   toast.success(message, {
     position: toast.POSITION.TOP_CENTER,
-    autoClose: 5000, // 5s
+    autoClose: 3000, // 5s
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,

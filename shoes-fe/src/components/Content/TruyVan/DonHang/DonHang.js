@@ -58,12 +58,12 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
         // add action in row
         displayColumnDefOptions={{
           "mrt-row-actions": {
-            minSize: 70, //set custom width
+            minSize: 110, //set custom width
             muiTableHeadCellProps: {
               align: "center", //change head cell props
             },
             muiTableBodyCellProps: {
-              minSize: 70,
+              minSize: 110,
             },
             enableResizing: true,
           },
@@ -194,7 +194,7 @@ const DonHang = () => {
     updateInfo(permission, year, setDataDonHang);
   };
   return (
-    <div style={{ width: "90%", marginLeft: "5%" }}>
+    <div style={{ width: "88%", marginLeft: "5%" }}>
       <div className={clsx(styles.form, styles.info_query)}>
         <label>Xem dữ liệu năm</label>
         <input

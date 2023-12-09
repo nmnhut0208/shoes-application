@@ -65,6 +65,18 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
         // row number
         enableRowNumbers
         // add action in row
+        displayColumnDefOptions={{
+          "mrt-row-actions": {
+            minSize: 70, //set custom width
+            muiTableHeadCellProps: {
+              align: "center", //change head cell props
+            },
+            muiTableBodyCellProps: {
+              minSize: 70,
+            },
+            enableResizing: true,
+          },
+        }}
         enableRowActions={true}
         renderRowActions={({ row, table }) => (
           <div
