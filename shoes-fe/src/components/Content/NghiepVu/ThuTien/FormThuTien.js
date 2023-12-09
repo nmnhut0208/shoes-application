@@ -28,6 +28,7 @@ const list_input_required = {
 };
 
 const FormThuTien = ({ dataView, type_action }) => {
+  const [isSave, setIsSave] = useState(true);
   const view = useMemo(() => {
     if (type_action === "view") return true;
     else return false;
@@ -67,6 +68,7 @@ const FormThuTien = ({ dataView, type_action }) => {
             NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
           });
           setLastestSOPHIEU(data["LastestSOPHIEU"]);
+          setIsSave(true);
         })
         .catch((err) => {
           console.log(err);
@@ -80,12 +82,14 @@ const FormThuTien = ({ dataView, type_action }) => {
         NGUOITAO: stateUser.userName,
         NGUOISUA: stateUser.userName,
       });
+      setIsSave(true);
     }
   }, []);
 
   const handleChangeInformationForm = (dict_data) => {
     const data = { ...form, ...dict_data };
     setForm(data);
+    setIsSave(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
@@ -94,6 +98,7 @@ const FormThuTien = ({ dataView, type_action }) => {
       "YYYY-MM-DD HH:mm:ss"
     );
     setForm(data);
+    setIsSave(false);
   };
 
   const handleSaveFrom = () => {
@@ -123,6 +128,7 @@ const FormThuTien = ({ dataView, type_action }) => {
           updateSOPHIEU(lastestSOPHIEU);
         }
         CustomAlert("Lưu thông tin thành công.");
+        setIsSave(true);
       })
       .catch((error) => {
         console.log("error: ", error);
@@ -144,11 +150,14 @@ const FormThuTien = ({ dataView, type_action }) => {
       NGAYPHIEU: moment().format("DD-MM-YYYY"),
     });
     setLastestSOPHIEU(lastestSOPHIEU + 1);
+    setIsSave(true);
   };
 
   const handlePrint = () => {
     setShowPrint(true);
   };
+
+  console.log("isSave: ", isSave);
 
   return (
     <div>
@@ -227,9 +236,13 @@ const FormThuTien = ({ dataView, type_action }) => {
               Lưu
             </button>
             {type_action === "add" && (
-              <button onClick={handleNhapTiep}>Nhập tiếp</button>
+              <button onClick={handleNhapTiep} disabled={!isSave}>
+                Nhập tiếp
+              </button>
             )}
-            <button onClick={handlePrint}>In</button>
+            <button onClick={handlePrint} disabled={!isSave}>
+              In
+            </button>
           </div>
         </div>
       </div>
