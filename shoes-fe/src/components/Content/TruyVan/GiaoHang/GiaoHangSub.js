@@ -37,7 +37,7 @@ const updateData = (year, setDataTable) => {
     });
 };
 
-const GiaoHangSub = ({ setIsSaveDataTruyVanGiaoHang, permission }) => {
+const GiaoHangSub = ({ isSaveData, setIsSaveDataTruyVanGiaoHang, permission }) => {
   const [dataTable, setDataTable] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [sendData, setSendData] = useState({});
@@ -83,8 +83,8 @@ const GiaoHangSub = ({ setIsSaveDataTruyVanGiaoHang, permission }) => {
         maxHeight={"65rem"}
       />
       {showForm && (
-        <ModalForm setShowForm={setShowForm}>
-          <FormGiaoHang permission={permission} infoKH={sendData} setInfoKH={setSendData} year={year} setDataTableBig={setDataTable} setShowForm={setShowForm} />
+        <ModalForm setShowForm={setShowForm} isSaveData={isSaveData}>
+          <FormGiaoHang permission={permission} infoKH={sendData} setInfoKH={setSendData} year={year} setDataTableBig={setDataTable} setShowForm={setShowForm} setIsSaveDataTruyVanGiaoHang={setIsSaveDataTruyVanGiaoHang} isSaveData={isSaveData}/>
         </ModalForm>
       )}
     </div>

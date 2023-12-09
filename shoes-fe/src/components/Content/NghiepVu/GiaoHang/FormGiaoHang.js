@@ -17,6 +17,7 @@ import { Modal } from "~common_tag";
 import In from "./In";
 import { useTableContext, actions_table } from "~table_context";
 import { CustomAlert } from "~utils/alert_custom";
+import { Popconfirm } from "antd";
 
 const list_key = [
   {
@@ -861,10 +862,34 @@ const FormGiaoHang = ({
       </Modal>
       <div className={styles.group_button}>
         <div>
-          <button onClick={handleIn}>In</button>
-          <button onClick={handleInCongNo}>In Công Nợ</button>
+          {/* <button onClick={handleIn}>In</button> */}
+          {
+            isSaveData ? (
+              <button onClick={handleIn}>In</button>
+            ) : (
+              <></>
+            )
+          }
+          {/* <button onClick={handleInCongNo}>In Công Nợ</button> */}
+          {
+            isSaveData ? (
+              <button onClick={handleInCongNo}>In Công Nợ</button>
+            ) : (
+              <></>
+            )
+          }
           <button onClick={handleSave}>Lưu</button>
-          <button onClick={handleNhapTiep}>Nhập tiếp</button>
+          {/* <button onClick={handleNhapTiep}>Nhập tiếp</button> */}
+          { isSaveData ? (<button onClick={handleNhapTiep}>Nhập tiếp</button>) : (<Popconfirm
+            title="Xác nhận hành động"
+            description="Bạn muốn nhập tiếp mà không lưu thay đổi?"
+            okText="Đồng ý"
+            cancelText="Không đồng ý"
+            onConfirm={handleNhapTiep}
+            onCancel={() => {}}
+          >
+            <button>Nhập tiếp</button>
+          </Popconfirm>)}
         </div>
       </div>
     </div>
