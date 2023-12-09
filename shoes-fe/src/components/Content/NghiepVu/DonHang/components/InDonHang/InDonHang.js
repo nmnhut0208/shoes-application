@@ -132,7 +132,11 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                   </tr>
                 </table>
               </div>
-              <TableToPrint columns={INFO_COLS_THO} data={info["TABLE"]} />
+              <TableToPrint
+                columns={INFO_COLS_THO}
+                data={info["TABLE"]}
+                LIST_FORMAT_NUMBER={["GIABAN"]}
+              />
             </div>
           ))}
         <br />
