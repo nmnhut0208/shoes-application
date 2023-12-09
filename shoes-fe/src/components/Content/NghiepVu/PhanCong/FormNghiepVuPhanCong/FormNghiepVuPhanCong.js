@@ -402,12 +402,19 @@ const FormNghiepVuPhanCong = ({
             Lưu
           </button>
           <button onClick={handleClickChiTietDonHang}>Chi tiết đơn hàng</button>
-          <button onClick={handle_in_tonghop}>In tổng hợp</button>
-          <button onClick={handle_in}>In</button>
+          <button onClick={handle_in_tonghop} disabled={!isSaveData}>
+            In tổng hợp
+          </button>
+          <button onClick={handle_in} disabled={!isSaveData}>
+            In
+          </button>
           <button onClick={handleClickXemPhanCong}>Xem phân công</button>
 
           {action === "add" && (
-            <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
+            <button
+              onClick={handleNhapTiep}
+              disabled={permission.THEM === 0 || !isSaveData}
+            >
               Nhập tiếp
             </button>
           )}
