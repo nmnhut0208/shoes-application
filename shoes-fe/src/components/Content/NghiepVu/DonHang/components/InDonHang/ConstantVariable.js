@@ -37,12 +37,12 @@ export const INFO_COLS_THO = [
     textAlign: "center",
   },
   { header: "SIZE", key: "SIZE", width: 16 * rem_to_px },
-  {
-    header: "GIÁ BÁN",
-    key: "GIABAN",
-    width: 8 * rem_to_px,
-    textAlign: "right",
-  },
+  // {
+  //   header: "GIÁ BÁN",
+  //   key: "GIABAN",
+  //   width: 8 * rem_to_px,
+  //   textAlign: "right",
+  // },
   {
     header: "THỢ ĐẾ",
     key: "TENTHODE",

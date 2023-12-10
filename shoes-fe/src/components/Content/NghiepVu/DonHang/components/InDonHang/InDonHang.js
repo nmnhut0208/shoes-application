@@ -36,6 +36,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
           TENGIAY: dataTable[i]["TENGIAY"],
         };
         list_promises.push(getImageOfDanhMuc("giay", ma_giay, "MAGIAY"));
+        info["GIABAN"] = dataTable[i]["GIABAN"];
         info["TABLE"] = dataTable.filter(
           (_data) => _data["MAGIAY"] === ma_giay
         );
@@ -120,9 +121,14 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                     <td>
                       <div className={styles.show_content_column}>
                         <lable>{info["MAGIAY"]}</lable>
-                        <lable style={{ fontWeight: "bold" }}>
-                          SL: {info["SL"]}
-                        </lable>
+                        <div>
+                          <lable style={{ fontWeight: "bold" }}>
+                            SL: {info["SL"]} {" - "}
+                          </lable>
+                          <lable style={{ fontWeight: "bold" }}>
+                            GIÁ BÁN: {info["GIABAN"]}
+                          </lable>
+                        </div>
                       </div>
                     </td>
                     {listImage[index] && (
