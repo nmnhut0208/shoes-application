@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from utils.date import * 
 from datetime import datetime
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
@@ -172,7 +173,6 @@ def read(data: dict):
                   where CHAMCONGTHOQUAI.{typenv}='{manvien}' 
                   and SOPHIEU IN {phieupc}"""
         return CC.read_custom(sql)
-    
 
 @router.post("/savechamcong")
 def save(data: dict) -> RESPONSE:
@@ -180,7 +180,7 @@ def save(data: dict) -> RESPONSE:
     manv = data["MANVIEN"]
     maky = data["MAKY"]
     phieupc = data["SOPHIEU"]
-    ngaypc = data["NGAYPHIEU"]
+    ngaypc = get_datetime_now() #data["NGAYPHIEU"]
     diengiai = data["DIENGIAI"]
     sql_delete = f"""DELETE FROM CHAMCONG 
                      WHERE MAKY='{maky}' AND MANVIEN='{manv}' 
