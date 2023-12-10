@@ -27,11 +27,11 @@ def read(YEAR: str=None):
         condition_year = f"""where NgayPhieu >= '{care_year}-01-01'
                         """
     sql = f"""
-        select MAKY, MANVIEN, phieupc as SOPHIEU, NgayPhieu as NGAYPHIEU,
+        select MAKY, MANVIEN, maphieu as MAPHIEU, NgayPhieu as NGAYPHIEU,
           SUM(SOLUONG) as SOLUONG, DienGiai AS DIENGIAI FROM CHAMCONG
         {condition_year}
-        GROUP BY MAKY, phieupc, NgayPhieu, MANVIEN, DienGiai
-        order by MAKY, MANVIEN, NgayPhieu 
+        GROUP BY MAKY, maphieu, NgayPhieu, MANVIEN, DienGiai
+        order by MAKY desc, maphieu desc, NgayPhieu desc, MANVIEN desc
     """
     return TVCC.read_custom(sql)
 
@@ -39,12 +39,12 @@ def read(YEAR: str=None):
 def read(data: dict):
     maky = data["MAKY"]
     manv = data["MANVIEN"]
-    phieupc = data["SOPHIEU"]
+    maphieu = data["MAPHIEU"]
     sql = f"""
         select CHAMCONG.MAGIAY, DMGIAY.TENGIAY, SOLUONG FROM CHAMCONG 
         left join (select MAGIAY, TENGIAY from DMGIAY) as DMGIAY 
             ON DMGIAY.MAGIAY = CHAMCONG.MAGIAY
-        where MAKY = '{maky}' AND MANVIEN = '{manv}' AND phieupc = '{phieupc}'
+        where MAKY = '{maky}' AND MANVIEN = '{manv}' AND maphieu = '{maphieu}'
     """
     return TVCC.read_custom(sql)
 
@@ -52,9 +52,9 @@ def read(data: dict):
 def delete(data: dict):
     maky = data["MAKY"]
     manv = data["MANVIEN"]
-    phieupc = data["SOPHIEU"]
+    maphieu = data["MAPHIEU"]
     sql = f"""DELETE FROM CHAMCONG WHERE MAKY='{maky}' 
-              AND MANVIEN='{manv}' AND PHIEUPC='{phieupc}'
+              AND MANVIEN='{manv}' AND MAPHIEU='{maphieu}'
               """
     TVCC.execute_custom(sql)
     return {"status": "success"}

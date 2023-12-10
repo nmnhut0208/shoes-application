@@ -14,13 +14,14 @@ import { CustomAlert } from "~utils/alert_custom";
 
 const list_key = [
   { header: "Mã kỳ", key: "MAKY" },
-  { header: "Mã Nhân Viên", key: "MANVIEN" },
-  { header: "Số phiếu", key: "SOPHIEU" },
+  { header: "Mã phiếu", key: "MAPHIEU" },
   {
     header: "Ngày phiếu",
     key: "NGAYPHIEU",
     Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
   },
+  { header: "Diễn giải", key: "DIENGIAI" },
+  { header: "Mã Nhân Viên", key: "MANVIEN" },
   {
     header: "Số lượng",
     key: "SOLUONG",
@@ -30,8 +31,7 @@ const list_key = [
     Cell: ({ cell }) => (
       <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
     ),
-  },
-  { header: "Diễn giải", key: "DIENGIAI" },
+  }
 ];
 
 const infoColumns = processingInfoColumnTable(list_key);

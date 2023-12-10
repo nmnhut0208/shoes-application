@@ -33,6 +33,7 @@ const GiaoHang = () => {
     >
       <GiaoHangSub
         // setShowModalNghiepVuGiaoHang={setShowModal}
+        isSaveData={isSaveData}
         setIsSaveDataTruyVanGiaoHang={setIsSaveData}
         permission={permission}
       />

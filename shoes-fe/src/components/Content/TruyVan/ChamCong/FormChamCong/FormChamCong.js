@@ -44,7 +44,7 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
       const send_data = {
         MAKY: infoForm["MAKY"],
         MANVIEN: infoForm["MANVIEN"],
-        SOPHIEU: infoForm["SOPHIEU"],
+        MAPHIEU: infoForm["MAPHIEU"],
       };
       fetch("http://localhost:8000/tv_chamcong", {
         method: "DELETE",
@@ -86,7 +86,7 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
     const send_data = {
       MAKY: infoForm["MAKY"],
       MANVIEN: infoForm["MANVIEN"],
-      SOPHIEU: infoForm["SOPHIEU"],
+      MAPHIEU: infoForm["MAPHIEU"],
     };
     fetch("http://localhost:8000/tv_chamcong", {
       method: "POST",
@@ -133,7 +133,7 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
           <div className={styles.left_row}>
             <label>Phiếu PC</label>
             <input
-              value={infoForm["SOPHIEU"]}
+              value={infoForm["MAPHIEU"]}
               type="text"
               className={styles.medium}
             />

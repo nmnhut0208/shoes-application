@@ -253,6 +253,8 @@ const FormGiaoHang = ({
   year,
   setDataTableBig,
   setShowForm,
+  setIsSaveDataTruyVanGiaoHang,
+  isSaveData
 }) => {
   const [stateUser, dispatchUser] = useUserContext();
   const [userState, userDispatch] = useUserContext();
@@ -262,8 +264,8 @@ const FormGiaoHang = ({
   const [curSelected, setCurSelected] = useState({});
   const [mapSelected, setMapSelected] = useState({});
   const [mapRowSelectedSub, setMapRowSelectedSub] = useState({});
-  const [isSaveDataNghiepVuGiaoHang, setIsSaveDataNghiepVuGiaoHang] =
-    useState(true);
+  // const [isSaveDataNghiepVuGiaoHang, setIsSaveDataNghiepVuGiaoHang] =
+  //   useState(true);
   const [rowSelection, setRowSelection] = useState({});
   const [rowSelectionSub, setRowSelectionSub] = useState({});
   const [dataIn, setDataIn] = useState({});
@@ -334,7 +336,7 @@ const FormGiaoHang = ({
         .then((info) => {
           console.log("info: ", info);
           if (info.status === "success") {
-            setIsSaveDataNghiepVuGiaoHang(true);
+            setIsSaveDataTruyVanGiaoHang(true);
             updateData(year, setDataTableBig);
             CustomAlert("Lưu thành công");
           } else {
@@ -722,7 +724,7 @@ const FormGiaoHang = ({
         setCurSelected={setCurSelected}
         // flag_rowSelection={true}
         setRowSelection={setRowSelection}
-        setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
+        setIsSaveData={setIsSaveDataTruyVanGiaoHang}
         maxHeight={"22rem"}
         change={false}
         setKeys={setKeys}
@@ -746,7 +748,7 @@ const FormGiaoHang = ({
         // }
         // flag_rowSelection={true}
         setRowSelection={setRowSelectionSub}
-        setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
+        setIsSaveData={setIsSaveDataTruyVanGiaoHang}
         maxHeight={"25rem"}
         change={true}
         setKeys={setKeys}
@@ -758,8 +760,22 @@ const FormGiaoHang = ({
         <div>
           {/* <button onClick={handleSave}>Lưu</button> */}
           {/* <button>Nhập tiếp</button> */}
-          <button onClick={handleIn}>In</button>
-          <button onClick={handleInCongNo}>In Công Nợ</button>
+          {/* <button onClick={handleIn}>In</button> */}
+          {
+            isSaveData ? (
+              <button onClick={handleIn}>In</button>
+            ) : (
+              <></>
+            )
+          }
+          {/* <button onClick={handleInCongNo}>In Công Nợ</button> */}
+          {
+            isSaveData ? (
+              <button onClick={handleInCongNo}>In Công Nợ</button>
+            ) : (
+              <></>
+            )
+          }
           <button onClick={handleSave}>Lưu</button>
           {/* <button
             onClick={() => {
