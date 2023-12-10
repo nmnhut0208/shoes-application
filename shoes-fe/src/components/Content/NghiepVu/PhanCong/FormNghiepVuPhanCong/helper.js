@@ -19,7 +19,9 @@ export const updateInfoPhieuPhanCong = (
         MAKY: "",
         DIENGIAIPHIEU: "",
         SOPHIEU: sophieu,
-        NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+        NGAYPHIEU: moment()
+          .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+          .format("YYYY-MM-DD HH:mm:ss"),
       });
       setLastestSOPHIEU(data["LastestPC"]);
     })
