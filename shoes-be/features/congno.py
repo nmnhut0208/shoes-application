@@ -3,8 +3,6 @@ from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
 from datetime import datetime, timedelta
-from utils.date import * 
-
 from utils.vietnamese import convert_data_to_save_database
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
@@ -44,10 +42,9 @@ def add(data: ITEM_PHIEUTHU) -> RESPONSE:
     today = datetime.now()
     year = today.year
     data = dict(data)
-    data["NGAYTAO"] = get_datetime_now()
-    data["NGAYSUA"] = get_datetime_now()
+    data["NGAYTAO"] = today.strftime("%Y-%m-%d %H:%M:%S")
+    data["NGAYSUA"] = today.strftime("%Y-%m-%d %H:%M:%S")
     data["LOAIPHIEU"] = "PT"
-    data["NGAYPHIEU"] = get_datetime_now()
     SODONG = find_info_primary_key("CONGNO", "MD", today) + 1
     data["MADONG"] = f"MD{year}{str(SODONG).zfill(12)}"
     SOPHIEU = find_info_primary_key("CONGNO","PT", today) + 1
@@ -64,7 +61,7 @@ def add(data: ITEM_PHIEUTHU) -> RESPONSE:
 @router.put("/congno/phieuthu")
 def update(data: ITEM_PHIEUTHU) -> RESPONSE:
     data = dict(data)
-    data["NGAYSUA"] = get_datetime_now()
+    data["NGAYSUA"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     data = convert_data_to_save_database(data)
     val = ", ".join([f"{key} = {value}" for key, value in data.items()
                       if value is not None])
