@@ -83,11 +83,11 @@ const SubTable = ({
                   setSendData(row.original);
                   dispatchTable(actions_table.setModeShowModal(true));
                 } else {
-                  CustomAlert("Bạn không có quyền sửa");
+                  CustomAlert("Bạn không có quyền xem");
                 }
               }}
             >
-              Sửa
+              Xem
             </button>
           </Box>
 
