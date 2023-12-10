@@ -120,15 +120,14 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                   <tr className={styles.info_row_giay}>
                     <td>
                       <div className={styles.show_content_column}>
-                        <lable>{info["MAGIAY"]}</lable>
                         <div>
-                          <lable style={{ fontWeight: "bold" }}>
-                            SL: {info["SL"]} {" - "}
-                          </lable>
-                          <lable style={{ fontWeight: "bold" }}>
-                            GIÁ BÁN: {info["GIABAN"]}
-                          </lable>
+                          <lable>{info["MAGIAY"]}</lable>
+                          <lable> {info["GIABAN"]}</lable>
                         </div>
+
+                        <lable style={{ fontWeight: "bold" }}>
+                          SL: {info["SL"]}
+                        </lable>
                       </div>
                     </td>
                     {listImage[index] && (
