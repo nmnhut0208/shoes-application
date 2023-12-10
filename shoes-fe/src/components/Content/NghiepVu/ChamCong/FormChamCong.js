@@ -93,6 +93,10 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       // )
       permission.THEM === 1
     ) {
+      if (dataTable.length === 0) {
+        CustomAlert("Không có dữ liệu để lưu");
+        return;
+      }
       const send_data = {
         MAKY: infoForm["MAKY"],
         MANVIEN: infoForm["MANVIEN"],
