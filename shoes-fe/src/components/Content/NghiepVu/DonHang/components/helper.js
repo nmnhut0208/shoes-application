@@ -315,8 +315,13 @@ export const updateFormDonHang = (
         ...formInfoDonHang,
         DIENGIAIPHIEU: "",
         SODH: sodh,
-        NGAYDH: moment().format("YYYY-MM-DD HH:mm:ss"),
-        NGAYGH: moment().add(5, "d").format("YYYY-MM-DD HH:mm:ss"),
+        NGAYDH: moment()
+          .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+          .format("YYYY-MM-DD HH:mm:ss"),
+        NGAYGH: moment()
+          .add(5, "d")
+          .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+          .format("YYYY-MM-DD HH:mm:ss"),
       });
       setLastestDH(data["LastestDH"]);
     })

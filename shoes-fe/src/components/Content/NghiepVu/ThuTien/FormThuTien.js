@@ -96,9 +96,9 @@ const FormThuTien = ({ dataView, type_action }) => {
 
   const handleChangeFormForTypeDate = (e) => {
     const data = { ...form };
-    data[e.target.name] = moment(e.target.value, "YYYY-MM-DD").format(
-      "YYYY-MM-DD HH:mm:ss"
-    );
+    data[e.target.name] = moment(e.target.value, "YYYY-MM-DD")
+      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+      .format("YYYY-MM-DD HH:mm:ss");
     setForm(data);
     setIsSave(false);
   };

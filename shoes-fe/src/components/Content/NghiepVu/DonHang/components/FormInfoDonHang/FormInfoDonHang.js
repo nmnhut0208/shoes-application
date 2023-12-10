@@ -32,9 +32,9 @@ const FormInfoDonHang = ({
 
   const handleChangeFormForTypeDate = (e) => {
     const data = { ...formInfoDonHang };
-    data[e.target.name] = moment(e.target.value, "YYYY-MM-DD").format(
-      "YYYY-MM-DD HH:mm:ss"
-    );
+    data[e.target.name] = moment(e.target.value, "YYYY-MM-DD")
+      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+      .format("YYYY-MM-DD HH:mm:ss");
     setFormInfoDonHang(data);
     resetFocusStatus();
   };
