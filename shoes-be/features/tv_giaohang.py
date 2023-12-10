@@ -38,7 +38,7 @@ def read(YEAR: str=None) -> RESPONSE_TVGIAOHANG:
                 ON CONGNO.MAKH = DMKHACHHANG.MAKH
             WHERE CONGNO.LOAIPHIEU = 'BH'
             {condition_year}
-            ORDER BY CONGNO.NGAYPHIEU DESC
+            ORDER BY CONGNO.NGAYPHIEU desc, SOPHIEU desc
             """
     return TVGH.read_custom(sql)
 
