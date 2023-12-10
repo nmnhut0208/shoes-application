@@ -74,6 +74,7 @@ const MainTable = ({
           }));
           setCurSelected(row.id);
           setKeys(prev => prev + 1)
+          setIsSaveData(false);
         },
         selected: rowSelection[row.id],
         sx: {
