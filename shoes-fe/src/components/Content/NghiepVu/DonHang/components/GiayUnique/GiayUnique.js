@@ -54,7 +54,7 @@ const GiayUnique = ({
   return (
     <div style={{ position: "relative" }}>
       {showInput && (
-        <input
+        <textarea
           id="MAGIAY"
           value={maMA}
           tabindex="-1"
@@ -64,7 +64,10 @@ const GiayUnique = ({
           style={{
             width: "100%",
             border: "none",
-            fontSize: "1.6rem",
+            fontSize: "1.7rem",
+            resize: "none",
+            verticalAlign: "middle",
+            contenteditable: "true",
           }}
         />
       )}

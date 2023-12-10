@@ -8,6 +8,7 @@ import { border_text_table_config } from "~config/ui";
 import { useTableContext, actions_table } from "~table_context";
 import { useTaskContext } from "~task";
 import { useUserContext } from "~user";
+
 import {
   useItemsContext,
   actions as actions_items_context,
@@ -207,17 +208,48 @@ const TableContent = ({ info_other_column }) => {
             data={inforShowTable.infoTable}
             {...border_text_table_config}
             // start
+            muiTableBodyProps={{
+              sx: () => ({
+                '& tr:nth-of-type(odd):not([data-selected="true"]):not([data-pinned="true"]) > td':
+                  {
+                    // backgroundColor: darken(baseBackgroundColor, 0.1),
+                    backgroundColor: "#e6fff2",
+                  },
+                '& tr:nth-of-type(odd):not([data-selected="true"]):not([data-pinned="true"]):hover > td':
+                  {
+                    // backgroundColor: darken(baseBackgroundColor, 0.2),
+                    backgroundColor: "#ffcc99",
+                  },
+                '& tr:nth-of-type(even):not([data-selected="true"]):not([data-pinned="true"]) > td':
+                  {
+                    backgroundColor: "#ffddcc",
+                  },
+                '& tr:nth-of-type(even):not([data-selected="true"]):not([data-pinned="true"]):hover > td':
+                  {
+                    backgroundColor: "#ffcc99",
+                  },
+              }),
+            }}
             muiTableProps={{
               sx: {
                 tableLayout: "fixed",
               },
             }}
+            initialState={{ showColumnFilters: true }}
             // end
             components
-            autoResetPageIndex={false}
+            // page Pagination
+            enablePagination={false}
+            enableBottomToolbar={true}
+            // scroll to bottom
+            enableRowVirtualization
+            muiTableContainerProps={{
+              sx: { maxHeight: "65rem" },
+            }}
+            // autoResetPageIndex={false}
             // resize width of each column
             enableColumnResizing
-            // enableRowNumbers
+            enableRowNumbers
             enableEditing={showActionColumn}
             displayColumnDefOptions={{
               "mrt-row-actions": {

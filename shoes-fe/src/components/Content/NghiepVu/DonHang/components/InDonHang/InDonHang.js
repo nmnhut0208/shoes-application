@@ -36,6 +36,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
           TENGIAY: dataTable[i]["TENGIAY"],
         };
         list_promises.push(getImageOfDanhMuc("giay", ma_giay, "MAGIAY"));
+        info["GIABAN"] = dataTable[i]["GIABAN"];
         info["TABLE"] = dataTable.filter(
           (_data) => _data["MAGIAY"] === ma_giay
         );
@@ -119,7 +120,11 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                   <tr className={styles.info_row_giay}>
                     <td>
                       <div className={styles.show_content_column}>
-                        <lable>{info["MAGIAY"]}</lable>
+                        <div>
+                          <lable>{info["MAGIAY"]}</lable>
+                          <lable> {info["GIABAN"]}</lable>
+                        </div>
+
                         <lable style={{ fontWeight: "bold" }}>
                           SL: {info["SL"]}
                         </lable>
@@ -132,7 +137,11 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                   </tr>
                 </table>
               </div>
-              <TableToPrint columns={INFO_COLS_THO} data={info["TABLE"]} />
+              <TableToPrint
+                columns={INFO_COLS_THO}
+                data={info["TABLE"]}
+                LIST_FORMAT_NUMBER={["GIABAN"]}
+              />
             </div>
           ))}
         <br />

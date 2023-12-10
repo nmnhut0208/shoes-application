@@ -100,6 +100,9 @@ export const updateColumnsInformations = (
             dataTable[cell.row.id][cell.column.id] = value;
             dataTable[cell.row.id]["TENGIAY"] = label;
             dataTable[cell.row.id]["GIABAN"] = giaban;
+            if (dataTable[dataTable.length - 1]["MAGIAY"] !== "") {
+              dataTable.push(renderDataEmpty(INFO_COLS_DONHANG, 1)[0]);
+            }
             setDataTable([...dataTable]);
           }}
           readOnly={view}

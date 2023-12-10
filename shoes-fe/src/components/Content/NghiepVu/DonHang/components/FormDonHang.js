@@ -132,12 +132,13 @@ const FormDonHang = ({
         .catch((err) => {
           console.log(":error: ", err);
         });
+      setFirstRender(true);
     } else {
       updateFormDonHang(formInfoDonHang, setFormInfoDonHang, setLastestDH);
       setDataTable(renderDataEmpty(INFO_COLS_DONHANG, 1));
+      setFirstRender(false);
     }
     setIsSaveData(true);
-    setFirstRender(true);
   }, [dataView]);
 
   console.log("issavedata: ", isSaveData);
@@ -383,13 +384,18 @@ const FormDonHang = ({
         <div className={styles.group_button}>
           <button
             onClick={handleInDonHang}
-            disabled={permission.IN === 0 || dataTable.length == 0}
+            disabled={
+              permission.IN === 0 || dataTable.length == 0 || !isSaveData
+            }
           >
             In
           </button>
 
           {action === "add" && (
-            <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
+            <button
+              onClick={handleNhapTiep}
+              disabled={permission.THEM === 0 || !isSaveData}
+            >
               Nhập tiếp
             </button>
           )}

@@ -134,6 +134,68 @@ def baocao_donhang(YEAR: str=None) -> List[RESPONSE_BAOCAO_DONHANG]:
 
 @router.get("/donhang")
 def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
+    if is_donhang_da_giaohang(SODH):
+        return get_donhang_da_giaohang(SODH)
+    return get_donhang_chua_giaohang(SODH)
+
+def is_donhang_da_giaohang(SODH):
+    sql = f"""select count(*) as SOLUONG
+        from CONGNO
+        where LOAIPHIEU = 'BH'
+        and SODH = '{SODH}'"""
+    result = donhang.read_custom(sql)
+    return result[0]["SOLUONG"] > 0
+
+def get_donhang_da_giaohang(SODH: str):
+    # khi đơn giày đã giao hàng (xuất hàng cho khách hàng thì giá là giá của đơn)
+    # không cần cập nhật giá theo danh mục giày nữa
+    sql = f"""SELECT DIENGIAIPHIEU,MADONG, SODH, 
+                V_GIAY.MAGIAY,V_GIAY.TENGIAY,
+                coalesce(MAUDE, '') as MAUDE, TENMAUDE,
+                coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT, 
+                coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
+                coalesce(MAUCA, '') AS MAUCA,TENMAUCA,
+                coalesce(MAUQUAI, '') AS MAUQUAI, TENMAUQUAI,
+                DONHANG.MAKH, DMKHACHHANG.TENKH, 
+                GIABAN, V_GIAY.DONGIAQUAI, 
+                V_GIAY.TENCA,
+                SIZE5,SIZE6,SIZE7,
+                SIZE9,SIZE8,SIZE0,SIZE1,
+                SOLUONG,NGAYDH, NGAYGH,
+                GIABAN * SOLUONG AS THANHTIEN,
+                DIENGIAIDONG, INHIEU
+            FROM (select DIENGIAIPHIEU, MADONG, SODH, MAGIAY,MAUDE,MAUGOT, 
+		        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH,SIZE5,SIZE6,SIZE7,
+                SIZE9,SIZE8,SIZE0, coalesce(SIZE1, 0) AS SIZE1, NGAYDH, NGAYGH,
+                (SIZE5+SIZE6+SIZE7+SIZE8+SIZE9+SIZE0+coalesce(SIZE1, 0)) AS SOLUONG,
+                DIENGIAIDONG, INHIEU, GIABAN
+            from DONHANG 
+            WHERE DONHANG.SODH='{SODH}') AS DONHANG
+            inner join DMKHACHHANG on DMKHACHHANG.MAKH = DONHANG.MAKH
+            left JOIN V_GIAY on V_GIAY.magiay=DONHANG.magiay  
+            left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
+                AS DMMAUDE 
+                ON coalesce(DMMAUDE.MAMAU, '') = coalesce(DONHANG.MAUDE, '')
+			left join (select MAMAU, TENMAU as TENMAUGOT from DMMAU) 
+                AS DMMAUGOT 
+                ON coalesce(DMMAUGOT.MAMAU, '') = coalesce(DONHANG.MAUGOT, '')
+			left join (select MAMAU, TENMAU as TENMAUSUON from DMMAU) 
+                AS DMMAUSUON 
+                ON coalesce(DMMAUSUON.MAMAU, '') = coalesce(DONHANG.MAUSUON, '')
+			left join (select MAMAU, TENMAU as TENMAUCA from DMMAU) 
+                AS DMMAUCA 
+                ON coalesce(DMMAUCA.MAMAU, '') = coalesce(DONHANG.MAUCA, '')
+			left join (select MAMAU, TENMAU as TENMAUQUAI from DMMAU) 
+                AS DMMAUQUAI 
+                ON coalesce(DMMAUQUAI.MAMAU, '') = coalesce(DONHANG.MAUQUAI, '')
+          """
+    result = donhang.read_custom(sql)
+    return result
+
+def get_donhang_chua_giaohang(SODH: str):
+    # khi chưa xuất hàng thì giá lấy từ danh mục giày
+    # để lỡ chú cập nhật giá giày mới ở danh mục giày theo nhu cầu thị trường thì phải update theo
+    # update lại giá bán cho đơn hàng này luôn
     sql = f"""SELECT DIENGIAIPHIEU,MADONG, SODH, 
                 V_GIAY.MAGIAY,V_GIAY.TENGIAY,
                 coalesce(MAUDE, '') as MAUDE, TENMAUDE,
@@ -175,6 +237,11 @@ def read(SODH: str) -> List[RESPONSE_GIAYDONHANG]:
                 ON coalesce(DMMAUQUAI.MAMAU, '') = coalesce(DONHANG.MAUQUAI, '')
           """
     result = donhang.read_custom(sql)
+
+    for _donhang in result:
+        val = f"GIABAN = {_donhang['GIABAN']}"
+        condition = f"MADONG = '{_donhang['MADONG']}'"
+        donhang.update(val, condition)
     return result
 
 
