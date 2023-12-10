@@ -4,7 +4,7 @@ export const INFO_COLS_DONHANG = [
   {
     header: "Mã giày",
     key: "MAGIAY",
-    width: 23 * rem_to_px,
+    width: 25 * rem_to_px,
   },
   {
     header: "Màu đế",

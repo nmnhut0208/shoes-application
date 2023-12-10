@@ -62,7 +62,7 @@ const GiayUnique = ({
           onClick={handleFocusInput}
           readOnly="true"
           style={{
-            width: "120%",
+            width: "100%",
             border: "none",
             fontSize: "1.7rem",
             resize: "none",
