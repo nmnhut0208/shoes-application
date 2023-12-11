@@ -119,7 +119,7 @@ def read(YEAR: str=None) -> RESPONSE_TVTHUCHI:
                      inner join DMKHACHHANG on DMKHACHHANG.MAKH = CONGNO.MAKH
                      WHERE LOAIPHIEU='PT'
                      {condition_year}
-                    order by NGAYPHIEU desc
+                    order by NGAYPHIEU desc, SOPHIEU desc
                     """
     return congno.read_custom(sql)
 

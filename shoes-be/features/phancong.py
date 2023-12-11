@@ -117,7 +117,7 @@ def read() -> List[RESPONSE_PHANCONG]:
             GROUP BY dh.madh,dh.sodh,dh.ngaydh,dh.makh,kh.tenkh,dh.diengiaiphieu) 
             as DHCHUAPHANCONG
             where SLDONHANG - SLPHANCONG > 0
-            order by NGAYDH desc
+            order by NGAYDH desc, SODH desc
              """
     result = phancong.read_custom(sql)
     return result
@@ -147,7 +147,7 @@ def baocao_phancong(YEAR: str=None) -> List[RESPONSE_BAOCAO_PHANCONG]:
                 {condition_year}
                 group by  SOPHIEU, NGAYPHIEU,
                 DIENGIAIPHIEU, MAKY
-                order by NGAYPHIEU desc
+                order by NGAYPHIEU desc, SOPHIEU desc
             """
     result = phancong.read_custom(sql)
     return result
