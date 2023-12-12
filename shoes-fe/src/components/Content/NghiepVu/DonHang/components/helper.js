@@ -157,7 +157,7 @@ export const updateColumnsInformations = (
           readOnly={view} // || dataTable[cell.row.id]["MAGIAY"] === ""}
           hidden={dataTable[cell.row.id]["MAGIAY"] === ""}
           type="number"
-          value={cell.getValue()}
+          value={cell.getValue() != 0 ? cell.getValue() : ""}
           onChange={(e) =>
             handleSaveCell(cell, e.target.value, dataTable, setDataTable)
           }
