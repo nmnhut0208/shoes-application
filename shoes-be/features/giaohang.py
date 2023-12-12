@@ -37,6 +37,7 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
             FROM DONHANG DH Left Join DMkhachhang kh on kh.makh=dh.makh 
             GROUP BY dh.sodh,dh.makh,kh.tenkh,dh.diengiaiphieu,madh,dh.ngaydh,dh.ngaygh,dh.tmpfield) as view_gh
             WHERE MAKH = '{makh}' AND SLDONHANG > SLGIAOHANG
+            order by NGAYDH desc, SODH desc
               """
     return GH.read_custom(sql)
 

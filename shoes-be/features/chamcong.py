@@ -73,6 +73,7 @@ and PC.{typenv} = '{manv}'
 GROUP BY tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.DIENGIAIPHIEU, PC.MAGIAY,  
 pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.{typenv}) as info_chamcong) as abc
 where abc.SLCONLAI > 0
+order by abc.NGAYPHIEU desc, abc.SOPHIEU desc
         """
         return CC.read_custom(sql)
 
