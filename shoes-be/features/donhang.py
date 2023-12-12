@@ -126,7 +126,7 @@ def baocao_donhang(YEAR: str=None) -> List[RESPONSE_BAOCAO_DONHANG]:
              {condition_year}
               group by SODH, DH.MAKH, KH.TENKH, NGAYDH,
                 NGAYGH, DIENGIAIPHIEU
-              order by NGAYDH desc
+              order by NGAYDH desc, SODH desc
             """
     result = donhang.read_custom(sql)
     return result
