@@ -116,7 +116,7 @@ def read(data: dict):
         typenv = "THODE"
         sql = f"""SELECT * FROM 
                 (SELECT 
-                    dmgiay.tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI,pc.THODE,
+                    dmgiay.tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI,pc.THODE,
                     SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8  +PC.SIZE9 +PC.SIZE0 +coalesce(PC.SIZE1,0)) AS SLPHANCONG, 
                     ISNULL((SELECT SUM(ISNULL(CC.SOLUONG,0))  FROM CHAMCONG CC  WHERE PC.SOPHIEU = CC.PHIEUPC AND 
                                                 PC.MAGIAY = CC.MAGIAY AND 
@@ -139,15 +139,17 @@ def read(data: dict):
                                                 pc.THODE=cc.manvien),0)) AS SLCONLAI 
                 FROM PHANCONG PC 
                             left join dmgiay on dmgiay.magiay=pc.magiay 
-                GROUP BY tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.THODE) AS CHAMCONGTHODE
+                GROUP BY tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.THODE) AS CHAMCONGTHODE
                   where CHAMCONGTHODE.{typenv}='{manvien}' 
-                  and SOPHIEU IN {phieupc}"""
+                  and SOPHIEU IN {phieupc}
+                order by NGAYPHIEU desc, SOPHIEU desc
+                """
         return CC.read_custom(sql)
     elif loainv == "TQ":
         typenv = "THOQUAI"
         sql = f"""SELECT * FROM 
                 (SELECT 
-                dmgiay.tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI,pc.THOQUAI,
+                dmgiay.tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI,pc.THOQUAI,
                 SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8  +PC.SIZE9 +PC.SIZE0 +coalesce(PC.SIZE1,0)) AS SLPHANCONG, 
                 ISNULL((SELECT SUM(ISNULL(CC.SOLUONG,0))  FROM CHAMCONG CC  WHERE PC.SOPHIEU = CC.PHIEUPC AND 
                                             PC.MAGIAY = CC.MAGIAY AND 
@@ -170,9 +172,11 @@ def read(data: dict):
                                             pc.THOQUAI=cc.manvien),0)) AS SLCONLAI 
             FROM PHANCONG PC 
                         left join dmgiay on dmgiay.magiay=pc.magiay 
-            GROUP BY tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.THOQUAI) AS CHAMCONGTHOQUAI
+            GROUP BY tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.THOQUAI) AS CHAMCONGTHOQUAI
                   where CHAMCONGTHOQUAI.{typenv}='{manvien}' 
-                  and SOPHIEU IN {phieupc}"""
+                  and SOPHIEU IN {phieupc}
+            order by NGAYPHIEU desc, SOPHIEU desc
+            """
         return CC.read_custom(sql)
 
 @router.post("/savechamcong")

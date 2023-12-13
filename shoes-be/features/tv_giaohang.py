@@ -54,6 +54,7 @@ def read(data: dict):
                  AS DONHANG ON CONGNO.SODH = DONHANG.SODH
             WHERE SOPHIEU = '{sophieu}' AND MAKH = '{makh}' 
             GROUP BY CONGNO.SODH, DONHANG.NGAYDH, DONHANG.NGAYGH,DIENGIAIDONG
+            ORDER BY DONHANG.NGAYDH desc, CONGNO.SODH desc
             """
     return TVGH.read_custom(sql)
 
