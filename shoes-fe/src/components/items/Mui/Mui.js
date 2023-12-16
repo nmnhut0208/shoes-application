@@ -19,6 +19,11 @@ const Mui = ({ initValue, changeData, size_input, size_span, readOnly }) => {
   });
 
   useEffect(() => {
+    setValue(initValue["value"]);
+    setLabel(initValue["label"]);
+  }, [initValue]);
+
+  useEffect(() => {
     changeData({ value, label });
   }, [value]);
 

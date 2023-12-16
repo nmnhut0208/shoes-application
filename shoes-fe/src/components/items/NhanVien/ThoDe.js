@@ -17,6 +17,12 @@ const ThoDe = ({ initValue, changeData, size_input, className, size_span }) => {
     if (initValue["label"]) return initValue["label"];
     else return "";
   });
+
+  useEffect(() => {
+    setValue(initValue["value"]);
+    setLabel(initValue["label"]);
+  }, [initValue]);
+
   useEffect(() => {
     changeData({ value, label });
   }, [value]);

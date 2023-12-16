@@ -20,6 +20,7 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
   const [image_url, setImageURL] = useState("");
 
   console.log("form: ", form);
+  console.log("mode: ", mode);
 
   const [maKH, setMaKH] = useState(form["MAKH"]);
   useEffect(() => {

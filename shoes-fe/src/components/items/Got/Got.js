@@ -18,6 +18,11 @@ const Got = ({ initValue, changeData, size_input, size_span, readOnly }) => {
     else return "";
   });
   useEffect(() => {
+    setValue(initValue["value"]);
+    setLabel(initValue["label"]);
+  }, [initValue]);
+
+  useEffect(() => {
     changeData({ value, label });
   }, [value]);
 

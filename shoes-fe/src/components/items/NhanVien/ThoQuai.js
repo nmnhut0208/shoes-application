@@ -19,6 +19,11 @@ const ThoQuai = ({ initValue, changeData, size_input, size_span }) => {
   });
 
   useEffect(() => {
+    setValue(initValue["value"]);
+    setLabel(initValue["label"]);
+  }, [initValue]);
+
+  useEffect(() => {
     changeData({ value, label });
   }, [value]);
 

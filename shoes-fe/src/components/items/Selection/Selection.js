@@ -26,7 +26,6 @@ const Selection = ({
   size_span,
   className,
 }) => {
-  console.log("111label: ", label);
   const [maMA, setMaMau] = useState(() => {
     if (value) {
       return value;
@@ -43,6 +42,10 @@ const Selection = ({
   useEffect(() => {
     setMaMau(value);
   }, [value]);
+
+  useEffect(() => {
+    setTenMau(label);
+  }, [label]);
 
   const handleChange = (value) => {
     setMaMau(value);

@@ -17,6 +17,10 @@ const Ca = ({ initValue, changeData, size_input }) => {
     if (initValue["label"]) return initValue["label"];
     else return "";
   });
+  useEffect(() => {
+    setValue(initValue["value"]);
+    setLabel(initValue["label"]);
+  }, [initValue]);
 
   useEffect(() => {
     changeData({ value, label });

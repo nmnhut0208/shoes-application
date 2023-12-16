@@ -19,6 +19,11 @@ const Mau = ({ initValue, changeData, size_input }) => {
   });
 
   useEffect(() => {
+    setValue(initValue["value"]);
+    setLabel(initValue["label"]);
+  }, [initValue]);
+
+  useEffect(() => {
     changeData({ value, label });
   }, [value]);
 
