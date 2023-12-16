@@ -22,6 +22,7 @@ const De = ({ initValue, changeData, size_input }) => {
 
   return (
     <Selection
+      readOnly={false}
       value={value}
       setValue={setValue}
       label={label}

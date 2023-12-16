@@ -1,5 +1,19 @@
+import { useState, memo, useEffect } from "react";
 import { Space } from "antd";
-import { memo } from "react";
+
+import { Select } from "antd";
+const { Option } = Select;
+
+const customOptionStyle = {
+  borderBottom: "1px solid #000", // Add a border line at the bottom of each option
+  fontSize: "1.45rem",
+};
+
+const filterOption = (input, option) => {
+  return (option?.value ?? "")
+    .toLowerCase()
+    .startsWith(input.trim().toLowerCase());
+};
 
 const Selection = ({
   readOnly,
@@ -12,37 +26,134 @@ const Selection = ({
   size_span,
   className,
 }) => {
-  console.log("label la: ", label, "width: ", size_input);
+  const [maMA, setMaMau] = useState(() => {
+    if (value) {
+      return value;
+    } else return "";
+  });
+  const [tenMau, setTenMau] = useState(() => {
+    if (label) return label;
+    else return "";
+  });
+
+  const [showSelection, setShowSelection] = useState(false);
+  const [showInput, setShowInput] = useState(true);
+
+  useEffect(() => {
+    setMaMau(value);
+  }, [value]);
+
+  const handleChange = (value) => {
+    setMaMau(value);
+    let choice = data.filter((e) => e.value === value);
+    console.log("choice: ", choice);
+    setValue(value);
+    setLabel(choice[0]["label"]);
+    setTenMau(choice[0]["label"]);
+    setShowInput(true);
+    setShowSelection(false);
+  };
+
+  console.log("tenMau: ", tenMau);
+  console.log("maMau: ", maMA);
+
+  const handleFocusInput = () => {
+    if (readOnly) return;
+    setShowSelection(true);
+    setShowInput(false);
+  };
+  const handleClickSelection = () => {
+    setShowSelection(false);
+    setShowInput(true);
+  };
+  console.log("data: ", data);
+  console.log("showInput: ", showInput);
   return (
-    <Space size="small" className={className}>
-      <select
-        style={{ width: size_input }}
-        onChange={(e) => {
-          let _data = data.filter((_data) => _data["value"] === e.target.value);
-          setLabel(_data[0]["label"]);
-          setValue(e.target.value);
-        }}
-        value={value}
-      >
-        {!readOnly && (
-          <>
-            {data.map((_data, index) => (
-              <option value={_data["value"]} key={_data["value"]}>
-                {_data["value"]}
-              </option>
-            ))}
-          </>
-        )}
+    <div className={className}>
+      {showInput && (
+        <Space>
+          <input
+            id="MAGIAY"
+            value={value}
+            onFocus={handleFocusInput}
+            onClick={handleFocusInput}
+            readOnly="true"
+            tabindex="-1"
+            style={{
+              width: { size_input },
+              // border: "none",
+              fontSize: "1.45rem",
+              resize: "none",
+              verticalAlign: "middle",
+              contenteditable: "true",
+            }}
+          />
+          <input readOnly={true} value={tenMau} style={{ width: size_span }} />
+        </Space>
+      )}
 
-        {readOnly && (
-          <option value={value} key={value}>
-            {value}
-          </option>
-        )}
-      </select>
+      {showSelection && (
+        <Select
+          showSearch={true}
+          optionFilterProp="children"
+          style={{
+            width: 750,
+            // marginLeft: 200, // 600,
+            position: "absolute",
+          }}
+          value={maMA}
+          onChange={handleChange}
+          filterOption={filterOption}
+          key="maMA"
+          autoFocus={true}
+          defaultOpen={true}
+          onBlur={handleClickSelection}
+          onClick={handleClickSelection}
+        >
+          {!readOnly && (
+            <>
+              {data.map((e) => (
+                <Option
+                  style={customOptionStyle}
+                  value={e["value"]}
+                  key={e["value"]}
+                >
+                  <span
+                    style={{
+                      width: "250px",
+                      display: "inline-block",
+                      borderRight: "1px solid #000",
+                    }}
+                  >
+                    {e["value"]}
+                  </span>
+                  <span style={{ paddingLeft: "5px", width: "auto" }}>
+                    {e["label"]}
+                  </span>
+                </Option>
+              ))}
+            </>
+          )}
 
-      <input readOnly={true} value={label} style={{ width: size_span }} />
-    </Space>
+          {readOnly && (
+            <Option style={customOptionStyle} value={value} key={value}>
+              <span
+                style={{
+                  width: "250px",
+                  display: "inline-block",
+                  borderRight: "1px solid #000",
+                }}
+              >
+                {value}
+              </span>
+              <span style={{ paddingLeft: "10px", width: "auto" }}>
+                {label}
+              </span>
+            </Option>
+          )}
+        </Select>
+      )}
+    </div>
   );
 };
 
