@@ -9,12 +9,14 @@ const ThoQuai = ({ initValue, changeData, size_input, size_span }) => {
     setData(stateItem.infoItemThoQuai);
   }, []);
 
-  const [value, setValue] = useState("");
-  const [label, setLabel] = useState("");
-  useEffect(() => {
-    setValue(initValue["value"]);
-    setLabel(initValue["label"]);
-  }, []);
+  const [value, setValue] = useState(() => {
+    if (initValue["value"]) return initValue["value"];
+    else return "";
+  });
+  const [label, setLabel] = useState(() => {
+    if (initValue["label"]) return initValue["label"];
+    else return "";
+  });
 
   useEffect(() => {
     changeData({ value, label });

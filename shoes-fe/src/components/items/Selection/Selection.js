@@ -26,6 +26,7 @@ const Selection = ({
   size_span,
   className,
 }) => {
+  console.log("111label: ", label);
   const [maMA, setMaMau] = useState(() => {
     if (value) {
       return value;

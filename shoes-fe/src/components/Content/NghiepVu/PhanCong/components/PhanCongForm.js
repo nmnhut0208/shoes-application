@@ -136,7 +136,7 @@ const PhanCongForm = ({ form, setChiTietPhanCong, listGiayWillPhanCong }) => {
         </Popover>
       </div>
 
-      <span>{form["TENGIAY"]}</span>
+      <span className={styles.span_text}>{form["TENGIAY"]}</span>
       <div className={styles.phancong_remain}>
         <div className={styles.pair}>
           <label>Màu sườn</label>
