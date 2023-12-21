@@ -44,6 +44,19 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
     const data = { ...form, ...dict_data };
     let name = Object.keys(dict_data)[0];
     if (list_info_generator_MAGIAY.includes(name)) {
+      if (name === "MAQUAI" && dict_data["MAQUAI"] != "") {
+        let componentsTENGIAY = data["TENGIAY"].split(",");
+        if (componentsTENGIAY.length == 4) {
+          data["TENGIAY"] =
+            componentsTENGIAY[0] +
+            "," +
+            dict_data["TENQUAI"] +
+            "," +
+            componentsTENGIAY[2] +
+            "," +
+            dict_data["MAQUAI"];
+        }
+      }
       let MAKH = data["MAKH"];
       let MASUON = data["MASUON"];
       data["SortID"] = data["MAQUAI"];
