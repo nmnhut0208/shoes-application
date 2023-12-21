@@ -116,7 +116,7 @@ const FormGiay = () => {
   console.log("mode in giay: ", mode);
 
   const handleNhanBan = () => {
-    // dispatchTable(actions_table.setActionForm("add"));
+    dispatchTable(actions_table.setActionForm("add"));
     setMode("add");
     setDataForm({
       ...dataForm,
