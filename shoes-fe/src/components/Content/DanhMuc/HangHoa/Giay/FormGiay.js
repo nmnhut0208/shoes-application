@@ -20,6 +20,9 @@ const FormGiay = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [isSaveData, setIsSaveData] = useState(true);
   const [dataForm, setDataForm] = useState(null);
+  const [mode, setMode] = useState(() => {
+    return stateTable.inforShowTable.action_row;
+  });
 
   useEffect(() => {
     if (stateTable.inforShowTable.record["MAGIAY"] !== "") {
@@ -110,19 +113,24 @@ const FormGiay = () => {
     }
     setDataForm(form_emty);
   };
+  console.log("mode in giay: ", mode);
 
   const handleNhanBan = () => {
     dispatchTable(actions_table.setActionForm("add"));
+    setMode("add");
+    setDataForm({
+      ...dataForm,
+      MAKH: "",
+      TENKH: "",
+      MAQUAI: "",
+      TENQUAI: "",
+    });
   };
 
   return (
     <>
       {dataForm && (
-        <FormGiayBasic
-          form={dataForm}
-          setDataForm={setDataForm}
-          mode={stateTable.inforShowTable.action_row}
-        />
+        <FormGiayBasic form={dataForm} setDataForm={setDataForm} mode={mode} />
       )}
 
       <div className={styles.group_button}>

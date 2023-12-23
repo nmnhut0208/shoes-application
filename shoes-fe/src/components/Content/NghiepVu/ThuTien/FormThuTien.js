@@ -138,6 +138,7 @@ const FormThuTien = ({ dataView, type_action }) => {
   };
 
   const handleNhapTiep = () => {
+    console.log("................");
     let SOPHIEU_old = form["SOPHIEU"];
     const sub_components = SOPHIEU_old.split("-");
     const str_number = ("000" + (lastestSOPHIEU + 1)).slice(-4);
@@ -148,8 +149,13 @@ const FormThuTien = ({ dataView, type_action }) => {
       NGUOITAO: stateUser.userName,
       NGUOISUA: stateUser.userName,
       DIENGIAIPHIEU: "",
+      THANHTIEN: "",
+      MAKH: "",
+      TENKH: "",
       SOPHIEU: SOPHIEU_new,
-      NGAYPHIEU: moment().format("DD-MM-YYYY"),
+      NGAYPHIEU: moment()
+        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+        .format("YYYY-MM-DD HH:mm:ss"),
     });
     setLastestSOPHIEU(lastestSOPHIEU + 1);
     setIsSave(true);
