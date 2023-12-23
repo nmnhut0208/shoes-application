@@ -228,24 +228,55 @@ def save(data: dict) -> RESPONSE:
 
 
 @router.get("/chamcong/salary_compute")
-def reasalary_computed(MAKY: str, TYPE: str) -> List[dict]:
+def reasalary_computed(MAKY: str, TYPE: str, YEAR: str) -> List[dict]:
+    start_date = f"{YEAR}-01-01"
+    end_date = f"{YEAR}-12-31"
     LOAINVIEN = ""
+    # LOAINVIEN: TQ, TD, ALL
     if TYPE == "TQ":
         LOAINVIEN = "and MALOAINV='TQ'"
     elif TYPE == "TD":
         LOAINVIEN = "and MALOAINV='TD'"
     else:
         pass
-    sql = f"""
-        select MANVIEN, TENNVIEN, MaGiay as MAGIAY, SOLUONG,
-        DONGIA, SOLUONG * DONGIA as THANHTIEN,
-        PHIEUPC, DIENGIAIPHIEU, MADE, MAQUAI
-        from V_CHAMCONG
-        where MaKy = '{MAKY}'
-        -- and MANVIEN='LINH' -- delete this line
-        {LOAINVIEN}
-        order by MANVIEN, PHIEUPC, MAGIAY
-    """
+
+    # sql = f"""
+    #     select MANVIEN, TENNVIEN, MaGiay as MAGIAY, SOLUONG,
+    #     DONGIA, SOLUONG * DONGIA as THANHTIEN,
+    #     PHIEUPC, DIENGIAIPHIEU, MADE, MAQUAI
+    #     from V_CHAMCONG
+    #     where MaKy = '{MAKY}'
+    #     -- and MANVIEN='LINH' -- delete this line
+    #     {LOAINVIEN}
+    #     {condition_year}
+    #     order by MANVIEN, PHIEUPC, MAGIAY
+    # """
+    sql = f"""select MANVIEN, TENNVIEN, MaGiay as MAGIAY, SOLUONG,
+                DONGIA, SOLUONG * DONGIA as THANHTIEN,
+                PHIEUPC, DIENGIAIPHIEU, MADE, MAQUAI
+            from 
+            (Select CHAMCONG.PHIEUPC, CHAMCONG.MaKy, CHAMCONG.MaGiay,CHAMCONG.MANVIEN,
+                (SELECT TOP 1 DIENGIAIPHIEU FROM PHANCONG WHERE PHANCONG.SOPHIEU = CHAMCONG.PHIEUPC)AS DIENGIAIPHIEU, 
+                SUM(CHAMCONG.SOLUONG) AS SOLUONG,
+                CASE WHEN DMNHANVIEN.LOAINVIEN = 'TD' THEN V_GIAY.DONGIADE ELSE V_GIAY.DONGIAQUAI END AS DONGIA,
+                DMKYTINHLUONG.TENKY,V_GIAY.TENGIAY,DMNHANVIEN.TENNVIEN, DMNHANVIEN.LOAINVIEN as MALOAINV,
+                CASE 	WHEN DMNHANVIEN.LOAINVIEN = 'TD' THEN 'THOI ÑEA' 
+                    WHEN DMNHANVIEN.LOAINVIEN = 'TQ' THEN 'THOI QUAI' ELSE 'KHAUC' END AS LOAINV,
+                CASE 	WHEN DMNHANVIEN.LOAINVIEN = 'TD' THEN V_GIAY.MADE ELSE '' END AS MADE,
+                CASE	WHEN DMNHANVIEN.LOAINVIEN = 'TQ' THEN V_GIAY.MAQUAI ELSE '' END AS MAQUAI
+            From CHAMCONG 	Left Join DMKYTINHLUONG On DMKYTINHLUONG.MAKY=CHAMCONG.MAKY 
+                    Left Join V_GIAY On V_GIAY.MAGIAY=CHAMCONG.MAGIAY 
+                    Left Join DMNHANVIEN On DMNHANVIEN.MANVIEN=CHAMCONG.MANVIEN
+            where CHAMCONG.MAKY = '{MAKY}'
+            and CHAMCONG.NgayPhieu >= '{start_date}'
+            and CHAMCONG.NgayPhieu <= '{end_date}'
+            GROUP BY CHAMCONG.PHIEUPC, CHAMCONG.MaKy, CHAMCONG.MaGiay, 
+            CHAMCONG.MANVIEN, DMKYTINHLUONG.TENKY,V_GIAY.TENGIAY,DMNHANVIEN.TENNVIEN, 
+            DMNHANVIEN.LOAINVIEN, V_GIAY.DONGIADE, V_GIAY.DONGIAQUAI, V_GIAY.MAQUAI, V_GIAY.MADE) as V_CHAMCONG
+            where MaKy = '{MAKY}'
+            {LOAINVIEN}
+            order by MANVIEN, PHIEUPC, MAGIAY
+          """
     result = CC.read_custom(sql)
     return result
 

@@ -355,6 +355,7 @@ const FormDonHang = ({
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [focusedRow, focusedColumn, changeFocus, dataTable]);
+  console.log("infoFormWillShow: ", infoFormWillShow);
 
   return (
     <div className={styles.page}>
