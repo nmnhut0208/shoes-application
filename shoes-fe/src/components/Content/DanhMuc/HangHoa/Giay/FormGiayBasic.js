@@ -99,20 +99,6 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
     setDataForm(data);
   };
 
-  const changeMasuon = (masuon) => {
-    console.log("masuon: ", masuon);
-
-    // form["TENGIAY"] =
-    //   form["TENGOT"] +
-    //   "," +
-    //   form["TENQUAI"] +
-    //   "," +
-    //   form["TENMUI"] +
-    //   "," +
-    //   form["MAQUAI"];
-    // setDataForm({ ...form });
-  };
-
   const changeImage = (e) => {
     if (e.target.value !== "") {
       var reader = new FileReader();
@@ -243,7 +229,6 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
                 readOnly={readOnly}
                 initValue={{ value: form["MASUON"], label: form["TENSUON"] }}
                 changeData={(dict_data) => {
-                  changeMasuon(dict_data["value"]);
                   handleChangeInformationForm({
                     MASUON: dict_data["value"],
                     TENSUON: dict_data["label"],
