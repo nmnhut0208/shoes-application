@@ -63,18 +63,20 @@ def read(data: dict):
     sophieu = data["SOPHIEU"]
     makh = data["MAKH"]
     # sodh = "(" + ", ".join([f"'{value}'" for value in data["SODH"]]) + ")"
-    sql = f"""SELECT SODH, CONGNO.MAGIAY, TENGIAY, MAUDE, MAUGOT, MAUSUON, MAUCA,
-                     MAUQUAI, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, coalesce(SIZE1,0) AS SIZE1, 
-                     SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, 
-                    GIABAN, THANHTIEN, DIENGIAIPHIEU AS DIENGIAIDONG 
-              FROM CONGNO  
-              left join (SELECT MAGIAY, TENGIAY FROM DMGIAY) as DMGIAY 
-                    ON CONGNO.MAGIAY = DMGIAY.MAGIAY 
-              WHERE MAKH = '{makh}' 
-              AND SOPHIEU = '{sophieu}'
+    sql = f"""SELECT CONGNO.SODH, CONGNO.MAGIAY, TENGIAY, MAUDE, MAUGOT, MAUSUON, MAUCA,
+                MAUQUAI, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, coalesce(SIZE1,0) AS SIZE1, 
+                SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, 
+                GIABAN, THANHTIEN, DIENGIAIPHIEU AS DIENGIAIDONG, DH.NGAYDH
+            FROM CONGNO  
+            LEFT JOIN (SELECT MAGIAY, TENGIAY FROM DMGIAY) as DMGIAY ON CONGNO.MAGIAY = DMGIAY.MAGIAY 
+            LEFT JOIN (SELECT SODH, MAX(NGAYDH) AS NGAYDH FROM DONHANG GROUP BY SODH) AS DH ON CONGNO.SODH = DH.SODH
+            WHERE MAKH = '{makh}' 
+            AND SOPHIEU = '{sophieu}'
+            ORDER BY DH.NGAYDH DESC, CONGNO.SODH DESC
               """
     # return TVGH.read_custom(sql)
     results = TVGH.read_custom(sql)
+    # print("results: ", results)
     # group with SODH
     results_group = {}
     for result in results:
@@ -110,6 +112,7 @@ def save(data: dict) -> RESPONSE:
         _v = []
         madong += 1
         del item["TENGIAY"]
+        del item["NGAYDH"]
         item["MADONG"] = f"MD{year}{str(madong).zfill(12)}"
         item["MAPHIEU"] = MAPHIEU
         item["SOPHIEU"] = sophieu
