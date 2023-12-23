@@ -45,10 +45,12 @@ const In = ({ data, setShowModal, stylePrint }) => {
     removeAfterPrint: true,
   });
 
+  console.log("data: ", data);
+
   useLayoutEffect(() => {
     fetch(
       "http://localhost:8000/chamcong/salary_compute?" +
-        `MAKY=${data["MAKY"]}&TYPE=${data["TYPE"]}`
+        `MAKY=${data["MAKY"]}&TYPE=${data["TYPE"]}&YEAR=${data["YEAR"]}`
     )
       .then((response) => response.json())
       .then((info) => {
