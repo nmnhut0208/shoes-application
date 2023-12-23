@@ -47,7 +47,7 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
     sodh = "(" + ", ".join([f"'{value}'" for value in data["sodh"]]) + ")"
     makh = data["makh"]
     sql = f"""SELECT SODH, THONGKE.MAGIAY, DMGIAY.TENGIAY, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, coalesce(SIZE1,0) AS SIZE1, MAUDE, MAUGOT, MAUSUON, MAUCA, MAUQUAI,
-                SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, DMGIAY.DONGIA AS GIABAN, (SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0)) * DMGIAY.DONGIA AS THANHTIEN,
+                SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, coalesce(DMGIAY.DONGIA, 1) AS GIABAN, (SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0)) * coalesce(DMGIAY.DONGIA, 1) AS THANHTIEN,
                 THONGKE.DIENGIAIPHIEU AS DIENGIAIDONG
                 FROM 
                 (
@@ -82,7 +82,7 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
         if result["SODH"] not in results_group:
             results_group[result["SODH"]] = []
         results_group[result["SODH"]].append(result)
-    # print(results_group)
+    # print("group: ", results_group)
     return results_group
 
 
