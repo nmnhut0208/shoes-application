@@ -4,6 +4,7 @@ import FormGiayBasic from "./FormGiayBasic";
 import styles from "./FormGiayBasic.module.scss";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { CustomAlert } from "~utils/alert_custom";
+import { useItemsContext } from "~items_context";
 
 const list_input_required = {
   MAGIAY: "Mã giày",
@@ -20,9 +21,13 @@ const FormGiay = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [isSaveData, setIsSaveData] = useState(true);
   const [dataForm, setDataForm] = useState(null);
+  const [stateItem, dispatchItem] = useItemsContext();
+
   const [mode, setMode] = useState(() => {
     return stateTable.inforShowTable.action_row;
   });
+
+  console.log("dataForm: ", dataForm);
 
   useEffect(() => {
     if (stateTable.inforShowTable.record["MAGIAY"] !== "") {
@@ -32,8 +37,32 @@ const FormGiay = () => {
       )
         .then((response) => response.json())
         .then((info) => {
+          info = { ...info[0] };
           console.log("info: ", info);
-          setDataForm(info[0]);
+          if (info["MASUON"] != "") {
+            let _slitMASUON = info["MASUON"].split("-");
+            let magot = _slitMASUON[0];
+            let mamui = _slitMASUON[1];
+            try {
+              info["TENGOT"] = stateItem.infoItemGot.filter(
+                (x) => x["value"] == magot
+              )[0]["label"];
+            } catch {
+              info["TENGOT"] = "";
+            }
+
+            try {
+              info["TENMUI"] = stateItem.infoItemMui.filter(
+                (x) => x["value"] == mamui
+              )[0]["label"];
+            } catch {
+              info["TENMUI"] = "";
+            }
+          } else {
+            info["TENGOT"] = "";
+            info["TENMUI"] = "";
+          }
+          setDataForm(info);
           setIsSaveData(true);
         })
         .catch((error) => {
@@ -41,7 +70,13 @@ const FormGiay = () => {
         });
     } else {
       // form empty to add giay
-      setDataForm(stateTable.inforShowTable.record);
+      setDataForm({
+        ...stateTable.inforShowTable.record,
+        TENGOT: "",
+        TENMUI: "",
+        TENQUAI: "",
+        MAKH: "",
+      });
     }
   }, []);
 

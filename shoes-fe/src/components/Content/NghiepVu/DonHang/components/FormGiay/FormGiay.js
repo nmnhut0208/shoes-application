@@ -20,7 +20,17 @@ const FormGiay = ({
   listGiayUnique,
   setListGiayUnique,
 }) => {
-  const [dataForm, setDataForm] = useState({});
+  const [dataForm, setDataForm] = useState({
+    MAQUAI: "",
+    TENGOT: "",
+    TENMUI: "",
+    TENQUAI: "",
+    MAKH: "",
+    MAGIAY: "",
+    HINHANH: "",
+    MASUON: "",
+    MAKH: "",
+  });
 
   const handleSaveFrom = async () => {
     for (let key in list_input_required) {

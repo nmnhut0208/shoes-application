@@ -9,6 +9,8 @@ const Mui = ({ initValue, changeData, size_input, size_span, readOnly }) => {
     setData(stateItem.infoItemMui);
   }, []);
 
+  console.log("data: ", data);
+
   const [value, setValue] = useState(() => {
     if (initValue["value"]) return initValue["value"];
     else return "";
