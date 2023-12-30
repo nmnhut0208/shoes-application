@@ -148,7 +148,6 @@ const FormNghiepVuPhanCong = ({
                 return response.json();
               })
               .then((result) => {
-                console.log("VO CAI CUOI CUNG");
                 const list_DH_chua_PC = info.map((obj, i) => obj.SODH);
                 result = result.filter(
                   (obj) => !list_DH_chua_PC.includes(obj.SODH)

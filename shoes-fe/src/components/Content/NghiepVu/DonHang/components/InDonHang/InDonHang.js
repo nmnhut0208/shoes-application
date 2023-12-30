@@ -42,7 +42,6 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
         let tenca = dataTable[i]["TENCA"];
 
         for (var jj = 0; jj < info["HEADER_TABLE"].length; jj++) {
-          console.log("key:-----", info["HEADER_TABLE"][jj].key);
           if (info["HEADER_TABLE"][jj].key === "TENMAUCA") {
             info["HEADER_TABLE"][jj].header = `CÁ: ${tenca}`;
             break;

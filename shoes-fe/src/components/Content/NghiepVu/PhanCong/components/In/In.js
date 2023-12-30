@@ -24,7 +24,18 @@ const processing_data = (data, TYPE) => {
         TENGIAY: data[i]["TENGIAY"],
       };
       info["TABLE"] = data.filter((_data) => _data["MAGIAY"] === ma_giay);
-      console.log("info[tho]: ", info["TABLE"]);
+
+      info["HEADER_TABLE"] = JSON.parse(JSON.stringify(INFO_COLS_THO));
+
+      let tenca = data[i]["TENCA"];
+
+      for (var jj = 0; jj < info["HEADER_TABLE"].length; jj++) {
+        if (info["HEADER_TABLE"][jj].key === "TENMAUCA") {
+          info["HEADER_TABLE"][jj].header = `CÁ: ${tenca}`;
+          break;
+        }
+      }
+
       for (let j = 0; j < info["TABLE"].length; j++) {
         info["TABLE"][j]["SIZE"] = "";
         info["TABLE"][j]["DONGIA"] = DONGIA;
@@ -80,8 +91,6 @@ const In = ({ sophieu, data }) => {
     };
     let list_tho_quai = get_unique(data, "THOQUAI");
     let list_tho_de = get_unique(data, "THODE");
-
-    console.log("list_tho_de: ", list_tho_de);
 
     let infoDetailsPrint = [];
     for (let i = 0; i < list_tho_de.length; i++) {
@@ -144,7 +153,7 @@ const In = ({ sophieu, data }) => {
                     </table>
                   </div>
                   <TableToPrint
-                    columns={INFO_COLS_THO}
+                    columns={each_giay["HEADER_TABLE"]}
                     data={each_giay["TABLE"]}
                     LIST_FORMAT_NUMBER={["TONGSO", "DONGIA", "THANHTIEN"]}
                   />

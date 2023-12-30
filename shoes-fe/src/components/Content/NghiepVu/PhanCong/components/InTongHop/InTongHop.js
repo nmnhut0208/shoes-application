@@ -29,6 +29,18 @@ const InTongHop = ({ sophieu, data }) => {
         list_promises.push(getImageOfDanhMuc("giay", ma_giay, "MAGIAY"));
         info["TABLE"] = data.filter((_data) => _data["MAGIAY"] === ma_giay);
         console.log("info[tho]: ", info["TABLE"]);
+
+        info["HEADER_TABLE"] = JSON.parse(JSON.stringify(INFO_COLS_THO));
+
+        let tenca = data[i]["TENCA"];
+
+        for (var jj = 0; jj < info["HEADER_TABLE"].length; jj++) {
+          if (info["HEADER_TABLE"][jj].key === "TENMAUCA") {
+            info["HEADER_TABLE"][jj].header = `CÁ: ${tenca}`;
+            break;
+          }
+        }
+
         for (let j = 0; j < info["TABLE"].length; j++) {
           info["TABLE"][j]["SIZE"] = "";
           let top = [];
@@ -95,7 +107,10 @@ const InTongHop = ({ sophieu, data }) => {
                   </tr>
                 </table>
               </div>
-              <TableToPrint columns={INFO_COLS_THO} data={info["TABLE"]} />
+              <TableToPrint
+                columns={info["HEADER_TABLE"]}
+                data={info["TABLE"]}
+              />
             </div>
           ))}
       </div>
