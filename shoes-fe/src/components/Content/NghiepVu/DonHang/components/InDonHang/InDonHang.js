@@ -37,6 +37,17 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
         };
         list_promises.push(getImageOfDanhMuc("giay", ma_giay, "MAGIAY"));
         info["GIABAN"] = dataTable[i]["GIABAN"];
+        info["HEADER_TABLE"] = JSON.parse(JSON.stringify(INFO_COLS_THO));
+
+        let tenca = dataTable[i]["TENCA"];
+
+        for (var jj = 0; jj < info["HEADER_TABLE"].length; jj++) {
+          console.log("key:-----", info["HEADER_TABLE"][jj].key);
+          if (info["HEADER_TABLE"][jj].key === "TENMAUCA") {
+            info["HEADER_TABLE"][jj].header = `CÁ: ${tenca}`;
+            break;
+          }
+        }
         info["TABLE"] = dataTable.filter(
           (_data) => _data["MAGIAY"] === ma_giay
         );
@@ -138,7 +149,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                 </table>
               </div>
               <TableToPrint
-                columns={INFO_COLS_THO}
+                columns={info["HEADER_TABLE"]}
                 data={info["TABLE"]}
                 LIST_FORMAT_NUMBER={["GIABAN"]}
               />

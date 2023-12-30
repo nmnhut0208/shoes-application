@@ -36,7 +36,12 @@ const GiayUnique = ({
   const handleChange = (value) => {
     setMaMau(value);
     let choice = listGiayUnique.filter((e) => e.MAGIAY === value);
-    handleChangeDataTable(value, choice[0]["TENGIAY"], choice[0]["GIABAN"]);
+    handleChangeDataTable(
+      value,
+      choice[0]["TENGIAY"],
+      choice[0]["GIABAN"],
+      choice[0]["TENCA"]
+    );
     setShowInput(true);
     setShowSelection(false);
   };

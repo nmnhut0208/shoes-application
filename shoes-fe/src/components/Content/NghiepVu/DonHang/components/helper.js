@@ -96,10 +96,11 @@ export const updateColumnsInformations = (
         <GiayUnique
           listGiayUnique={listGiayUnique}
           init={dataTable[cell.row.id][cell.column.id]}
-          handleChangeDataTable={(value, label, giaban) => {
+          handleChangeDataTable={(value, label, giaban, tenca) => {
             dataTable[cell.row.id][cell.column.id] = value;
             dataTable[cell.row.id]["TENGIAY"] = label;
             dataTable[cell.row.id]["GIABAN"] = giaban;
+            dataTable[cell.row.id]["TENCA"] = tenca;
             if (dataTable[dataTable.length - 1]["MAGIAY"] !== "") {
               dataTable.push(renderDataEmpty(INFO_COLS_DONHANG, 1)[0]);
             }
