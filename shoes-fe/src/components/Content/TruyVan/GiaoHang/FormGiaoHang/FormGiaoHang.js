@@ -254,7 +254,7 @@ const FormGiaoHang = ({
   setDataTableBig,
   setShowForm,
   setIsSaveDataTruyVanGiaoHang,
-  isSaveData
+  isSaveData,
 }) => {
   const [stateUser, dispatchUser] = useUserContext();
   const [userState, userDispatch] = useUserContext();
@@ -334,7 +334,6 @@ const FormGiaoHang = ({
           return response.json();
         })
         .then((info) => {
-          console.log("info: ", info);
           if (info.status === "success") {
             setIsSaveDataTruyVanGiaoHang(true);
             updateData(year, setDataTableBig);
@@ -567,7 +566,6 @@ const FormGiaoHang = ({
         return response.json();
       })
       .then((info) => {
-        console.log("info: ", info);
         setDataTableSub(info);
         const keys = Object.keys(info);
         const map = {};
@@ -761,21 +759,13 @@ const FormGiaoHang = ({
           {/* <button onClick={handleSave}>Lưu</button> */}
           {/* <button>Nhập tiếp</button> */}
           {/* <button onClick={handleIn}>In</button> */}
-          {
-            isSaveData ? (
-              <button onClick={handleIn}>In</button>
-            ) : (
-              <></>
-            )
-          }
+          {isSaveData ? <button onClick={handleIn}>In</button> : <></>}
           {/* <button onClick={handleInCongNo}>In Công Nợ</button> */}
-          {
-            isSaveData ? (
-              <button onClick={handleInCongNo}>In Công Nợ</button>
-            ) : (
-              <></>
-            )
-          }
+          {isSaveData ? (
+            <button onClick={handleInCongNo}>In Công Nợ</button>
+          ) : (
+            <></>
+          )}
           <button onClick={handleSave}>Lưu</button>
           {/* <button
             onClick={() => {

@@ -154,7 +154,6 @@ const updateInfo = (permission, year, setDataDonHang) => {
       })
       .then((info) => {
         setDataDonHang(info);
-        console.log("info: ", info);
       })
       .catch((err) => {
         console.log(":error: ", err);

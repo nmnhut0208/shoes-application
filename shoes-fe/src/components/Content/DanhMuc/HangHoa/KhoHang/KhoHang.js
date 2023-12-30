@@ -31,7 +31,6 @@ const KhoHang = () => {
         return response.json();
       })
       .then((info) => {
-        console.log("info: ", info);
         dispatchTable(actions_table.setInforColumnTable(infoColumns));
         dispatchTable(actions_table.setInforTable(info));
         // if neu co thong tin moi show ne

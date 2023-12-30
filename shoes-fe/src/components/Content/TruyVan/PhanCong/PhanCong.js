@@ -180,7 +180,6 @@ const updateInfo = (permission, year, setData) => {
       })
       .then((info) => {
         setData(info);
-        console.log("info: ", info);
       })
       .catch((err) => {
         console.log(":error: ", err);

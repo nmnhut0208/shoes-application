@@ -38,7 +38,6 @@ const FormGiay = () => {
         .then((response) => response.json())
         .then((info) => {
           info = { ...info[0] };
-          console.log("info: ", info);
           if (info["MASUON"] != "") {
             let _slitMASUON = info["MASUON"].split("-");
             let magot = _slitMASUON[0];

@@ -24,7 +24,6 @@ const In = ({ data, setShowModal, stylePrint }) => {
     })
       .then((response) => response.json())
       .then((info) => {
-        console.log("info: ", info);
         setDataTable(info);
       })
       .catch((error) => {

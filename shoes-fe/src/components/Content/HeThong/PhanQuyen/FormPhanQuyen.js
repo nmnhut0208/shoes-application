@@ -32,7 +32,6 @@ const FormPhanQuyen = () => {
         return response.json();
       })
       .then((info) => {
-        console.log("info: ", info);
         setTypeForm(info);
       })
       .catch((err) => {
@@ -46,7 +45,6 @@ const FormPhanQuyen = () => {
         return response.json();
       })
       .then((info) => {
-        console.log("info: ", info);
         setMaNV(info);
       })
       .catch((err) => {
@@ -102,7 +100,6 @@ const FormPhanQuyen = () => {
           return response.json();
         })
         .then((info) => {
-          console.log("info: ", info);
           if (info["status"] === "exist") {
             CustomAlert("Đã tồn tại!");
           } else {
