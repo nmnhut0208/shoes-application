@@ -1,6 +1,6 @@
 import MaterialReactTable from "material-react-table";
 import { memo } from "react";
-import { border_text_table_config } from "~config/ui";
+import { border_text_table_config } from "./SettingTable";
 
 const TableDonHang = ({
   columns,

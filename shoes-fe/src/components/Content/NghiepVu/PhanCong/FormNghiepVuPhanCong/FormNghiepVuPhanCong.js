@@ -366,7 +366,7 @@ const FormNghiepVuPhanCong = ({
         <TableDonHang
           columns={infoTableDonHang}
           data={dataDonHang}
-          maxHeight={24}
+          maxHeight={20}
           rowSelection={rowSelectionDonHangToPhanCong}
           setRowSelection={setRowSelectionDonHangToPhanCong}
         />
