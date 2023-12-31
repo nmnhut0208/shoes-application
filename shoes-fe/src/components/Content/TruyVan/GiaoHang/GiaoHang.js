@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
-import { Modal } from "./Modal";
 import GiaoHangSub from "./GiaoHangSub";
 import { useUserContext } from "~user";
-import { CustomAlert } from "~utils/alert_custom";
 
 const MAFORM_GIAOHANG = "F0033";
 
@@ -24,20 +22,14 @@ const GiaoHang = () => {
   // Việc xem, xóa, sửa đơn hàng sẽ từ bên truy vấn => đơn hàng
   // Nghiệp Vụ Đơn Hàng chỉ để tạo mới đơn hàng thôi
   return (
-    <Modal
-      status={showModal}
-      title="Giao Hàng - F0033"
-      setShowModal={setShowModal}
-      isSaveData={isSaveData}
-      isResetPageEmpty={true}
-    >
+    <div style={{ width: "88%", marginLeft: "5%" }}>
       <GiaoHangSub
         // setShowModalNghiepVuGiaoHang={setShowModal}
         isSaveData={isSaveData}
         setIsSaveDataTruyVanGiaoHang={setIsSaveData}
         permission={permission}
       />
-    </Modal>
+    </div>
   );
 };
 export default GiaoHang;

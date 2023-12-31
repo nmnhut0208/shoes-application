@@ -31,7 +31,7 @@ const list_key = [
     Cell: ({ cell }) => (
       <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
     ),
-  }
+  },
 ];
 
 const infoColumns = processingInfoColumnTable(list_key);
@@ -92,7 +92,7 @@ const ChamCongSub = () => {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header_table}>Chấm công</header>
+      <h1 className={styles.header_table}>Truy vấn - Chấm công</h1>
       <div className={clsx(styles.form, styles.info_query)}>
         <label>Xem dữ liệu năm</label>
         <input
