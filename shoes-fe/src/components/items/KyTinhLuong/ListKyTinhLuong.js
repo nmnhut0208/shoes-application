@@ -5,20 +5,12 @@ import { COL_KYTINHLUONG } from "./ConstantVariable";
 import { useItemsContext } from "~items_context";
 import { border_text_table_config } from "~config/ui";
 
-const ListKyTinhLuong = ({ setValue, setLabel }) => {
+const ListKyTinhLuong = ({ setValue, setLabel, showPopover }) => {
   const [data, setData] = useState([]);
   const [stateItem, dispatchItem] = useItemsContext();
-  const [rowSelection, setRowSelection] = useState({});
   useEffect(() => {
     setData(stateItem.infoItemKyTinhLuong);
   }, []);
-  useEffect(() => {
-    let keys = Object.keys(rowSelection);
-    if (keys.length > 0) {
-      setValue(data[keys[0]]["MAKY"]);
-      if (setLabel) setLabel(data[keys[0]]["TENKY"]);
-    }
-  }, [rowSelection]);
 
   const columns = useMemo(() => {
     return processingInfoColumnTable(COL_KYTINHLUONG);
@@ -37,13 +29,19 @@ const ListKyTinhLuong = ({ setValue, setLabel }) => {
         // enable phân trang
         enablePagination={false}
         enableBottomToolbar={true}
-        // row selection
-        enableMultiRowSelection={false}
-        enableRowSelection
-        onRowSelectionChange={setRowSelection}
-        state={{ rowSelection }}
-        // scroll to bottom
-        // enableRowVirtualization
+
+        enableMultiRowSelection={false} //use radio buttons instead of checkboxes
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => {
+            row.getToggleSelectedHandler();
+            setValue(data[row.id]["MAKY"]);
+            if (setLabel)
+              setLabel(data[row.id]["TENKY"]);
+            showPopover(false);
+          },
+          sx: { cursor: "pointer" },
+        })}
+
         muiTableContainerProps={{
           sx: { height: "30rem" },
         }}

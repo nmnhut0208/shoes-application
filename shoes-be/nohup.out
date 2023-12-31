@@ -1,0 +1,34 @@
+INFO:     Started server process [6000]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:51385 - "GET /ca HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51383 - "GET /de HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51383 - "GET /khachhang HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51385 - "GET /mui HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51385 - "GET /nhanvien/get-thoquai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51383 - "GET /nhanvien/get-thode HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51385 - "GET /kytinhluong HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51388 - "GET /got HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51387 - "GET /mau HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51384 - "GET /suon HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51386 - "GET /quai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51386 - "OPTIONS /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51384 - "POST /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51384 - "OPTIONS /access HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51386 - "POST /access HTTP/1.1" 200 OK
+INFO:     Started server process [8464]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:52168 - "GET /ca HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52166 - "GET /de HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52166 - "GET /khachhang HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52168 - "GET /mui HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52166 - "GET /nhanvien/get-thode HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52168 - "GET /nhanvien/get-thoquai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52166 - "GET /kytinhluong HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52171 - "GET /got HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52167 - "GET /suon HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52170 - "GET /mau HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52169 - "GET /quai HTTP/1.1" 200 OK

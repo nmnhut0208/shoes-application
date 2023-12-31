@@ -108,7 +108,7 @@ const SubTable = ({
                             .catch((err) => {
                               console.log(err);
                             });
-                          alert("Xóa thành công");
+                          // alert("Xóa thành công");
                         } else {
                           alert("Xóa thất bại");
                         }

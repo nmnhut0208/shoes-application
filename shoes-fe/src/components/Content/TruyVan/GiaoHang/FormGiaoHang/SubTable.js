@@ -1,17 +1,62 @@
-import { useState } from "react";
-import { Typography } from "@mui/material";
+import { memo } from "react";
 import MaterialReactTable from "material-react-table";
 import { border_text_table_config } from "~config/ui";
+import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
+import { Delete } from "@mui/icons-material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 
 const SubTable = ({
   columns,
   data,
-  rowSelection,
+  dataAll,
+  curDH,
+  setDataTable,
+  // rowSelection,
+  // flag_rowSelection,
   setRowSelection,
-  flag_rowSelection,
+  setIsSaveData,
   maxHeight,
+  change,
+  setKeys
 }) => {
-  //   console.log("data: ", data);
+  console.log("render SubTable: ", data);
+  const handleSaveCell = (cell, value) => {
+    //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
+    if ( dataAll.length === 0 ) return;
+    let data_new = dataAll[curDH]
+    console.log("cell: ", data_new);
+    var row_current = data_new[cell.row.index];
+    // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
+    // Tính lại số lượng
+    var list_size = [
+      "SIZE5",
+      "SIZE6",
+      "SIZE7",
+      "SIZE8",
+      "SIZE9",
+      "SIZE0",
+      "SIZE1",
+    ];
+    if (list_size.includes(cell.column.id)) {
+      if (value === "") value = 0;
+      row_current[cell.column.id] = parseInt(value);
+
+      var so_luong = 0;
+      for (var i = 0; i < list_size.length; i++) {
+        so_luong += row_current[list_size[i]];
+      }
+      row_current["SOLUONG"] = so_luong;
+      row_current["THANHTIEN"] = row_current["SOLUONG"] * row_current["GIABAN"];
+      data_new[cell.row.index] = row_current;
+    } else {
+      data_new[cell.row.index][cell.column.id] = value;
+    }
+    // console.log("cell: ", data);
+    //send/receive api updates here
+    dataAll[curDH] = data_new;
+    setDataTable({...dataAll}); //re-render with new data
+    setIsSaveData(false);
+  };
 
   return (
     <MaterialReactTable
@@ -22,18 +67,69 @@ const SubTable = ({
       enableColumnActions={false}
       enableSorting={false}
       enableSelectAll={false}
-      enableRowSelection={flag_rowSelection}
+      // enableRowSelection={flag_rowSelection}
       //   getRowId={(row) => row.userId}
-      onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
-      state={{ rowSelection }}
+      onRowSelectionChange={(rows) => {
+        setRowSelection(rows);
+        setIsSaveData(false);
+      }}
+      // state={{ rowSelection }}
       enableTopToolbar={false}
       enableBottomToolbar={false}
       enablePagination={false}
       muiTableContainerProps={{ sx: { maxHeight: { maxHeight } } }}
       enableRowVirtualization
       enableStickyFooter
+      editingMode="table"
+      enableRowActions={true}
+      enableEditing={change}
+      muiTableBodyCellEditTextFieldProps={({ cell }) => ({
+        //onBlur is more efficient, but could use onChange instead
+        onBlur: (event) => {
+          handleSaveCell(cell, event.target.value);
+        },
+        type: "number",
+        onKeyDown: (event) => {
+          handleDisableKeyDownUp(event);
+        },
+        onKeyUp: (event) => {
+          handleDisableKeyDownUp(event);
+        },
+        onFocus: (event) => {
+          handleFocus(event);
+        },
+        sx: {
+          input: {
+            textAlign: "right",
+          },
+        },
+      })}
+      // renderRowActions Delete
+      renderRowActions={({ row, table }) => (
+        <Box>
+          <Tooltip arrow placement="right" title="Delete">
+            <IconButton
+              color="error"
+              onClick={() => {
+                // console.log("delete:", row.index);
+                // delete SODH in dataAll
+                let data_new = dataAll[curDH];
+                const index = row.index;
+                data_new = data_new.filter((_, i) => i !== index);
+                dataAll[curDH] = data_new;
+                setDataTable({...dataAll});
+                setKeys(prev => prev + 1)
+                setIsSaveData(false);
+              }
+              }
+            >
+              <Delete />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
     />
   );
 };
 
-export default SubTable;
+export default memo(SubTable);

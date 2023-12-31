@@ -19,7 +19,7 @@ const COL_KHACHHANG = [
 ];
 
 let columns_kh = processingInfoColumnTable(COL_KHACHHANG);
-const TableMaKH = ({ data, rowSelection, setRowSelection, setIsSaveData }) => {
+const TableMaKH = ({ data, rowSelection, setRowSelection, isSaveData, setIsSaveData, setClickedPopover }) => {
   console.log("re-render sub table when hover", data);
   return (
     <div style={{ height: "auto" }}>
@@ -38,8 +38,16 @@ const TableMaKH = ({ data, rowSelection, setRowSelection, setIsSaveData }) => {
         enableMultiRowSelection={false}
         enableRowSelection
         onRowSelectionChange={(row) => {
-          setRowSelection(row);
-          setIsSaveData(false);
+          if (isSaveData === true) {
+            setRowSelection(row);
+            setClickedPopover(false);
+          } else {
+            let text = "Bạn muốn chọn khách hàng khác mà không lưu thay đổi!";
+            if (window.confirm(text)) {
+              setRowSelection(row);
+              setIsSaveData(true);
+            }
+          }
         }}
         state={{ rowSelection }}
         muiTableContainerProps={{ sx: { maxHeight: "400px" } }}

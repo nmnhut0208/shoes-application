@@ -9,6 +9,11 @@ import {
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { convertDate } from "~utils/processing_date";
 
+const list_input_required = {
+  MAKY: "Mã kỳ",
+  TENKY: "Tên kỳ",
+};
+
 const FormKyTinhLuong = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateItem, dispatchItem] = useItemsContext();
@@ -31,6 +36,12 @@ const FormKyTinhLuong = () => {
   };
 
   const handleSaveFrom = () => {
+    for (let key in list_input_required) {
+      if (inputForm[key] === undefined || inputForm[key] === "") {
+        alert("Nhập " + list_input_required[key]);
+        return false;
+      }
+    }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -92,6 +103,7 @@ const FormKyTinhLuong = () => {
             name="MAKY"
             className={styles.item_size_small}
             readOnly={stateTable.inforShowTable.action_row === "edit"}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_first_row}>
@@ -101,6 +113,7 @@ const FormKyTinhLuong = () => {
             onChange={(e) => handleChangeInformationForm(e)}
             name="TENKY"
             className={styles.item_size_big}
+            autocomplete="off"
           />
         </div>
       </div>

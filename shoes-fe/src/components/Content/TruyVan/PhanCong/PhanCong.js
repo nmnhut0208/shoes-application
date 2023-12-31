@@ -52,7 +52,8 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
     <>
       <MaterialReactTable
         {...border_text_table_config}
-        // enableTopToolbar={false} // show tool to filter
+        enableTopToolbar={true} // show tool to filter
+        initialState={{ showColumnFilters: true }}
         columns={columns}
         data={data}
         // components
@@ -102,20 +103,18 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
                 </IconButton>
               </Tooltip>
             )}
-            {permission.XEM === 1 &&
-              permission.THEM === 0 &&
-              permission.SUA === 0 && (
-                <Tooltip arrow placement="right" title="View Detail">
-                  <IconButton
-                    onClick={() => {
-                      setRowInfo(row.original);
-                      handleEditRow();
-                    }}
-                  >
-                    <VisibilityOutlinedIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
+            {permission.XEM === 1 && permission.SUA === 0 && (
+              <Tooltip arrow placement="right" title="View Detail">
+                <IconButton
+                  onClick={() => {
+                    setRowInfo(row.original);
+                    handleEditRow();
+                  }}
+                >
+                  <VisibilityOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+            )}
           </Box>
         )}
       />
@@ -140,6 +139,7 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
           setListMaDongPhanCongAddButWaitSave={
             setListMaDongPhanCongAddButWaitSave
           }
+          action="edit"
         />
       </Modal>
 

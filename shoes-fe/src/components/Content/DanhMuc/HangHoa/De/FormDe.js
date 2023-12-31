@@ -8,6 +8,12 @@ import {
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 
+const list_input_required = {
+  MADE: "Mã đế",
+  TENDE: "Tên đế",
+  DONGIA: "Đơn giá đế",
+};
+
 const FormDe = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateItem, dispatchItem] = useItemsContext();
@@ -20,9 +26,11 @@ const FormDe = () => {
   };
 
   const handleSaveFrom = () => {
-    if (inputForm["DONGIA"] == "") {
-      alert("Nhập đơn giá đế!!!");
-      return false;
+    for (let key in list_input_required) {
+      if (inputForm[key] === undefined || inputForm[key] === "") {
+        alert("Nhập " + list_input_required[key]);
+        return false;
+      }
     }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
@@ -84,6 +92,7 @@ const FormDe = () => {
             name="MADE"
             className={styles.item_size_middle}
             readOnly={stateTable.inforShowTable.action_row === "edit"}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_first_row}>
@@ -93,6 +102,7 @@ const FormDe = () => {
             onChange={(e) => handleChangeInformationForm(e)}
             name="TENDE"
             className={styles.item_size_big}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_first_row}>
@@ -115,6 +125,7 @@ const FormDe = () => {
             onChange={(e) => handleChangeInformationForm(e)}
             name="GHICHU"
             className={styles.item_size_big}
+            autocomplete="off"
           />
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { Popover, Space } from "antd";
-import { memo } from "react";
+import { memo, useState } from "react";
 import ListKhachHang from "./ListKhachHang";
 
 const KhachHang = ({
@@ -13,12 +13,16 @@ const KhachHang = ({
   size_span,
 }) => {
   console.log("re-render ItemKhachHang");
+  const [clicked, setClicked] = useState(false);
   return (
     <Space>
       {!readOnly && (
         <Popover
           placement="bottomLeft"
-          content={<ListKhachHang setValue={setValue} setLabel={setLabel} />}
+          content={<ListKhachHang setValue={setValue} setLabel={setLabel} showPopover={setClicked} />}
+          trigger="click"
+          open={clicked}
+          onOpenChange={(open) => setClicked(open)}
         >
           <input
             name="MAKH"

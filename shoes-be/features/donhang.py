@@ -230,6 +230,31 @@ def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
     return result
 
 
+@router.get("/donhang/giay_unique/{MAKH}")
+# lấy tất cả các loại giày unique của khách hàng MAKH
+def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
+    date_care = datetime.today().year - 2
+    sql = f""" (SELECT DISTINCT V_GIAY.MAGIAY,V_GIAY.TENGIAY,  
+                    coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH,  
+                    V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI,    
+                    V_GIAY.TENCA, V_GIAY.TENKH
+            FROM (select DISTINCT MAGIAY, DONHANG.MAKH        
+                from DONHANG WHERE DONHANG.MAKH='{MAKH}'
+                and NGAYDH >= '{date_care}-01-01') AS DONHANG
+            inner JOIN (select * from V_GIAY where DONGIAQUAI is not null)
+            As V_GIAY on V_GIAY.magiay=DONHANG.magiay
+            )UNION (select DISTINCT MAGIAY,TENGIAY,
+                    MAKH,
+                    DONGIA as GIABAN, DONGIAQUAI,
+                    TENCA, TENKH from V_GIAY where MAKH='{MAKH}'
+                    and DONGIA is not null
+                    and DONGIAQUAI is not null) 
+            """
+    
+    result = donhang.read_custom(sql)
+    return result
+
+
 @router.post("/donhang")
 def add(data: List[ITEM_DONHANG]) -> RESPONSE:
     # delete SODH cu, insert SDH moi

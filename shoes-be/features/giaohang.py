@@ -72,7 +72,17 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
                 left join (SELECT MAGIAY, TENGIAY FROM DMGIAY) as DMGIAY ON THONGKE.MAGIAY = DMGIAY.MAGIAY
                 WHERE SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) > 0
                 """
-    return GH.read_custom(sql)
+    # return GH.read_custom(sql)
+    results = GH.read_custom(sql)
+    # group with SODH
+    results_group = {}
+    for result in results:
+        if result["SODH"] not in results_group:
+            results_group[result["SODH"]] = []
+        results_group[result["SODH"]].append(result)
+    # print(results_group)
+    return results_group
+
 
 @router.post("/savegiaohang")
 def save(data: dict) -> RESPONSE:
@@ -80,13 +90,16 @@ def save(data: dict) -> RESPONSE:
     makh = data["makh"]
     sophieu = data["sophieu"]
     diengiai = data["diengiai"]
+    date = data["date"]
     user = data["user"].lower()
     sql_delete = f"""delete FROM CONGNO
                     where SOPHIEU = '{sophieu}'
                     and LOAIPHIEU = 'BH' 
                     and MAKH = '{makh}'"""
     GH.execute_custom(sql_delete)
-    today = datetime.now()
+    # today = datetime.now()
+    # convert date to datetime
+    today = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
     year = today.year
     madong = find_info_primary_key("CONGNO", "MD", today)
     gh = find_info_primary_key("CONGNO", "BH", today) + 1

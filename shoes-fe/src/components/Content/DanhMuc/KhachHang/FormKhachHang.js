@@ -7,6 +7,11 @@ import {
 } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
+const list_input_required = {
+  MAKH: "Mã khách hàng",
+  TENKH: "Tên khách hàng",
+};
+
 const FormKhachHang = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateItem, dispatchItem] = useItemsContext();
@@ -19,6 +24,12 @@ const FormKhachHang = () => {
   };
 
   const handleSaveFrom = () => {
+    for (let key in list_input_required) {
+      if (inputForm[key] === undefined || inputForm[key] === "") {
+        alert("Nhập " + list_input_required[key]);
+        return false;
+      }
+    }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -80,6 +91,7 @@ const FormKhachHang = () => {
           name="MAKH"
           value={inputForm["MAKH"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -89,6 +101,7 @@ const FormKhachHang = () => {
           name="TENKH"
           value={inputForm["TENKH"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -98,6 +111,7 @@ const FormKhachHang = () => {
           name="DIACHI"
           value={inputForm["DIACHI"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -107,6 +121,7 @@ const FormKhachHang = () => {
           name="TEL"
           value={inputForm["TEL"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -116,6 +131,7 @@ const FormKhachHang = () => {
           name="FAX"
           value={inputForm["FAX"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -125,6 +141,7 @@ const FormKhachHang = () => {
           name="EMAIL"
           value={inputForm["EMAIL"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 
@@ -134,6 +151,7 @@ const FormKhachHang = () => {
           name="GHICHU"
           value={inputForm["GHICHU"]}
           onChange={(e) => handleChangeInformationForm(e)}
+          autocomplete="off"
         />
       </div>
 

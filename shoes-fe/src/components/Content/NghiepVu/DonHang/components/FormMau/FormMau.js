@@ -1,17 +1,28 @@
 import { useState } from "react";
 import styles from "./FormMau.module.scss";
 import { FormMauBasic } from "~hang_hoa";
-import { useItemsContext } from "~items_context";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
+
+import {
+  useItemsContext,
+  actions as actions_items_context,
+} from "~items_context";
+
+const list_input_required = {
+  MAMAU: "Mã màu",
+  TENMAU: "Tên màu",
+};
 
 const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
   const [dataForm, setDataForm] = useState({});
   const [stateItem, dispatchItem] = useItemsContext();
 
   const handleSaveFrom = () => {
-    if (dataForm["MAMAU"] == "") {
-      alert("Chưa nhập đủ thông tin!!!");
-      return false;
+    for (let key in list_input_required) {
+      if (dataForm[key] === undefined || dataForm[key] === "") {
+        alert("Nhập " + list_input_required[key]);
+        return false;
+      }
     }
     if (
       checkMaDanhMucExisted(dataForm["MAMAU"], stateItem.infoItemMau, "value")
@@ -34,6 +45,13 @@ const FormMau = ({ dataMau, setDataMau, setShowModal }) => {
       ...dataMau,
       { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
     ]);
+
+    dispatchItem(
+      actions_items_context.setInfoMau([
+        ...stateItem.infoItemMau,
+        { label: dataForm["TENMAU"], value: dataForm["MAMAU"] },
+      ])
+    );
     setShowModal(false);
   };
 

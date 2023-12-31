@@ -15,6 +15,7 @@ import styles from "./DonHang.module.scss";
 import clsx from "clsx";
 
 const Table = ({ columns, data, setDataDonHang, permission }) => {
+  console.log("permission: ", permission);
   const [rowInfo, setRowInfo] = useState({});
 
   const [isSaveData, setIsSaveData] = useState(true);
@@ -43,7 +44,8 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
     <>
       <MaterialReactTable
         {...border_text_table_config}
-        // enableTopToolbar={false}
+        enableTopToolbar={true}
+        initialState={{ showColumnFilters: true }}
         columns={columns}
         data={data}
         // components
@@ -92,20 +94,18 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
                 </IconButton>
               </Tooltip>
             )}
-            {permission.XEM === 1 &&
-              permission.THEM === 0 &&
-              permission.SUA === 0 && (
-                <Tooltip arrow placement="right" title="View Detail">
-                  <IconButton
-                    onClick={() => {
-                      setRowInfo(row.original);
-                      handleCheckDonHang();
-                    }}
-                  >
-                    <VisibilityOutlinedIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
+            {permission.XEM === 1 && permission.SUA === 0 && (
+              <Tooltip arrow placement="right" title="View Detail">
+                <IconButton
+                  onClick={() => {
+                    setRowInfo(row.original);
+                    handleCheckDonHang();
+                  }}
+                >
+                  <VisibilityOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+            )}
           </Box>
         )}
       />
@@ -123,6 +123,7 @@ const Table = ({ columns, data, setDataDonHang, permission }) => {
           isSaveData={isSaveData}
           setIsSaveData={setIsSaveData}
           permission={permission}
+          action="edit"
         />
       </Modal>
     </>

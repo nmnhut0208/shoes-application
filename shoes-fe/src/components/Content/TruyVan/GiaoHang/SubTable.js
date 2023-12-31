@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
@@ -17,7 +17,7 @@ const SubTable = ({
   //   setRowSelection,
   maxHeight,
 }) => {
-  //   console.log("data: ", data);
+  // console.log("databig: ", data);
   const [stateUser, dispatchUser] = useUserContext();
   const maForm = "F0033";
   const [stateTable, dispatchTable] = useTableContext();
@@ -39,6 +39,7 @@ const SubTable = ({
       //   onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
       //   state={{ rowSelection }}
       enableTopToolbar={true}
+      initialState={{ showColumnFilters: true }}
       enableBottomToolbar={false}
       enablePagination={false}
       muiTableContainerProps={{ sx: { maxHeight: { maxHeight } } }}
@@ -103,7 +104,7 @@ const SubTable = ({
                           .catch((err) => {
                             console.log(":error: ", err);
                           });
-                        alert("Xóa thành công");
+                        // alert("Xóa thành công");
                       } else {
                         alert("Xóa thất bại");
                       }
@@ -125,4 +126,4 @@ const SubTable = ({
   );
 };
 
-export default SubTable;
+export default memo(SubTable);

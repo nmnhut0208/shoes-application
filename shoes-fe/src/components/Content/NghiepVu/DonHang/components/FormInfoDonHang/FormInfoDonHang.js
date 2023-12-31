@@ -5,7 +5,7 @@ import { ItemKhachHang } from "~items";
 import { convertDate } from "~utils/processing_date";
 import styles from "./FormInfoDonHang.module.scss";
 
-const FormInfoDonHang = ({ formInfoDonHang, setFormInfoDonHang, view }) => {
+const FormInfoDonHang = ({ formInfoDonHang, setFormInfoDonHang, view, action }) => {
   console.log("re-render FormInfoDonHang");
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
@@ -56,7 +56,7 @@ const FormInfoDonHang = ({ formInfoDonHang, setFormInfoDonHang, view }) => {
               size_input={"15rem"}
               size_span={"29.7rem"}
               have_span={true}
-              readOnly={view}
+              readOnly={view || action === 'edit'}
             />
           </div>
         </div>

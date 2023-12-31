@@ -8,6 +8,11 @@ import {
 
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
 
+const list_input_required = {
+  MACA: "Mã cá",
+  TENCA: "Tên cá",
+};
+
 const FormCa = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateItem, dispatchItem] = useItemsContext();
@@ -20,6 +25,12 @@ const FormCa = () => {
   };
 
   const handleSaveFrom = () => {
+    for (let key in list_input_required) {
+      if (inputForm[key] === undefined || inputForm[key] === "") {
+        alert("Nhập " + list_input_required[key]);
+        return false;
+      }
+    }
     let method = "";
     if (stateTable.inforShowTable.action_row === "edit") {
       method = "PUT";
@@ -80,6 +91,7 @@ const FormCa = () => {
             name="MACA"
             className={styles.item_size_middle}
             readOnly={stateTable.inforShowTable.action_row === "edit"}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_first_row}>
@@ -89,6 +101,7 @@ const FormCa = () => {
             onChange={(e) => handleChangeInformationForm(e)}
             name="TENCA"
             className={styles.item_size_big}
+            autocomplete="off"
           />
         </div>
         <div className={styles.group_first_row}>
@@ -98,6 +111,7 @@ const FormCa = () => {
             onChange={(e) => handleChangeInformationForm(e)}
             name="GHICHU"
             className={styles.item_size_big}
+            autocomplete="off"
           />
         </div>
       </div>

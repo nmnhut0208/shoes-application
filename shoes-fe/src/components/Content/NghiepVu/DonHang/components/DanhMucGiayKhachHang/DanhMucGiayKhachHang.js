@@ -7,7 +7,7 @@ import styles from "./DanhMucGiayKhachHang.module.scss";
 import { border_text_table_config } from "~config/ui";
 
 const DanhMucGiayKhachHang = ({
-  MAKH,
+  listGiayKH,
   dataOrigin,
   setInfoSelection,
   setShowModal,
@@ -20,23 +20,11 @@ const DanhMucGiayKhachHang = ({
   }, []);
 
   useEffect(() => {
-    if (MAKH !== "") {
-      fetch("http://localhost:8000/donhang/khachhang/" + MAKH + "/giay")
-        .then((response) => {
-          return response.json();
-        })
-        .then((info) => {
-          console.log(info);
-          setDataTable(info);
-        })
-        .catch((err) => {
-          console.log(":error: ", err);
-        });
-    }
-  }, []);
+    setDataTable(listGiayKH);
+  }, [listGiayKH]);
 
   const handleSubmit = () => {
-    const columns_selected = [];
+    const columns_selected = dataOrigin.slice(0, dataOrigin.length - 1);
     for (let key in rowSelection) {
       if (!isNaN(key)) {
         const info = {
@@ -56,7 +44,7 @@ const DanhMucGiayKhachHang = ({
       }
     }
 
-    setInfoSelection([...dataOrigin, ...columns_selected]);
+    setInfoSelection([...columns_selected, dataOrigin[dataOrigin.length - 1]]);
     setShowModal(false);
   };
 
@@ -65,20 +53,24 @@ const DanhMucGiayKhachHang = ({
       <MaterialReactTable
         columns={infoColumns}
         data={dataTable}
+        enableTopToolbar={true}
         {...border_text_table_config}
         // row selection
         enableRowSelection
         onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
         state={{ rowSelection }} //pass our managed row selection state to the table to use
         // knmhgk
-        enableTopToolbar={false}
         enablePagination={false}
         // scroll to bottom
         enableRowVirtualization
         muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
         // group Mã giày
         enableGrouping
-        initialState={{ grouping: ["MAGIAY"], expanded: true }}
+        initialState={{
+          grouping: ["MAGIAY"],
+          expanded: true,
+          showColumnFilters: true,
+        }}
       />
       <div className={styles.group_button}>
         <button onClick={handleSubmit}>Đồng ý</button>

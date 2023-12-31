@@ -32,6 +32,7 @@ const GiaoHang = () => {
     >
       <FormGiaoHang
         // setShowModalNghiepVuGiaoHang={setShowModal}
+        isSaveData={isSaveData}
         setIsSaveDataNghiepVuGiaoHang={setIsSaveData}
         permission={permission}
       />

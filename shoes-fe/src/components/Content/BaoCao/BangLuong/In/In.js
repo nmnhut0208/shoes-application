@@ -35,7 +35,6 @@ const compute_footer_SOLUONG = (data) => {
 };
 
 const In = ({ data, setShowModal, stylePrint }) => {
-  const [dataTable, setDataTable] = useState([]);
   const [infoEachEmployer, setInfoEachEmployer] = useState([]);
 
   const componentRef = useRef();
@@ -52,38 +51,42 @@ const In = ({ data, setShowModal, stylePrint }) => {
     )
       .then((response) => response.json())
       .then((info) => {
-        setDataTable(info);
+        let dataTable = info;
+        if (dataTable.length > 0) {
+          const groupByEmployer = groupbyFunction(dataTable, "MANVIEN");
+          const groupByDONGIA = groupbyFunction(dataTable, "DONGIA");
+          const footer = compute_footer_SOLUONG(groupByDONGIA);
+          console.log("footer: ", footer);
+
+          let all_pages = [];
+          for (let key in groupByEmployer) {
+            let page = { MANVIEN: key };
+            page["table"] = groupByEmployer[key];
+            const dongia_group = groupbyFunction(
+              groupByEmployer[key],
+              "DONGIA"
+            );
+            page["footer"] = compute_footer_SOLUONG(dongia_group);
+
+            all_pages.push(page);
+          }
+          setInfoEachEmployer(all_pages);
+        } else {
+          setShowModal(false);
+          alert("Chưa có thông tin để xem hoặc in.");
+        }
       })
       .catch((error) => {
         console.log("error: ", error);
       });
-  }, []);
-
-  useLayoutEffect(() => {
-    if (dataTable.length > 0) {
-      const groupByEmployer = groupbyFunction(dataTable, "MANVIEN");
-      const groupByDONGIA = groupbyFunction(dataTable, "DONGIA");
-      const footer = compute_footer_SOLUONG(groupByDONGIA);
-      console.log("footer: ", footer);
-
-      let all_pages = [];
-      for (let key in groupByEmployer) {
-        let page = { MANVIEN: key };
-        page["table"] = groupByEmployer[key];
-        const dongia_group = groupbyFunction(groupByEmployer[key], "DONGIA");
-        page["footer"] = compute_footer_SOLUONG(dongia_group);
-
-        all_pages.push(page);
-      }
-      console.log("all_pages: ", all_pages);
-      setInfoEachEmployer(all_pages);
-    }
-  }, [dataTable]);
+  }, [data]);
 
   useLayoutEffect(() => {
     if (infoEachEmployer.length > 0) {
-      setShowModal(false);
-      if (Object.keys(stylePrint).length == 0) handelPrint();
+      if (Object.keys(stylePrint).length == 0) {
+        setShowModal(false);
+        handelPrint();
+      }
     }
   }, [infoEachEmployer]);
 
