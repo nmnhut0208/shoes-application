@@ -1,19 +1,19 @@
 import { useMemo, useState } from "react";
 import MaterialReactTable from "material-react-table";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Delete, Edit } from "@mui/icons-material";
+import { Box } from "@mui/material";
+import { Popconfirm } from "antd";
 
 import { Modal } from "~common_tag";
 import { border_text_table_config } from "~config/ui";
 import { useTableContext, actions_table } from "~table_context";
 import { useTaskContext } from "~task";
 import { useUserContext } from "~user";
+
 import {
   useItemsContext,
   actions as actions_items_context,
 } from "~items_context";
+import styles from "./TableContent.module.scss";
 
 const listFormHaveViewDetail = ["F0024", "F0020", "F0013", "F0018"];
 
@@ -58,48 +58,48 @@ const TableContent = ({ info_other_column }) => {
   }, []);
 
   const handleDeleteRow = (row) => {
-    let text = "Bạn thực sự muốn xóa thông tin này không!";
-    if (!window.confirm(text)) {
-      return;
-    }
+    let Key = "";
     let url = "";
     switch (stateTask.inforCurrentTask.infoDetail) {
       case "Kho hàng":
+        Key = "MAKHO";
         url = "http://localhost:8000/khohang";
         break;
       case "Mũi":
+        Key = "MAMUI";
         url = "http://localhost:8000/mui";
         dispatchItem(
           actions_items_context.setInfoMui(
-            stateItem.infoItemMui.filter(
-              (item) => item["value"] != row["MAMUI"]
-            )
+            stateItem.infoItemMui.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Đế":
+        Key = "MADE";
         url = "http://localhost:8000/de";
         dispatchItem(
           actions_items_context.setInfoDe(
-            stateItem.infoItemDe.filter((item) => item["value"] != row["MADE"])
+            stateItem.infoItemDe.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Cá":
+        Key = "MACA";
         url = "http://localhost:8000/ca";
         dispatchItem(
           actions_items_context.setInfoCa(
-            stateItem.infoItemCa.filter((item) => item["value"] != row["MACA"])
+            stateItem.infoItemCa.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Nhân viên":
+        Key = "MANVIEN";
         url = "http://localhost:8000/nhanvien";
         if (row["LOAINVIEN"] === "TD") {
           dispatchItem(
             actions_items_context.setInfoThoDe(
               stateItem.infoItemThoDe.filter(
-                (item) => item["value"] != row["MANVIEN"]
+                (item) => item["value"] != row[Key]
               )
             )
           );
@@ -108,121 +108,152 @@ const TableContent = ({ info_other_column }) => {
           dispatchItem(
             actions_items_context.setInfoThoQuai(
               stateItem.infoItemThoQuai.filter(
-                (item) => item["value"] != row["MANVIEN"]
+                (item) => item["value"] != row[Key]
               )
             )
           );
         }
         break;
       case "Kỳ tính lương":
+        Key = "MAKY";
         url = "http://localhost:8000/kytinhluong";
         dispatchItem(
           actions_items_context.setInfoKyTinhLuong(
             stateItem.infoItemKyTinhLuong.filter(
-              (item) => item["value"] != row["MAKY"]
+              (item) => item["value"] != row[Key]
             )
           )
         );
         break;
       case "Giày":
+        Key = "MAGIAY";
         url = "http://localhost:8000/giay";
         break;
       case "Màu":
+        Key = "MAMAU";
         url = "http://localhost:8000/mau";
         dispatchItem(
           actions_items_context.setInfoMau(
-            stateItem.infoItemMau.filter(
-              (item) => item["value"] != row["MAMAU"]
-            )
+            stateItem.infoItemMau.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Sườn":
+        Key = "MASUON";
         url = "http://localhost:8000/suon";
         dispatchItem(
           actions_items_context.setInfoSuon(
-            stateItem.infoItemSuon.filter(
-              (item) => item["value"] != row["MASUON"]
-            )
+            stateItem.infoItemSuon.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Gót":
+        Key = "MAGOT";
         url = "http://localhost:8000/got";
         dispatchItem(
           actions_items_context.setInfoGot(
-            stateItem.infoItemGot.filter(
-              (item) => item["value"] != row["MAGOT"]
-            )
+            stateItem.infoItemGot.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Quai":
+        Key = "MAQUAI";
         url = "http://localhost:8000/quai";
         dispatchItem(
           actions_items_context.setInfoQuai(
-            stateItem.infoItemQuai.filter(
-              (item) => item["value"] != row["MAQUAI"]
-            )
+            stateItem.infoItemQuai.filter((item) => item["value"] != row[Key])
           )
         );
         break;
       case "Khách hàng":
+        Key = "MAKH";
         url = "http://localhost:8000/khachhang";
         dispatchItem(
           actions_items_context.setInfoKhachHang(
             stateItem.infoItemKhachHang.filter(
-              (item) => item["MAKH"] != row["MAKH"]
+              (item) => item["MAKH"] != row[Key]
             )
           )
         );
         break;
       case "Phân quyền":
-        url = "http://localhost:8000/phanquyen";
-        break;
+        return;
     }
-    fetch(url, {
+    console.log(
+      "url + encodeURIComponent(row[Key]): ",
+      url + encodeURIComponent(row[Key])
+    );
+    fetch(url + "?ID=" + encodeURIComponent(row[Key]), {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(row),
     })
       .then((res) => console.log("response: ", res))
       .catch((err) => console.log("error: ", err));
 
-    const newData = inforShowTable.infoTable.filter((item) => item != row);
+    const newData = inforShowTable.infoTable.filter(
+      (item) => item[Key] != row[Key]
+    );
     dispatchTable(actions_table.setInforTable(newData));
   };
-
-  console.log("stateItem.infoItemDe: ", stateItem.infoItemDe);
 
   return (
     <>
       {inforShowTable.showTable && (
         <div>
-          <header>{inforShowTable.title}</header>
+          {/* <header>{inforShowTable.title}</header> */}
           <MaterialReactTable
             columns={inforShowTable.infoColumnTable}
             data={inforShowTable.infoTable}
             {...border_text_table_config}
             // start
+            muiTableBodyProps={{
+              sx: () => ({
+                '& tr:nth-of-type(odd):not([data-selected="true"]):not([data-pinned="true"]) > td':
+                  {
+                    // backgroundColor: darken(baseBackgroundColor, 0.1),
+                    backgroundColor: "#e6fff2",
+                  },
+                '& tr:nth-of-type(odd):not([data-selected="true"]):not([data-pinned="true"]):hover > td':
+                  {
+                    // backgroundColor: darken(baseBackgroundColor, 0.2),
+                    backgroundColor: "#ffcc99",
+                  },
+                '& tr:nth-of-type(even):not([data-selected="true"]):not([data-pinned="true"]) > td':
+                  {
+                    backgroundColor: "#ffddcc",
+                  },
+                '& tr:nth-of-type(even):not([data-selected="true"]):not([data-pinned="true"]):hover > td':
+                  {
+                    backgroundColor: "#ffcc99",
+                  },
+              }),
+            }}
             muiTableProps={{
               sx: {
                 tableLayout: "fixed",
               },
             }}
+            initialState={{ showColumnFilters: true }}
             // end
             components
-            autoResetPageIndex={false}
+            // page Pagination
+            enablePagination={false}
+            enableBottomToolbar={true}
+            // scroll to bottom
+            enableRowVirtualization
+            muiTableContainerProps={{
+              sx: { maxHeight: "65rem" },
+            }}
+            // autoResetPageIndex={false}
             // resize width of each column
             enableColumnResizing
-            // enableRowNumbers
+            enableRowNumbers
             enableEditing={showActionColumn}
             displayColumnDefOptions={{
               "mrt-row-actions": {
-                sx: { minSize: actionSttInfo["action"] },
-                // minSize: actionSttInfo["action"], //set custom width
+                minSize: actionSttInfo["action"], //set custom width
                 // minSize: 24,
                 muiTableHeadCellProps: {
                   align: "center", //change head cell props
@@ -246,17 +277,24 @@ const TableContent = ({ info_other_column }) => {
               },
             }}
             renderRowActions={({ row, table }) => (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  paddingLeft: "5px",
-                  paddingRight: "5px",
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  columnGap: "0.1rem",
                 }}
               >
-                {permission.THEM === 1 && (
-                  <Tooltip arrow placement="right" title="Add">
-                    <IconButton
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)",
+                  }}
+                >
+                  {permission.THEM === 1 && (
+                    <button
                       onClick={() => {
                         dispatchTable(
                           actions_table.setInforRecordTable(emptyData)
@@ -264,14 +302,23 @@ const TableContent = ({ info_other_column }) => {
                         dispatchTable(actions_table.setActionForm("add"));
                         dispatchTable(actions_table.setModeShowModal(true));
                       }}
+                      className={styles.add_button}
                     >
-                      <AddCircleIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
-                {permission.SUA === 1 && (
-                  <Tooltip arrow placement="right" title="Edit">
-                    <IconButton
+                      Thêm
+                    </button>
+                  )}
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)",
+                  }}
+                >
+                  {permission.SUA === 1 && (
+                    <button
                       onClick={() => {
                         dispatchTable(
                           actions_table.setInforRecordTable(row.original)
@@ -279,30 +326,41 @@ const TableContent = ({ info_other_column }) => {
                         dispatchTable(actions_table.setActionForm("edit"));
                         dispatchTable(actions_table.setModeShowModal(true));
                       }}
+                      className={styles.edit_button}
                     >
-                      <Edit />
-                    </IconButton>
-                  </Tooltip>
-                )}
-                {permission.XOA === 1 && (
-                  <Tooltip arrow placement="right" title="Delete">
-                    <IconButton
-                      color="error"
-                      onClick={() => {
-                        handleDeleteRow(row.original);
-                      }}
+                      Sửa
+                    </button>
+                  )}
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                  }}
+                >
+                  {permission.XOA === 1 && (
+                    <Popconfirm
+                      title="Xác nhận hành động"
+                      description="Bạn thực sự muốn xoá thông tin này?"
+                      onConfirm={() => handleDeleteRow(row.original)}
+                      onCancel={() => {}}
+                      okText="Đồng ý"
+                      cancelText="Không đồng ý"
                     >
-                      <Delete />
-                    </IconButton>
-                  </Tooltip>
-                )}
+                      <button className={styles.delete_button}>Xoá</button>
+                    </Popconfirm>
+                  )}
+                </Box>
 
-                {permission.XEM === 1 &&
-                  permission.THEM === 0 &&
-                  permission.SUA === 0 &&
-                  listFormHaveViewDetail.includes(maForm) && (
-                    <Tooltip arrow placement="right" title="View Detail">
-                      <IconButton
+                <Box>
+                  {permission.XEM === 1 &&
+                    permission.THEM === 0 &&
+                    permission.SUA === 0 &&
+                    listFormHaveViewDetail.includes(maForm) && (
+                      <button
+                        className={styles.edit_button}
                         onClick={() => {
                           dispatchTable(
                             actions_table.setInforRecordTable(row.original)
@@ -311,11 +369,11 @@ const TableContent = ({ info_other_column }) => {
                           dispatchTable(actions_table.setModeShowModal(true));
                         }}
                       >
-                        <VisibilityOutlinedIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-              </Box>
+                        Xem
+                      </button>
+                    )}
+                </Box>
+              </div>
             )}
           />
         </div>

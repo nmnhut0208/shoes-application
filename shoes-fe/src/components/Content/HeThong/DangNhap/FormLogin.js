@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Form, Input, Button } from "antd";
 import { useUserContext, actions } from "~user";
 import { useTaskContext, resetHeader } from "~task";
+import { CustomAlert } from "~utils/alert_custom";
 
 function FormLogin() {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -54,7 +55,7 @@ function FormLogin() {
                 });
               resetHeader(dispatchTask);
             } else {
-              alert("Thông tin đăng nhập chưa chính xác!");
+              CustomAlert("Thông tin đăng nhập chưa chính xác!");
               setLoading(false);
             }
           })

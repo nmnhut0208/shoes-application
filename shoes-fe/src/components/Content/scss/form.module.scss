@@ -58,7 +58,7 @@
     @extend .font-setting;
   }
 
-  span {
+  .span_text {
     display: inline-block;
     width: 20rem;
     padding: var(--padding-setting);

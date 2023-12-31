@@ -1,72 +1,121 @@
 import { rem_to_px } from "~config/ui";
 
+const font_header = {
+  fontSize: "1.5rem",
+  lineHeight: "2rem",
+  fontFamily: "Arial",
+  fontWeight: "bold",
+  padding: "2px 2px 2px 2px",
+};
+
+const textarea_style = {
+  ...font_header,
+  border: "none",
+  width: "80%",
+  resize: "none",
+  padding: "2px 0 2px 0",
+};
+
+const TextHeader = ({ value }) => (
+  <textarea value={value} style={{ ...textarea_style }} />
+);
+
 export const INFO_COLS_DONHANG = [
   {
     header: "Mã giày",
     key: "MAGIAY",
-    width: 21 * rem_to_px,
+    width: 25 * rem_to_px,
   },
   {
-    header: "Màu đế",
+    header: <TextHeader value={"Màu đế"} />,
     key: "MAUDE",
-    width: 10 * rem_to_px,
+    width: 8 * rem_to_px,
   },
   {
-    header: "Màu gót",
+    header: <TextHeader value={"Màu gót"} />,
     key: "MAUGOT",
-    width: 10 * rem_to_px,
+    width: 8 * rem_to_px,
   },
   {
-    header: "Màu sườn",
+    header: <TextHeader value={"Màu sườn"} />,
     key: "MAUSUON",
-    width: 10 * rem_to_px,
+    width: 8 * rem_to_px,
   },
   {
-    header: "Màu cá",
+    header: <TextHeader value={"Màu cá"} />,
     key: "MAUCA",
-    width: 10 * rem_to_px,
+    width: 8 * rem_to_px,
   },
   {
-    header: "Màu quai",
+    header: <TextHeader value={"Màu quai"} />,
     key: "MAUQUAI",
-    width: 10 * rem_to_px,
+    width: 8 * rem_to_px,
   },
-  { header: "Size 5", key: "SIZE5", width: 8 * rem_to_px },
-  { header: "Size 6", key: "SIZE6", width: 8 * rem_to_px },
-  { header: "Size 7", key: "SIZE7", width: 8 * rem_to_px },
-  { header: "Size 8", key: "SIZE8", width: 8 * rem_to_px },
-  { header: "Size 9", key: "SIZE9", width: 8 * rem_to_px },
-  { header: "Size 0", key: "SIZE0", width: 8 * rem_to_px },
-  { header: "Size 1", key: "SIZE1", width: 8 * rem_to_px },
   {
-    header: "Số lượng",
+    // header: "Size 5",
+    key: "SIZE5",
+    width: 5 * rem_to_px,
+    header: <TextHeader value={"Size 5"} />,
+  },
+  {
+    header: <TextHeader value={"Size 6"} />,
+    key: "SIZE6",
+    width: 5 * rem_to_px,
+  },
+  {
+    header: <TextHeader value={"Size 7"} />,
+    key: "SIZE7",
+    width: 5 * rem_to_px,
+  },
+  {
+    header: <TextHeader value={"Size 8"} />,
+    key: "SIZE8",
+    width: 5 * rem_to_px,
+  },
+  {
+    header: <TextHeader value={"Size 9"} />,
+    key: "SIZE9",
+    width: 5 * rem_to_px,
+  },
+  {
+    header: <TextHeader value={"Size 0"} />,
+    key: "SIZE0",
+    width: 5 * rem_to_px,
+  },
+  {
+    header: <TextHeader value={"Size 1"} />,
+    key: "SIZE1",
+    width: 5 * rem_to_px,
+  },
+  {
+    header: <TextHeader value={"Số lượng"} />,
     key: "SOLUONG",
-    width: 10 * rem_to_px,
+    width: 8 * rem_to_px,
   },
   {
-    header: "Giá bán",
+    header: <TextHeader value={"Giá bán"} />,
     key: "GIABAN",
-    width: 10 * rem_to_px,
+    width: 8 * rem_to_px,
   },
   {
-    header: "Thành tiền",
+    header: <TextHeader value={"Thành tiền"} />,
     key: "THANHTIEN",
-    width: 15 * rem_to_px,
+    width: 10 * rem_to_px,
   },
   {
     header: "Diễn giải",
     key: "DIENGIAIDONG",
-    width: 30 * rem_to_px,
+    width: 25 * rem_to_px,
   },
   {
     header: "In hiệu",
     key: "INHIEU",
-    width: 30 * rem_to_px,
+    width: 25 * rem_to_px,
   },
   {
     header: "Tên giày",
     key: "TENGIAY",
-    width: 50 * rem_to_px,
+    width: 80 * rem_to_px,
   },
 ];
 

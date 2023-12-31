@@ -18,6 +18,8 @@
     .item {
       margin-bottom: var(--margin-bottom-config);
       width: 100%;
+      display: flex;
+      flex-direction: row;
     }
     .item:first-child {
       input {

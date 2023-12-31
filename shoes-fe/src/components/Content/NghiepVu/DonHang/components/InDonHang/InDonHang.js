@@ -36,6 +36,17 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
           TENGIAY: dataTable[i]["TENGIAY"],
         };
         list_promises.push(getImageOfDanhMuc("giay", ma_giay, "MAGIAY"));
+        info["GIABAN"] = dataTable[i]["GIABAN"];
+        info["HEADER_TABLE"] = JSON.parse(JSON.stringify(INFO_COLS_THO));
+
+        let tenca = dataTable[i]["TENCA"];
+
+        for (var jj = 0; jj < info["HEADER_TABLE"].length; jj++) {
+          if (info["HEADER_TABLE"][jj].key === "TENMAUCA") {
+            info["HEADER_TABLE"][jj].header = `CÁ: ${tenca}`;
+            break;
+          }
+        }
         info["TABLE"] = dataTable.filter(
           (_data) => _data["MAGIAY"] === ma_giay
         );
@@ -68,14 +79,19 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
         info_print.push(info);
       }
     }
-    Promise.all([getDiaChiKhachHang(infoHeader["MAKH"])]).then((values) => {
-      setHeader({
-        ...header,
-        ...values[0],
-        SL: compute_total(dataTable),
-      });
-      setDoneGetDiaChi(true);
+    // Promise.all([getDiaChiKhachHang(infoHeader["MAKH"])]).then((values) => {
+    //   setHeader({
+    //     ...header,
+    //     ...values[0],
+    //     SL: compute_total(dataTable),
+    //   });
+    //   setDoneGetDiaChi(true);
+    // });
+    setHeader({
+      ...header,
+      SL: compute_total(dataTable),
     });
+    setDoneGetDiaChi(true); // để hờ, ko cần thiết nữa vì ko cần lấy địa chỉ khách hàng
     Promise.all(list_promises).then((values) => {
       setListImage(values);
     });
@@ -103,7 +119,7 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
           <h1>Ngày: {convertDateForReport(header["NGAYDH"])}</h1>
           <h1>
             {header["SL"]}
-            {" | " + header["DIACHI"]}
+            {" | " + header["DIENGIAIPHIEU"]}
           </h1>
         </div>
         {dataPrint.length > 0 &&
@@ -114,7 +130,11 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                   <tr className={styles.info_row_giay}>
                     <td>
                       <div className={styles.show_content_column}>
-                        <lable>{info["MAGIAY"]}</lable>
+                        <div>
+                          <lable>{info["MAGIAY"]}</lable>
+                          <lable> {info["GIABAN"]}</lable>
+                        </div>
+
                         <lable style={{ fontWeight: "bold" }}>
                           SL: {info["SL"]}
                         </lable>
@@ -127,7 +147,11 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
                   </tr>
                 </table>
               </div>
-              <TableToPrint columns={INFO_COLS_THO} data={info["TABLE"]} />
+              <TableToPrint
+                columns={info["HEADER_TABLE"]}
+                data={info["TABLE"]}
+                LIST_FORMAT_NUMBER={["GIABAN"]}
+              />
             </div>
           ))}
         <br />

@@ -3,6 +3,8 @@ import { useTableContext, actions_table } from "~table_context";
 import FormGiayBasic from "./FormGiayBasic";
 import styles from "./FormGiayBasic.module.scss";
 import { checkMaDanhMucExisted } from "~danh_muc/helper";
+import { CustomAlert } from "~utils/alert_custom";
+import { useItemsContext } from "~items_context";
 
 const list_input_required = {
   MAGIAY: "Mã giày",
@@ -19,6 +21,13 @@ const FormGiay = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [isSaveData, setIsSaveData] = useState(true);
   const [dataForm, setDataForm] = useState(null);
+  const [stateItem, dispatchItem] = useItemsContext();
+
+  const [mode, setMode] = useState(() => {
+    return stateTable.inforShowTable.action_row;
+  });
+
+  console.log("dataForm: ", dataForm);
 
   useEffect(() => {
     if (stateTable.inforShowTable.record["MAGIAY"] !== "") {
@@ -28,8 +37,31 @@ const FormGiay = () => {
       )
         .then((response) => response.json())
         .then((info) => {
-          console.log("info: ", info);
-          setDataForm(info[0]);
+          info = { ...info[0] };
+          if (info["MASUON"] != "") {
+            let _slitMASUON = info["MASUON"].split("-");
+            let magot = _slitMASUON[0];
+            let mamui = _slitMASUON[1];
+            try {
+              info["TENGOT"] = stateItem.infoItemGot.filter(
+                (x) => x["value"] == magot
+              )[0]["label"];
+            } catch {
+              info["TENGOT"] = "";
+            }
+
+            try {
+              info["TENMUI"] = stateItem.infoItemMui.filter(
+                (x) => x["value"] == mamui
+              )[0]["label"];
+            } catch {
+              info["TENMUI"] = "";
+            }
+          } else {
+            info["TENGOT"] = "";
+            info["TENMUI"] = "";
+          }
+          setDataForm(info);
           setIsSaveData(true);
         })
         .catch((error) => {
@@ -37,7 +69,13 @@ const FormGiay = () => {
         });
     } else {
       // form empty to add giay
-      setDataForm(stateTable.inforShowTable.record);
+      setDataForm({
+        ...stateTable.inforShowTable.record,
+        TENGOT: "",
+        TENMUI: "",
+        TENQUAI: "",
+        MAKH: "",
+      });
     }
   }, []);
 
@@ -48,7 +86,7 @@ const FormGiay = () => {
   const handleSaveFrom = () => {
     for (let key in list_input_required) {
       if (dataForm[key] === undefined || dataForm[key] === "") {
-        alert("Nhập " + list_input_required[key]);
+        CustomAlert("Nhập " + list_input_required[key]);
         return false;
       }
     }
@@ -71,7 +109,7 @@ const FormGiay = () => {
           "MAGIAY"
         )
       ) {
-        alert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
+        CustomAlert("MÃ này đã tồn tại. Bạn không thể thêm!!!");
         return false;
       }
       method = "POST";
@@ -90,11 +128,11 @@ const FormGiay = () => {
     })
       .then((response) => {
         console.log("response: ", response);
-        alert("Lưu thông tin thành công!");
+        CustomAlert("Lưu thông tin thành công!");
       })
       .catch((error) => {
         console.log("error: ", error);
-        alert("Xảy ra lỗi, chưa lưu được thông tin!");
+        CustomAlert("Xảy ra lỗi, chưa lưu được thông tin!");
       });
 
     // Không tắt form => để user thực hiện các hành động khác
@@ -109,23 +147,24 @@ const FormGiay = () => {
     }
     setDataForm(form_emty);
   };
+  console.log("mode in giay: ", mode);
 
   const handleNhanBan = () => {
-    // let text = "Lưu thông tin hiện tại trước khi nhân bản!";
-    // if (window.confirm(text)) {
-    //   handleSaveFrom();
-    // }
     dispatchTable(actions_table.setActionForm("add"));
+    setMode("add");
+    setDataForm({
+      ...dataForm,
+      MAKH: "",
+      TENKH: "",
+      MAQUAI: "",
+      TENQUAI: "",
+    });
   };
 
   return (
     <>
       {dataForm && (
-        <FormGiayBasic
-          form={dataForm}
-          setDataForm={setDataForm}
-          mode={stateTable.inforShowTable.action_row}
-        />
+        <FormGiayBasic form={dataForm} setDataForm={setDataForm} mode={mode} />
       )}
 
       <div className={styles.group_button}>

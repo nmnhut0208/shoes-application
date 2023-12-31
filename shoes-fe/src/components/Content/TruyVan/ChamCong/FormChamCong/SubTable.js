@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
 import { border_text_table_config } from "~config/ui";
 
@@ -11,8 +9,6 @@ const SubTable = ({
   setRowSelection,
   maxHeight,
 }) => {
-  //   console.log("data: ", data);
-
   return (
     <MaterialReactTable
       {...border_text_table_config}

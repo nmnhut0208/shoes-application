@@ -5,23 +5,23 @@ import { Modal } from "~common_tag";
 import SubTable from "./SubTable";
 import styles from "./ChamCongSub.module.scss";
 import FormChamCong from "./FormChamCong/FormChamCong";
-import { IconButton, Tooltip } from "@mui/material";
-import { Delete } from "@mui/icons-material";
 import ModalDelelete from "./ModalDelete";
 import FormDelete from "./FormDelete";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { convertDateForReport } from "~utils/processing_date";
 import { useUserContext } from "~user";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_key = [
   { header: "Mã kỳ", key: "MAKY" },
-  { header: "Mã Nhân Viên", key: "MANVIEN" },
-  { header: "Số phiếu", key: "SOPHIEU" },
+  { header: "Mã phiếu", key: "MAPHIEU" },
   {
     header: "Ngày phiếu",
     key: "NGAYPHIEU",
     Cell: ({ cell }) => <p>{convertDateForReport(cell.getValue())}</p>,
   },
+  { header: "Diễn giải", key: "DIENGIAI" },
+  { header: "Mã Nhân Viên", key: "MANVIEN" },
   {
     header: "Số lượng",
     key: "SOLUONG",
@@ -31,8 +31,7 @@ const list_key = [
     Cell: ({ cell }) => (
       <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
     ),
-  },
-  { header: "Diễn giải", key: "DIENGIAI" },
+  }
 ];
 
 const infoColumns = processingInfoColumnTable(list_key);
@@ -66,14 +65,16 @@ const ChamCongSub = () => {
 
   //   const [rowSelection, setRowSelection] = useState({});
 
-  console.log("GiaoHang");
-
   const handleDelete = () => {
-    if (stateUser.userPoolAccess.some((obj) => obj.MAFORM === "F0042" && obj.XOA === 1)) {
+    if (
+      stateUser.userPoolAccess.some(
+        (obj) => obj.MAFORM === "F0042" && obj.XOA === 1
+      )
+    ) {
       console.log("handleDelete");
       setShowModal(true);
     } else {
-      alert("Bạn không có quyền xóa");
+      CustomAlert("Bạn không có quyền xóa");
     }
   };
 
@@ -106,15 +107,14 @@ const ChamCongSub = () => {
 
       <br />
       {allowDelete && (
-        <Tooltip arrow title="Delete">
-          <IconButton
-            onClick={() => {
-              handleDelete();
-            }}
-          >
-            <Delete style={{ color: "red" }} fontSize="large" />
-          </IconButton>
-        </Tooltip>
+        <button
+          className={styles.delete_button}
+          onClick={() => {
+            handleDelete();
+          }}
+        >
+          Xoá thông tin chấm công theo Kỳ
+        </button>
       )}
       <SubTable
         columns={infoColumns}

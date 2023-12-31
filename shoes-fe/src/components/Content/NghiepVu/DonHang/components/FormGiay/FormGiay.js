@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FormGiayBasic } from "~hang_hoa";
 import styles from "./FormGiay.module.scss";
+import { CustomAlert } from "~utils/alert_custom";
 
 const list_input_required = {
   MAGIAY: "Mã giày",
@@ -19,12 +20,22 @@ const FormGiay = ({
   listGiayUnique,
   setListGiayUnique,
 }) => {
-  const [dataForm, setDataForm] = useState({});
+  const [dataForm, setDataForm] = useState({
+    MAQUAI: "",
+    TENGOT: "",
+    TENMUI: "",
+    TENQUAI: "",
+    MAKH: "",
+    MAGIAY: "",
+    HINHANH: "",
+    MASUON: "",
+    MAKH: "",
+  });
 
   const handleSaveFrom = async () => {
     for (let key in list_input_required) {
       if (dataForm[key] === undefined || dataForm[key] === "") {
-        alert("Nhập " + list_input_required[key]);
+        CustomAlert("Nhập " + list_input_required[key]);
         return false;
       }
     }
@@ -35,7 +46,7 @@ const FormGiay = ({
     );
     const result = await response.json();
     if (result[dataForm["MAGIAY"]]) {
-      alert("Mã giày đã tồn tại");
+      CustomAlert("Mã giày đã tồn tại");
       return false;
     }
     fetch("http://localhost:8000/giay", {

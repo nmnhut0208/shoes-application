@@ -7,6 +7,7 @@ const { Option } = Select;
 const customOptionStyle = {
   borderBottom: "1px solid #000", // Add a border line at the bottom of each option
   padding: "4px 0", // Adjust padding as needed
+  fontSize: "1.7rem",
 };
 
 const filterOption = (input, option) => {
@@ -56,7 +57,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
     setShowInput(true);
   };
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", width: "100%" }}>
       {showInput && (
         <input
           id="MAMAU"
@@ -66,8 +67,9 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
           onFocus={handleBlurSelection}
           onClick={handleFocusInput}
           style={{
-            width: "90%",
+            width: "100%",
             border: "none",
+            fontSize: "1.6rem",
           }}
         />
       )}
@@ -102,7 +104,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
             >
               <span
                 style={{
-                  width: "100px",
+                  width: "115px",
                   display: "inline-block",
                   borderRight: "1px solid #000",
                 }}

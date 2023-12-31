@@ -11,6 +11,7 @@ import {
 } from "~items";
 import { getImageOfDanhMuc } from "~utils/api_get_image";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
+import { useItemsContext } from "~items_context";
 
 let list_info_generator_MAGIAY = ["MAKH", "SortID", "MASUON", "MAQUAI"];
 
@@ -18,8 +19,10 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
   const readOnly = useMemo(() => mode === "edit", [mode]);
   const [image_base64, setImageBase64] = useState("");
   const [image_url, setImageURL] = useState("");
+  const [stateItem, dispatchItem] = useItemsContext();
 
   console.log("form: ", form);
+  console.log("mode: ", mode);
 
   const [maKH, setMaKH] = useState(form["MAKH"]);
   useEffect(() => {
@@ -42,6 +45,7 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
   const handleChangeInformationForm = (dict_data) => {
     const data = { ...form, ...dict_data };
     let name = Object.keys(dict_data)[0];
+    console.log("name: ", name);
     if (list_info_generator_MAGIAY.includes(name)) {
       let MAKH = data["MAKH"];
       let MASUON = data["MASUON"];
@@ -61,7 +65,37 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
         }
       }
       data["MAGIAY"] = part_character + part_number + "-" + MAKH + "-" + MASUON;
+      if (name == "MASUON") {
+        console.log("dict_data..", dict_data);
+        let _slitMASUON = dict_data["MASUON"].split("-");
+        console.log("_slitMASUON: ", _slitMASUON);
+        let magot = _slitMASUON[0];
+        let mamui = _slitMASUON[1];
+        console.log("stateItem.infoItemGot: ", stateItem.infoItemGot);
+        try {
+          data["TENGOT"] = stateItem.infoItemGot.filter(
+            (x) => x["value"] == magot
+          )[0]["label"];
+        } catch {
+          data["TENGOT"] = "";
+        }
+        try {
+          data["TENMUI"] = stateItem.infoItemMui.filter(
+            (x) => x["value"] == mamui
+          )[0]["label"];
+        } catch {
+          data["TENMUI"] = "";
+        }
+      }
     }
+    data["TENGIAY"] =
+      data["TENGOT"] +
+      "," +
+      data["TENQUAI"] +
+      "," +
+      data["TENMUI"] +
+      "," +
+      data["MAQUAI"];
     setDataForm(data);
   };
 

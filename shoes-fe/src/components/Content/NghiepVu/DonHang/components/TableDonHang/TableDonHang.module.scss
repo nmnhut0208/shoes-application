@@ -1,0 +1,24 @@
+.delete_button {
+    padding: 5px 10px;
+    background-color: #dc3545; 
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-right: 0.4rem;
+  }
+    
+  .delete_button:hover {
+    opacity: 0.7; 
+  }
+
+  .copy_button {
+    padding: 5px 10px;
+    background-color: #7235dc; 
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+    
+  .copy_button:hover {
+    opacity: 0.7; 
+  }

@@ -1,11 +1,13 @@
 import { useState, memo, useEffect } from "react";
 
 import { Select } from "antd";
+import TextArea from "antd/es/input/TextArea";
 const { Option } = Select;
 
 const customOptionStyle = {
   borderBottom: "1px solid #000", // Add a border line at the bottom of each option
   padding: "4px 0", // Adjust padding as needed
+  fontSize: "1.7rem",
 };
 
 const filterOption = (input, option) => {
@@ -35,7 +37,12 @@ const GiayUnique = ({
   const handleChange = (value) => {
     setMaMau(value);
     let choice = listGiayUnique.filter((e) => e.MAGIAY === value);
-    handleChangeDataTable(value, choice[0]["TENGIAY"]);
+    handleChangeDataTable(
+      value,
+      choice[0]["TENGIAY"],
+      choice[0]["GIABAN"],
+      choice[0]["TENCA"]
+    );
     setShowInput(true);
     setShowSelection(false);
   };
@@ -51,7 +58,7 @@ const GiayUnique = ({
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", left: "0px", width: "100%" }}>
       {showInput && (
         <input
           id="MAGIAY"
@@ -61,8 +68,11 @@ const GiayUnique = ({
           onClick={handleFocusInput}
           readOnly="true"
           style={{
-            width: "90%",
+            width: "100%",
             border: "none",
+            fontFamily: "Arial",
+            fontSize: "1.6rem",
+            resize: "none",
           }}
         />
       )}
@@ -94,7 +104,7 @@ const GiayUnique = ({
             >
               <span
                 style={{
-                  width: "200px",
+                  width: "250px",
                   display: "inline-block",
                   borderRight: "1px solid #000",
                 }}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTableContext, actions_table } from "~table_context";
 import styles from "./FormPhanQuyen.module.scss";
+import { CustomAlert } from "~utils/alert_custom";
 
 const FormPhanQuyen = () => {
   const [stateTable, dispatchTable] = useTableContext();
@@ -31,7 +32,6 @@ const FormPhanQuyen = () => {
         return response.json();
       })
       .then((info) => {
-        console.log("info: ", info);
         setTypeForm(info);
       })
       .catch((err) => {
@@ -45,7 +45,6 @@ const FormPhanQuyen = () => {
         return response.json();
       })
       .then((info) => {
-        console.log("info: ", info);
         setMaNV(info);
       })
       .catch((err) => {
@@ -54,13 +53,10 @@ const FormPhanQuyen = () => {
   }, []);
 
   const handleSaveFrom = () => {
-    // keys of inputForm !== ""
     if (Object.keys(inputForm).some((key) => inputForm[key] === "")) {
-      // alert with key === ""
-      alert("Vui lòng nhập đầy đủ thông tin!");
+      CustomAlert("Vui lòng nhập đầy đủ thông tin!");
     }
 
-    // saveDataBase()
     if (
       stateTable.inforShowTable.action_row === "edit" &&
       Object.keys(inputForm).every((key) => inputForm[key] !== "")
@@ -104,9 +100,8 @@ const FormPhanQuyen = () => {
           return response.json();
         })
         .then((info) => {
-          console.log("info: ", info);
           if (info["status"] === "exist") {
-            alert("Đã tồn tại!");
+            CustomAlert("Đã tồn tại!");
           } else {
             fetch("http://localhost:8000/phanquyen", {
               method: "POST",
@@ -196,11 +191,12 @@ const FormPhanQuyen = () => {
             min={0}
             max={1}
           /> */}
-          <select 
-          value={inputForm["THEM"]}
-          onChange={(e) => handleChangeInformationForm(e)}
-          name="THEM"
-          className={styles.item_size_small}>
+          <select
+            value={inputForm["THEM"]}
+            onChange={(e) => handleChangeInformationForm(e)}
+            name="THEM"
+            className={styles.item_size_small}
+          >
             <option value="">Chọn</option>
             <option value="0">0</option>
             <option value="1">1</option>
@@ -217,11 +213,12 @@ const FormPhanQuyen = () => {
             min={0}
             max={1}
           /> */}
-          <select 
-          value={inputForm["SUA"]}
-          onChange={(e) => handleChangeInformationForm(e)}
-          name="SUA"
-          className={styles.item_size_small}>
+          <select
+            value={inputForm["SUA"]}
+            onChange={(e) => handleChangeInformationForm(e)}
+            name="SUA"
+            className={styles.item_size_small}
+          >
             <option value="">Chọn</option>
             <option value="0">0</option>
             <option value="1">1</option>
@@ -238,11 +235,12 @@ const FormPhanQuyen = () => {
             min={0}
             max={1}
           /> */}
-          <select 
-          value={inputForm["XOA"]}
-          onChange={(e) => handleChangeInformationForm(e)}
-          name="XOA"
-          className={styles.item_size_small}>
+          <select
+            value={inputForm["XOA"]}
+            onChange={(e) => handleChangeInformationForm(e)}
+            name="XOA"
+            className={styles.item_size_small}
+          >
             <option value="">Chọn</option>
             <option value="0">0</option>
             <option value="1">1</option>
@@ -259,11 +257,12 @@ const FormPhanQuyen = () => {
             min={0}
             max={1}
           /> */}
-          <select 
-          value={inputForm["XEM"]}
-          onChange={(e) => handleChangeInformationForm(e)}
-          name="XEM"
-          className={styles.item_size_small}>
+          <select
+            value={inputForm["XEM"]}
+            onChange={(e) => handleChangeInformationForm(e)}
+            name="XEM"
+            className={styles.item_size_small}
+          >
             <option value="">Chọn</option>
             <option value="0">0</option>
             <option value="1">1</option>
@@ -280,11 +279,12 @@ const FormPhanQuyen = () => {
             min={0}
             max={1}
           /> */}
-          <select 
-          value={inputForm["IN"]}
-          onChange={(e) => handleChangeInformationForm(e)}
-          name="IN"
-          className={styles.item_size_small}>
+          <select
+            value={inputForm["IN"]}
+            onChange={(e) => handleChangeInformationForm(e)}
+            name="IN"
+            className={styles.item_size_small}
+          >
             <option value="">Chọn</option>
             <option value="0">0</option>
             <option value="1">1</option>

@@ -1,6 +1,7 @@
 import { useState, memo, useEffect } from "react";
 import Selection from "../Selection";
 import { useItemsContext } from "~items_context";
+import initCollapseMotion from "antd/es/_util/motion";
 
 const De = ({ initValue, changeData, size_input }) => {
   const [data, setData] = useState([{ value: "", label: "" }]);
@@ -9,12 +10,19 @@ const De = ({ initValue, changeData, size_input }) => {
     setData(stateItem.infoItemDe);
   }, []);
 
-  const [value, setValue] = useState("");
-  const [label, setLabel] = useState("");
+  const [value, setValue] = useState(() => {
+    if (initValue["value"]) return initValue["value"];
+    else return "";
+  });
+  const [label, setLabel] = useState(() => {
+    if (initValue["label"]) return initValue["label"];
+    else return "";
+  });
+
   useEffect(() => {
     setValue(initValue["value"]);
     setLabel(initValue["label"]);
-  }, []);
+  }, [initValue]);
 
   useEffect(() => {
     changeData({ value, label });
@@ -22,6 +30,7 @@ const De = ({ initValue, changeData, size_input }) => {
 
   return (
     <Selection
+      readOnly={false}
       value={value}
       setValue={setValue}
       label={label}

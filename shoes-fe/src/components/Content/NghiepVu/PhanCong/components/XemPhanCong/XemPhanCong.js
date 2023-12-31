@@ -51,7 +51,6 @@ const XemPhanCong = ({ SOPHIEU, dataPhanCong }) => {
         return response.json();
       })
       .then((info) => {
-        console.log("info: ", info);
         setDataThoDe(info);
       })
       .catch((err) => {
@@ -65,7 +64,6 @@ const XemPhanCong = ({ SOPHIEU, dataPhanCong }) => {
         return response.json();
       })
       .then((info) => {
-        console.log("info: ", info);
         setDataThoQuai(info);
       })
       .catch((err) => {

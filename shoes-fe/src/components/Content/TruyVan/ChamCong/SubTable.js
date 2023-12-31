@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Typography } from "@mui/material";
 import MaterialReactTable from "material-react-table";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
+import { Popconfirm } from "antd";
+import { Box } from "@mui/material";
 import { useTableContext, actions_table } from "~table_context";
 import { useUserContext, actions } from "~user";
 import { border_text_table_config } from "~config/ui";
+import { CustomAlert } from "~utils/alert_custom";
+import styles from "./SubTable.module.scss";
 
 const SubTable = ({
   columns,
@@ -47,10 +47,32 @@ const SubTable = ({
       muiTableContainerProps={{ sx: { maxHeight: { maxHeight } } }}
       enableRowVirtualization
       enableStickyFooter
+      displayColumnDefOptions={{
+        "mrt-row-actions": {
+          minSize: 80, //set custom width
+          muiTableHeadCellProps: {
+            align: "center", //change head cell props
+          },
+          muiTableBodyCellProps: {
+            minSize: 80,
+          },
+          enableResizing: true,
+        },
+      }}
       renderRowActions={({ row, table }) => (
-        <Box sx={{ display: "flex", gap: "1rem" }}>
-          <Tooltip arrow placement="right" title="Edit">
-            <IconButton
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            columnGap: "0.3rem",
+            marginLeft: "0.2rem",
+            marginRight: "0.2rem",
+          }}
+        >
+          <Box>
+            <button
+              className={styles.edit_button}
+              style={{ borderRight: "0.17rem solid rgba(0, 0, 0, 0.4)" }}
               onClick={() => {
                 if (
                   stateUser.userPoolAccess.some(
@@ -60,32 +82,26 @@ const SubTable = ({
                   setShowForm(true);
                   setSendData(row.original);
                   dispatchTable(actions_table.setModeShowModal(true));
-                  // console.log("row: ", row.original);
-                  // dispatchTable(actions_table.setInforRecordTable(emptyData));
-                  // dispatchTable(actions_table.setActionForm("add"));
-                  // dispatchTable(actions_table.setModeShowModal(true));
                 } else {
-                  alert("Bạn không có quyền sửa");
+                  CustomAlert("Bạn không có quyền xem");
                 }
               }}
             >
-              <Edit />
-            </IconButton>
-          </Tooltip>
-          {allowDelete && (
-            <Tooltip arrow placement="right" title="Delete">
-              <IconButton
-                color="error"
-                onClick={() => {
+              Xem
+            </button>
+          </Box>
+
+          <Box>
+            {allowDelete && (
+              <Popconfirm
+                title="Xác nhận hành động"
+                description="Bạn thực sự muốn xoá thông tin này?"
+                onConfirm={() => {
                   if (
                     stateUser.userPoolAccess.some(
                       (obj) => obj.MAFORM === maForm && obj.XOA === 1
                     )
                   ) {
-                    let text = "Bạn thực sự muốn xóa thông tin này không!";
-                    if (!window.confirm(text)) {
-                      return;
-                    }
                     fetch("http://localhost:8000/tv_chamcong", {
                       method: "DELETE",
                       headers: {
@@ -108,24 +124,27 @@ const SubTable = ({
                             .catch((err) => {
                               console.log(err);
                             });
-                          // alert("Xóa thành công");
+                          // CustomAlert("Xóa thành công");
                         } else {
-                          alert("Xóa thất bại");
+                          CustomAlert("Xóa thất bại");
                         }
                       })
                       .catch((err) => {
                         console.log(err);
                       });
                   } else {
-                    alert("Bạn không có quyền xóa");
+                    CustomAlert("Bạn không có quyền xóa");
                   }
                 }}
+                onCancel={() => {}}
+                okText="Đồng ý"
+                cancelText="Không đồng ý"
               >
-                <Delete />
-              </IconButton>
-            </Tooltip>
-          )}
-        </Box>
+                <button className={styles.delete_button}>Xoá</button>
+              </Popconfirm>
+            )}
+          </Box>
+        </div>
       )}
     />
   );

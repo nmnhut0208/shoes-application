@@ -1,37 +1,17 @@
 @import "~common_scss/form.module.scss";
 
 .group_first {
-  height: var(--height-region);
-  width: 100%;
+  height: 16rem;
+  width: 32rem;
   @extend .flex-column;
   .group_first_row {
     margin-bottom: var(--margin-bottom-config);
   }
 }
 
-// .group_second {
-//   height: var(--height-region);
-//   width: 100%;
-//   @extend .flex-column;
-//   .group_second_row {
-//     margin-bottom: var(--margin-bottom-config);
-//     // @extend .flex-row;
-//     textarea {
-//       display: inline-block;
-//       vertical-align: top;
-//       width: 45rem;
-//       height: 7rem;
-//       border: var(--border-setting);
-//       padding: 0.4rem 1.1rem;
-//       font-size: 1.4rem;
-//       font-family: Arial;
-//     }
-//   }
-// }
-
 .group_second {
-  height: var(--height-region);
-  width: 100%;
+  height: 16rem;
+  width: 32rem;
   @extend .flex_row_space-between;
   .group_second_row {
     margin-bottom: var(--margin-bottom-config);

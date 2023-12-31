@@ -2,8 +2,7 @@ import { memo } from "react";
 import MaterialReactTable from "material-react-table";
 import { border_text_table_config } from "~config/ui";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
-import { Delete } from "@mui/icons-material";
-import { Box, IconButton, Tooltip } from "@mui/material";
+import styles from "./SubTable.module.scss";
 
 const SubTable = ({
   columns,
@@ -17,13 +16,13 @@ const SubTable = ({
   setIsSaveData,
   maxHeight,
   change,
-  setKeys
+  setKeys,
 }) => {
   console.log("render SubTable: ", data);
   const handleSaveCell = (cell, value) => {
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
-    if ( dataAll.length === 0 ) return;
-    let data_new = dataAll[curDH]
+    if (dataAll.length === 0) return;
+    let data_new = [...dataAll[curDH]];
     console.log("cell: ", data_new);
     var row_current = data_new[cell.row.index];
     // Tính lại tại thay đổi tại dòng hiện tại đang chỉnh sửa
@@ -37,7 +36,7 @@ const SubTable = ({
       "SIZE0",
       "SIZE1",
     ];
-    if (list_size.includes(cell.column.id)) {
+    if (list_size.includes(cell.column.id) || cell.column.id === "GIABAN") {
       if (value === "") value = 0;
       row_current[cell.column.id] = parseInt(value);
 
@@ -54,8 +53,9 @@ const SubTable = ({
     // console.log("cell: ", data);
     //send/receive api updates here
     dataAll[curDH] = data_new;
-    setDataTable({...dataAll}); //re-render with new data
+    setDataTable({ ...dataAll }); //re-render with new data
     setIsSaveData(false);
+    // setKeys((prev) => prev + 1);
   };
 
   return (
@@ -106,27 +106,20 @@ const SubTable = ({
       })}
       // renderRowActions Delete
       renderRowActions={({ row, table }) => (
-        <Box>
-          <Tooltip arrow placement="right" title="Delete">
-            <IconButton
-              color="error"
-              onClick={() => {
-                // console.log("delete:", row.index);
-                // delete SODH in dataAll
-                let data_new = dataAll[curDH];
-                const index = row.index;
-                data_new = data_new.filter((_, i) => i !== index);
-                dataAll[curDH] = data_new;
-                setDataTable({...dataAll});
-                setKeys(prev => prev + 1)
-                setIsSaveData(false);
-              }
-              }
-            >
-              <Delete />
-            </IconButton>
-          </Tooltip>
-        </Box>
+        <button
+          className={styles.delete_button}
+          onClick={() => {
+            let data_new = dataAll[curDH];
+            const index = row.index;
+            data_new = data_new.filter((_, i) => i !== index);
+            dataAll[curDH] = data_new;
+            setDataTable({ ...dataAll });
+            setKeys((prev) => prev + 1);
+            setIsSaveData(false);
+          }}
+        >
+          Xoá
+        </button>
       )}
     />
   );

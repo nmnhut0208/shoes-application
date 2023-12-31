@@ -38,7 +38,7 @@ def read(YEAR: str=None) -> RESPONSE_TVGIAOHANG:
                 ON CONGNO.MAKH = DMKHACHHANG.MAKH
             WHERE CONGNO.LOAIPHIEU = 'BH'
             {condition_year}
-            ORDER BY CONGNO.NGAYPHIEU DESC
+            ORDER BY CONGNO.NGAYPHIEU desc, SOPHIEU desc
             """
     return TVGH.read_custom(sql)
 
@@ -54,6 +54,7 @@ def read(data: dict):
                  AS DONHANG ON CONGNO.SODH = DONHANG.SODH
             WHERE SOPHIEU = '{sophieu}' AND MAKH = '{makh}' 
             GROUP BY CONGNO.SODH, DONHANG.NGAYDH, DONHANG.NGAYGH,DIENGIAIDONG
+            ORDER BY DONHANG.NGAYDH desc, CONGNO.SODH desc
             """
     return TVGH.read_custom(sql)
 
@@ -80,7 +81,6 @@ def read(data: dict):
         if result["SODH"] not in results_group:
             results_group[result["SODH"]] = []
         results_group[result["SODH"]].append(result)
-    print(results_group)
     return results_group
 
 @router.post("/tv_savegiaohang")

@@ -55,9 +55,8 @@ def update(data: ITEM_QUAI) -> RESPONSE:
 
 
 @router.delete("/quai")
-def delete(data: ITEM_QUAI) -> RESPONSE:
-    data = dict(data)
-    condition = f"MAQUAI = '{data['MAQUAI']}'"
+def delete(ID: str) -> RESPONSE:
+    condition = f"MAQUAI = '{ID}'"
     return quai.delete(condition)
 
 @router.get("/quai/get_HINHANH")

@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
+from utils.date import * 
 from datetime import datetime
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
@@ -72,6 +73,7 @@ and PC.{typenv} = '{manv}'
 GROUP BY tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.DIENGIAIPHIEU, PC.MAGIAY,  
 pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.{typenv}) as info_chamcong) as abc
 where abc.SLCONLAI > 0
+order by abc.NGAYPHIEU desc, abc.SOPHIEU desc
         """
         return CC.read_custom(sql)
 
@@ -114,7 +116,7 @@ def read(data: dict):
         typenv = "THODE"
         sql = f"""SELECT * FROM 
                 (SELECT 
-                    dmgiay.tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI,pc.THODE,
+                    dmgiay.tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI,pc.THODE,
                     SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8  +PC.SIZE9 +PC.SIZE0 +coalesce(PC.SIZE1,0)) AS SLPHANCONG, 
                     ISNULL((SELECT SUM(ISNULL(CC.SOLUONG,0))  FROM CHAMCONG CC  WHERE PC.SOPHIEU = CC.PHIEUPC AND 
                                                 PC.MAGIAY = CC.MAGIAY AND 
@@ -137,15 +139,17 @@ def read(data: dict):
                                                 pc.THODE=cc.manvien),0)) AS SLCONLAI 
                 FROM PHANCONG PC 
                             left join dmgiay on dmgiay.magiay=pc.magiay 
-                GROUP BY tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.THODE) AS CHAMCONGTHODE
+                GROUP BY tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.THODE) AS CHAMCONGTHODE
                   where CHAMCONGTHODE.{typenv}='{manvien}' 
-                  and SOPHIEU IN {phieupc}"""
+                  and SOPHIEU IN {phieupc}
+                order by NGAYPHIEU desc, SOPHIEU desc
+                """
         return CC.read_custom(sql)
     elif loainv == "TQ":
         typenv = "THOQUAI"
         sql = f"""SELECT * FROM 
                 (SELECT 
-                dmgiay.tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI,pc.THOQUAI,
+                dmgiay.tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI,pc.THOQUAI,
                 SUM(PC.SIZE5 + PC.SIZE6 + PC.SIZE7 + PC.SIZE8  +PC.SIZE9 +PC.SIZE0 +coalesce(PC.SIZE1,0)) AS SLPHANCONG, 
                 ISNULL((SELECT SUM(ISNULL(CC.SOLUONG,0))  FROM CHAMCONG CC  WHERE PC.SOPHIEU = CC.PHIEUPC AND 
                                             PC.MAGIAY = CC.MAGIAY AND 
@@ -168,11 +172,12 @@ def read(data: dict):
                                             pc.THOQUAI=cc.manvien),0)) AS SLCONLAI 
             FROM PHANCONG PC 
                         left join dmgiay on dmgiay.magiay=pc.magiay 
-            GROUP BY tengiay,PC.SOPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.THOQUAI) AS CHAMCONGTHOQUAI
+            GROUP BY tengiay,PC.SOPHIEU, PC.NGAYPHIEU, PC.MAGIAY,  pc.maude,PC.MAUGOT, PC.MAUSUON, PC.MAUCA, PC.MAUQUAI ,pc.THOQUAI) AS CHAMCONGTHOQUAI
                   where CHAMCONGTHOQUAI.{typenv}='{manvien}' 
-                  and SOPHIEU IN {phieupc}"""
+                  and SOPHIEU IN {phieupc}
+            order by NGAYPHIEU desc, SOPHIEU desc
+            """
         return CC.read_custom(sql)
-    
 
 @router.post("/savechamcong")
 def save(data: dict) -> RESPONSE:
@@ -180,7 +185,7 @@ def save(data: dict) -> RESPONSE:
     manv = data["MANVIEN"]
     maky = data["MAKY"]
     phieupc = data["SOPHIEU"]
-    ngaypc = data["NGAYPHIEU"]
+    ngaypc = get_datetime_now() #data["NGAYPHIEU"]
     diengiai = data["DIENGIAI"]
     sql_delete = f"""DELETE FROM CHAMCONG 
                      WHERE MAKY='{maky}' AND MANVIEN='{manv}' 
@@ -223,24 +228,55 @@ def save(data: dict) -> RESPONSE:
 
 
 @router.get("/chamcong/salary_compute")
-def reasalary_computed(MAKY: str, TYPE: str) -> List[dict]:
+def reasalary_computed(MAKY: str, TYPE: str, YEAR: str) -> List[dict]:
+    start_date = f"{YEAR}-01-01"
+    end_date = f"{YEAR}-12-31"
     LOAINVIEN = ""
+    # LOAINVIEN: TQ, TD, ALL
     if TYPE == "TQ":
         LOAINVIEN = "and MALOAINV='TQ'"
     elif TYPE == "TD":
         LOAINVIEN = "and MALOAINV='TD'"
     else:
         pass
-    sql = f"""
-        select MANVIEN, TENNVIEN, MaGiay as MAGIAY, SOLUONG,
-        DONGIA, SOLUONG * DONGIA as THANHTIEN,
-        PHIEUPC, DIENGIAIPHIEU, MADE, MAQUAI
-        from V_CHAMCONG
-        where MaKy = '{MAKY}'
-        -- and MANVIEN='LINH' -- delete this line
-        {LOAINVIEN}
-        order by MANVIEN, PHIEUPC, MAGIAY
-    """
+
+    # sql = f"""
+    #     select MANVIEN, TENNVIEN, MaGiay as MAGIAY, SOLUONG,
+    #     DONGIA, SOLUONG * DONGIA as THANHTIEN,
+    #     PHIEUPC, DIENGIAIPHIEU, MADE, MAQUAI
+    #     from V_CHAMCONG
+    #     where MaKy = '{MAKY}'
+    #     -- and MANVIEN='LINH' -- delete this line
+    #     {LOAINVIEN}
+    #     {condition_year}
+    #     order by MANVIEN, PHIEUPC, MAGIAY
+    # """
+    sql = f"""select MANVIEN, TENNVIEN, MaGiay as MAGIAY, SOLUONG,
+                DONGIA, SOLUONG * DONGIA as THANHTIEN,
+                PHIEUPC, DIENGIAIPHIEU, MADE, MAQUAI
+            from 
+            (Select CHAMCONG.PHIEUPC, CHAMCONG.MaKy, CHAMCONG.MaGiay,CHAMCONG.MANVIEN,
+                (SELECT TOP 1 DIENGIAIPHIEU FROM PHANCONG WHERE PHANCONG.SOPHIEU = CHAMCONG.PHIEUPC)AS DIENGIAIPHIEU, 
+                SUM(CHAMCONG.SOLUONG) AS SOLUONG,
+                CASE WHEN DMNHANVIEN.LOAINVIEN = 'TD' THEN V_GIAY.DONGIADE ELSE V_GIAY.DONGIAQUAI END AS DONGIA,
+                DMKYTINHLUONG.TENKY,V_GIAY.TENGIAY,DMNHANVIEN.TENNVIEN, DMNHANVIEN.LOAINVIEN as MALOAINV,
+                CASE 	WHEN DMNHANVIEN.LOAINVIEN = 'TD' THEN 'THOI ÑEA' 
+                    WHEN DMNHANVIEN.LOAINVIEN = 'TQ' THEN 'THOI QUAI' ELSE 'KHAUC' END AS LOAINV,
+                CASE 	WHEN DMNHANVIEN.LOAINVIEN = 'TD' THEN V_GIAY.MADE ELSE '' END AS MADE,
+                CASE	WHEN DMNHANVIEN.LOAINVIEN = 'TQ' THEN V_GIAY.MAQUAI ELSE '' END AS MAQUAI
+            From CHAMCONG 	Left Join DMKYTINHLUONG On DMKYTINHLUONG.MAKY=CHAMCONG.MAKY 
+                    Left Join V_GIAY On V_GIAY.MAGIAY=CHAMCONG.MAGIAY 
+                    Left Join DMNHANVIEN On DMNHANVIEN.MANVIEN=CHAMCONG.MANVIEN
+            where CHAMCONG.MAKY = '{MAKY}'
+            and CHAMCONG.NgayPhieu >= '{start_date}'
+            and CHAMCONG.NgayPhieu <= '{end_date}'
+            GROUP BY CHAMCONG.PHIEUPC, CHAMCONG.MaKy, CHAMCONG.MaGiay, 
+            CHAMCONG.MANVIEN, DMKYTINHLUONG.TENKY,V_GIAY.TENGIAY,DMNHANVIEN.TENNVIEN, 
+            DMNHANVIEN.LOAINVIEN, V_GIAY.DONGIADE, V_GIAY.DONGIAQUAI, V_GIAY.MAQUAI, V_GIAY.MADE) as V_CHAMCONG
+            where MaKy = '{MAKY}'
+            {LOAINVIEN}
+            order by MANVIEN, PHIEUPC, MAGIAY
+          """
     result = CC.read_custom(sql)
     return result
 

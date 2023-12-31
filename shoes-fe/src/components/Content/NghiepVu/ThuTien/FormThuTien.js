@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import moment from "moment";
+import { convertDate } from "~utils/processing_date";
 
 import { ItemKhachHang } from "~items";
 import ModalForButton from "./ModalForButton";
@@ -8,6 +9,7 @@ import styles from "./FormThuTien.module.scss";
 import { useTableContext, actions_table } from "~table_context";
 import { useUserContext } from "~user";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
+import { CustomAlert } from "~utils/alert_custom";
 
 const updateSOPHIEU = (sophieu) => {
   console.log("save so don hang");
@@ -20,7 +22,13 @@ const updateSOPHIEU = (sophieu) => {
   });
 };
 
+const list_input_required = {
+  MAKH: "Mã khách hàng",
+  THANHTIEN: "Số tiền",
+};
+
 const FormThuTien = ({ dataView, type_action }) => {
+  const [isSave, setIsSave] = useState(true);
   const view = useMemo(() => {
     if (type_action === "view") return true;
     else return false;
@@ -57,9 +65,12 @@ const FormThuTien = ({ dataView, type_action }) => {
             MAKH: "",
             TENKH: "",
             SOPHIEU: sophieu,
-            NGAYPHIEU: moment().format("YYYY-MM-DDTHH:mm:ss"),
+            NGAYPHIEU: moment()
+              .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+              .format("YYYY-MM-DD HH:mm:ss"),
           });
           setLastestSOPHIEU(data["LastestSOPHIEU"]);
+          setIsSave(true);
         })
         .catch((err) => {
           console.log(err);
@@ -73,28 +84,31 @@ const FormThuTien = ({ dataView, type_action }) => {
         NGUOITAO: stateUser.userName,
         NGUOISUA: stateUser.userName,
       });
+      setIsSave(true);
     }
   }, []);
 
   const handleChangeInformationForm = (dict_data) => {
     const data = { ...form, ...dict_data };
     setForm(data);
+    setIsSave(false);
   };
 
   const handleChangeFormForTypeDate = (e) => {
     const data = { ...form };
-    data[e.target.name] = e.target.value;
+    data[e.target.name] = moment(e.target.value, "YYYY-MM-DD")
+      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+      .format("YYYY-MM-DD HH:mm:ss");
     setForm(data);
+    setIsSave(false);
   };
 
   const handleSaveFrom = () => {
-    if (form["MAKH"] === "") {
-      alert("Nhập khách hàng!!!");
-      return false;
-    }
-    if (form["THANHTIEN"] === "" || form["THANHTIEN"] === undefined) {
-      alert("Nhập số tiền!!!");
-      return false;
+    for (let key in list_input_required) {
+      if (form[key] === undefined || form[key] === "") {
+        CustomAlert("Nhập " + list_input_required[key]);
+        return false;
+      }
     }
 
     console.log("Save form");
@@ -104,6 +118,7 @@ const FormThuTien = ({ dataView, type_action }) => {
     } else if (type_action === "add") {
       method = "POST";
     }
+    console.log("form: ", form);
     fetch("http://localhost:8000/congno/phieuthu", {
       method: method,
       headers: { "Content-Type": "application/json" },
@@ -114,7 +129,8 @@ const FormThuTien = ({ dataView, type_action }) => {
         if (type_action === "add") {
           updateSOPHIEU(lastestSOPHIEU);
         }
-        alert("Lưu thông tin thành công.");
+        CustomAlert("Lưu thông tin thành công.");
+        setIsSave(true);
       })
       .catch((error) => {
         console.log("error: ", error);
@@ -122,6 +138,7 @@ const FormThuTien = ({ dataView, type_action }) => {
   };
 
   const handleNhapTiep = () => {
+    console.log("................");
     let SOPHIEU_old = form["SOPHIEU"];
     const sub_components = SOPHIEU_old.split("-");
     const str_number = ("000" + (lastestSOPHIEU + 1)).slice(-4);
@@ -132,98 +149,111 @@ const FormThuTien = ({ dataView, type_action }) => {
       NGUOITAO: stateUser.userName,
       NGUOISUA: stateUser.userName,
       DIENGIAIPHIEU: "",
+      THANHTIEN: "",
+      MAKH: "",
+      TENKH: "",
       SOPHIEU: SOPHIEU_new,
-      NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+      NGAYPHIEU: moment()
+        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+        .format("YYYY-MM-DD HH:mm:ss"),
     });
     setLastestSOPHIEU(lastestSOPHIEU + 1);
+    setIsSave(true);
   };
 
   const handlePrint = () => {
     setShowPrint(true);
   };
 
-  return (
-    <div className={styles.form}>
-      <div className={styles.group_first}>
-        <div className={styles.group_first_row}>
-          <div className="styles.group_first_row_between">
-            <label>Số phiếu</label>
-            <input
-              readOnly={true}
-              name="SOPHIEU"
-              value={form["SOPHIEU"]}
-              className={styles.item_size_small}
-            />
-          </div>
-          <div className="styles.group_first_row_between">
-            <label>Ngày phiếu</label>
-            <input
-              readOnly={view}
-              type="datetime-local"
-              name="NGAYPHIEU"
-              value={form["NGAYPHIEU"]}
-              onChange={handleChangeFormForTypeDate}
-              className={styles.item_size_small}
-            />
-          </div>
-        </div>
-      </div>
-      <div className={styles.group_second}>
-        <div className={styles.group_second_row}>
-          <label>Khách hàng</label>
-          <ItemKhachHang
-            value={form["MAKH"]}
-            setValue={setMaKH}
-            label={form["TENKH"]}
-            setLabel={setTenKH}
-            size_input={"15rem"}
-            size_span={"39rem"}
-            have_span={true}
-            readOnly={type_action !== "add"}
-          />
-        </div>
-        <div className={styles.group_second_row}>
-          <label>Số tiền</label>
-          <input
-            type="number"
-            min={0}
-            name="THANHTIEN"
-            value={form["THANHTIEN"]}
-            onChange={(e) =>
-              handleChangeInformationForm({ THANHTIEN: e.target.value })
-            }
-            onKeyDown={handleDisableKeyDownUp}
-            onKeyUp={handleDisableKeyDownUp}
-            onFocus={handleFocus}
-            className={styles.item_size_small}
-            readOnly={view}
-          />
-        </div>
-        <div className={styles.group_second_row}>
-          <label>Diễn giải</label>
-          <textarea
-            name="DIENGIAIPHIEU"
-            value={form["DIENGIAIPHIEU"]}
-            onChange={(e) =>
-              handleChangeInformationForm({ DIENGIAIPHIEU: e.target.value })
-            }
-            className={styles.item_size_big}
-            readOnly={view}
-          />
-        </div>
-      </div>
-      <div className={styles.group_button}>
-        <div>
-          <button onClick={handleSaveFrom} disabled={view}>
-            Lưu
-          </button>
-          {type_action === "add" && (
-            <button onClick={handleNhapTiep}>Nhập tiếp</button>
-          )}
-          <button onClick={handlePrint}>In</button>
-        </div>
-      </div>
+  console.log("isSave: ", isSave);
 
+  return (
+    <div>
+      <div className={styles.form}>
+        <div className={styles.group_first}>
+          <div className={styles.group_first_row}>
+            <div className="styles.group_first_row_between">
+              <label>Số phiếu</label>
+              <input
+                readOnly={true}
+                name="SOPHIEU"
+                value={form["SOPHIEU"]}
+                className={styles.item_size_small}
+              />
+            </div>
+            <div className="styles.group_first_row_between">
+              <label>Ngày phiếu</label>
+              <input
+                readOnly={view}
+                type="date"
+                name="NGAYPHIEU"
+                value={convertDate(form["NGAYPHIEU"])}
+                onChange={handleChangeFormForTypeDate}
+                className={styles.item_size_small}
+              />
+            </div>
+          </div>
+        </div>
+        <div className={styles.group_second}>
+          <div className={styles.group_second_row}>
+            <label>Khách hàng</label>
+            <ItemKhachHang
+              value={form["MAKH"]}
+              setValue={setMaKH}
+              label={form["TENKH"]}
+              setLabel={setTenKH}
+              size_input={"15rem"}
+              size_span={"39rem"}
+              have_span={true}
+              readOnly={type_action !== "add"}
+            />
+          </div>
+          <div className={styles.group_second_row}>
+            <label>Số tiền</label>
+            <input
+              type="number"
+              min={0}
+              name="THANHTIEN"
+              value={form["THANHTIEN"]}
+              onChange={(e) =>
+                handleChangeInformationForm({ THANHTIEN: e.target.value })
+              }
+              onKeyDown={handleDisableKeyDownUp}
+              onKeyUp={handleDisableKeyDownUp}
+              onFocus={handleFocus}
+              className={styles.item_size_small}
+              readOnly={view}
+            />
+          </div>
+          <div className={styles.group_second_row}>
+            <label>Diễn giải</label>
+            <textarea
+              name="DIENGIAIPHIEU"
+              value={form["DIENGIAIPHIEU"]}
+              onChange={(e) =>
+                handleChangeInformationForm({ DIENGIAIPHIEU: e.target.value })
+              }
+              className={styles.item_size_big}
+              readOnly={view}
+            />
+          </div>
+        </div>
+        <div className={styles.group_button}>
+          <div>
+            <button onClick={handleSaveFrom} disabled={view}>
+              Lưu
+            </button>
+            {type_action === "add" && (
+              <button onClick={handleNhapTiep} disabled={!isSave}>
+                Nhập tiếp
+              </button>
+            )}
+            <button onClick={handlePrint} disabled={!isSave}>
+              In
+            </button>
+          </div>
+        </div>
+      </div>
       {showPrint && (
         <ModalForButton status={showPrint} setShowModal={setShowPrint}>
           <In data={form} setShowModal={setShowPrint} />

@@ -1,4 +1,5 @@
 import moment from "moment";
+import { CustomAlert } from "~utils/alert_custom";
 
 export const updateInfoPhieuPhanCong = (
   infoPhieu,
@@ -18,7 +19,9 @@ export const updateInfoPhieuPhanCong = (
         MAKY: "",
         DIENGIAIPHIEU: "",
         SOPHIEU: sophieu,
-        NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+        NGAYPHIEU: moment()
+          .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+          .format("YYYY-MM-DD HH:mm:ss"),
       });
       setLastestSOPHIEU(data["LastestPC"]);
     })
@@ -50,7 +53,7 @@ export const processing_button_add = (
   lastestSOPHIEU
 ) => {
   if (infoPhieu["MAKY"] == "") {
-    alert("Chọn kỳ tính lương.");
+    CustomAlert("Chọn kỳ tính lương.");
     return;
   }
   let list_key_form = Object.keys(formPhanCong);
@@ -65,7 +68,7 @@ export const processing_button_add = (
     formPhanCong["THOQUAI"] == undefined ||
     formPhanCong["THODE"] == undefined
   ) {
-    alert("Chọn thợ đế và thợ quai để phân công");
+    CustomAlert("Chọn thợ đế và thợ quai để phân công");
     return;
   }
   let remain = { ...formPhanCong };
@@ -189,7 +192,7 @@ export const updateMaGiayWillPhanCong = (
       // nhớ xử lý vụ size nữa nè
       fetch(
         "http://localhost:8000/phancong/get_chitietdonhang_dephancong?SODH=" +
-        encodeURIComponent(idDonHang)
+          encodeURIComponent(idDonHang)
       )
         .then((response) => {
           return response.json();
@@ -257,7 +260,7 @@ export const processing_button_delete = (
 
   fetch(
     "http://localhost:8000/phancong/by_list_MADONG/?MADONG=" +
-    data_delete["MADONG"],
+      data_delete["MADONG"],
     {
       method: "delete",
     }

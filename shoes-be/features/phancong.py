@@ -117,7 +117,7 @@ def read() -> List[RESPONSE_PHANCONG]:
             GROUP BY dh.madh,dh.sodh,dh.ngaydh,dh.makh,kh.tenkh,dh.diengiaiphieu) 
             as DHCHUAPHANCONG
             where SLDONHANG - SLPHANCONG > 0
-            order by NGAYDH desc
+            order by NGAYDH desc, SODH desc
              """
     result = phancong.read_custom(sql)
     return result
@@ -147,7 +147,7 @@ def baocao_phancong(YEAR: str=None) -> List[RESPONSE_BAOCAO_PHANCONG]:
                 {condition_year}
                 group by  SOPHIEU, NGAYPHIEU,
                 DIENGIAIPHIEU, MAKY
-                order by NGAYPHIEU desc
+                order by NGAYPHIEU desc, SOPHIEU desc
             """
     result = phancong.read_custom(sql)
     return result
@@ -176,7 +176,7 @@ def baocao_phancong(SOPHIEU: str) -> List[dict]:
 
 @router.get("/phancong/get_chitietdonhang_dephancong")
 def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
-    sql = f"""select KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, 
+    sql = f"""select KIEMTRAPHANCONG.magiay as MAGIAY, TENGIAY, coalesce(DMCA.TENCA, '') as TENCA, 
               madh as MADH, sodh as SODH, 
               ngaydh as NGAYDH, makh as MAKH, diengiaiphieu as DIENGIAIDONG, 
               tenkh as TENKH, 
@@ -196,7 +196,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
               from (
               SELECT DISTINCT dh.magiay, dh.madh,dh.sodh,dh.ngaydh,dh.makh,
                     kh.tenkh,dh.diengiaiphieu,
-                    DH.MAUDE, DH.MAUGOT,DH.MAUSUON, 
+                    DH.MAUDE, DH.MAUGOT,DH.MAUSUON,
                     DH.MAUCA, DH.MAUQUAI,
                         coalesce(DH.SIZE5, 0) AS SIZE5,
                         coalesce(DH.SIZE6, 0) AS SIZE6,
@@ -226,8 +226,10 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
                     DH.MAUCA, DH.MAUQUAI, DH.SIZE5, DH.SIZE6, DH.SIZE7, DH.SIZE8, 
                     DH.SIZE9, DH.SIZE0, coalesce(DH.SIZE1, 0)
               ) as KIEMTRAPHANCONG
-              left join (select MAGIAY, TENGIAY from DMGIAY) 
+              left join (select MAGIAY, TENGIAY, MACA from DMGIAY) 
               as DMGIAY on DMGIAY.MAGIAY = KIEMTRAPHANCONG.magiay
+			  left join (select MACA, TENCA from DMCA) 
+			        as DMCA on DMGIAY.MACA = DMCA.MACA
               left join (select MAMAU, TENMAU as TENMAUDE from DMMAU) 
                     as DMMAUDE on MAUDE = DMMAUDE.MAMAU
               left join (select MAMAU, TENMAU as TENMAUGOT from DMMAU) 
@@ -251,6 +253,7 @@ def read(SODH: str) -> List[RESPONSE_GIAYTHEOKHACHHANG]:
 def read(SOPHIEU: str) -> List[RESPONSE_PHANCONG]:
     sql = f"""select MADONG, MAPHIEU, SOPHIEU, NGAYPHIEU,
                     DIENGIAIPHIEU, SODH, MAGIAY,
+					coalesce(DMGIAY.TENCA, '') as TENCA,
                     SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, THODE,
                     THOQUAI, DAIN, DIENGIAIDONG, NGAYTAO, NGUOITAO,
                     NGUOISUA, NGAYSUA, MAUDE, MAUGOT, MAUSUON, MAUCA,
@@ -259,7 +262,7 @@ def read(SOPHIEU: str) -> List[RESPONSE_PHANCONG]:
                     TENMAUDE, TENMAUGOT, TENMAUSUON, TENMAUCA, TENMAUQUAI,
                     TENTHODE, TENTHOQUAI
                 from PHANCONG
-                INNER join (select MAGIAY AS IDGIAY, TENGIAY, TENKH from V_GIAY) 
+                INNER join (select MAGIAY AS IDGIAY, TENGIAY, TENKH, TENCA from V_GIAY) 
                     as DMGIAY on DMGIAY.IDGIAY = PHANCONG.MAGIAY
                 inner join (select MANVIEN, TENNVIEN as TENTHODE from DMNHANVIEN 
                     where LOAINVIEN='TD') as DMTHODE on DMTHODE.MANVIEN = THODE
@@ -279,46 +282,6 @@ def read(SOPHIEU: str) -> List[RESPONSE_PHANCONG]:
             """
     result = phancong.read_custom(sql)
     return result
-
-
-# @router.post("/phancong")
-# def add(data: List[ITEM_PHANCONG]) -> RESPONSE:
-#     # delete SOPHIEU cu, insert SDH moi
-#     # cho trường hợp chú chỉ chỉnh sửa đơn hàng thôi, chứ ko add mới
-#     # Không thể biết được bao nhiêu giày được add mới
-#     # nên đành xóa dữ liệu cũ, add lại dữ liệu mới thôi
-
-#     sql_delete = f"""delete PHANCONG
-#                     where SOPHIEU = '{data[0].SOPHIEU}'"""
-#     phancong.execute_custom(sql_delete)
-
-#     # find common information
-#     today = datetime.now()
-#     year = today.year
-#     MADONG = find_info_primary_key("PHANCONG","MD", today)
-#     PHIEU = find_info_primary_key("PHANCONG", "PHIEU", today) + 1
-#     MAPHIEU = f"PC{year}{str(PHIEU).zfill(12)}"
-#     day_created = today.strftime("%Y-%m-%d %H:%M:%S")
-
-#     for i in range(len(data)):
-#         _data = dict(data[i])
-#         MADONG += 1
-#         _data["NGAYTAO"] = day_created
-#         _data["NGAYSUA"] = day_created
-#         _data["MAPHIEU"] = MAPHIEU
-#         _data["MADONG"] = f"MD{year}{str(MADONG).zfill(12)}"
-        
-#         _data = convert_data_to_save_database(_data)
-#         _c = ",".join([k for k, v in _data.items() if v is not None])
-#         _v = ",".join([v for v in _data.values() if v is not None])
-#         # phòng trường hợp những record khác nhau có số lượng
-#         # cột insert khác nhau nên phải insert từng dòng như thế này
-#         phancong.add(_c, _v)
-
-#     # lưu lại thông tin mã dòng và mã đơn hàng
-#     save_info_primary_key("PHANCONG","PC", year, PHIEU)
-#     save_info_primary_key("PHANCONG","MD", year, MADONG)
-#     return 1
 
 
 @router.post("/phancong/add_phancong")

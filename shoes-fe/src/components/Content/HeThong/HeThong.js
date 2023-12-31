@@ -5,6 +5,7 @@ import PhanQuyen from "./PhanQuyen";
 import DoiMatKhau from "./DoiMatKhau";
 import DangKy from "./DangKy";
 import Thoat from "./Thoat";
+import { CustomAlert } from "~utils/alert_custom";
 
 const HeThong = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -17,14 +18,14 @@ const HeThong = () => {
       if (stateUser.userName === "ADMIN") {
         return <PhanQuyen />;
       } else {
-        alert("Bạn không có quyền truy cập vào chức năng này");
+        CustomAlert("Bạn không có quyền truy cập vào chức năng này");
         return <></>;
       }
     case "Đăng ký":
       if (stateUser.userName === "ADMIN") {
         return <DangKy />;
       } else {
-        alert("Bạn không có quyền truy cập vào chức năng này");
+        CustomAlert("Bạn không có quyền truy cập vào chức năng này");
         return <></>;
       }
     case "Đổi mật khẩu":
@@ -32,7 +33,7 @@ const HeThong = () => {
     case "Thoát":
       return <Thoat />;
     default:
-      alert("Chua xu ly ngoai Giay");
+      CustomAlert("Chức năng không hợp lệ.");
   }
 };
 

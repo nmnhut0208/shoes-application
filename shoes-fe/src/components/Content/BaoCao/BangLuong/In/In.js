@@ -7,6 +7,7 @@ import {
 } from "./ConstantVariable";
 import styles from "./In.module.scss";
 import { TableToPrint } from "~common_tag/reports";
+import { CustomAlert } from "~utils/alert_custom";
 
 const groupbyFunction = (data, key) => {
   let list_key = [];
@@ -44,10 +45,12 @@ const In = ({ data, setShowModal, stylePrint }) => {
     removeAfterPrint: true,
   });
 
+  console.log("data: ", data);
+
   useLayoutEffect(() => {
     fetch(
       "http://localhost:8000/chamcong/salary_compute?" +
-        `MAKY=${data["MAKY"]}&TYPE=${data["TYPE"]}`
+        `MAKY=${data["MAKY"]}&TYPE=${data["TYPE"]}&YEAR=${data["YEAR"]}`
     )
       .then((response) => response.json())
       .then((info) => {
@@ -73,7 +76,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
           setInfoEachEmployer(all_pages);
         } else {
           setShowModal(false);
-          alert("Chưa có thông tin để xem hoặc in.");
+          CustomAlert("Chưa có thông tin để xem hoặc in.");
         }
       })
       .catch((error) => {

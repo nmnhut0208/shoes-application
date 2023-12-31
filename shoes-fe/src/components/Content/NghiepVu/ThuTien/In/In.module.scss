@@ -55,3 +55,13 @@
     }
   }
 }
+.area_button{
+  display: flex;
+  flex-direction: row-reverse;
+}
+.print_button {
+  height: 2.5rem;
+  width: 10rem;
+  text-align: center;
+  font-size: 1.6rem;
+}

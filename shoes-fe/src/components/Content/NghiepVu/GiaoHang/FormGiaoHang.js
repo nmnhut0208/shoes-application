@@ -16,6 +16,8 @@ import { convertDateForReport } from "~utils/processing_date";
 import { Modal } from "~common_tag";
 import In from "./In";
 import { useTableContext, actions_table } from "~table_context";
+import { CustomAlert } from "~utils/alert_custom";
+import { Popconfirm } from "antd";
 
 const list_key = [
   {
@@ -41,17 +43,17 @@ const list_key = [
   {
     header: "Diễn giải",
     key: "DIENGIAIDONG",
-    width: 20 * rem_to_px,
+    width: 10 * rem_to_px,
     enableEditing: false,
   },
   {
     header: "Số lượng còn lại",
     key: "SOLUONGCONLAI",
-    width: 5 * rem_to_px,
+    width: 15 * rem_to_px,
     enableEditing: false,
-    muiTableBodyCellProps: {
-      align: "right",
-    },
+    // muiTableBodyCellProps: {
+    //   align: "right",
+    // },
     Cell: ({ cell }) => (
       <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
     ),
@@ -64,7 +66,7 @@ const list_key_sub = [
   {
     header: "Mã Giày",
     key: "MAGIAY",
-    width: 21 * rem_to_px,
+    width: 20 * rem_to_px,
     enableEditing: false,
   },
   {
@@ -100,13 +102,13 @@ const list_key_sub = [
   {
     header: "Size 5",
     key: "SIZE5",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Size 6",
     key: "SIZE6",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -118,31 +120,31 @@ const list_key_sub = [
   {
     header: "Size 7",
     key: "SIZE7",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Size 8",
     key: "SIZE8",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Size 9",
     key: "SIZE9",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Size 0",
     key: "SIZE0",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
     header: "Size 1",
     key: "SIZE1",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
   },
   {
@@ -161,7 +163,7 @@ const list_key_sub = [
     header: "Giá bán",
     key: "GIABAN",
     width: 10 * rem_to_px,
-    enableEditing: false,
+    enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
     },
@@ -311,23 +313,23 @@ const FormGiaoHang = ({
                 console.log("data: ", data);
                 if (data["status"] == "success") {
                   setIsSaveDataNghiepVuGiaoHang(true);
-                  alert("Lưu thành công");
+                  CustomAlert("Lưu thành công");
                 } else {
-                  alert("Lưu thất bại");
+                  CustomAlert("Lưu thất bại");
                 }
               })
               .catch((error) => {
                 console.log(error);
               });
           } else {
-            alert("Lưu thất bại");
+            CustomAlert("Lưu thất bại");
           }
         })
         .catch((error) => {
           console.log(error);
         });
     } else {
-      alert("Bạn không có quyền thêm");
+      CustomAlert("Bạn không có quyền thêm");
     }
   };
 
@@ -347,7 +349,7 @@ const FormGiaoHang = ({
       SOPHIEU: infoForm.SOPHIEU,
       LastestGH: infoForm.LastestGH,
       DIENGIAI: "",
-      NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+      NGAYPHIEU: moment().format("YYYY-MM-DD"),
     });
     setIsSaveDataNghiepVuGiaoHang(true);
   };
@@ -365,7 +367,7 @@ const FormGiaoHang = ({
           SOPHIEU: info["SOPHIEU"],
           LastestGH: info["LastestGH"],
           DIENGIAI: "",
-          NGAYPHIEU: moment().format("YYYY-MM-DD HH:mm:ss"),
+          NGAYPHIEU: moment().format("YYYY-MM-DD"),
         });
         setRowSelection({});
         setRowSelectionSub({});
@@ -621,7 +623,7 @@ const FormGiaoHang = ({
       setFlag(false);
       dispatchTable(actions_table.setModeShowModal(true));
     } else {
-      alert("Bạn không có quyền in");
+      CustomAlert("Bạn không có quyền in");
     }
   };
 
@@ -719,7 +721,7 @@ const FormGiaoHang = ({
           console.log(":error: ", err);
         });
     } else {
-      alert("Bạn không có quyền in");
+      CustomAlert("Bạn không có quyền in");
     }
   };
 
@@ -741,9 +743,9 @@ const FormGiaoHang = ({
   // }, [curSelected]);
 
   console.log("sub: ", dataTableSub);
-  // start: add to change Popover's behavior 
+  // start: add to change Popover's behavior
   const [clickedPopoverMaKH, setClickedPopoverMaKH] = useState(false);
-  // end: add to change Popover's behavior 
+  // end: add to change Popover's behavior
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -794,7 +796,7 @@ const FormGiaoHang = ({
           <div className={styles.right_row}>
             <label>Ngày phiếu</label>
             <input
-              type="datetime-local"
+              type="date"
               value={infoForm["NGAYPHIEU"]}
               onChange={(e) => {
                 setInfoForm({ ...infoForm, NGAYPHIEU: e.target.value });
@@ -860,10 +862,34 @@ const FormGiaoHang = ({
       </Modal>
       <div className={styles.group_button}>
         <div>
-          <button onClick={handleIn}>In</button>
-          <button onClick={handleInCongNo}>In Công Nợ</button>
+          {/* <button onClick={handleIn}>In</button> */}
+          {
+            isSaveData ? (
+              <button onClick={handleIn}>In</button>
+            ) : (
+              <></>
+            )
+          }
+          {/* <button onClick={handleInCongNo}>In Công Nợ</button> */}
+          {
+            isSaveData ? (
+              <button onClick={handleInCongNo}>In Công Nợ</button>
+            ) : (
+              <></>
+            )
+          }
           <button onClick={handleSave}>Lưu</button>
-          <button onClick={handleNhapTiep}>Nhập tiếp</button>
+          {/* <button onClick={handleNhapTiep}>Nhập tiếp</button> */}
+          { isSaveData ? (<button onClick={handleNhapTiep}>Nhập tiếp</button>) : (<Popconfirm
+            title="Xác nhận hành động"
+            description="Bạn muốn nhập tiếp mà không lưu thay đổi?"
+            okText="Đồng ý"
+            cancelText="Không đồng ý"
+            onConfirm={handleNhapTiep}
+            onCancel={() => {}}
+          >
+            <button>Nhập tiếp</button>
+          </Popconfirm>)}
         </div>
       </div>
     </div>

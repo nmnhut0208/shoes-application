@@ -4,26 +4,40 @@ import { Modal } from "~nghiep_vu/DonHang";
 import { ItemKyTinhLuong } from "~items";
 import styles from "./BangLuong.module.scss";
 import In from "./In";
+import { CustomAlert } from "~utils/alert_custom";
 
 const BangLuong = () => {
   const [statusModal, setStatusModal] = useState(true);
   const [statusModalIn, setStatusModalIn] = useState(false);
   const [stylePrint, setStylePrint] = useState({});
 
-  const [form, setForm] = useState({ MAKY: "", TENKY: "", TYPE: "ALL" });
+  const [form, setForm] = useState({
+    MAKY: "",
+    TENKY: "",
+    TYPE: "ALL",
+    YEAR: new Date().getFullYear(),
+  });
   const [kyValue, setKyValue] = useState("");
   const [kyLabel, setKyLabel] = useState("");
+
   useEffect(() => {
     setForm({ ...form, MAKY: kyValue, TENKY: kyLabel });
   }, [kyValue]);
-  console.log(form);
 
   const handlePrint = () => {
+    if (form["YEAR"].toString().length != 4) {
+      CustomAlert("Năm chưa phù hợp");
+      return;
+    }
     setStylePrint({});
     setStatusModalIn(true);
   };
 
   const handleView = () => {
+    if (form["YEAR"].toString().length != 4) {
+      CustomAlert("Năm chưa phù hợp");
+      return;
+    }
     setStylePrint({
       "scroll-behavior": "smooth",
       "overflow-y": "overlay",
@@ -41,39 +55,53 @@ const BangLuong = () => {
       isResetPageEmpty={true}
     >
       <div className={clsx(styles.page, styles.form)}>
-        <label>Kỳ </label>
-        <ItemKyTinhLuong
-          value={kyValue}
-          setValue={setKyValue}
-          label={kyLabel}
-          setLabel={setKyLabel}
-          size_input={"15rem"}
-          have_span={true}
-          size_span={"41.8rem"}
-        />
+        <div style={{ marginBottom: "1rem" }}>
+          <label style={{ minWidth: "3.5rem" }}>Năm</label>
+          <input
+            style={{ width: "15rem" }}
+            type="number"
+            value={form["YEAR"]}
+            onChange={(e) => {
+              setForm({ ...form, YEAR: e.target.value });
+            }}
+          />
+        </div>
+        <div>
+          <label style={{ minWidth: "3.5rem" }}>Kỳ </label>
+          <ItemKyTinhLuong
+            value={kyValue}
+            setValue={setKyValue}
+            label={kyLabel}
+            setLabel={setKyLabel}
+            size_input={"15rem"}
+            have_span={true}
+            size_span={"41.8rem"}
+          />
+        </div>
+
         <fieldset>
           <legend>Nhóm thợ</legend>
           <div className={styles.group_ratio}>
             <div className={styles.info_ratio}>
-              <label for="THODE">Thợ đế</label>
+              <label for="TD">Thợ đế</label>
               <input
                 type="radio"
-                id="THODE"
+                id="TD"
                 name="option"
-                value="THODE"
-                checked={form["TYPE"] === "THODE"}
-                onChange={() => setForm({ ...form, TYPE: "THODE" })}
+                value="TD"
+                checked={form["TYPE"] === "TD"}
+                onChange={() => setForm({ ...form, TYPE: "TD" })}
               />
             </div>
             <div className={styles.info_ratio}>
-              <label for="THOQUAI">Thợ quai</label>
+              <label for="TQ">Thợ quai</label>
               <input
                 type="radio"
-                id="THOQUAI"
+                id="TQ"
                 name="option"
-                value="THOQUAI"
-                checked={form["TYPE"] === "THOQUAI"}
-                onChange={() => setForm({ ...form, TYPE: "THOQUAI" })}
+                value="TQ"
+                checked={form["TYPE"] === "TQ"}
+                onChange={() => setForm({ ...form, TYPE: "TQ" })}
               />
             </div>
             <div className={styles.info_ratio}>

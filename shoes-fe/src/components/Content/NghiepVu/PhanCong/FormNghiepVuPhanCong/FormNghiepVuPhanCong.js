@@ -29,7 +29,7 @@ import {
 import { FormDonHang } from "~nghiep_vu/DonHang/";
 import { Modal } from "~common_tag";
 import { useTableContext, actions_table } from "~table_context";
-
+import { CustomAlert } from "~utils/alert_custom";
 import styles from "./FormNghiepVuPhanCong.module.scss";
 
 const infoTableDonHang = processingInfoColumnTable(INFO_COLS_DONHANG);
@@ -148,7 +148,6 @@ const FormNghiepVuPhanCong = ({
                 return response.json();
               })
               .then((result) => {
-                console.log("VO CAI CUOI CUNG");
                 const list_DH_chua_PC = info.map((obj, i) => obj.SODH);
                 result = result.filter(
                   (obj) => !list_DH_chua_PC.includes(obj.SODH)
@@ -249,11 +248,11 @@ const FormNghiepVuPhanCong = ({
     })
       .then((response) => {
         console.log("response: ", response);
-        alert("Lưu thành công!");
+        CustomAlert("Lưu thành công!");
       })
       .catch((error) => {
         console.log("error: ", error);
-        // alert("Lỗi! Chưa lưu được!");
+        // CustomAlert("Lỗi! Chưa lưu được!");
       });
 
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);
@@ -327,7 +326,7 @@ const FormNghiepVuPhanCong = ({
 
   const handleNhapTiep = () => {
     if (!isSaveData) {
-      alert("Lưu thông tin trước khi reset page!");
+      CustomAlert("Lưu thông tin trước khi reset page!");
       return;
     }
     updateInfoPhieuPhanCong(infoPhieu, setInfoPhieu, setLastestSOPHIEU);
@@ -367,7 +366,7 @@ const FormNghiepVuPhanCong = ({
         <TableDonHang
           columns={infoTableDonHang}
           data={dataDonHang}
-          maxHeight={15}
+          maxHeight={20}
           rowSelection={rowSelectionDonHangToPhanCong}
           setRowSelection={setRowSelectionDonHangToPhanCong}
         />
@@ -381,12 +380,45 @@ const FormNghiepVuPhanCong = ({
         />
       )}
 
-      {!view && (
-        <div className={clsx(styles.button_group, styles.form)}>
-          <button onClick={handleClickAdd}>Thêm</button>
-          <button onClick={handleClickDelete}>Xóa</button>
+      {/* group button */}
+
+      <div className={styles.button_group_end_page}>
+        {!view && (
+          <div className={styles.button_left}>
+            <div>
+              <button onClick={handleClickAdd}>Thêm</button>
+              <button onClick={handleClickDelete}>Xóa</button>
+            </div>
+          </div>
+        )}
+
+        <div className={styles.button_right}>
+          <button
+            onClick={handleClickSave}
+            disabled={view}
+            className={styles.button_save}
+          >
+            Lưu
+          </button>
+          <button onClick={handleClickChiTietDonHang}>Chi tiết đơn hàng</button>
+          <button onClick={handle_in_tonghop} disabled={!isSaveData}>
+            In tổng hợp
+          </button>
+          <button onClick={handle_in} disabled={!isSaveData}>
+            In
+          </button>
+          <button onClick={handleClickXemPhanCong}>Xem phân công</button>
+
+          {action === "add" && (
+            <button
+              onClick={handleNhapTiep}
+              disabled={permission.THEM === 0 || !isSaveData}
+            >
+              Nhập tiếp
+            </button>
+          )}
         </div>
-      )}
+      </div>
       <div style={{ width: "80vw" }}>
         <TableChiTietPhanCong
           columns={infoTableChiTietPhanCong}
@@ -395,27 +427,6 @@ const FormNghiepVuPhanCong = ({
           rowSelection={rowSelectionChiTietPhanCong}
           setRowSelection={setRowSelectionChiTietPhanCong}
         />
-      </div>
-
-      <div className={styles.button_group_end_page}>
-        <div className={styles.left}>
-          <button onClick={handleClickChiTietDonHang}>Chi tiết đơn hàng</button>
-          <button onClick={handle_in_tonghop}>In tổng hợp</button>
-        </div>
-
-        <div className={styles.right}>
-          <button onClick={handle_in}>In</button>
-          <button onClick={handleClickXemPhanCong}>Xem phân công</button>
-          <button onClick={handleClickSave} disabled={view}>
-            Lưu
-          </button>
-
-          {action === "add" && (
-            <button onClick={handleNhapTiep} disabled={permission.THEM === 0}>
-              Nhập tiếp
-            </button>
-          )}
-        </div>
       </div>
 
       {infoFormWillShow["chitiet_donhang"] && (

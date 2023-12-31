@@ -8,8 +8,24 @@ import {
 } from "./ConstantVariable";
 import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 import { renderDataEmpty } from "~utils/processing_data_table";
+import { CustomAlert } from "~utils/alert_custom";
 
-const convert_to_int = (value) => {
+const dict_size_index = {
+  SIZE5: 0,
+  SIZE6: 1,
+  SIZE7: 2,
+  SIZE8: 3,
+  SIZE9: 4,
+  SIZE0: 5,
+  SIZE1: 6,
+  GIABAN: 7,
+  DIENGIAIDONG: 8,
+  INHIEU: 9,
+};
+
+export const numberSize = 10;
+
+export const convert_to_int = (value) => {
   if (value === "") return 0;
   if (!value) return 0;
   return parseFloat(value);
@@ -59,7 +75,9 @@ export const updateColumnsInformations = (
   dataTable,
   setDataTable,
   view,
-  listGiayUnique
+  listGiayUnique,
+  setFocusedRow,
+  setFocusedColumn
 ) => {
   const infoColumnsInit = [];
 
@@ -78,9 +96,14 @@ export const updateColumnsInformations = (
         <GiayUnique
           listGiayUnique={listGiayUnique}
           init={dataTable[cell.row.id][cell.column.id]}
-          handleChangeDataTable={(value, label) => {
+          handleChangeDataTable={(value, label, giaban, tenca) => {
             dataTable[cell.row.id][cell.column.id] = value;
             dataTable[cell.row.id]["TENGIAY"] = label;
+            dataTable[cell.row.id]["GIABAN"] = giaban;
+            dataTable[cell.row.id]["TENCA"] = tenca;
+            if (dataTable[dataTable.length - 1]["MAGIAY"] !== "") {
+              dataTable.push(renderDataEmpty(INFO_COLS_DONHANG, 1)[0]);
+            }
             setDataTable([...dataTable]);
           }}
           readOnly={view}
@@ -89,27 +112,64 @@ export const updateColumnsInformations = (
     }
 
     // Render input tag for edit cell
-    if (key.includes("SIZE") || key === "GIABAN") {
+    if (key === "GIABAN") {
       info["Cell"] = ({ cell }) => (
         <input
+          id={`size_${cell.row.id}_${dict_size_index[key]}`}
           style={{
             border: "none",
             width: "100%",
             height: "100%",
-            fontSize: "1.4rem",
+            fontSize: "1.6rem",
             backgroundColor: "inherit",
             textAlign: "right",
             marginRight: "0.5rem",
           }}
           readOnly={view} // || dataTable[cell.row.id]["MAGIAY"] === ""}
           type="number"
-          value={cell.getValue().toString()}
+          value={cell.getValue()}
           onChange={(e) =>
             handleSaveCell(cell, e.target.value, dataTable, setDataTable)
           }
           onKeyDown={handleDisableKeyDownUp}
           onKeyUp={handleDisableKeyDownUp}
-          onFocus={handleFocus}
+          onFocus={(event) => {
+            console.log("id: ", `size_${cell.row.id}_${dict_size_index[key]}`);
+            handleFocus(event);
+            setFocusedRow(cell.row.id);
+            setFocusedColumn(dict_size_index[key]);
+          }}
+        />
+      );
+    }
+    if (key.includes("SIZE")) {
+      info["Cell"] = ({ cell }) => (
+        <input
+          id={`size_${cell.row.id}_${dict_size_index[key]}`}
+          style={{
+            border: "none",
+            width: "100%",
+            height: "100%",
+            fontSize: "1.6rem",
+            backgroundColor: "inherit",
+            textAlign: "right",
+            marginRight: "0.5rem",
+          }}
+          readOnly={view} // || dataTable[cell.row.id]["MAGIAY"] === ""}
+          hidden={dataTable[cell.row.id]["MAGIAY"] === ""}
+          type="number"
+          value={cell.getValue() != 0 ? cell.getValue() : ""}
+          onChange={(e) =>
+            handleSaveCell(cell, e.target.value, dataTable, setDataTable)
+          }
+          onKeyUp={handleDisableKeyDownUp}
+          onKeyDown={handleDisableKeyDownUp}
+          onFocus={(event) => {
+            console.log("id: ", `size_${cell.row.id}_${dict_size_index[key]}`);
+            handleFocus(event);
+            setFocusedRow(cell.row.id);
+            setFocusedColumn(dict_size_index[key]);
+          }}
         />
       );
     }
@@ -121,12 +181,13 @@ export const updateColumnsInformations = (
             border: "none",
             width: "100%",
             height: "100%",
-            fontSize: "1.4rem",
+            fontSize: "1.6rem",
             backgroundColor: "inherit",
             textAlign: "right",
             marginRight: "0.5rem",
           }}
           tabindex="-1"
+          hidden={dataTable[cell.row.id]["MAGIAY"] === ""}
           value={parseFloat(cell.getValue()).toLocaleString("en")}
         />
       );
@@ -138,9 +199,10 @@ export const updateColumnsInformations = (
             border: "none",
             width: "100%",
             height: "100%",
-            fontSize: "1.4rem",
+            fontSize: "1.6rem",
             backgroundColor: "inherit",
           }}
+          id={`size_${cell.row.id}_${dict_size_index[key]}`}
           readOnly={view}
           type="text"
           tabindex="-1"
@@ -148,6 +210,11 @@ export const updateColumnsInformations = (
           onChange={(e) => {
             dataTable[cell.row.id][cell.column.id] = e.target.value;
             setDataTable([...dataTable]);
+          }}
+          onFocus={(event) => {
+            console.log("id: ", `size_${cell.row.id}_${dict_size_index[key]}`);
+            setFocusedRow(cell.row.id);
+            setFocusedColumn(dict_size_index[key]);
           }}
         />
       );
@@ -157,9 +224,9 @@ export const updateColumnsInformations = (
         return (
           <div
             style={{
-              width: "80%",
-              marginLeft: "8%",
-              marginRight: "8%",
+              width: "95%",
+              marginLeft: "0%",
+              marginRight: "0%",
             }}
           >
             <InputMau
@@ -192,7 +259,7 @@ export const updateColumnsInformations = (
             width: "100%",
             border: "none",
             fontWeight: "bold",
-            fontSize: "1.4rem",
+            fontSize: "1.6rem",
             marginRight: "0.5rem",
           }}
           value={parseFloat(sum_value).toLocaleString("en")}
@@ -227,7 +294,7 @@ export const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
   })
     .then((response) => {
       console.log("response: ", response);
-      alert("Lưu thông tin thành công.");
+      CustomAlert("Lưu thông tin thành công.");
     })
     .catch((error) => {
       console.log("error: ", error);
@@ -249,8 +316,13 @@ export const updateFormDonHang = (
         ...formInfoDonHang,
         DIENGIAIPHIEU: "",
         SODH: sodh,
-        NGAYDH: moment().format("YYYY-MM-DD HH:mm:ss"),
-        NGAYGH: moment().add(5, "d").format("YYYY-MM-DD HH:mm:ss"),
+        NGAYDH: moment()
+          .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+          .format("YYYY-MM-DD HH:mm:ss"),
+        NGAYGH: moment()
+          .add(5, "d")
+          .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+          .format("YYYY-MM-DD HH:mm:ss"),
       });
       setLastestDH(data["LastestDH"]);
     })

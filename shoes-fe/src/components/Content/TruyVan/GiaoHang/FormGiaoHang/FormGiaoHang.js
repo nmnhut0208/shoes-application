@@ -13,6 +13,8 @@ import {
 import { convertDateForReport } from "~utils/processing_date";
 import { rem_to_px } from "~config/ui";
 import moment from "moment";
+import { CustomAlert } from "~utils/alert_custom";
+import { convertDate } from "~utils/processing_date";
 
 const list_key = [
   { header: "Số đơn hàng", key: "SODH", width: 5 * rem_to_px },
@@ -33,9 +35,9 @@ const list_key = [
     header: "Số lượng",
     key: "SOLUONG",
     width: 5 * rem_to_px,
-    muiTableBodyCellProps: {
-      align: "right",
-    },
+    // muiTableBodyCellProps: {
+    //   align: "right",
+    // },
     Cell: ({ cell }) => (
       <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
     ),
@@ -48,7 +50,7 @@ const list_key_sub = [
   {
     header: "Mã Giày",
     key: "MAGIAY",
-    width: 21 * rem_to_px,
+    width: 20 * rem_to_px,
     enableEditing: false,
   },
   {
@@ -84,7 +86,7 @@ const list_key_sub = [
   {
     header: "Size 5",
     key: "SIZE5",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -96,7 +98,7 @@ const list_key_sub = [
   {
     header: "Size 6",
     key: "SIZE6",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -108,7 +110,7 @@ const list_key_sub = [
   {
     header: "Size 7",
     key: "SIZE7",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -120,7 +122,7 @@ const list_key_sub = [
   {
     header: "Size 8",
     key: "SIZE8",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -132,7 +134,7 @@ const list_key_sub = [
   {
     header: "Size 9",
     key: "SIZE9",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -144,7 +146,7 @@ const list_key_sub = [
   {
     header: "Size 0",
     key: "SIZE0",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -156,7 +158,7 @@ const list_key_sub = [
   {
     header: "Size 1",
     key: "SIZE1",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
@@ -181,7 +183,7 @@ const list_key_sub = [
     header: "Giá bán",
     key: "GIABAN",
     width: 10 * rem_to_px,
-    enableEditing: false,
+    enableEditing: true,
     muiTableBodyCellProps: {
       align: "right",
     },
@@ -244,7 +246,16 @@ const updateData = (year, setDataTable) => {
     });
 };
 
-const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, setShowForm }) => {
+const FormGiaoHang = ({
+  permission,
+  infoKH,
+  setInfoKH,
+  year,
+  setDataTableBig,
+  setShowForm,
+  setIsSaveDataTruyVanGiaoHang,
+  isSaveData,
+}) => {
   const [stateUser, dispatchUser] = useUserContext();
   const [userState, userDispatch] = useUserContext();
   const [stateTable, dispatchTable] = useTableContext();
@@ -253,8 +264,8 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
   const [curSelected, setCurSelected] = useState({});
   const [mapSelected, setMapSelected] = useState({});
   const [mapRowSelectedSub, setMapRowSelectedSub] = useState({});
-  const [isSaveDataNghiepVuGiaoHang, setIsSaveDataNghiepVuGiaoHang] =
-    useState(true);
+  // const [isSaveDataNghiepVuGiaoHang, setIsSaveDataNghiepVuGiaoHang] =
+  //   useState(true);
   const [rowSelection, setRowSelection] = useState({});
   const [rowSelectionSub, setRowSelectionSub] = useState({});
   const [dataIn, setDataIn] = useState({});
@@ -323,20 +334,19 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
           return response.json();
         })
         .then((info) => {
-          console.log("info: ", info);
           if (info.status === "success") {
-            setIsSaveDataNghiepVuGiaoHang(true);
+            setIsSaveDataTruyVanGiaoHang(true);
             updateData(year, setDataTableBig);
-            alert("Lưu thành công");
+            CustomAlert("Lưu thành công");
           } else {
-            alert("Lưu thất bại");
+            CustomAlert("Lưu thất bại");
           }
         })
         .catch((err) => {
           console.log(":error: ", err);
         });
     } else {
-      alert("Bạn không có quyền thêm");
+      CustomAlert("Bạn không có quyền thêm");
     }
   };
 
@@ -403,7 +413,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
       setFlag(false);
       dispatchTable(actions_table.setModeShowModal(true));
     } else {
-      alert("Bạn không có quyền in");
+      CustomAlert("Bạn không có quyền in");
     }
   };
 
@@ -483,7 +493,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
           console.log(":error: ", err);
         });
     } else {
-      alert("Bạn không có quyền in");
+      CustomAlert("Bạn không có quyền in");
     }
   };
 
@@ -556,7 +566,6 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
         return response.json();
       })
       .then((info) => {
-        console.log("info: ", info);
         setDataTableSub(info);
         const keys = Object.keys(info);
         const map = {};
@@ -643,7 +652,8 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
   //   }
   // }, [curSelected]);
 
-  console.log("sub: ", curSelected, rowSelection);
+  // console.log("sub: ", curSelected, rowSelection);
+  console.log("ngay phieu: ", infoKH["NGAYPHIEU"]);
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -654,7 +664,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
             <input
               name="MAKH"
               value={infoKH["MAKH"]}
-            // onChange={(e) => setFormInfoDonHang(e)}
+              // onChange={(e) => setFormInfoDonHang(e)}
             />
             <input
               type="text"
@@ -676,16 +686,15 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
           <div className={styles.right_row}>
             <label>Ngày phiếu</label>
             <input
-              type="datetime-local"
+              type="date"
               className={styles.small}
-              value={infoKH["NGAYPHIEU"]}
+              value={convertDate(infoKH["NGAYPHIEU"])}
               onChange={(e) => {
                 setInfoKH({
                   ...infoKH,
                   NGAYPHIEU: e.target.value,
                 });
-              }
-              }
+              }}
             />
           </div>
           <div className={styles.right_row}>
@@ -699,8 +708,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
                   ...infoKH,
                   DIENGIAIPHIEU: e.target.value,
                 });
-              }
-              }
+              }}
               autocomplete="off"
             />
           </div>
@@ -714,7 +722,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
         setCurSelected={setCurSelected}
         // flag_rowSelection={true}
         setRowSelection={setRowSelection}
-        setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
+        setIsSaveData={setIsSaveDataTruyVanGiaoHang}
         maxHeight={"22rem"}
         change={false}
         setKeys={setKeys}
@@ -738,7 +746,7 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
         // }
         // flag_rowSelection={true}
         setRowSelection={setRowSelectionSub}
-        setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
+        setIsSaveData={setIsSaveDataTruyVanGiaoHang}
         maxHeight={"25rem"}
         change={true}
         setKeys={setKeys}
@@ -750,8 +758,14 @@ const FormGiaoHang = ({ permission, infoKH, setInfoKH, year, setDataTableBig, se
         <div>
           {/* <button onClick={handleSave}>Lưu</button> */}
           {/* <button>Nhập tiếp</button> */}
-          <button onClick={handleIn}>In</button>
-          <button onClick={handleInCongNo}>In Công Nợ</button>
+          {/* <button onClick={handleIn}>In</button> */}
+          {isSaveData ? <button onClick={handleIn}>In</button> : <></>}
+          {/* <button onClick={handleInCongNo}>In Công Nợ</button> */}
+          {isSaveData ? (
+            <button onClick={handleInCongNo}>In Công Nợ</button>
+          ) : (
+            <></>
+          )}
           <button onClick={handleSave}>Lưu</button>
           {/* <button
             onClick={() => {
