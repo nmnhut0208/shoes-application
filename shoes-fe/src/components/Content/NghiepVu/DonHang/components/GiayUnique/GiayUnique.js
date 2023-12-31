@@ -1,6 +1,7 @@
 import { useState, memo, useEffect } from "react";
 
 import { Select } from "antd";
+import TextArea from "antd/es/input/TextArea";
 const { Option } = Select;
 
 const customOptionStyle = {
@@ -57,9 +58,9 @@ const GiayUnique = ({
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", left: "0px", width: "100%" }}>
       {showInput && (
-        <textarea
+        <input
           id="MAGIAY"
           value={maMA}
           tabindex="-1"
@@ -69,10 +70,9 @@ const GiayUnique = ({
           style={{
             width: "100%",
             border: "none",
-            fontSize: "1.7rem",
+            fontFamily: "Arial",
+            fontSize: "1.6rem",
             resize: "none",
-            verticalAlign: "middle",
-            contenteditable: "true",
           }}
         />
       )}

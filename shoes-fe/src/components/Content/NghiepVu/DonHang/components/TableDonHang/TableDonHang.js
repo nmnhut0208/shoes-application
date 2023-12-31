@@ -2,7 +2,7 @@ import { memo } from "react";
 import MaterialReactTable from "material-react-table";
 import styles from "./TableDonHang.module.scss";
 
-import { border_text_table_config } from "~config/ui";
+import { border_text_table_config } from "./ConstantVariable";
 import { renderDataEmpty } from "~utils/processing_data_table";
 import { INFO_COLS_DONHANG } from "../ConstantVariable";
 
@@ -72,7 +72,7 @@ const TableDonHang = ({ columns, data, setDataTable, readOnly }) => {
           enableResizing: false,
         },
         "mrt-row-numbers": {
-          minSize: 20,
+          minSize: 10,
           enableColumnOrdering: true, //turn on some features that are usually off
           enableResizing: false,
           muiTableHeadCellProps: {

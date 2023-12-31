@@ -57,7 +57,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
     setShowInput(true);
   };
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", width: "100%" }}>
       {showInput && (
         <input
           id="MAMAU"
@@ -67,7 +67,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
           onFocus={handleBlurSelection}
           onClick={handleFocusInput}
           style={{
-            width: "90%",
+            width: "100%",
             border: "none",
             fontSize: "1.6rem",
           }}
