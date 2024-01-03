@@ -101,7 +101,7 @@ export const getListMau = (dispatchItem) => {
 
       dispatchItem(
         actions_items_context.setInfoMau([
-          { label: "Không chọn màu", value: " " },
+          { label: "Không chọn màu", value: "            " },
           ...listOptional,
         ])
       );
