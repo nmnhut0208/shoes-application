@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Query
 from typing_extensions import Annotated
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from utils.base_class import BaseClass
 from utils.request import *
@@ -113,9 +113,11 @@ def baocao_donhang(YEAR: str=None) -> List[RESPONSE_BAOCAO_DONHANG]:
                              and NGAYDH <= '{YEAR}-12-31'
                              """
     else:
-        care_year = datetime.today().year
-        condition_year = f"""where NGAYDH >= '{care_year}-01-01'
-                        """
+        today = datetime.today() + timedelta(days=1)
+        six_month_ago = today - timedelta(days=6*30)
+        condition_year = f"""where NGAYDH <= '{today.year}-{today.month:02}-{today.day:02}'
+                             and NGAYDH >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
+                             """
 
     sql = f"""SELECT SODH, DH.MAKH, KH.TENKH, NGAYDH, NGAYGH, 
                 DIENGIAIPHIEU AS DIENGIAI,

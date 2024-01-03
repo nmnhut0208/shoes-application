@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
-from datetime import datetime
+from datetime import datetime, timedelta
 
 router = APIRouter()
 
@@ -23,15 +23,17 @@ def read(YEAR: str=None):
                              and NgayPhieu <= '{YEAR}-12-31'
                              """
     else:
-        care_year = datetime.today().year
-        condition_year = f"""where NgayPhieu >= '{care_year}-01-01'
-                        """
+        today = datetime.today() + timedelta(days=1)
+        six_month_ago = today - timedelta(days=6*30)
+        condition_year = f"""where NgayPhieu <= '{today.year}-{today.month:02}-{today.day:02}'
+                             and NgayPhieu >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
+                             """
     sql = f"""
-        select MAKY, MANVIEN, maphieu as MAPHIEU, NgayPhieu as NGAYPHIEU,
+        select DATEPART(YEAR, NgayPhieu) as YEAR, MAKY, MANVIEN, maphieu as MAPHIEU, NgayPhieu as NGAYPHIEU,
           SUM(SOLUONG) as SOLUONG, DienGiai AS DIENGIAI FROM CHAMCONG
         {condition_year}
-        GROUP BY MAKY, maphieu, NgayPhieu, MANVIEN, DienGiai
-        order by MAKY desc, maphieu desc, NgayPhieu desc, MANVIEN desc
+        GROUP BY DATEPART(YEAR, NgayPhieu), MAKY, maphieu, NgayPhieu, MANVIEN, DienGiai
+        order by DATEPART(YEAR, NgayPhieu) desc, MAKY desc, maphieu desc, NgayPhieu desc, MANVIEN desc
     """
     return TVCC.read_custom(sql)
 

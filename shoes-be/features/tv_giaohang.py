@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
-from datetime import datetime
+from datetime import datetime, timedelta
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
 from utils.vietnamese import convert_data_to_save_database
@@ -26,9 +26,11 @@ def read(YEAR: str=None) -> RESPONSE_TVGIAOHANG:
                              and NGAYPHIEU <= '{YEAR}-12-31'
                              """
     else:
-        care_year = datetime.today().year
-        condition_year = f"""and NGAYPHIEU >= '{care_year}-01-01'
-                        """
+        today = datetime.today() + timedelta(days=1)
+        six_month_ago = today - timedelta(days=6*30)
+        condition_year = f"""and NGAYPHIEU <= '{today.year}-{today.month:02}-{today.day:02}'
+                             and NGAYPHIEU >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
+                             """
     sql = f"""
             SELECT distinct SOPHIEU, NGAYPHIEU, CONGNO.MAKH, 
                 DMKHACHHANG.TENKH, DMKHACHHANG.DIACHI, DIENGIAIPHIEU 
