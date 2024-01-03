@@ -52,6 +52,8 @@ def add(data: ITEM_PHIEUTHU) -> RESPONSE:
     data = convert_data_to_save_database(data)
     col = ", ".join(k for k, v in data.items() if v is not None)
     val = ", ".join([v for v in data.values() if v is not None])
+    data_sophieu = data["SOPHIEU"]
+    congno.delete(f"SOPHIEU = {data_sophieu}")
     congno.add(col, val)
     save_info_primary_key("CONGNO", "PT", year, SOPHIEU)
     save_info_primary_key("CONGNO", "MD", year, SODONG)

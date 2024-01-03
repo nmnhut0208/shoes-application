@@ -104,6 +104,9 @@ const FormThuTien = ({ dataView, type_action }) => {
   };
 
   const handleSaveFrom = () => {
+    if (isSave) {
+      return;
+    }
     for (let key in list_input_required) {
       if (form[key] === undefined || form[key] === "") {
         CustomAlert("Nhập " + list_input_required[key]);
@@ -111,7 +114,7 @@ const FormThuTien = ({ dataView, type_action }) => {
       }
     }
 
-    console.log("Save form");
+    console.log("Save form: ", type_action);
     let method = "";
     if (type_action === "edit") {
       method = "PUT";
