@@ -29,7 +29,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
   }, [init]);
 
   const handleChange = (value) => {
-    if (value === " ") {
+    if (value.trim() === "") {
       value = "";
       handleChangeDataTable("", "");
     } else {
