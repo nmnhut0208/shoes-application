@@ -357,6 +357,8 @@ const FormGiaoHang = ({
       DIENGIAI: "",
       NGAYPHIEU: moment().format("YYYY-MM-DD"),
     });
+    setMaKH("");
+    setTenKH("");
     setIsSaveDataNghiepVuGiaoHang(true);
   };
 
