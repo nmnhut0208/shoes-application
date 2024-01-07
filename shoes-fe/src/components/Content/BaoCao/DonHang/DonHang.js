@@ -116,6 +116,7 @@ const DonHang = () => {
                 setValue={setKhachHangFromValue}
                 size_input={"15rem"}
                 have_span={false}
+                size_selection={300}
               />
             </div>
             <div className={styles.item}>
@@ -125,6 +126,7 @@ const DonHang = () => {
                 setValue={setKhachHangToValue}
                 size_input={"15rem"}
                 have_span={false}
+                size_selection={300}
               />
             </div>
           </div>
