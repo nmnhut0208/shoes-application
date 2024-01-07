@@ -19,6 +19,7 @@ import In from "./In";
 import { useTableContext, actions_table } from "~table_context";
 import { CustomAlert } from "~utils/alert_custom";
 import { Popconfirm } from "antd";
+import KhachHang from "../../../items/KhachHang/KhachHang";
 
 const list_key = [
   {
@@ -384,25 +385,6 @@ const FormGiaoHang = ({
   }, [rowSelectionMaKH]);
 
   useEffect(() => {
-    let keys = Object.keys(rowSelectionMaKH);
-    if (keys.length > 0) {
-      // setFormInfoDonHang({
-      //   ...formInfoDonHang,
-      //   MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-      //   TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-      // });
-      const info = {
-        MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-        TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-        DIACHI: dataTableKhachHang[keys[0]]["DIACHI"],
-        SOPHIEU: infoForm.SOPHIEU,
-        NGAYPHIEU: infoForm.NGAYPHIEU,
-      };
-      setInfoKH(info);
-    }
-  }, [rowSelectionMaKH]);
-
-  useEffect(() => {
     fetch("http://localhost:8000/khachhang")
       .then((response) => {
         return response.json();
@@ -531,7 +513,7 @@ const FormGiaoHang = ({
               return response.json();
             })
             .then((info) => {
-              // console.log("info: ", info);
+              console.log("DataTableSub: ", DataTableSub);
               setDataTableSub(info);
               // get keys of info to setMapSelected expample {0: key1, 1: key2, ...}
               const keys = Object.keys(info);
@@ -751,11 +733,17 @@ const FormGiaoHang = ({
   const [tenKH, setTenKH] = useState("");
 
   useEffect(() => {
-    setInfoKH({
-      ...infoKH,
-      MAKH: maKH,
-      TENKH: tenKH,
-    });
+    if (maKH != "") {
+      var KhachHang = dataTableKhachHang.filter((x) => x["MAKH"] == maKH);
+      const info = {
+        MAKH: KhachHang[0]["MAKH"],
+        TENKH: KhachHang[0]["TENKH"],
+        DIACHI: KhachHang[0]["DIACHI"],
+        SOPHIEU: infoForm.SOPHIEU,
+        NGAYPHIEU: infoForm.NGAYPHIEU,
+      };
+      setInfoKH(info);
+    }
   }, [maKH]);
 
   console.log("infoKH: ", infoKH);
