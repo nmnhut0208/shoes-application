@@ -19,6 +19,8 @@
   .group_second_row {
     margin-bottom: var(--margin-bottom-config);
     justify-content: space-between;
+    display: flex;
+    flex-direction: row
   }
 }
 

@@ -206,9 +206,10 @@ const FormThuTien = ({ dataView, type_action }) => {
               label={form["TENKH"]}
               setLabel={setTenKH}
               size_input={"15rem"}
-              size_span={"39rem"}
+              size_span={"34.2rem"}
               have_span={true}
               readOnly={type_action !== "add"}
+              size_selection={550}
             />
           </div>
           <div className={styles.group_second_row}>
@@ -237,6 +238,7 @@ const FormThuTien = ({ dataView, type_action }) => {
                 handleChangeInformationForm({ DIENGIAIPHIEU: e.target.value })
               }
               className={styles.item_size_big}
+              style={{ width: "55rem" }}
               readOnly={view}
             />
           </div>

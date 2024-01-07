@@ -1,6 +1,6 @@
-import { Popover, Space } from "antd";
-import { memo, useState } from "react";
-import ListKhachHang from "./ListKhachHang";
+import { memo, useState, useEffect } from "react";
+import Selection from "./Selection";
+import { useItemsContext } from "~items_context";
 
 const KhachHang = ({
   readOnly,
@@ -11,39 +11,48 @@ const KhachHang = ({
   size_input,
   have_span,
   size_span,
+  size_selection = 450,
 }) => {
   console.log("re-render ItemKhachHang");
-  const [clicked, setClicked] = useState(false);
+  // const [clicked, setClicked] = useState(false);
+
+  const [data, setData] = useState([{ value: "", label: "" }]);
+  const [stateItem, dispatchItem] = useItemsContext();
+  useEffect(() => {
+    setData(stateItem.infoItemKhachHang);
+  }, []);
+
+  // const [value, setValue] = useState(() => {
+  //   if (initValue["value"]) return initValue["value"];
+  //   else return "";
+  // });
+  // const [label, setLabel] = useState(() => {
+  //   if (initValue["label"]) return initValue["label"];
+  //   else return "";
+  // });
+  // useEffect(() => {
+  //   setValue(initValue["value"]);
+  //   setLabel(initValue["label"]);
+  // }, [initValue]);
+
+  useEffect(() => {
+    // changeData({ value, label });
+    setValue(value);
+  }, [value]);
+
   return (
-    <Space>
-      {!readOnly && (
-        <Popover
-          placement="bottomLeft"
-          content={<ListKhachHang setValue={setValue} setLabel={setLabel} showPopover={setClicked} />}
-          trigger="click"
-          open={clicked}
-          onOpenChange={(open) => setClicked(open)}
-        >
-          <input
-            name="MAKH"
-            value={value}
-            readOnly={true}
-            style={{ width: size_input }}
-          />
-        </Popover>
-      )}
-      {readOnly && (
-        <input
-          name="MAKH"
-          value={value}
-          readOnly={true}
-          style={{ width: size_input }}
-        />
-      )}
-      {have_span && (
-        <input readOnly={true} value={label} style={{ width: size_span }} />
-      )}
-    </Space>
+    <Selection
+      value={value}
+      setValue={setValue}
+      label={label}
+      setLabel={setLabel}
+      data={data}
+      size_input={size_input}
+      size_span={size_span}
+      have_span={have_span}
+      readOnly={readOnly}
+      size_selection={size_selection}
+    />
   );
 };
 

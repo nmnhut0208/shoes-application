@@ -37,6 +37,8 @@
       .pair {
         margin-top: var(--margin-bottom-config);
         margin-right: var(--margin-bottom-config);
+        display: flex;
+        flex-direction: row;
       }
       .label_for_textatea {
         vertical-align: top;
