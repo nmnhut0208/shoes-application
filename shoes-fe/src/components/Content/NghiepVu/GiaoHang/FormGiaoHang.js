@@ -513,7 +513,7 @@ const FormGiaoHang = ({
               return response.json();
             })
             .then((info) => {
-              console.log("DataTableSub: ", DataTableSub);
+              console.log("DataTableSub: ", info);
               setDataTableSub(info);
               // get keys of info to setMapSelected expample {0: key1, 1: key2, ...}
               const keys = Object.keys(info);
@@ -523,6 +523,8 @@ const FormGiaoHang = ({
               }
               setMapSelected(map);
             });
+        } else {
+          setDataTableSub([]);
         }
       })
       .catch((err) => {
@@ -742,7 +744,7 @@ const FormGiaoHang = ({
         SOPHIEU: infoForm.SOPHIEU,
         NGAYPHIEU: infoForm.NGAYPHIEU,
       };
-      setInfoKH(info);
+      setInfoKH({ ...info });
     }
   }, [maKH]);
 
