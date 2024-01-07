@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { ItemKhachHang } from "~items";
 import { Popover } from "antd";
 import moment from "moment";
 import MainTable from "./MainTable";
@@ -233,11 +234,15 @@ const FormGiaoHang = ({
   const [stateUser, dispatchUser] = useUserContext();
   const [stateTable, dispatchTable] = useTableContext();
   // const maForm = "F0034";
-  const [infoForm, setInfoForm] = useState({
-    SOPHIEU: "",
-    LastestGH: "",
-    DIENGIAI: "",
-    NGAYPHIEU: "",
+  const [infoForm, setInfoForm] = useState(() => {
+    return {
+      SOPHIEU: "",
+      LastestGH: "",
+      DIENGIAI: "",
+      NGAYPHIEU: moment()
+        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+        .format("YYYY-MM-DD HH:mm:ss"),
+    };
   });
   const [keys, setKeys] = useState(0);
 
@@ -742,9 +747,18 @@ const FormGiaoHang = ({
   //   }
   // }, [curSelected]);
 
-  console.log("sub: ", dataTableSub);
-  // start: add to change Popover's behavior
-  const [clickedPopoverMaKH, setClickedPopoverMaKH] = useState(false);
+  const [maKH, setMaKH] = useState("");
+  const [tenKH, setTenKH] = useState("");
+
+  useEffect(() => {
+    setInfoKH({
+      ...infoKH,
+      MAKH: maKH,
+      TENKH: tenKH,
+    });
+  }, [maKH]);
+
+  console.log("infoKH: ", infoKH);
   // end: add to change Popover's behavior
   return (
     <div className={styles.container}>
@@ -753,33 +767,17 @@ const FormGiaoHang = ({
           <label className={styles.title}>Đơn hàng</label>
           <div className={styles.left_row}>
             <label>Khách hàng</label>
-            {/* <input type="text" className={styles.small} value={test_makh} /> */}
-            <Popover
-              placement="bottomLeft"
-              trigger="click"
-              open={clickedPopoverMaKH}
-              onOpenChange={(open) => setClickedPopoverMaKH(open)}
-              content={
-                <TableMaKH
-                  data={dataTableKhachHang}
-                  rowSelection={rowSelectionMaKH}
-                  setRowSelection={setRowSelectionMaKH}
-                  isSaveData={isSaveData}
-                  setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
-                  setClickedPopover={setClickedPopoverMaKH}
-                />
-              }
-            >
-              <input
-                name="MAKH"
-                value={infoKH["MAKH"] ? infoKH["MAKH"] : ""}
-                readOnly={true}
-              />
-            </Popover>
-            <input
-              type="text"
-              className={styles.medium}
-              value={infoKH["TENKH"] ? infoKH["TENKH"] : ""}
+            <ItemKhachHang
+              value={maKH}
+              setValue={setMaKH}
+              label={tenKH}
+              setLabel={setTenKH}
+              size_input={"15rem"}
+              size_span={"35rem"}
+              have_span={true}
+              size_selection={550}
+              have_set_save={true}
+              isSaveData={isSaveData}
             />
           </div>
         </div>
@@ -863,33 +861,29 @@ const FormGiaoHang = ({
       <div className={styles.group_button}>
         <div>
           {/* <button onClick={handleIn}>In</button> */}
-          {
-            isSaveData ? (
-              <button onClick={handleIn}>In</button>
-            ) : (
-              <></>
-            )
-          }
+          {isSaveData ? <button onClick={handleIn}>In</button> : <></>}
           {/* <button onClick={handleInCongNo}>In Công Nợ</button> */}
-          {
-            isSaveData ? (
-              <button onClick={handleInCongNo}>In Công Nợ</button>
-            ) : (
-              <></>
-            )
-          }
+          {isSaveData ? (
+            <button onClick={handleInCongNo}>In Công Nợ</button>
+          ) : (
+            <></>
+          )}
           <button onClick={handleSave}>Lưu</button>
           {/* <button onClick={handleNhapTiep}>Nhập tiếp</button> */}
-          { isSaveData ? (<button onClick={handleNhapTiep}>Nhập tiếp</button>) : (<Popconfirm
-            title="Xác nhận hành động"
-            description="Bạn muốn nhập tiếp mà không lưu thay đổi?"
-            okText="Đồng ý"
-            cancelText="Không đồng ý"
-            onConfirm={handleNhapTiep}
-            onCancel={() => {}}
-          >
-            <button>Nhập tiếp</button>
-          </Popconfirm>)}
+          {isSaveData ? (
+            <button onClick={handleNhapTiep}>Nhập tiếp</button>
+          ) : (
+            <Popconfirm
+              title="Xác nhận hành động"
+              description="Bạn muốn nhập tiếp mà không lưu thay đổi?"
+              okText="Đồng ý"
+              cancelText="Không đồng ý"
+              onConfirm={handleNhapTiep}
+              onCancel={() => {}}
+            >
+              <button>Nhập tiếp</button>
+            </Popconfirm>
+          )}
         </div>
       </div>
     </div>

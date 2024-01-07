@@ -1,6 +1,6 @@
 import { useState, memo, useEffect } from "react";
 import { Space } from "antd";
-
+import { CustomAlert } from "~utils/alert_custom";
 import { Select } from "antd";
 const { Option } = Select;
 
@@ -26,6 +26,8 @@ const Selection = ({
   size_span,
   className,
   have_span,
+  have_set_save,
+  isSaveData,
   size_selection = 450,
 }) => {
   const [maMA, setMaMau] = useState(() => {
@@ -50,6 +52,10 @@ const Selection = ({
   }, [label]);
 
   const handleChange = (value) => {
+    if (have_set_save && !isSaveData) {
+      CustomAlert("Lưu thông tin hiện tại trước khi đổi khách hàng!!!");
+      return;
+    }
     setMaMau(value);
     let choice = data.filter((e) => e.MAKH === value);
     console.log("choice: ", choice);
@@ -69,9 +75,7 @@ const Selection = ({
     setShowSelection(false);
     setShowInput(true);
   };
-  console.log("data: ", data);
-  console.log("showInput: ", showInput);
-  console.log("tenMau: ", tenMau);
+
   return (
     <div className={className}>
       {showInput && (

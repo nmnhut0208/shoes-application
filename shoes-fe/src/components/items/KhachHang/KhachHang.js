@@ -12,6 +12,8 @@ const KhachHang = ({
   have_span,
   size_span,
   size_selection = 450,
+  have_set_save = false,
+  isSaveData = true,
 }) => {
   console.log("re-render ItemKhachHang");
   // const [clicked, setClicked] = useState(false);
@@ -52,6 +54,8 @@ const KhachHang = ({
       have_span={have_span}
       readOnly={readOnly}
       size_selection={size_selection}
+      have_set_save={have_set_save}
+      isSaveData={isSaveData}
     />
   );
 };
