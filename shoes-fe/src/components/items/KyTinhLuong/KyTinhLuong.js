@@ -1,6 +1,6 @@
-import { Popover, Space } from "antd";
-import { useState, memo, useEffect } from "react";
-import ListKyTinhLuong from "./ListKyTinhLuong";
+import { memo, useState, useEffect } from "react";
+import Selection from "./Selection";
+import { useItemsContext } from "~items_context";
 
 const KyTinhLuong = ({
   readOnly,
@@ -11,43 +11,37 @@ const KyTinhLuong = ({
   size_input,
   have_span,
   size_span,
+  size_selection = 450,
+  have_set_save = false,
+  isSaveData = true,
 }) => {
-  console.log("re-render ItemKyTinhLuong");
-  const [clicked, setClicked] = useState(false);
+  console.log("re-render infoItemKyTinhLuong");
 
-  const handleClickChange = (open) => {
-    setClicked(open);
-  };
+  const [data, setData] = useState([{ value: "", label: "" }]);
+  const [stateItem, dispatchItem] = useItemsContext();
+  useEffect(() => {
+    setData(stateItem.infoItemKyTinhLuong);
+  }, []);
+
+  useEffect(() => {
+    setValue(value);
+  }, [value]);
+
   return (
-    <Space>
-      {!readOnly && (
-        <Popover
-          placement="bottomLeft"
-          content={<ListKyTinhLuong setValue={setValue} setLabel={setLabel} showPopover={setClicked} />}
-          trigger="click"
-          open={clicked}
-          onOpenChange={handleClickChange}
-        >
-          <input
-            name="MAKY"
-            value={value}
-            readOnly={true}
-            style={{ width: size_input }}
-          />
-        </Popover>
-      )}
-      {readOnly && (
-        <input
-          name="MAKY"
-          value={value}
-          readOnly={true}
-          style={{ width: size_input }}
-        />
-      )}
-      {have_span && (
-        <input readOnly={true} value={label} style={{ width: size_span }} />
-      )}
-    </Space>
+    <Selection
+      value={value}
+      setValue={setValue}
+      label={label}
+      setLabel={setLabel}
+      data={data}
+      size_input={size_input}
+      size_span={size_span}
+      have_span={have_span}
+      readOnly={readOnly}
+      size_selection={size_selection}
+      have_set_save={have_set_save}
+      isSaveData={isSaveData}
+    />
   );
 };
 

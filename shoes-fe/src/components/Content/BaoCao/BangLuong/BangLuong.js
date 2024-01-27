@@ -75,7 +75,8 @@ const BangLuong = () => {
             setLabel={setKyLabel}
             size_input={"15rem"}
             have_span={true}
-            size_span={"41.8rem"}
+            size_span={"44.5rem"}
+            size_selection={"59.5rem"}
           />
         </div>
 

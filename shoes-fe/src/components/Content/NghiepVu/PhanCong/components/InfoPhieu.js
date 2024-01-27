@@ -8,7 +8,10 @@ import { ItemKyTinhLuong } from "~items";
 
 const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
   console.log("re-render InfoPhieu: ", infoPhieu);
-  const [kyTinhLuong, setKyTinhLuong] = useState("");
+  const [kyTinhLuong, setKyTinhLuong] = useState(() => {
+    return infoPhieu["MAKY"];
+  });
+
   const handleChangeInfoPhieu = (e) => {
     const data = { ...infoPhieu };
     data[e.target.name] = e.target.value;
@@ -48,12 +51,21 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
           onChange={(e) => handleChangeFormForTypeDate(e)}
         />
       </div>
-      <div className={styles.pair}>
+      <div
+        className={styles.pair}
+        style={{
+          width: "100px",
+          display: "flex",
+          flexDirection: "row",
+          marginLeft: "2.5rem",
+        }}
+      >
         <label>Kỳ</label>
         <ItemKyTinhLuong
           value={infoPhieu["MAKY"]}
           setValue={setKyTinhLuong}
-          size_input={"7rem"}
+          size_input={"8rem"}
+          size_selection={"20rem"}
           readOnly={view}
         />
       </div>
