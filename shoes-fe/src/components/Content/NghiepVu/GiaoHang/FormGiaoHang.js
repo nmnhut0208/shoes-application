@@ -1,13 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
 import { ItemKhachHang } from "~items";
-import { Popover } from "antd";
 import moment from "moment";
 import MainTable from "./MainTable";
 import SubTable from "./SubTable";
 import styles from "./FormGiaoHang.module.scss";
-import { convertDate } from "~utils/processing_date";
 import { useUserContext } from "~user";
-import TableMaKH from "./TableMaKH";
 import { rem_to_px } from "~config/ui";
 import {
   processingInfoColumnTable,
@@ -19,7 +16,6 @@ import In from "./In";
 import { useTableContext, actions_table } from "~table_context";
 import { CustomAlert } from "~utils/alert_custom";
 import { Popconfirm } from "antd";
-import KhachHang from "../../../items/KhachHang/KhachHang";
 
 const list_key = [
   {
@@ -750,8 +746,6 @@ const FormGiaoHang = ({
     }
   }, [maKH]);
 
-  console.log("infoKH: ", infoKH);
-  // end: add to change Popover's behavior
   return (
     <div className={styles.container}>
       <div className={styles.form}>
