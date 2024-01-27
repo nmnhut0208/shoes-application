@@ -87,15 +87,16 @@ const FormGiayBasic = ({ form, setDataForm, mode }) => {
           data["TENMUI"] = "";
         }
       }
+      data["TENGIAY"] =
+        data["TENGOT"] +
+        "," +
+        data["TENQUAI"] +
+        "," +
+        data["TENMUI"] +
+        "," +
+        data["MAQUAI"];
     }
-    data["TENGIAY"] =
-      data["TENGOT"] +
-      "," +
-      data["TENQUAI"] +
-      "," +
-      data["TENMUI"] +
-      "," +
-      data["MAQUAI"];
+
     setDataForm(data);
   };
 
