@@ -10,6 +10,8 @@ import TableMaKY from "./TableMaKY";
 import { convertDateForReport } from "~utils/processing_date";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { CustomAlert } from "~utils/alert_custom";
+import { ItemNhanVien, ItemKyTinhLuong } from "~items";
+import { display } from "@mui/system";
 
 const list_key = [
   { header: "Số phiếu", key: "SOPHIEU" },
@@ -55,9 +57,8 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
   const [rowSelection, setRowSelection] = useState({ 0: true });
-  const [dataTableKY, setDataTableKY] = useState([]);
-  const [rowSelectionMaKY, setRowSelectionMaKY] = useState({});
-  // const [infoKY, setInfoKY] = useState({});
+  const [maKy, setMaKy] = useState("");
+  const [tenKy, setTenKy] = useState("");
   const [dataTableNhanVien, setDataTableNhanVien] = useState([]);
   const [rowSelectionMaNVIEN, setRowSelectionMaNVIEN] = useState({});
   // const [infoNVIEN, setInfoNVIEN] = useState({});
@@ -71,28 +72,11 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
     DIENGIAI: "",
     SOPHIEU: "",
   });
-  // const [infoKH, setInfoKH] = useState({});
-  // const infoKH = {
-  //   MAKY: "02",
-  //   MANVIEN: "LINH",
-  // };
-
-  // useEffect(() => {
-  //   setInfoKH({
-  //     MAKY: "02",
-  //     MANVIEN: "linh",
-  //   });
-  // }, []);
 
   console.log("ChamCong", infoForm["MAKY"]);
 
   const handleSave = () => {
-    if (
-      // userState.userPoolAccess.some(
-      //   (obj) => obj.MAFORM === maForm && obj.THEM === 1
-      // )
-      permission.THEM === 1
-    ) {
+    if (permission.THEM === 1) {
       if (dataTable.length === 0) {
         CustomAlert("Không có dữ liệu để lưu");
         return;
@@ -180,38 +164,11 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
   };
 
   useEffect(() => {
-    let keys = Object.keys(rowSelectionMaKY);
-    if (keys.length > 0) {
-      // setFormInfoDonHang({
-      //   ...formInfoDonHang,
-      //   MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-      //   TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-      // });
-      const info = {
-        MAKY: dataTableKY[keys[0]]["MAKY"],
-        TENKY: dataTableKY[keys[0]]["TENKY"],
-      };
-      // setInfoKY(info);
-      setInfoForm({ ...infoForm, ...info });
-      setDataTable([]);
-      setDataTableSub([]);
-      setRowSelection({ 0: true });
-    }
-  }, [rowSelectionMaKY]);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/chamcong/ky")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        console.log("info khach hang: ", info);
-        setDataTableKY(info);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
-  }, []);
+    setInfoForm({ ...infoForm, MAKY: maKy, TENKY: tenKy });
+    setDataTable([]);
+    setDataTableSub([]);
+    setRowSelection({ 0: true });
+  }, [maKy]);
 
   useEffect(() => {
     let keys = Object.keys(rowSelectionMaNVIEN);
@@ -363,7 +320,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
   console.log("selected: ", rowSelection, dataTableSub);
 
   // start: add to change Popover's behavior
-  const [clickedPopoverMaKy, setClickedPopoverMaKy] = useState(false);
   const [clickedPopoverMaNV, setClickedPopoverMaNV] = useState(false);
   // end: add to change Popover's behavior
 
@@ -371,35 +327,21 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
     <div className={styles.container}>
       <div className={styles.form}>
         <div className={styles.left}>
-          {/* <label className={styles.title}>Đơn hàng</label> */}
-          <div className={styles.left_row}>
+          <div
+            className={styles.left_row}
+            style={{ display: "flex", flexDirection: "row" }}
+          >
             <label>Mã kỳ</label>
-
-            <Popover
-              placement="bottomLeft"
-              trigger="click"
-              open={clickedPopoverMaKy}
-              onOpenChange={(open) => setClickedPopoverMaKy(open)}
-              content={
-                <TableMaKY
-                  setRowSelection={setRowSelectionMaKY}
-                  rowSelection={rowSelectionMaKY}
-                  data={dataTableKY}
-                  setIsSaveData={setIsSaveDataNghiepVuChamCong}
-                  setClickedPopover={setClickedPopoverMaKy}
-                />
-              }
-            >
-              <input
-                value={infoForm["MAKY"]}
-                readOnly={true}
-                className={styles.small}
-              />
-            </Popover>
-            <input
-              value={infoForm["TENKY"]}
-              readOnly={true}
-              className={styles.medium}
+            <ItemKyTinhLuong
+              value={maKy}
+              setValue={setMaKy}
+              label={tenKy}
+              setLabel={setTenKy}
+              size_input={"20rem"}
+              have_span={true}
+              size_span={"39.5rem"}
+              size_selection={"59.5rem"}
+              readOnly={false}
             />
           </div>
           <div className={styles.left_row}>
@@ -433,7 +375,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
           </div>
         </div>
         <div className={styles.right}>
-          {/* <label className={styles.title}>Thông tin phiếu</label> */}
           <div className={styles.right_row}>
             <label>Ngày phiếu</label>
             <input
