@@ -209,7 +209,7 @@ export const getListThoQuai = (dispatchItem) => {
 };
 
 export const getListNhanVien = (dispatchItem) => {
-  fetch("http://localhost:8000/nhanvien")
+  fetch("http://localhost:8000/chamcong/nhanvien")
     .then((response) => {
       return response.json();
     })

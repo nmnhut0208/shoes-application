@@ -25,6 +25,7 @@ const Selection = ({
   size_input,
   size_span,
   className,
+  size_selection = 450,
 }) => {
   const [maMA, setMaMau] = useState(() => {
     if (value) {
@@ -101,7 +102,7 @@ const Selection = ({
           showSearch={true}
           optionFilterProp="children"
           style={{
-            width: 450,
+            width: size_selection,
             // marginLeft: 200, // 600,
             position: "absolute",
           }}

@@ -8,6 +8,7 @@ const NhanVien = ({
   size_input,
   className,
   size_span,
+  size_selection = 450,
 }) => {
   const [data, setData] = useState([{ value: "", label: "" }]);
   const [stateItem, dispatchItem] = useItemsContext();
@@ -43,6 +44,7 @@ const NhanVien = ({
       data={data}
       size_input={size_input}
       size_span={size_span}
+      size_selection={size_selection}
     />
   );
 };
