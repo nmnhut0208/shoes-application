@@ -11,7 +11,7 @@ export const getListDe = (dispatchItem) => {
       });
       dispatchItem(
         actions_items_context.setInfoDe([
-          { label: "", value: "" },
+          { label: "Không chọn đế", value: "              " },
           ...listOptional,
         ])
       );
@@ -53,7 +53,7 @@ export const getListCa = (dispatchItem) => {
       });
       dispatchItem(
         actions_items_context.setInfoCa([
-          { label: "", value: "" },
+          { label: "Không chọn cá", value: "            " },
           ...listOptional,
         ])
       );

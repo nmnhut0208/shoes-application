@@ -10,9 +10,7 @@ const customOptionStyle = {
 };
 
 const filterOption = (input, option) => {
-  return (option?.value ?? "")
-    .toLowerCase()
-    .startsWith(input.trim().toLowerCase());
+  return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
 };
 
 const Selection = ({
@@ -50,11 +48,16 @@ const Selection = ({
 
   const handleChange = (value) => {
     setMaMau(value);
-    let choice = data.filter((e) => e.value === value);
-    console.log("choice: ", choice);
-    setValue(value);
-    setLabel(choice[0]["label"]);
-    setTenMau(choice[0]["label"]);
+    if (value.trim() !== "") {
+      let choice = data.filter((e) => e.value === value);
+      setValue(value);
+      setLabel(choice[0]["label"]);
+      setTenMau(choice[0]["label"]);
+    } else {
+      setValue("");
+      setLabel("");
+      setTenMau("");
+    }
     setShowInput(true);
     setShowSelection(false);
   };
