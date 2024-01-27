@@ -16,7 +16,6 @@ const KhachHang = ({
   isSaveData = true,
 }) => {
   console.log("re-render ItemKhachHang");
-  // const [clicked, setClicked] = useState(false);
 
   const [data, setData] = useState([{ value: "", label: "" }]);
   const [stateItem, dispatchItem] = useItemsContext();
@@ -24,21 +23,7 @@ const KhachHang = ({
     setData(stateItem.infoItemKhachHang);
   }, []);
 
-  // const [value, setValue] = useState(() => {
-  //   if (initValue["value"]) return initValue["value"];
-  //   else return "";
-  // });
-  // const [label, setLabel] = useState(() => {
-  //   if (initValue["label"]) return initValue["label"];
-  //   else return "";
-  // });
-  // useEffect(() => {
-  //   setValue(initValue["value"]);
-  //   setLabel(initValue["label"]);
-  // }, [initValue]);
-
   useEffect(() => {
-    // changeData({ value, label });
     setValue(value);
   }, [value]);
 
