@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
 import SubTable from "./SubTable";
 import styles from "./FormChamCong.module.scss";
-import { Popover } from "antd";
 import { convertDate } from "~utils/processing_date";
 import moment from "moment";
 import { useUserContext } from "~user";
-import TableMaNVIEN from "./TableMaNVIEN";
-import TableMaKY from "./TableMaKY";
 import { convertDateForReport } from "~utils/processing_date";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { CustomAlert } from "~utils/alert_custom";
 import { ItemNhanVien, ItemKyTinhLuong } from "~items";
-import { display } from "@mui/system";
 
 const list_key = [
   { header: "Số phiếu", key: "SOPHIEU" },
@@ -59,9 +55,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
   const [rowSelection, setRowSelection] = useState({ 0: true });
   const [maKy, setMaKy] = useState("");
   const [tenKy, setTenKy] = useState("");
-  const [dataTableNhanVien, setDataTableNhanVien] = useState([]);
-  const [rowSelectionMaNVIEN, setRowSelectionMaNVIEN] = useState({});
-  // const [infoNVIEN, setInfoNVIEN] = useState({});
   const maForm = "F0043";
   const [infoForm, setInfoForm] = useState({
     MAKY: "",
@@ -171,38 +164,10 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
   }, [maKy]);
 
   useEffect(() => {
-    let keys = Object.keys(rowSelectionMaNVIEN);
-    if (keys.length > 0) {
-      // setFormInfoDonHang({
-      //   ...formInfoDonHang,
-      //   MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-      //   TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-      // });
-      const info = {
-        MANVIEN: dataTableNhanVien[keys[0]]["MANVIEN"],
-        TENNVIEN: dataTableNhanVien[keys[0]]["TENNVIEN"],
-      };
-      // setInfoNVIEN(info);
-      setInfoForm({ ...infoForm, ...info });
-      setDataTable([]);
-      setDataTableSub([]);
-      setRowSelection({ 0: true });
-    }
-  }, [rowSelectionMaNVIEN]);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/chamcong/nhanvien")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        console.log("info khach hang: ", info);
-        setDataTableNhanVien(info);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
-  }, []);
+    setDataTable([]);
+    setDataTableSub([]);
+    setRowSelection({ 0: true });
+  }, [infoForm["MANVIEN"]]);
 
   useEffect(() => {
     const keys = Object.keys(rowSelection);
@@ -319,10 +284,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
 
   console.log("selected: ", rowSelection, dataTableSub);
 
-  // start: add to change Popover's behavior
-  const [clickedPopoverMaNV, setClickedPopoverMaNV] = useState(false);
-  // end: add to change Popover's behavior
-
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -339,38 +300,31 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
               setLabel={setTenKy}
               size_input={"20rem"}
               have_span={true}
-              size_span={"39.5rem"}
-              size_selection={"59.5rem"}
+              size_span={"30rem"}
+              size_selection={"50.5rem"}
               readOnly={false}
             />
           </div>
-          <div className={styles.left_row}>
+          <div
+            className={styles.left_row}
+            style={{ display: "flex", flexDirection: "row" }}
+          >
             <label>Mã nhân viên</label>
-            <Popover
-              placement="bottomLeft"
-              trigger="click"
-              open={clickedPopoverMaNV}
-              onOpenChange={(open) => setClickedPopoverMaNV(open)}
-              content={
-                <TableMaNVIEN
-                  setRowSelection={setRowSelectionMaNVIEN}
-                  rowSelection={rowSelectionMaNVIEN}
-                  data={dataTableNhanVien}
-                  setIsSaveData={setIsSaveDataNghiepVuChamCong}
-                  setClickedPopover={setClickedPopoverMaNV}
-                />
-              }
-            >
-              <input
-                value={infoForm["MANVIEN"]}
-                readOnly={true}
-                className={styles.small}
-              />
-            </Popover>
-            <input
-              value={infoForm["TENNVIEN"]}
-              readOnly={true}
-              className={styles.medium}
+            <ItemNhanVien
+              initValue={{
+                value: infoForm["MANVIEN"],
+                label: infoForm["TENNVIEN"],
+              }}
+              changeData={(dict_data) => {
+                setInfoForm({
+                  ...infoForm,
+                  MANVIEN: dict_data["value"],
+                  TENNVIEN: dict_data["label"],
+                });
+              }}
+              size_input={"20rem"}
+              size_span={"30rem"}
+              size_selection={"50.5rem"}
             />
           </div>
         </div>
