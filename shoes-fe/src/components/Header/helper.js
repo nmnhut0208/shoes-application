@@ -208,6 +208,27 @@ export const getListThoQuai = (dispatchItem) => {
     });
 };
 
+export const getListNhanVien = (dispatchItem) => {
+  fetch("http://localhost:8000/nhanvien")
+    .then((response) => {
+      return response.json();
+    })
+    .then((info) => {
+      let listOptional = info.map(function (ob) {
+        return { label: ob.TENNVIEN, value: ob.MANVIEN };
+      });
+      dispatchItem(
+        actions_items_context.setInfoNhanVien([
+          { label: "", value: "" },
+          ...listOptional,
+        ])
+      );
+    })
+    .catch((err) => {
+      console.log(":error: ", err);
+    });
+};
+
 export const getListKyTinhLuong = (dispatchItem) => {
   fetch("http://localhost:8000/kytinhluong")
     .then((response) => {

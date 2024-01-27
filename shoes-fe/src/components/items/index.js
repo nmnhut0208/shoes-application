@@ -6,5 +6,5 @@ export { default as ItemMau } from "./Mau";
 export { default as ItemGot } from "./Got";
 export { default as ItemMui } from "./Mui";
 export { default as ItemKhachHang } from "./KhachHang";
-export { ItemThoDe, ItemThoQuai } from "./NhanVien";
+export { ItemThoDe, ItemThoQuai, ItemNhanVien } from "./NhanVien";
 export { default as ItemKyTinhLuong } from "./KyTinhLuong";
