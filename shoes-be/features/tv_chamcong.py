@@ -72,7 +72,10 @@ def read():
 def delete(data: dict):
     maky = data["MAKY"]
     # get year today 01-01
-    care_year = datetime.today().year
-    sql = f"""DELETE FROM CHAMCONG WHERE MAKY='{maky}' and NgayPhieu >= '{care_year}-01-01'"""
+    # care_year = datetime.today().year
+    # today - 6 months only yyyy-mm-dd
+    care_year = datetime.today() - timedelta(days=6*30)
+    care_year = care_year.strftime("%Y-%m-%d")
+    sql = f"""DELETE FROM CHAMCONG WHERE MAKY='{maky}' and NgayPhieu >= '{care_year}'"""
     TVCC.execute_custom(sql)
     return {"status": "success"}
