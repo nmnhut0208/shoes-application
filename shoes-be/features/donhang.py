@@ -29,11 +29,8 @@ class ITEM_DONHANG(BaseModel):
     GIABAN: int
     THANHTIEN: int
     DIENGIAIDONG: Optional[str] = ""
-    # TODO: edit type of datetime 
     NGUOITAO: Optional[str] = ""
-    # NGAYTAO: Optional[str] = ""
     NGUOISUA: Optional[str] = ""
-    # NGAYSUA: Optional[str] = "" # TODO: sau nay them nay vao
     MAUDE: Optional[str] = ""
     MAUGOT: Optional[str] = ""
     MAUSUON: Optional[str] = ""
@@ -153,6 +150,7 @@ def get_donhang_da_giaohang(SODH: str):
     # không cần cập nhật giá theo danh mục giày nữa
     sql = f"""SELECT DIENGIAIPHIEU,MADONG, SODH, 
                 DONHANG.MAGIAY,V_GIAY.TENGIAY,
+                coalesce(V_GIAY.HAVEHINHANH, 0) as HAVEHINHANH,
                 coalesce(MAUDE, '') as MAUDE, TENMAUDE,
                 coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT, 
                 coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
@@ -200,6 +198,7 @@ def get_donhang_chua_giaohang(SODH: str):
     # update lại giá bán cho đơn hàng này luôn
     sql = f"""SELECT DIENGIAIPHIEU,MADONG, SODH, 
                 DONHANG.MAGIAY,V_GIAY.TENGIAY,
+                coalesce(V_GIAY.HAVEHINHANH, 0) as HAVEHINHANH,
                 coalesce(MAUDE, '') as MAUDE, TENMAUDE,
                 coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT, 
                 coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
@@ -255,22 +254,23 @@ def get_donhang_chua_giaohang(SODH: str):
 def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
     date_care = datetime.today().year - 2
     sql = f""" SELECT DISTINCT SORTID,DONHANG.MAGIAY,V_GIAY.TENGIAY,
-                    coalesce(MAUDE, '') as MAUDE, TENMAUDE,        
-                    coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT,     
-                    coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,   
+                    coalesce(V_GIAY.HAVEHINHANH, 0) as HAVEHINHANH,
+                    coalesce(MAUDE, '') as MAUDE, TENMAUDE,
+                    coalesce(MAUGOT, '') AS MAUGOT, TENMAUGOT,
+                    coalesce(MAUSUON, '') AS MAUSUON,TENMAUSUON,
                     coalesce(MAUCA, '') AS MAUCA,TENMAUCA,
-                    coalesce(MAUQUAI, '') AS MAUQUAI,TENMAUQUAI,   
-                    coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH,  
-                    V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI,    
+                    coalesce(MAUQUAI, '') AS MAUQUAI,TENMAUQUAI,
+                    coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH,
+                    V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI,
                     V_GIAY.TENCA, V_GIAY.TENKH
             FROM (select DISTINCT MAGIAY,MAUDE,MAUGOT,
-                        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH        
+                        MAUSUON,MAUCA,MAUQUAI ,DONHANG.MAKH
                 from DONHANG WHERE DONHANG.MAKH='{MAKH}') AS DONHANG
             inner JOIN (select * from V_GIAY where DONGIAQUAI is not null)
             As V_GIAY on V_GIAY.magiay=DONHANG.magiay
             left join (select MAMAU, TENMAU as TENMAUDE from DMMAU)
                     AS DMMAUDE
-                                        ON coalesce(DMMAUDE.MAMAU, 
+                                        ON coalesce(DMMAUDE.MAMAU,
             '') = coalesce(DONHANG.MAUDE, '')
                         left join (select MAMAU, TENMAU as TENMAUGOT from DMMAU)
                     AS DMMAUGOT
@@ -280,7 +280,7 @@ def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
                                         ON coalesce(DMMAUSUON.MAMAU, '') = coalesce(DONHANG.MAUSUON, '')
                         left join (select MAMAU, TENMAU as TENMAUCA from DMMAU)
                     AS DMMAUCA
-                                        ON coalesce(DMMAUCA.MAMAU, 
+                                        ON coalesce(DMMAUCA.MAMAU,
             '') = coalesce(DONHANG.MAUCA, '')
                         left join (select MAMAU, TENMAU as TENMAUQUAI from DMMAU)
                     AS DMMAUQUAI
@@ -296,7 +296,8 @@ def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
 def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
     date_care = datetime.today().year - 2
     sql = f""" (SELECT DISTINCT V_GIAY.MAGIAY,V_GIAY.TENGIAY,  
-                    coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH,  
+                    coalesce (DONHANG.MAKH, V_GIAY.MAKH) as MAKH,
+                    coalesce(V_GIAY.HAVEHINHANH, 0) as HAVEHINHANH,
                     V_GIAY.DONGIA as GIABAN, V_GIAY.DONGIAQUAI,    
                     V_GIAY.TENCA, V_GIAY.TENKH
             FROM (select DISTINCT MAGIAY, DONHANG.MAKH        
@@ -304,7 +305,7 @@ def read(MAKH: str) -> List[RESPONSE_GIAYDONHANG]:
             inner JOIN (select * from V_GIAY where DONGIAQUAI is not null)
             As V_GIAY on V_GIAY.magiay=DONHANG.magiay
             )UNION (select DISTINCT MAGIAY,TENGIAY,
-                    MAKH,
+                    MAKH, coalesce(V_GIAY.HAVEHINHANH, 0) as HAVEHINHANH,
                     DONGIA as GIABAN, DONGIAQUAI,
                     TENCA, TENKH from V_GIAY where MAKH='{MAKH}'
                     and DONGIA is not null

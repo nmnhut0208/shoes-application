@@ -125,6 +125,10 @@ def read(MAGIAY: str) -> dict:
 @router.post("/giay")
 def add(data: ITEM_GIAY) -> RESPONSE:
     data = convert_data_to_save_database(dict(data))
+    if data["HINHANH"] is not None and data["HINHANH"] != "":
+        data["HAVEHINHANH"] = 1
+    else:
+        data["HAVEHINHANH"] = 0
     col = " ,".join([k for k, v in data.items() if v is not None])
     val = " ,".join([v for v in data.values() if v is not None]) 
 
@@ -134,6 +138,10 @@ def add(data: ITEM_GIAY) -> RESPONSE:
 @router.put("/giay")
 def update(data: ITEM_GIAY) -> RESPONSE:
     data = convert_data_to_save_database(dict(data))
+    if data["HINHANH"] is not None and data["HINHANH"] != "":
+        data["HAVEHINHANH"] = 1
+    else:
+        data["HAVEHINHANH"] = 0
 
     val = ", ".join([f"{k} = {v}" for k, v in data.items() if v is not None])
     

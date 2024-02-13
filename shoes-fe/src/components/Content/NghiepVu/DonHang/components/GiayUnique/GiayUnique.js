@@ -1,7 +1,6 @@
 import { useState, memo, useEffect } from "react";
 
 import { Select } from "antd";
-import TextArea from "antd/es/input/TextArea";
 const { Option } = Select;
 
 const customOptionStyle = {
@@ -29,7 +28,7 @@ const GiayUnique = ({
   });
   const [showSelection, setShowSelection] = useState(false);
   const [showInput, setShowInput] = useState(true);
-
+  console.log("listGiayUnique trong giay unique: ", listGiayUnique);
   useEffect(() => {
     setMaMau(init);
   }, [init]);
@@ -112,8 +111,11 @@ const GiayUnique = ({
                 {e["MAGIAY"]}
               </span>
               <span style={{ paddingLeft: "10px", width: "auto" }}>
-                {e["TENGIAY"]}
+                {e["HAVEHINHANH"]} - {e["TENGIAY"]}
               </span>
+              {/* <span style={{ paddingLeft: "10px", width: "auto" }}>
+                {e["HAVEHINHANH"]}
+              </span> */}
             </Option>
           ))}
         </Select>
