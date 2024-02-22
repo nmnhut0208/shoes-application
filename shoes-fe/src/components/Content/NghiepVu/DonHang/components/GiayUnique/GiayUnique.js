@@ -40,7 +40,8 @@ const GiayUnique = ({
       value,
       choice[0]["TENGIAY"],
       choice[0]["GIABAN"],
-      choice[0]["TENCA"]
+      choice[0]["TENCA"],
+      choice[0]["HAVEHINHANH"]
     );
     setShowInput(true);
     setShowSelection(false);
