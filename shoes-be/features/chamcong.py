@@ -234,7 +234,7 @@ def reasalary_computed(MAKY: str, TYPE: str, YEAR: str) -> List[dict]:
         pass
 
     sql = f"""select MANVIEN, TENNVIEN, MaGiay as MAGIAY, SOLUONG,
-                DONGIA, SOLUONG * DONGIA as THANHTIEN,
+                coalesce(DONGIA, 0) as DONGIA, SOLUONG * coalesce(DONGIA, 0) as THANHTIEN,
                 PHIEUPC, DIENGIAIPHIEU, MADE, MAQUAI
             from 
             (Select CHAMCONG.PHIEUPC, CHAMCONG.MaKy, CHAMCONG.MaGiay,CHAMCONG.MANVIEN,
