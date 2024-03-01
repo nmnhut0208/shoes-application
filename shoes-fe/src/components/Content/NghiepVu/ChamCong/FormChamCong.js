@@ -164,12 +164,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
   }, [maKy]);
 
   useEffect(() => {
-    setDataTable([]);
-    setDataTableSub([]);
-    setRowSelection({ 0: true });
-  }, [infoForm["MANVIEN"]]);
-
-  useEffect(() => {
     const keys = Object.keys(rowSelection);
     if (keys.length === 0 || dataTable.length === 0) {
       setDataTableSub([]);
@@ -269,7 +263,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
               })
               .then((info) => {
                 setDataTableSub(info);
-                // console.log("abc: ", info);
               })
               .catch((err) => {
                 console.log(":error: ", err);
@@ -281,8 +274,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
         console.log(":error: ", err);
       });
   }, [infoForm["MANVIEN"], infoForm["MAKY"]]);
-
-  console.log("selected: ", rowSelection, dataTableSub);
 
   return (
     <div className={styles.container}>
@@ -321,6 +312,9 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
                   MANVIEN: dict_data["value"],
                   TENNVIEN: dict_data["label"],
                 });
+                setDataTable([]);
+                setDataTableSub([]);
+                setRowSelection({ 0: true });
               }}
               size_input={"20rem"}
               size_span={"30rem"}
