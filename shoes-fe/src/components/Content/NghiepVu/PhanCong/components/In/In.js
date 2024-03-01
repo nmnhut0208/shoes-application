@@ -6,7 +6,7 @@ import { TableToPrint, SizeColumnInPrint } from "~common_tag/reports";
 import { getDonGiaQuai, getDonGiaDe } from "~utils/api_get_info_giay";
 import { useTableContext, actions_table } from "~table_context";
 
-const processing_data = (data, TYPE) => {
+const processing_data = (data, TYPE, stylePrint = {}) => {
   let ma_giay_checked = [];
   let info_print = [];
   for (let i = 0; i < data.length; i++) {
@@ -120,13 +120,20 @@ const In = ({ sophieu, data }) => {
 
   useLayoutEffect(() => {
     if (dataPrint.length > 0) {
-      dispatchTable(actions_table.setModeShowModal(false));
-      handelPrint();
+      if (Object.keys(stylePrint).length == 0) {
+        dispatchTable(actions_table.setModeShowModal(false));
+        handelPrint();
+      }
     }
   }, [dataPrint]);
 
   return (
-    <div ref={componentRef} className={styles.print_page} id="print_content">
+    <div
+      ref={componentRef}
+      className={styles.print_page}
+      style={{ ...stylePrint }}
+      id="print_content"
+    >
       <div className={styles.each_page}>
         <h1 className={styles.print_header}>Số phiếu: {sophieu}</h1>
         {dataPrint.length > 0 &&

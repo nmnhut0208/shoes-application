@@ -12,7 +12,12 @@ import { getDiaChiKhachHang, compute_total } from "./helper";
 import { INFO_COLS_THO, COL_INFO_SIZE, fontSize } from "./ConstantVariable";
 import { getImageOfDanhMuc } from "~utils/api_get_image";
 
-const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
+const InDonHang = ({
+  infoHeader,
+  dataTable,
+  setShowModal,
+  stylePrint = {},
+}) => {
   const [header, setHeader] = useState(infoHeader);
   const [dataPrint, setDataPrint] = useState([]);
   const [listImage, setListImage] = useState([]);
@@ -101,15 +106,22 @@ const InDonHang = ({ infoHeader, dataTable, setShowModal }) => {
 
   useLayoutEffect(() => {
     if (dataPrint.length > 0 && listImage.length > 0 && doneGetDiaChi) {
-      setShowModal(false);
-      handelPrint();
+      if (Object.keys(stylePrint).length == 0) {
+        setShowModal(false);
+        handelPrint();
+      }
     }
   }, [dataPrint, listImage, doneGetDiaChi]);
 
   console.log("dataPrint: ", dataPrint);
 
   return (
-    <div ref={componentRef} className={styles.print_page} id="print_content">
+    <div
+      ref={componentRef}
+      className={styles.print_page}
+      id="print_content"
+      style={{ ...stylePrint }}
+    >
       <div className={styles.each_page}>
         <div className={styles.print_header}>
           <h1>Số đơn hàng: {header["SODH"]}</h1>

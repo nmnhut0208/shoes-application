@@ -61,6 +61,7 @@ const FormDonHang = ({
     mau: false,
     dmGiaykh: false,
     inDonHang: false,
+    viewInDonHang: false,
   });
 
   const [showModal, setShowModal] = useState(false);
@@ -155,6 +156,7 @@ const FormDonHang = ({
       mau: false,
       dmGiaykh: false,
       inDonHang: false,
+      viewInDonHang: false,
     });
     setShowModal(true);
   };
@@ -166,6 +168,7 @@ const FormDonHang = ({
       mau: true,
       dmGiaykh: false,
       inDonHang: false,
+      viewInDonHang: false,
     });
     setShowModal(true);
   };
@@ -221,6 +224,7 @@ const FormDonHang = ({
       mau: false,
       dmGiaykh: true,
       inDonHang: false,
+      viewInDonHang: false,
     });
     setShowModal(true);
   };
@@ -256,6 +260,20 @@ const FormDonHang = ({
       mau: false,
       dmGiaykh: false,
       inDonHang: true,
+      viewInDonHang: false,
+    });
+    setShowModal(true);
+  };
+
+  const handleViewInDonHang = () => {
+    resetFocusStatus();
+    if (dataTable.length == 0) return;
+    setInfoFormWillShow({
+      giay: false,
+      mau: false,
+      dmGiaykh: false,
+      inDonHang: false,
+      viewInDonHang: true,
     });
     setShowModal(true);
   };
@@ -392,6 +410,15 @@ const FormDonHang = ({
             In
           </button>
 
+          <button
+            onClick={handleViewInDonHang}
+            disabled={
+              permission.IN === 0 || dataTable.length == 0 || !isSaveData
+            }
+          >
+            Xem thông tin đơn hàng
+          </button>
+
           {action === "add" && (
             <button
               onClick={handleNhapTiep}
@@ -466,6 +493,31 @@ const FormDonHang = ({
             )}
             // remove dòng cuối cùng
             setShowModal={setShowModal}
+            stylePrint={{}}
+          />
+        </Modal>
+      )}
+
+      {infoFormWillShow["viewInDonHang"] && (
+        <Modal
+          title="In Đơn Hàng"
+          status={showModal}
+          setShowModal={setShowModal}
+        >
+          <InDonHang
+            infoHeader={formInfoDonHang}
+            // dataTable={dataTable.slice(0, dataTable.length - 1)}
+            dataTable={dataTable.filter(
+              (data) => data["SOLUONG"] > 0 && data["MAGIAY"] !== ""
+            )}
+            // remove dòng cuối cùng
+            setShowModal={setShowModal}
+            stylePrint={{
+              "scroll-behavior": "smooth",
+              "overflow-y": "overlay",
+              "overflow-x": "hidden",
+              height: "600px",
+            }}
           />
         </Modal>
       )}

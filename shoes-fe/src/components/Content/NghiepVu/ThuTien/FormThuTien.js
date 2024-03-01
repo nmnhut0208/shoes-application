@@ -43,11 +43,13 @@ const FormThuTien = ({ dataView, type_action }) => {
   const [maKH, setMaKH] = useState(form["MAKH"]);
   const [tenKH, setTenKH] = useState(form["TENKH"]);
   useEffect(() => {
-    setForm({
-      ...form,
-      MAKH: maKH,
-      TENKH: tenKH,
-    });
+    if (maKH !== form["MAKH"]) {
+      setForm({
+        ...form,
+        MAKH: maKH,
+        TENKH: tenKH,
+      });
+    }
   }, [maKH]);
 
   useEffect(() => {

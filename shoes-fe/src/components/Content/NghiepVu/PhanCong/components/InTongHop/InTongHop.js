@@ -7,7 +7,7 @@ import { INFO_COLS_THO, fontSize, COL_INFO_SIZE } from "./ConstantVariable";
 import { TableToPrint, SizeColumnInPrint } from "~common_tag/reports";
 import { useTableContext, actions_table } from "~table_context";
 
-const InTongHop = ({ sophieu, data }) => {
+const InTongHop = ({ sophieu, data, stylePrint = {} }) => {
   const [stateTable, dispatchTable] = useTableContext();
   const [dataPrint, setDataPrint] = useState([]);
   const componentRef = useRef();
@@ -80,13 +80,20 @@ const InTongHop = ({ sophieu, data }) => {
   useLayoutEffect(() => {
     if (dataPrint.length > 0) {
       // && listImage.length > 0) {
-      dispatchTable(actions_table.setModeShowModal(false));
-      handelPrint();
+      if (Object.keys(stylePrint).length == 0) {
+        dispatchTable(actions_table.setModeShowModal(false));
+        handelPrint();
+      }
     }
   }, [dataPrint]);
 
   return (
-    <div ref={componentRef} className={styles.print_page} id="print_content">
+    <div
+      ref={componentRef}
+      className={styles.print_page}
+      style={{ ...stylePrint }}
+      id="print_content"
+    >
       <div className={styles.each_page}>
         <h1 className={styles.print_header}>Số phiếu: {sophieu}</h1>
         {dataPrint.length > 0 &&
