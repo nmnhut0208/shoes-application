@@ -13,7 +13,13 @@ const customOptionStyle = {
 const filterOption = (input, option) => {
   return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
 };
-const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
+const InputMau = ({
+  id,
+  onFocus,
+  handleChangeDataTable,
+  readOnly,
+  init = "",
+}) => {
   const [stateItem, dispatchItem] = useItemsContext();
   const [showSelection, setShowSelection] = useState(false);
   const [showInput, setShowInput] = useState(true);
@@ -42,6 +48,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
   };
 
   const handleFocusInput = () => {
+    onFocus();
     if (readOnly) return;
     setShowSelection(true);
     setShowInput(false);
@@ -52,6 +59,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
   };
 
   const handleBlurSelection = () => {
+    onFocus();
     if (readOnly) return;
     setShowSelection(false);
     setShowInput(true);
@@ -60,9 +68,9 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
     <div style={{ position: "relative", width: "100%" }}>
       {showInput && (
         <input
-          id="MAMAU"
+          id={id}
           value={maMA}
-          tabindex="-1"
+          tabindex="1"
           readOnly="true"
           onFocus={handleBlurSelection}
           onClick={handleFocusInput}

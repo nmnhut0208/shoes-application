@@ -18,6 +18,7 @@ import {
   updateFormDonHang,
   updateColumnsInformations,
   numberSize,
+  numberSizeToTab,
 } from "./helper";
 import { CustomAlert } from "~utils/alert_custom";
 
@@ -71,6 +72,8 @@ const FormDonHang = ({
 
   const [focusedRow, setFocusedRow] = useState(-1);
   const [focusedColumn, setFocusedColumn] = useState(-1);
+  const [focusedRowToTab, setFocusedRowToTab] = useState(-1);
+  const [focusedColumnToTab, setFocusedColumnToTab] = useState(-1);
   const [changeFocus, setChangeFocus] = useState(false);
 
   useEffect(() => {
@@ -230,7 +233,9 @@ const FormDonHang = ({
       view,
       listGiayUnique,
       setFocusedRow,
-      setFocusedColumn
+      setFocusedColumn,
+      setFocusedRowToTab,
+      setFocusedColumnToTab
     );
   }, [dataTable, listGiayUnique]);
 
@@ -274,7 +279,12 @@ const FormDonHang = ({
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (focusedColumn < 0 || focusedRow < 0) {
+      if (
+        focusedColumn < 0 &&
+        focusedRow < 0 &&
+        focusedColumnToTab < 0 &&
+        focusedRowToTab < 0
+      ) {
         return;
       }
       let numberLine = dataTable.length - 1;
@@ -284,6 +294,9 @@ const FormDonHang = ({
       let xNew = parseInt(focusedRow);
       let yNew = parseInt(focusedColumn);
 
+      let xNewToTab = parseInt(focusedRowToTab);
+      let yNewToTab = parseInt(focusedColumnToTab);
+      let isKeyTab = false;
       switch (e.key) {
         case "ArrowLeft":
           // Xử lý sự kiện mũi tên qua trái
@@ -330,26 +343,71 @@ const FormDonHang = ({
             yNew = 0;
           }
           break;
+        case "Tab":
+          isKeyTab = true;
+          yNewToTab = yNewToTab + 1;
+          if (yNewToTab >= numberSizeToTab) {
+            xNewToTab = xNewToTab + 1;
+            yNewToTab = 0;
+          }
+          if (xNewToTab >= numberLine) {
+            xNewToTab = 0;
+            yNewToTab = 0;
+          }
+          break;
         default:
           return;
       }
 
-      setFocusedRow(xNew);
-      setFocusedColumn(yNew);
-      setChangeFocus(!changeFocus);
-      var inputElement = document.getElementById(`size_${xNew}_${yNew}`);
-
-      // Kiểm tra xem phần tử tồn tại trước khi đặt focus
-      if (inputElement) {
-        inputElement.focus();
-        if (yNew <= 7) {
-          // ko select toàn bộ text ở DIENGIAIDONG và INHIEU
-          setTimeout(function () {
-            inputElement.select();
-          }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
+      if (!isKeyTab && focusedColumn >= 0 && focusedRow >= 0) {
+        setFocusedRow(xNew);
+        setFocusedColumn(yNew);
+        var inputElement = document.getElementById(`size_${xNew}_${yNew}`);
+        // Kiểm tra xem phần tử tồn tại trước khi đặt focus
+        if (inputElement) {
+          inputElement.focus();
+          if (yNew <= 7) {
+            // ko select toàn bộ text ở DIENGIAIDONG và INHIEU
+            setTimeout(function () {
+              inputElement.select();
+            }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
+          }
+        } else {
+          //
         }
       } else {
+        // y_New >= 6 có format là 'size_(xNew)_(y_New-6)
+        // ngược lại thì format là 'id_x_y'
+        setFocusedRowToTab(xNewToTab);
+        setFocusedColumnToTab(yNewToTab);
+        let yNewRef = yNewToTab >= 6 ? yNewToTab - 6 : yNewToTab;
+        let key = yNewToTab >= 6 ? "size" : "Id";
+
+        var inputElement = document.getElementById(
+          `${key}_${xNewToTab}_${yNewRef}`
+        );
+        // Kiểm tra xem phần tử tồn tại trước khi đặt focus
+        if (inputElement) {
+          if (yNewToTab < 6) {
+            setTimeout(function () {
+              inputElement.click();
+            }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
+          } else if (yNewToTab >= 6 && yNewToTab <= 13) {
+            inputElement.focus();
+            setTimeout(function () {
+              inputElement.select();
+            }, 0);
+          } else {
+            setTimeout(function () {
+              inputElement.select();
+            }, 0);
+          }
+        } else {
+          //
+        }
       }
+
+      setChangeFocus(!changeFocus);
     };
     window.addEventListener("keydown", handleKeyDown);
 
@@ -357,7 +415,14 @@ const FormDonHang = ({
       // Loại bỏ lắng nghe sự kiện bàn phím khi component unmount
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [focusedRow, focusedColumn, changeFocus, dataTable]);
+  }, [
+    focusedRow,
+    focusedColumn,
+    changeFocus,
+    dataTable,
+    focusedColumnToTab,
+    focusedRowToTab,
+  ]);
 
   return (
     <div className={styles.page}>

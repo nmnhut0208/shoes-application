@@ -23,7 +23,27 @@ const dict_size_index = {
   INHIEU: 9,
 };
 
+const dict_size_index_to_tab = {
+  MAGIAY: 0,
+  MAUDE: 1,
+  MAUGOT: 2,
+  MAUSUON: 3,
+  MAUCA: 4,
+  MAUQUAI: 5,
+  SIZE5: 6,
+  SIZE6: 7,
+  SIZE7: 8,
+  SIZE8: 9,
+  SIZE9: 10,
+  SIZE0: 11,
+  SIZE1: 12,
+  GIABAN: 13,
+  DIENGIAIDONG: 14,
+  INHIEU: 15,
+};
+
 export const numberSize = 10;
+export const numberSizeToTab = 16;
 
 export const convert_to_int = (value) => {
   if (value === "") return 0;
@@ -76,7 +96,9 @@ export const updateColumnsInformations = (
   view,
   listGiayUnique,
   setFocusedRow,
-  setFocusedColumn
+  setFocusedColumn,
+  setFocusedRowToTab,
+  setFocusedColumnToTab
 ) => {
   const infoColumnsInit = [];
 
@@ -93,6 +115,13 @@ export const updateColumnsInformations = (
     if (key === "MAGIAY") {
       info["Cell"] = ({ cell }) => (
         <GiayUnique
+          id={`Id_${cell.row.id}_${dict_size_index_to_tab[key]}`}
+          onFocus={() => {
+            setFocusedRow(-1);
+            setFocusedColumn(-1);
+            setFocusedRowToTab(cell.row.id);
+            setFocusedColumnToTab(dict_size_index_to_tab[key]);
+          }}
           listGiayUnique={listGiayUnique}
           init={dataTable[cell.row.id][cell.column.id]}
           handleChangeDataTable={(value, label, giaban, tenca, haveHINHANH) => {
@@ -137,6 +166,8 @@ export const updateColumnsInformations = (
             handleFocus(event);
             setFocusedRow(cell.row.id);
             setFocusedColumn(dict_size_index[key]);
+            setFocusedRowToTab(cell.row.id);
+            setFocusedColumnToTab(dict_size_index_to_tab[key]);
           }}
         />
       );
@@ -167,6 +198,8 @@ export const updateColumnsInformations = (
             handleFocus(event);
             setFocusedRow(cell.row.id);
             setFocusedColumn(dict_size_index[key]);
+            setFocusedRowToTab(cell.row.id);
+            setFocusedColumnToTab(dict_size_index_to_tab[key]);
           }}
         />
       );
@@ -203,7 +236,7 @@ export const updateColumnsInformations = (
           id={`size_${cell.row.id}_${dict_size_index[key]}`}
           readOnly={view}
           type="text"
-          tabindex="-1"
+          tabindex="1"
           value={cell.getValue()}
           onChange={(e) => {
             dataTable[cell.row.id][cell.column.id] = e.target.value;
@@ -212,6 +245,8 @@ export const updateColumnsInformations = (
           onFocus={(event) => {
             setFocusedRow(cell.row.id);
             setFocusedColumn(dict_size_index[key]);
+            setFocusedRowToTab(cell.row.id);
+            setFocusedColumnToTab(dict_size_index_to_tab[key]);
           }}
         />
       );
@@ -227,6 +262,13 @@ export const updateColumnsInformations = (
             }}
           >
             <InputMau
+              id={`Id_${cell.row.id}_${dict_size_index_to_tab[key]}`}
+              onFocus={() => {
+                setFocusedRow(-1);
+                setFocusedColumn(-1);
+                setFocusedRowToTab(cell.row.id);
+                setFocusedColumnToTab(dict_size_index_to_tab[key]);
+              }}
               init={dataTable[cell.row.id][cell.column.id]}
               handleChangeDataTable={(value, label) => {
                 dataTable[cell.row.id][cell.column.id] = value;

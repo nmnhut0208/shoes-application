@@ -16,6 +16,8 @@ const filterOption = (input, option) => {
 };
 
 const GiayUnique = ({
+  id,
+  onFocus,
   init,
   listGiayUnique,
   handleChangeDataTable,
@@ -47,6 +49,7 @@ const GiayUnique = ({
   };
 
   const handleFocusInput = () => {
+    onFocus();
     if (readOnly) return;
     setShowSelection(true);
     setShowInput(false);
@@ -56,15 +59,22 @@ const GiayUnique = ({
     setShowInput(true);
   };
 
+  const handleClick = () => {
+    onFocus();
+    if (readOnly) return;
+    setShowSelection(false);
+    setShowInput(true);
+  };
+
   return (
     <div style={{ position: "relative", left: "0px", width: "100%" }}>
       {showInput && (
         <input
-          id="MAGIAY"
+          id={id}
           value={maMA}
-          tabindex="-1"
+          tabindex="1"
           onFocus={handleFocusInput}
-          onClick={handleFocusInput}
+          onClick={handleClick}
           readOnly="true"
           style={{
             width: "100%",
@@ -85,6 +95,7 @@ const GiayUnique = ({
             // marginLeft: 200, // 600,
             position: "absolute",
             top: 0,
+            tabindex: "1",
           }}
           value={maMA}
           onChange={handleChange}
