@@ -87,7 +87,7 @@ const GiaoHangSub = ({
         maxHeight={"65rem"}
       />
       {showForm && (
-        <ModalForm setShowForm={setShowForm} isSaveData={isSaveData}>
+        <ModalForm setShowForm={setShowForm} isSaveData={isSaveData} setSaveData={setIsSaveDataTruyVanGiaoHang}>
           <FormGiaoHang
             permission={permission}
             infoKH={sendData}

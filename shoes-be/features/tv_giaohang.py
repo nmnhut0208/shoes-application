@@ -68,13 +68,18 @@ def read(data: dict):
     sql = f"""SELECT SODH, CONGNO.MAGIAY, TENGIAY, MAUDE, MAUGOT, MAUSUON, MAUCA,
                      MAUQUAI, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, coalesce(SIZE1,0) AS SIZE1, 
                      SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, 
-                    GIABAN, THANHTIEN, DIENGIAIPHIEU AS DIENGIAIDONG 
+                    GIABAN, THANHTIEN, DIENGIAIPHIEU AS DIENGIAIDONG, coalesce(DMGOT.TENGOT, '') as TENGOT
               FROM CONGNO  
-              left join (SELECT MAGIAY, TENGIAY FROM DMGIAY) as DMGIAY 
-                    ON CONGNO.MAGIAY = DMGIAY.MAGIAY 
+              LEFT JOIN 
+                (SELECT MAGIAY, TENGIAY, MASUON FROM DMGIAY) AS DMGIAY ON CONGNO.MAGIAY = DMGIAY.MAGIAY
+                LEFT JOIN 
+                DMSUON ON DMGIAY.MASUON = DMSUON.MASUON
+                LEFT JOIN 
+                DMGOT ON DMSUON.MAGOT = DMGOT.MAGOT
               WHERE MAKH = '{makh}' 
               AND SOPHIEU = '{sophieu}'
               """
+    # print("abc: ", sql)
     # return TVGH.read_custom(sql)
     results = TVGH.read_custom(sql)
     # group with SODH
@@ -112,6 +117,7 @@ def save(data: dict) -> RESPONSE:
         _v = []
         madong += 1
         del item["TENGIAY"]
+        del item["TENGOT"]
         item["MADONG"] = f"MD{year}{str(madong).zfill(12)}"
         item["MAPHIEU"] = MAPHIEU
         item["SOPHIEU"] = sophieu

@@ -18,6 +18,12 @@ const infoColumns = [
   },
   // { header: "Tên Hàng", key: "TENGIAY", width: 29 * rem_to_px },
   {
+    header: "Tên Gót",
+    key: "TENGOT",
+    width: 10 * rem_to_px,
+    textAlign: "center",
+  },
+  {
     header: "SL",
     key: "SOLUONG",
     width: 10 * rem_to_px,

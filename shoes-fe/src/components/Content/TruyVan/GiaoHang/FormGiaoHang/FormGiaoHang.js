@@ -386,9 +386,11 @@ const FormGiaoHang = ({
           DONGIA: item.GIABAN,
           THANHTIEN: item.THANHTIEN,
           SODH: item.SODH,
+          TENGOT: item.TENGOT
         };
         return obj;
       });
+      // console.log("abc :", table)
       // console.log("table: ", dataTableSub);
       // group table follow MAGIAY
       const table_group = table.reduce((acc, curr) => {
@@ -453,6 +455,7 @@ const FormGiaoHang = ({
           DONGIA: item.GIABAN,
           THANHTIEN: item.THANHTIEN,
           SODH: item.SODH,
+          TENGOT: item.TENGOT
         };
         return obj;
       });

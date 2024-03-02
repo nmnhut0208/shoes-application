@@ -2,7 +2,7 @@ import styles from "./ModalForm.module.scss";
 import { useTaskContext, resetHeader } from "~task";
 import { Popconfirm } from "antd";
 
-const ModalForm = ({ setShowForm, isSaveData, children }) => {
+const ModalForm = ({ setShowForm, isSaveData, setSaveData, children }) => {
   const [stateTask, dispatchTask] = useTaskContext();
   return (
     <div className={styles.modal}>
@@ -14,7 +14,10 @@ const ModalForm = ({ setShowForm, isSaveData, children }) => {
             <Popconfirm
               title="Xác nhận hành động"
               description="Bạn muốn tắt mà không lưu thay đổi?"
-              onConfirm={() => setShowForm(false)}
+              onConfirm={() => {
+                setSaveData(true)
+                setShowForm(false)
+              }}
               onCancel={() => {}}
               okText="Đồng ý"
               cancelText="Không đồng ý"

@@ -574,6 +574,7 @@ const FormGiaoHang = ({
           DONGIA: item.GIABAN,
           THANHTIEN: item.THANHTIEN,
           SODH: item.SODH,
+          TENGOT: item.TENGOT
         };
         return obj;
       });
@@ -657,6 +658,7 @@ const FormGiaoHang = ({
           DONGIA: item.GIABAN,
           THANHTIEN: item.THANHTIEN,
           SODH: item.SODH,
+          TENGOT: item.TENGOT
         };
         return obj;
       });

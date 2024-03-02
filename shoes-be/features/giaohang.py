@@ -48,7 +48,7 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
     makh = data["makh"]
     sql = f"""SELECT SODH, THONGKE.MAGIAY, DMGIAY.TENGIAY, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, coalesce(SIZE1,0) AS SIZE1, MAUDE, MAUGOT, MAUSUON, MAUCA, MAUQUAI,
                 SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, coalesce(DMGIAY.DONGIA, 1) AS GIABAN, (SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0)) * coalesce(DMGIAY.DONGIA, 1) AS THANHTIEN,
-                THONGKE.DIENGIAIPHIEU AS DIENGIAIDONG
+                THONGKE.DIENGIAIPHIEU AS DIENGIAIDONG, coalesce(DMGOT.TENGOT, '') as TENGOT
                 FROM 
                 (
                 select DONHANG.SODH, DONHANG.NGAYDH, DONHANG.MAGIAY, coalesce(DONHANG.SIZE5, 0) - SUM(coalesce(CONGNO.SIZE5, 0)) AS SIZE5, 
@@ -70,7 +70,12 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
                 DONHANG.SIZE5, DONHANG.SIZE6, DONHANG.SIZE7, DONHANG.SIZE8, DONHANG.SIZE9, DONHANG.SIZE0, DONHANG.SIZE1,
                 DONHANG.GIABAN, DONHANG.THANHTIEN, DONHANG.DIENGIAIPHIEU
                 ) AS THONGKE
-                left join (SELECT MAGIAY, TENGIAY, DONGIA FROM DMGIAY) as DMGIAY ON THONGKE.MAGIAY = DMGIAY.MAGIAY
+                LEFT JOIN 
+                    (SELECT MAGIAY, TENGIAY, DONGIA, MASUON FROM DMGIAY) AS DMGIAY ON THONGKE.MAGIAY = DMGIAY.MAGIAY
+                    LEFT JOIN 
+                    DMSUON ON DMGIAY.MASUON = DMSUON.MASUON
+                    LEFT JOIN 
+                    DMGOT ON DMSUON.MAGOT = DMGOT.MAGOT
                 WHERE SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) > 0
                 order by NGAYDH desc, SODH desc
                 """
@@ -113,6 +118,7 @@ def save(data: dict) -> RESPONSE:
         _v = []
         madong += 1
         del item["TENGIAY"]
+        del item["TENGOT"]
         item["MADONG"] = f"MD{year}{str(madong).zfill(12)}"
         item["MAPHIEU"] = MAPHIEU
         item["SOPHIEU"] = sophieu

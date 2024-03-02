@@ -6,7 +6,7 @@ import { TableToPrint, SizeColumnInPrint } from "~common_tag/reports";
 import { getDonGiaQuai, getDonGiaDe } from "~utils/api_get_info_giay";
 import { useTableContext, actions_table } from "~table_context";
 
-const processing_data = (data, TYPE, stylePrint = {}) => {
+const processing_data = (data, TYPE) => {
   let ma_giay_checked = [];
   let info_print = [];
   for (let i = 0; i < data.length; i++) {
@@ -70,7 +70,7 @@ const processing_data = (data, TYPE, stylePrint = {}) => {
   return info_print;
 };
 
-const In = ({ sophieu, data }) => {
+const In = ({ sophieu, data, stylePrint = {} }) => {
   const [stateTable, dispatchTable] = useTableContext();
   const [dataPrint, setDataPrint] = useState([]);
 
