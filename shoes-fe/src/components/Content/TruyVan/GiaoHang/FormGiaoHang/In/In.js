@@ -65,11 +65,6 @@ const In = ({ data, flag }) => {
     return sum;
   }, [data["table"]]);
 
-  // console.log("columns: ", data["table"].length);
-  // useLayoutEffect(() => {
-  //   dispatchTable(actions_table.setModeShowModal(false));
-  //   handelPrint();
-  // }, []);
   return (
     <div className={styles.container}>
       <div ref={componentRef} className={styles.print_page}>
@@ -115,7 +110,6 @@ const In = ({ data, flag }) => {
         In
       </button>
     </div>
-    
   );
 };
 

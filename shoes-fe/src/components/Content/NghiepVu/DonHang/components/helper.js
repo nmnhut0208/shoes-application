@@ -55,7 +55,6 @@ const handleSaveCell = (cell, value, data, setDataTable) => {
       so_luong += row_current[list_size[i]];
     }
     row_current["SOLUONG"] = so_luong;
-    console.log("row_current: ", row_current);
     row_current["THANHTIEN"] =
       row_current["SOLUONG"] * parseInt(row_current["GIABAN"]);
     data[cell.row.index] = row_current;
@@ -135,7 +134,6 @@ export const updateColumnsInformations = (
           onKeyDown={handleDisableKeyDownUp}
           onKeyUp={handleDisableKeyDownUp}
           onFocus={(event) => {
-            console.log("id: ", `size_${cell.row.id}_${dict_size_index[key]}`);
             handleFocus(event);
             setFocusedRow(cell.row.id);
             setFocusedColumn(dict_size_index[key]);
@@ -166,7 +164,6 @@ export const updateColumnsInformations = (
           onKeyUp={handleDisableKeyDownUp}
           onKeyDown={handleDisableKeyDownUp}
           onFocus={(event) => {
-            console.log("id: ", `size_${cell.row.id}_${dict_size_index[key]}`);
             handleFocus(event);
             setFocusedRow(cell.row.id);
             setFocusedColumn(dict_size_index[key]);
@@ -213,7 +210,6 @@ export const updateColumnsInformations = (
             setDataTable([...dataTable]);
           }}
           onFocus={(event) => {
-            console.log("id: ", `size_${cell.row.id}_${dict_size_index[key]}`);
             setFocusedRow(cell.row.id);
             setFocusedColumn(dict_size_index[key]);
           }}
@@ -273,7 +269,6 @@ export const updateColumnsInformations = (
 };
 
 export const updateSODH = (sodh) => {
-  console.log("save so don hang");
   fetch("http://localhost:8000/hethong/donhang/SODH", {
     method: "put",
     headers: { "Content-Type": "application/json" },
@@ -287,14 +282,12 @@ export const saveDonDatHang = (formInfoDonHang, dataDatHang) => {
   for (let i = 0; i < dataDatHang.length; i++) {
     dataDatHang[i] = { ...dataDatHang[i], ...formInfoDonHang };
   }
-  console.log("save don hang", JSON.stringify(dataDatHang));
   fetch("http://localhost:8000/donhang", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(dataDatHang),
   })
     .then((response) => {
-      console.log("response: ", response);
       CustomAlert("Lưu thông tin thành công.");
     })
     .catch((error) => {

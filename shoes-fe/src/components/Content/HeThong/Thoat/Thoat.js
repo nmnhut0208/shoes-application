@@ -12,9 +12,7 @@ function Thoat() {
       userPoolAccess: {},
     })
   );
-  //   console.log("Thoat: re-render", stateUser);
   resetHeader(dispatchTask);
-  //   return <></>;
 }
 
 export default Thoat;

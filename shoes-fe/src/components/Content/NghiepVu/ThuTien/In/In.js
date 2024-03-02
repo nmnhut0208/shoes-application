@@ -7,7 +7,6 @@ import { getNoKhachHangUntilDate } from "~utils/api_get_congno";
 import styles from "./In.module.scss";
 
 const In = ({ data, setShowModal }) => {
-  console.log("data: ", data);
   const [tongNo, setTongNo] = useState("");
   const componentRef = useRef();
   const handelPrint = useReactToPrint({

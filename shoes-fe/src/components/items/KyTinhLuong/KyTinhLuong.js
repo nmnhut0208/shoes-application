@@ -15,8 +15,6 @@ const KyTinhLuong = ({
   have_set_save = false,
   isSaveData = true,
 }) => {
-  console.log("re-render infoItemKyTinhLuong");
-
   const [data, setData] = useState([{ value: "", label: "" }]);
   const [stateItem, dispatchItem] = useItemsContext();
   useEffect(() => {

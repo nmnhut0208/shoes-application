@@ -7,12 +7,9 @@ export const getDiaChiKhachHang = async (MAKH) => {
 };
 
 export const compute_total = (sub_table) => {
-  console.log("==================================================");
-  console.log("sub_table hahaha: ", sub_table);
   let sum = 0;
   for (let i = 0; i < sub_table.length; i++) {
     sum += parseInt(sub_table[i]["SOLUONG"]);
-    console.log("sub_table[i][SOLUONG]: ", sub_table[i]["SOLUONG"]);
   }
   return sum;
 };

@@ -46,13 +46,6 @@ const GiaoHangSub = ({
   const [showForm, setShowForm] = useState(false);
   const [sendData, setSendData] = useState({});
   const [year, setYear] = useState("");
-  //   const [rowSelection, setRowSelection] = useState({});
-
-  console.log("GiaoHang");
-
-  // useEffect(() => {
-  //   if (year === "") updateData(year, setDataTable);
-  // }, [year]);
 
   useEffect(() => {
     updateData(year, setDataTable);
@@ -82,12 +75,14 @@ const GiaoHangSub = ({
         setShowForm={setShowForm}
         setSendData={setSendData}
         setDataTable={setDataTable}
-        // rowSelection={rowSelection}
-        // setRowSelection={setRowSelection}
         maxHeight={"65rem"}
       />
       {showForm && (
-        <ModalForm setShowForm={setShowForm} isSaveData={isSaveData} setSaveData={setIsSaveDataTruyVanGiaoHang}>
+        <ModalForm
+          setShowForm={setShowForm}
+          isSaveData={isSaveData}
+          setSaveData={setIsSaveDataTruyVanGiaoHang}
+        >
           <FormGiaoHang
             permission={permission}
             infoKH={sendData}

@@ -10,7 +10,6 @@ const FormPhanQuyen = () => {
   const [maNV, setMaNV] = useState([]);
   const readOnly =
     stateTable.inforShowTable.action_row === "edit" ? true : false;
-  console.log("phan quyen:", inputForm);
 
   const handleChangeInformationForm = (e) => {
     if (e.target.name === "MAFORM") {
@@ -66,9 +65,7 @@ const FormPhanQuyen = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(inputForm),
       })
-        .then((response) => {
-          console.log("response: ", response);
-        })
+        .then((response) => {})
         .catch((error) => {
           console.log("error: ", error);
         });
@@ -87,7 +84,6 @@ const FormPhanQuyen = () => {
       stateTable.inforShowTable.action_row === "add" &&
       Object.keys(inputForm).every((key) => inputForm[key] !== "")
     ) {
-      // console.log("inputForm phan quyen: ", inputForm);
       fetch("http://localhost:8000/check_exist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -108,9 +104,7 @@ const FormPhanQuyen = () => {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(inputForm),
             })
-              .then((response) => {
-                console.log("response: ", response);
-              })
+              .then((response) => {})
               .catch((error) => {
                 console.log("error: ", error);
               });

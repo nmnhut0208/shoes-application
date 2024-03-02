@@ -19,7 +19,6 @@ const FormKyTinhLuong = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [stateItem, dispatchItem] = useItemsContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
-  console.log("record form: re-render");
 
   const handleChangeInformationForm = (e) => {
     const data = { ...inputForm };
@@ -29,7 +28,6 @@ const FormKyTinhLuong = () => {
 
   const handleChangeInformationDateForm = (e) => {
     const data = { ...inputForm };
-    console.log(e.target.value);
     data[e.target.name] = moment(e.target.value, "YYYY-MM-DD").format(
       "DD-MM-YYYY"
     );
@@ -83,9 +81,7 @@ const FormKyTinhLuong = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(inputForm),
     })
-      .then((response) => {
-        console.log("response: ", response);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.log("error: ", error);
       });

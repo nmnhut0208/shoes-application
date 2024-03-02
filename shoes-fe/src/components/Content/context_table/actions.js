@@ -39,7 +39,6 @@ export const setModeShowTable = (payload) => {
 };
 
 export const setInforRecordTable = (payload) => {
-  console.log("payload: ", payload);
   return {
     type: SET_INFOR_RECORD_TABLE,
     payload,

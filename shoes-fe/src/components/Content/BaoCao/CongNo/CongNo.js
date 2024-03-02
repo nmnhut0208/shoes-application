@@ -47,8 +47,6 @@ const CongNo = () => {
     });
   }, [khachHangToValue]);
 
-  console.log("form: ", form);
-
   // const handlePrint = () => {
   //   setStatusModalIn(true);
   // };

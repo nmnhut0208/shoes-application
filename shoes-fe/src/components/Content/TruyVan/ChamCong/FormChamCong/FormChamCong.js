@@ -33,8 +33,6 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
   const [dataTable, setDataTable] = useState([]);
   const [stateUser, dispatchUser] = useUserContext();
 
-  console.log("ChamCong", infoForm["MAKY"]);
-
   const handleDelete = () => {
     if (
       stateUser.userPoolAccess.some(
@@ -99,7 +97,6 @@ const FormChamCong = ({ infoForm, setData, setShowForm }) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setDataTable(data);
       })
       .catch((err) => {

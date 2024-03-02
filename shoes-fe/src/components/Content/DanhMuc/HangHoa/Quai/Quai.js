@@ -38,7 +38,6 @@ const Quai = () => {
     dispatchTable(actions_table.setComponentForm(FormQuai));
     fetch("http://localhost:8000/quai")
       .then((response) => {
-        console.log("response: ", response);
         return response.json();
       })
       .then((info) => {

@@ -23,7 +23,6 @@ const TableContent = ({ info_other_column }) => {
     else return { action: 30, stt: 15 };
   });
 
-  console.log("actionSttInfo: ", actionSttInfo);
   const [stateTable, dispatchTable] = useTableContext();
   const [stateTask, dispatchTask] = useTaskContext();
   const [stateUser, dispatchUser] = useUserContext();
@@ -35,8 +34,6 @@ const TableContent = ({ info_other_column }) => {
     return stateUser.userPoolAccess.filter((obj) => obj.MAFORM === maForm)[0];
   }, []);
 
-  console.log("permission: ", permission);
-
   const showActionColumn = useMemo(() => {
     if (permission.THEM + permission.SUA + permission.XOA > 0) {
       return true;
@@ -46,8 +43,6 @@ const TableContent = ({ info_other_column }) => {
       else return false;
     }
   }, []);
-
-  console.log("resize: ", inforShowTable.infoColumnTable);
 
   const emptyData = useMemo(() => {
     const emptyData = {};
@@ -179,10 +174,7 @@ const TableContent = ({ info_other_column }) => {
       case "Phân quyền":
         return;
     }
-    console.log(
-      "url + encodeURIComponent(row[Key]): ",
-      url + encodeURIComponent(row[Key])
-    );
+
     fetch(url + "?ID=" + encodeURIComponent(row[Key]), {
       method: "DELETE",
       headers: {

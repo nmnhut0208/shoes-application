@@ -66,8 +66,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
     SOPHIEU: "",
   });
 
-  console.log("ChamCong", infoForm["MAKY"]);
-
   const handleSave = () => {
     if (permission.THEM === 1) {
       if (dataTable.length === 0) {
@@ -101,17 +99,14 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
               (item, index) => !keys.includes(index.toString())
             );
             setDataTable(new_dataTable);
-            // console.log("keys: ", keys, dataTable.length);
             if (parseInt(keys[0]) === dataTable.length - 1) {
               // const new_key = parseInt(keys[0]) - 1;
               keys = [String(parseInt(keys[0]) - 1)];
-              // console.log("new_key: ", new_key);
               setRowSelection({ [keys[0]]: true });
             }
             if (new_dataTable.length === 0) {
               setDataTableSub([]);
             } else {
-              // console.log("keys: ", keys, dataTableSub);
               const data = [];
               for (var i = 0; i < keys.length; i++) {
                 data.push(new_dataTable[keys[i]]["SOPHIEU"]);
@@ -125,7 +120,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
                 MAKY: infoForm["MAKY"],
                 PHIEUPC: data,
               };
-              // console.log("send_data: ", send_data);
               fetch("http://localhost:8000/chamcong/" + infoForm["MANVIEN"], {
                 method: "POST",
                 headers: {
@@ -138,13 +132,11 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
                 })
                 .then((info) => {
                   setDataTableSub(info);
-                  // console.log("abc: ", info);
                 })
                 .catch((err) => {
                   console.log(":error: ", err);
                 });
             }
-            // console.log("data: ", dataTable);
             CustomAlert("Lưu thành công");
           }
         })
@@ -169,14 +161,11 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       setDataTableSub([]);
       return;
     }
-    // console.log("chamcong: ", keys, dataTable[keys[0]]);
     const data = [];
     for (var i = 0; i < keys.length; i++) {
       if (rowSelection[keys[i]] === true) {
         data.push(dataTable[keys[i]]["SOPHIEU"]);
         setInfoForm({ ...infoForm, SOPHIEU: dataTable[keys[i]]["SOPHIEU"] });
-        //     // console.log("data: ", dataTable[keys[i]]);
-        //     // setDataTableSub([dataTable[keys[i]]]);
       }
     }
     const send_data = {
@@ -200,8 +189,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       .catch((err) => {
         console.log(":error: ", err);
       });
-    // console.log("data: ", data);
-    // setDataTableSub(data);
   }, [rowSelection]);
 
   useEffect(() => {
@@ -242,8 +229,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
                   ...infoForm,
                   SOPHIEU: info[keys[i]]["SOPHIEU"],
                 });
-                //     // console.log("data: ", dataTable[keys[i]]);
-                //     // setDataTableSub([dataTable[keys[i]]]);
               }
             }
             const send_data = {

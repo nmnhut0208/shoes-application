@@ -6,7 +6,6 @@ import { border_text_table_config } from "~config/ui";
 
 let columns_kh = processingInfoColumnTable(COL_KHACHHANG);
 const TableMaKH = ({ data, rowSelection, setRowSelection }) => {
-  console.log("re-render sub table when hover", data);
   return (
     <div style={{ height: "auto" }}>
       <MaterialReactTable

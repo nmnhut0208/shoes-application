@@ -62,9 +62,6 @@ const Selection = ({
     setShowSelection(false);
   };
 
-  console.log("tenMau: ", tenMau);
-  console.log("maMau: ", maMA);
-
   const handleFocusInput = () => {
     if (readOnly) return;
     setShowSelection(true);
@@ -74,8 +71,6 @@ const Selection = ({
     setShowSelection(false);
     setShowInput(true);
   };
-  console.log("data: ", data);
-  console.log("showInput: ", showInput);
   return (
     <div className={className}>
       {showInput && (

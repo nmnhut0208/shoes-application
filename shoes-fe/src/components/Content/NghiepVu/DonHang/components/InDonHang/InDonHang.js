@@ -113,8 +113,6 @@ const InDonHang = ({
     }
   }, [dataPrint, listImage, doneGetDiaChi]);
 
-  console.log("dataPrint: ", dataPrint);
-
   return (
     <div
       ref={componentRef}

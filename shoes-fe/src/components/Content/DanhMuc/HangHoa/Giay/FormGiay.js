@@ -27,8 +27,6 @@ const FormGiay = () => {
     return stateTable.inforShowTable.action_row;
   });
 
-  console.log("dataForm: ", dataForm);
-
   useEffect(() => {
     if (stateTable.inforShowTable.record["MAGIAY"] !== "") {
       fetch(
@@ -64,9 +62,7 @@ const FormGiay = () => {
           setDataForm(info);
           setIsSaveData(true);
         })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
+        .catch((error) => {});
     } else {
       // form empty to add giay
       setDataForm({
@@ -120,18 +116,15 @@ const FormGiay = () => {
         ])
       );
     }
-    console.log("dataForm: ", dataForm);
     fetch("http://localhost:8000/giay", {
       method: method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dataForm),
     })
       .then((response) => {
-        console.log("response: ", response);
         CustomAlert("Lưu thông tin thành công!");
       })
       .catch((error) => {
-        console.log("error: ", error);
         CustomAlert("Xảy ra lỗi, chưa lưu được thông tin!");
       });
 
@@ -142,12 +135,10 @@ const FormGiay = () => {
   const handleNhapTiep = () => {
     var form_emty = {};
     for (let key in dataForm) {
-      console.log(key, form_emty[key]);
       form_emty[key] = "";
     }
     setDataForm(form_emty);
   };
-  console.log("mode in giay: ", mode);
 
   const handleNhanBan = () => {
     dispatchTable(actions_table.setActionForm("add"));

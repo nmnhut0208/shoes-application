@@ -64,7 +64,6 @@ export const getListCa = (dispatchItem) => {
 };
 
 export const getListQuai = (dispatchItem) => {
-  console.log("get quai API ne");
   fetch("http://localhost:8000/quai")
     .then((response) => {
       return response.json();
@@ -86,7 +85,6 @@ export const getListQuai = (dispatchItem) => {
 };
 
 export const getListMau = (dispatchItem) => {
-  console.log("get mau API ne");
   fetch("http://localhost:8000/mau")
     .then((response) => {
       return response.json();

@@ -7,8 +7,6 @@ import { renderDataEmpty } from "~utils/processing_data_table";
 import { INFO_COLS_DONHANG } from "../ConstantVariable";
 
 const TableDonHang = ({ columns, data, setDataTable, readOnly }) => {
-  console.log("render TableDonHang");
-
   const handleDeleteRow = (row) => {
     let index = row.index;
     if (index == data.length - 1) {

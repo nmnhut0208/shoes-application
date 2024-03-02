@@ -11,7 +11,6 @@ const DanhMuc = () => {
   const [stateUser, dispatchUser] = useUserContext();
   const inforCurrentTask = stateTask.inforCurrentTask;
   const userAccess = stateUser.userPoolAccess;
-  console.log("inforCurrentTask.infoDetail: ", inforCurrentTask.infoDetail);
   switch (inforCurrentTask.infoDetail) {
     case "Giày":
       if (userAccess.some((obj) => obj.MAFORM === "F0024" && obj.XEM === 1))

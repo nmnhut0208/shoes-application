@@ -95,7 +95,6 @@ const In = ({ sophieu, data, stylePrint = {} }) => {
     let infoDetailsPrint = [];
     for (let i = 0; i < list_tho_de.length; i++) {
       let sub_data = data.filter((element) => element.THODE === list_tho_de[i]);
-      console.log("sub_data: ", sub_data);
       let _info = {
         NAME: sub_data[0]["TENTHODE"],
         TYPE: "đế",

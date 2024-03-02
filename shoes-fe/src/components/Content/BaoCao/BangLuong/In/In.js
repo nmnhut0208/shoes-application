@@ -31,7 +31,6 @@ const compute_footer_SOLUONG = (data) => {
     info["SOLUONG"] = data[i].reduce((init, obj) => init + obj["SOLUONG"], 0);
     footer_info.push(info);
   }
-  console.log("footer_info: ", footer_info);
   return footer_info;
 };
 
@@ -45,8 +44,6 @@ const In = ({ data, setShowModal, stylePrint }) => {
     removeAfterPrint: true,
   });
 
-  console.log("data: ", data);
-
   useLayoutEffect(() => {
     fetch(
       "http://localhost:8000/chamcong/salary_compute?" +
@@ -59,7 +56,6 @@ const In = ({ data, setShowModal, stylePrint }) => {
           const groupByEmployer = groupbyFunction(dataTable, "MANVIEN");
           const groupByDONGIA = groupbyFunction(dataTable, "DONGIA");
           const footer = compute_footer_SOLUONG(groupByDONGIA);
-          console.log("footer: ", footer);
 
           let all_pages = [];
           for (let key in groupByEmployer) {
@@ -79,9 +75,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
           CustomAlert("Chưa có thông tin để xem hoặc in.");
         }
       })
-      .catch((error) => {
-        console.log("error: ", error);
-      });
+      .catch((error) => {});
   }, [data]);
 
   useLayoutEffect(() => {

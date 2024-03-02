@@ -58,7 +58,6 @@ const Selection = ({
     }
     setMaMau(value);
     let choice = data.filter((e) => e.MAKH === value);
-    console.log("choice: ", choice);
     setValue(value);
     setLabel(choice[0]["TENKH"]);
     setTenMau(choice[0]["TENKH"]);

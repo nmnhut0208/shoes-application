@@ -28,7 +28,6 @@ const InTongHop = ({ sophieu, data, stylePrint = {} }) => {
         };
         list_promises.push(getImageOfDanhMuc("giay", ma_giay, "MAGIAY"));
         info["TABLE"] = data.filter((_data) => _data["MAGIAY"] === ma_giay);
-        console.log("info[tho]: ", info["TABLE"]);
 
         info["HEADER_TABLE"] = JSON.parse(JSON.stringify(INFO_COLS_THO));
 

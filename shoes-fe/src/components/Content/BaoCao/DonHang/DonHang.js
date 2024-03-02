@@ -42,14 +42,11 @@ const DonHang = () => {
       KhachHangTo: khachHangToValue,
     });
   }, [khachHangToValue]);
-  console.log(form);
 
   const handleChangeInformationForm = (dict_data) => {
     const data = { ...form, ...dict_data };
     setForm(data);
   };
-
-  console.log("form: ", form);
 
   const handlePrint = () => {
     setStylePrint({});

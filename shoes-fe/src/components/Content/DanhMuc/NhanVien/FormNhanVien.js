@@ -17,7 +17,6 @@ const list_input_required = {
 const FormNhanVien = () => {
   const [stateTable, dispatchTable] = useTableContext();
   const [inputForm, setInputForm] = useState(stateTable.inforShowTable.record);
-  console.log("inputForm:", inputForm);
   const [stateItem, dispatchItem] = useItemsContext();
 
   const handleChangeInformationForm = (e) => {
@@ -84,9 +83,7 @@ const FormNhanVien = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(inputForm),
     })
-      .then((response) => {
-        console.log("response: ", response);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.log("error: ", error);
       });

@@ -212,8 +212,6 @@ const FormGiaoHang = ({
   setIsSaveDataNghiepVuGiaoHang,
   permission,
 }) => {
-  console.log("=====infoColumns: ", infoColumns);
-
   const [userState, userDispatch] = useUserContext();
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
@@ -279,7 +277,6 @@ const FormGiaoHang = ({
           }
         }
       }
-      // console.log("size1: ", data);
       const send_data = {
         data: data,
         makh: infoKH.MAKH,
@@ -299,7 +296,6 @@ const FormGiaoHang = ({
           return response.json();
         })
         .then((data) => {
-          console.log("data: ", data);
           if (data["status"] == "success") {
             fetch("http://localhost:8000/hethong/giaohang/SOPHIEU", {
               method: "PUT",
@@ -312,7 +308,6 @@ const FormGiaoHang = ({
                 return response.json();
               })
               .then((data) => {
-                console.log("data: ", data);
                 if (data["status"] == "success") {
                   setIsSaveDataNghiepVuGiaoHang(true);
                   CustomAlert("Lưu thành công");
@@ -364,8 +359,6 @@ const FormGiaoHang = ({
         return response.json();
       })
       .then((info) => {
-        console.log("info don hang: ", info);
-        // setDataTable(info);
         setInfoForm({
           ...infoForm,
           SOPHIEU: info["SOPHIEU"],
@@ -388,61 +381,12 @@ const FormGiaoHang = ({
         return response.json();
       })
       .then((info) => {
-        console.log("info khach hang: ", info);
         setDataTableKhachHang(info);
       })
       .catch((err) => {
         console.log(":error: ", err);
       });
   }, []);
-
-  // useEffect(() => {
-  //   console.log("info kh: ", infoKH["MAKH"]);
-  //   if (infoKH["MAKH"] == undefined || infoKH["MAKH"] == "") {
-  //     return;
-  //   }
-  //   const keys = Object.keys(rowSelection);
-  //   // console.log("keys row: ", dataTable[keys[0]]);
-  //   let data = [];
-  //   for (var i = 0; i < keys.length; i++) {
-  //     if (rowSelection[keys[i]] === true) {
-  //       data.push(dataTable[keys[i]]["SODH"]);
-  //       // console.log("data: ", dataTable[keys[i]]);
-  //       // setDataTableSub([dataTable[keys[i]]]);
-  //       // const send_data = {
-  //       //   sodh: dataTable[keys[i]]["SODH"],
-  //       //   makh: test_makh,
-  //       // };
-  //     }
-  //   }
-  //   const send_data = {
-  //     sodh: data,
-  //     makh: infoKH["MAKH"],
-  //   };
-  //   if (data.length === 0) {
-  //     setDataTableSub([]);
-  //     return;
-  //   }
-  //   fetch("http://localhost:8000/giaohang/" + infoKH["MAKH"], {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(send_data),
-  //   })
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((info) => {
-  //       console.log("info: ", info);
-  //       setDataTableSub(info);
-  //     })
-  //     .catch((err) => {
-  //       console.log(":error: ", err);
-  //     });
-  //   // console.log("sub: ", data);
-  //   // setDataTableSub([...data]);
-  // }, [rowSelection]);
 
   const infoColumnsSub = useMemo(() => {
     const infoColumnsSubInit = processingInfoColumnTableHaveFooter(
@@ -467,15 +411,11 @@ const FormGiaoHang = ({
     return infoColumnsSubInit;
   }, [curSelected, dataTableSub]);
 
-  // console.log("infoColumnsSub: ", infoColumnsSub);
-  console.log("selected: ", rowSelectionSub);
-
   useEffect(() => {
     if (infoKH["MAKH"] == undefined || infoKH["MAKH"] == "") {
       // setDataTable([]);
       return;
     }
-    console.log("Call API");
     fetch("http://localhost:8000/giaohang", {
       method: "POST",
       headers: {
@@ -511,7 +451,6 @@ const FormGiaoHang = ({
               return response.json();
             })
             .then((info) => {
-              console.log("DataTableSub: ", info);
               setDataTableSub(info);
               // get keys of info to setMapSelected expample {0: key1, 1: key2, ...}
               const keys = Object.keys(info);
@@ -574,22 +513,11 @@ const FormGiaoHang = ({
           DONGIA: item.GIABAN,
           THANHTIEN: item.THANHTIEN,
           SODH: item.SODH,
-          TENGOT: item.TENGOT
+          TENGOT: item.TENGOT,
         };
         return obj;
       });
-      // const table = dataTableSub.map((item) => {
-      //   const obj = {
-      //     MAGIAY: item.MAGIAY,
-      //     TENGIAY: item.TENGIAY,
-      //     SOLUONG: item.SOLUONG,
-      //     DONGIA: item.GIABAN,
-      //     THANHTIEN: item.THANHTIEN,
-      //     SODH: item.SODH,
-      //   };
-      //   return obj;
-      // });
-      // console.log("table: ", dataTableSub);
+
       const table_group = table.reduce((acc, curr) => {
         const index = acc.findIndex((item) => item.MAGIAY === curr.MAGIAY);
         if (index === -1) {
@@ -658,7 +586,7 @@ const FormGiaoHang = ({
           DONGIA: item.GIABAN,
           THANHTIEN: item.THANHTIEN,
           SODH: item.SODH,
-          TENGOT: item.TENGOT
+          TENGOT: item.TENGOT,
         };
         return obj;
       });
@@ -683,7 +611,6 @@ const FormGiaoHang = ({
           return response.json();
         })
         .then((data) => {
-          // console.log("tong no : ", data[0]["TONGNO"]);
           const table_group = table.reduce((acc, curr) => {
             const index = acc.findIndex((item) => item.MAGIAY === curr.MAGIAY);
             if (index === -1) {

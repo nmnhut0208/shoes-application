@@ -154,7 +154,6 @@ const FormNghiepVuPhanCong = ({
                 result = result.filter(
                   (obj) => !list_DH_chua_PC.includes(obj.SODH)
                 );
-                console.log(result);
                 setListDonHangDonePhanCong(result.map((obj, i) => obj.SODH));
                 setDataDonHangDaPhanCong(result);
               })
@@ -176,7 +175,6 @@ const FormNghiepVuPhanCong = ({
           return response.json();
         })
         .then((info) => {
-          console.log("setDataChiTietPhanCong: ", info);
           setDataChiTietPhanCong(info);
         })
         .catch((err) => {
@@ -249,12 +247,11 @@ const FormNghiepVuPhanCong = ({
       body: JSON.stringify(infoPhieu),
     })
       .then((response) => {
-        console.log("response: ", response);
         CustomAlert("Lưu thành công!");
       })
       .catch((error) => {
         console.log("error: ", error);
-        // CustomAlert("Lỗi! Chưa lưu được!");
+        CustomAlert("Lỗi! Chưa lưu được!");
       });
 
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);

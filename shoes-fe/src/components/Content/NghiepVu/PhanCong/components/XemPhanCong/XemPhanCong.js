@@ -42,7 +42,6 @@ const XemPhanCong = ({ SOPHIEU, dataPhanCong }) => {
   const [dataThoQuai, setDataThoQuai] = useState([]);
 
   useEffect(() => {
-    console.log("run effect");
     fetch(
       "http://localhost:8000/phancong/get_thongtin_thode?SOPC=" +
         encodeURIComponent(SOPHIEU)
@@ -76,25 +75,20 @@ const XemPhanCong = ({ SOPHIEU, dataPhanCong }) => {
   };
 
   const data_donhang = useMemo(() => {
-    console.log("dun find data donahang");
-    console.log(SOPHIEU, dataPhanCong);
     let list_key_checked = [];
     let donhang = [];
     for (let i = 0; i < dataPhanCong.length; i++) {
       let key = dataPhanCong[i]["MAGIAY"] + dataPhanCong[i]["SODH"];
-      console.log("key: ", key);
       if (!list_key_checked.includes(key)) {
         let query = dataPhanCong.filter(
           (data) =>
             data["MAGIAY"] === dataPhanCong[i]["MAGIAY"] &&
             data["SODH"] === dataPhanCong[i]["SODH"]
         );
-        console.log("query: ", query);
         let _donhang = { ...query[0] };
         for (let _k in _donhang) {
           if (_k.includes("SIZE")) {
             _donhang[_k] = compute_sum(query, _k);
-            console.log(_k, _donhang[_k]);
           }
         }
         donhang.push(_donhang);
@@ -103,8 +97,6 @@ const XemPhanCong = ({ SOPHIEU, dataPhanCong }) => {
     }
     return donhang;
   }, []);
-
-  console.log("data_donhang: ", data_donhang);
 
   return (
     <div className={styles.container}>

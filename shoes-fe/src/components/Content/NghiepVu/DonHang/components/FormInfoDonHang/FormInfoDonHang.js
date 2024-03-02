@@ -12,7 +12,6 @@ const FormInfoDonHang = ({
   action,
   resetFocusStatus,
 }) => {
-  console.log("re-render FormInfoDonHang");
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;

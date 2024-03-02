@@ -82,7 +82,6 @@ const FormDonHang = ({
           return response.json();
         })
         .then((info) => {
-          console.log("GiayKH", info);
           setListGiayUnique(info);
         })
         .catch((err) => {
@@ -98,7 +97,6 @@ const FormDonHang = ({
           return response.json();
         })
         .then((info) => {
-          console.log(info);
           setListGiayKH(info);
         })
         .catch((err) => {
@@ -119,7 +117,6 @@ const FormDonHang = ({
           return response.json();
         })
         .then((info) => {
-          console.log("info donhang: ", info);
           setDataTable([...info, renderDataEmpty(INFO_COLS_DONHANG, 1)[0]]);
           setFormInfoDonHang({
             SODH: info[0]["SODH"],
@@ -141,8 +138,6 @@ const FormDonHang = ({
     }
     setIsSaveData(true);
   }, [dataView]);
-
-  console.log("issavedata: ", isSaveData);
 
   const resetFocusStatus = () => {
     setFocusedColumn(-1);
@@ -204,7 +199,6 @@ const FormDonHang = ({
     } else {
       saveDonDatHang(formInfoDonHang, dataDatHang);
       if (!dataView) {
-        console.log("updateSODH(lastestDH);: ");
         updateSODH(lastestDH);
       }
       setIsSaveData(true);
@@ -287,16 +281,12 @@ const FormDonHang = ({
       if (dataTable[numberLine]["MAGIAY"] !== "") {
         numberLine = dataTable.length;
       }
-      console.log("================================================");
       let xNew = parseInt(focusedRow);
       let yNew = parseInt(focusedColumn);
-      console.log("xOld: ", xNew);
-      console.log("yOld: ", yNew);
 
       switch (e.key) {
         case "ArrowLeft":
           // Xử lý sự kiện mũi tên qua trái
-          console.log("ArrowLeft");
           yNew = yNew - 1;
           if (yNew < 0) {
             yNew = numberSize - 1;
@@ -309,7 +299,6 @@ const FormDonHang = ({
           break;
 
         case "ArrowRight":
-          console.log("ArrowRight");
           yNew = yNew + 1;
           if (yNew >= numberSize) {
             xNew = xNew + 1;
@@ -321,7 +310,6 @@ const FormDonHang = ({
           }
           break;
         case "ArrowUp":
-          console.log("ArrowUp");
           xNew = xNew - 1;
           if (xNew < 0) {
             xNew = numberLine - 1;
@@ -333,7 +321,6 @@ const FormDonHang = ({
           }
           break;
         case "ArrowDown":
-          console.log("ArrowDown");
           xNew = xNew + 1;
           if (xNew >= numberLine) {
             xNew = 0;
@@ -346,8 +333,7 @@ const FormDonHang = ({
         default:
           return;
       }
-      console.log("xNew: ", xNew);
-      console.log("yNew: ", yNew);
+
       setFocusedRow(xNew);
       setFocusedColumn(yNew);
       setChangeFocus(!changeFocus);
@@ -363,7 +349,6 @@ const FormDonHang = ({
           }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
         }
       } else {
-        console.log("Không tìm thấy phần tử có ID là 'abc'");
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -373,7 +358,6 @@ const FormDonHang = ({
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [focusedRow, focusedColumn, changeFocus, dataTable]);
-  console.log("infoFormWillShow: ", infoFormWillShow);
 
   return (
     <div className={styles.page}>

@@ -23,18 +23,10 @@ const PhanCong = () => {
 
   const [dataDeleteButWaitSave, setDataDeleteButWaitSave] = useState([]);
 
-  console.log("===================================");
-  console.log(
-    "listMaDongPhanCongAddButWaitSave luc ben PhanCong ne: ",
-    listMaDongPhanCongAddButWaitSave
-  );
-
   const permission = useMemo(() => {
-    console.log("stateUser.userPoolAccess ", stateUser.userPoolAccess);
     const phanquyen = stateUser.userPoolAccess.filter(
       (obj) => obj.MAFORM === MAFORM_NGHIEPVU_PHANCONG
     )[0];
-    console.log("phanquyen: ", phanquyen);
     return phanquyen;
   }, []);
   if (

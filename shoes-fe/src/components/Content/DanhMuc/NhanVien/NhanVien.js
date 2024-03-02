@@ -41,7 +41,6 @@ const NhanVien = () => {
         console.log(err);
       });
     return () => {
-      console.log("run cleanupContextTable Nhan Vien");
       cleanupContextTable(dispatchTable);
     };
   }, []);

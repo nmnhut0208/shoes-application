@@ -7,7 +7,6 @@ import { convertDate } from "~utils/processing_date";
 import { ItemKyTinhLuong } from "~items";
 
 const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
-  console.log("re-render InfoPhieu: ", infoPhieu);
   const [kyTinhLuong, setKyTinhLuong] = useState(() => {
     return infoPhieu["MAKY"];
   });

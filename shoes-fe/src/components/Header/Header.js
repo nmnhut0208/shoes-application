@@ -36,7 +36,6 @@ const Header = () => {
     getListKyTinhLuong(dispatchItem);
     getListNhanVien(dispatchItem);
   }, []);
-  console.log("stateItem: ", stateItem);
   return (
     <div>
       <HeThong />

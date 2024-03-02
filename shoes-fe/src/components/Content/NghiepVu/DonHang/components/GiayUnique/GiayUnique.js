@@ -28,7 +28,6 @@ const GiayUnique = ({
   });
   const [showSelection, setShowSelection] = useState(false);
   const [showInput, setShowInput] = useState(true);
-  console.log("listGiayUnique trong giay unique: ", listGiayUnique);
   useEffect(() => {
     setMaMau(init);
   }, [init]);
