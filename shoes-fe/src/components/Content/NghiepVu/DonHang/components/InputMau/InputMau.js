@@ -43,6 +43,26 @@ const InputMau = ({
       handleChangeDataTable(value, choice[0]["label"]);
     }
     setMaMau(value);
+    var keysInfo = id.split("_");
+    var x = parseInt(keysInfo[1]);
+    var y = parseInt(keysInfo[2]);
+
+    var yNewToTab = y + 1;
+    let yNewRef = yNewToTab >= 6 ? yNewToTab - 6 : yNewToTab;
+    let key = yNewToTab >= 6 ? "size" : "Id";
+    var next_element = document.getElementById(`${key}_${x}_${yNewRef}`);
+    if (yNewToTab < 6) {
+      next_element.click();
+      setTimeout(function () {
+        next_element.click();
+      }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
+    }
+    if (yNewToTab >= 6 && yNewToTab <= 13) {
+      next_element.focus();
+      setTimeout(function () {
+        next_element.select();
+      }, 0);
+    }
     setShowInput(true);
     setShowSelection(false);
   };
