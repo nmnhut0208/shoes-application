@@ -11,7 +11,7 @@ export const getListDe = (dispatchItem) => {
       });
       dispatchItem(
         actions_items_context.setInfoDe([
-          { label: "", value: "" },
+          { label: "Không chọn đế", value: "              " },
           ...listOptional,
         ])
       );
@@ -53,7 +53,7 @@ export const getListCa = (dispatchItem) => {
       });
       dispatchItem(
         actions_items_context.setInfoCa([
-          { label: "", value: "" },
+          { label: "Không chọn cá", value: "            " },
           ...listOptional,
         ])
       );
@@ -64,7 +64,6 @@ export const getListCa = (dispatchItem) => {
 };
 
 export const getListQuai = (dispatchItem) => {
-  console.log("get quai API ne");
   fetch("http://localhost:8000/quai")
     .then((response) => {
       return response.json();
@@ -86,7 +85,6 @@ export const getListQuai = (dispatchItem) => {
 };
 
 export const getListMau = (dispatchItem) => {
-  console.log("get mau API ne");
   fetch("http://localhost:8000/mau")
     .then((response) => {
       return response.json();
@@ -101,7 +99,7 @@ export const getListMau = (dispatchItem) => {
 
       dispatchItem(
         actions_items_context.setInfoMau([
-          { label: "Không chọn màu", value: " " },
+          { label: "Không chọn màu", value: "            " },
           ...listOptional,
         ])
       );
@@ -198,6 +196,27 @@ export const getListThoQuai = (dispatchItem) => {
       });
       dispatchItem(
         actions_items_context.setInfoThoQuai([
+          { label: "", value: "" },
+          ...listOptional,
+        ])
+      );
+    })
+    .catch((err) => {
+      console.log(":error: ", err);
+    });
+};
+
+export const getListNhanVien = (dispatchItem) => {
+  fetch("http://localhost:8000/chamcong/nhanvien")
+    .then((response) => {
+      return response.json();
+    })
+    .then((info) => {
+      let listOptional = info.map(function (ob) {
+        return { label: ob.TENNVIEN, value: ob.MANVIEN };
+      });
+      dispatchItem(
+        actions_items_context.setInfoNhanVien([
           { label: "", value: "" },
           ...listOptional,
         ])

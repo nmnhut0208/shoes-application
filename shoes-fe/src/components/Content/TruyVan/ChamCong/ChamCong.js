@@ -24,19 +24,13 @@ const ChamCong = () => {
   // Việc xem, xóa, sửa đơn hàng sẽ từ bên truy vấn => đơn hàng
   // Nghiệp Vụ Đơn Hàng chỉ để tạo mới đơn hàng thôi
   return (
-    <Modal
-      status={showModal}
-      title="Chấm Công - F0042"
-      setShowModal={setShowModal}
-      isSaveData={isSaveData}
-      isResetPageEmpty={true}
-    >
+    <div style={{ width: "88%", marginLeft: "5%" }}>
       <ChamCongSub
         // setShowModalNghiepVuGiaoHang={setShowModal}
         setIsSaveDataNghiepVuGiaoHang={setIsSaveData}
         permission={permission}
       />
-    </Modal>
+    </div>
   );
 };
 export default ChamCong;

@@ -10,8 +10,6 @@ function FormDoiMatKhau() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
-  // console.log("FormLogin: re-render", stateUser);
-
   function handleOk() {
     setLoading(true);
     form.validateFields().then((values) => {
@@ -37,7 +35,6 @@ function FormDoiMatKhau() {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log("data", data);
             if (data.status === "success") {
               dispatchUser(actions.setUserPassword(values["new-password"]));
               setLoading(false);

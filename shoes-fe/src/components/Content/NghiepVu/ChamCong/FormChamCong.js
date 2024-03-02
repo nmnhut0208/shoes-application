@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import SubTable from "./SubTable";
 import styles from "./FormChamCong.module.scss";
-import { Popover } from "antd";
 import { convertDate } from "~utils/processing_date";
 import moment from "moment";
 import { useUserContext } from "~user";
-import TableMaNVIEN from "./TableMaNVIEN";
-import TableMaKY from "./TableMaKY";
 import { convertDateForReport } from "~utils/processing_date";
 import { processingInfoColumnTable } from "~utils/processing_data_table";
 import { CustomAlert } from "~utils/alert_custom";
+import { ItemNhanVien, ItemKyTinhLuong } from "~items";
 
 const list_key = [
   { header: "Số phiếu", key: "SOPHIEU" },
@@ -55,12 +53,8 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
   const [rowSelection, setRowSelection] = useState({ 0: true });
-  const [dataTableKY, setDataTableKY] = useState([]);
-  const [rowSelectionMaKY, setRowSelectionMaKY] = useState({});
-  // const [infoKY, setInfoKY] = useState({});
-  const [dataTableNhanVien, setDataTableNhanVien] = useState([]);
-  const [rowSelectionMaNVIEN, setRowSelectionMaNVIEN] = useState({});
-  // const [infoNVIEN, setInfoNVIEN] = useState({});
+  const [maKy, setMaKy] = useState("");
+  const [tenKy, setTenKy] = useState("");
   const maForm = "F0043";
   const [infoForm, setInfoForm] = useState({
     MAKY: "",
@@ -71,28 +65,9 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
     DIENGIAI: "",
     SOPHIEU: "",
   });
-  // const [infoKH, setInfoKH] = useState({});
-  // const infoKH = {
-  //   MAKY: "02",
-  //   MANVIEN: "LINH",
-  // };
-
-  // useEffect(() => {
-  //   setInfoKH({
-  //     MAKY: "02",
-  //     MANVIEN: "linh",
-  //   });
-  // }, []);
-
-  console.log("ChamCong", infoForm["MAKY"]);
 
   const handleSave = () => {
-    if (
-      // userState.userPoolAccess.some(
-      //   (obj) => obj.MAFORM === maForm && obj.THEM === 1
-      // )
-      permission.THEM === 1
-    ) {
+    if (permission.THEM === 1) {
       if (dataTable.length === 0) {
         CustomAlert("Không có dữ liệu để lưu");
         return;
@@ -124,17 +99,14 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
               (item, index) => !keys.includes(index.toString())
             );
             setDataTable(new_dataTable);
-            // console.log("keys: ", keys, dataTable.length);
             if (parseInt(keys[0]) === dataTable.length - 1) {
               // const new_key = parseInt(keys[0]) - 1;
               keys = [String(parseInt(keys[0]) - 1)];
-              // console.log("new_key: ", new_key);
               setRowSelection({ [keys[0]]: true });
             }
             if (new_dataTable.length === 0) {
               setDataTableSub([]);
             } else {
-              // console.log("keys: ", keys, dataTableSub);
               const data = [];
               for (var i = 0; i < keys.length; i++) {
                 data.push(new_dataTable[keys[i]]["SOPHIEU"]);
@@ -148,7 +120,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
                 MAKY: infoForm["MAKY"],
                 PHIEUPC: data,
               };
-              // console.log("send_data: ", send_data);
               fetch("http://localhost:8000/chamcong/" + infoForm["MANVIEN"], {
                 method: "POST",
                 headers: {
@@ -161,13 +132,11 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
                 })
                 .then((info) => {
                   setDataTableSub(info);
-                  // console.log("abc: ", info);
                 })
                 .catch((err) => {
                   console.log(":error: ", err);
                 });
             }
-            // console.log("data: ", dataTable);
             CustomAlert("Lưu thành công");
           }
         })
@@ -180,72 +149,11 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
   };
 
   useEffect(() => {
-    let keys = Object.keys(rowSelectionMaKY);
-    if (keys.length > 0) {
-      // setFormInfoDonHang({
-      //   ...formInfoDonHang,
-      //   MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-      //   TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-      // });
-      const info = {
-        MAKY: dataTableKY[keys[0]]["MAKY"],
-        TENKY: dataTableKY[keys[0]]["TENKY"],
-      };
-      // setInfoKY(info);
-      setInfoForm({ ...infoForm, ...info });
-      setDataTable([]);
-      setDataTableSub([]);
-      setRowSelection({ 0: true });
-    }
-  }, [rowSelectionMaKY]);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/chamcong/ky")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        console.log("info khach hang: ", info);
-        setDataTableKY(info);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
-  }, []);
-
-  useEffect(() => {
-    let keys = Object.keys(rowSelectionMaNVIEN);
-    if (keys.length > 0) {
-      // setFormInfoDonHang({
-      //   ...formInfoDonHang,
-      //   MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-      //   TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-      // });
-      const info = {
-        MANVIEN: dataTableNhanVien[keys[0]]["MANVIEN"],
-        TENNVIEN: dataTableNhanVien[keys[0]]["TENNVIEN"],
-      };
-      // setInfoNVIEN(info);
-      setInfoForm({ ...infoForm, ...info });
-      setDataTable([]);
-      setDataTableSub([]);
-      setRowSelection({ 0: true });
-    }
-  }, [rowSelectionMaNVIEN]);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/chamcong/nhanvien")
-      .then((response) => {
-        return response.json();
-      })
-      .then((info) => {
-        console.log("info khach hang: ", info);
-        setDataTableNhanVien(info);
-      })
-      .catch((err) => {
-        console.log(":error: ", err);
-      });
-  }, []);
+    setInfoForm({ ...infoForm, MAKY: maKy, TENKY: tenKy });
+    setDataTable([]);
+    setDataTableSub([]);
+    setRowSelection({ 0: true });
+  }, [maKy]);
 
   useEffect(() => {
     const keys = Object.keys(rowSelection);
@@ -253,14 +161,11 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       setDataTableSub([]);
       return;
     }
-    // console.log("chamcong: ", keys, dataTable[keys[0]]);
     const data = [];
     for (var i = 0; i < keys.length; i++) {
       if (rowSelection[keys[i]] === true) {
         data.push(dataTable[keys[i]]["SOPHIEU"]);
         setInfoForm({ ...infoForm, SOPHIEU: dataTable[keys[i]]["SOPHIEU"] });
-        //     // console.log("data: ", dataTable[keys[i]]);
-        //     // setDataTableSub([dataTable[keys[i]]]);
       }
     }
     const send_data = {
@@ -284,8 +189,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       .catch((err) => {
         console.log(":error: ", err);
       });
-    // console.log("data: ", data);
-    // setDataTableSub(data);
   }, [rowSelection]);
 
   useEffect(() => {
@@ -326,8 +229,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
                   ...infoForm,
                   SOPHIEU: info[keys[i]]["SOPHIEU"],
                 });
-                //     // console.log("data: ", dataTable[keys[i]]);
-                //     // setDataTableSub([dataTable[keys[i]]]);
               }
             }
             const send_data = {
@@ -347,7 +248,6 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
               })
               .then((info) => {
                 setDataTableSub(info);
-                // console.log("abc: ", info);
               })
               .catch((err) => {
                 console.log(":error: ", err);
@@ -360,80 +260,54 @@ const FormChamCong = ({ setIsSaveDataNghiepVuChamCong, permission }) => {
       });
   }, [infoForm["MANVIEN"], infoForm["MAKY"]]);
 
-  console.log("selected: ", rowSelection, dataTableSub);
-
-  // start: add to change Popover's behavior
-  const [clickedPopoverMaKy, setClickedPopoverMaKy] = useState(false);
-  const [clickedPopoverMaNV, setClickedPopoverMaNV] = useState(false);
-  // end: add to change Popover's behavior
-
   return (
     <div className={styles.container}>
       <div className={styles.form}>
         <div className={styles.left}>
-          {/* <label className={styles.title}>Đơn hàng</label> */}
-          <div className={styles.left_row}>
+          <div
+            className={styles.left_row}
+            style={{ display: "flex", flexDirection: "row" }}
+          >
             <label>Mã kỳ</label>
-
-            <Popover
-              placement="bottomLeft"
-              trigger="click"
-              open={clickedPopoverMaKy}
-              onOpenChange={(open) => setClickedPopoverMaKy(open)}
-              content={
-                <TableMaKY
-                  setRowSelection={setRowSelectionMaKY}
-                  rowSelection={rowSelectionMaKY}
-                  data={dataTableKY}
-                  setIsSaveData={setIsSaveDataNghiepVuChamCong}
-                  setClickedPopover={setClickedPopoverMaKy}
-                />
-              }
-            >
-              <input
-                value={infoForm["MAKY"]}
-                readOnly={true}
-                className={styles.small}
-              />
-            </Popover>
-            <input
-              value={infoForm["TENKY"]}
-              readOnly={true}
-              className={styles.medium}
+            <ItemKyTinhLuong
+              value={maKy}
+              setValue={setMaKy}
+              label={tenKy}
+              setLabel={setTenKy}
+              size_input={"20rem"}
+              have_span={true}
+              size_span={"30rem"}
+              size_selection={"50.5rem"}
+              readOnly={false}
             />
           </div>
-          <div className={styles.left_row}>
+          <div
+            className={styles.left_row}
+            style={{ display: "flex", flexDirection: "row" }}
+          >
             <label>Mã nhân viên</label>
-            <Popover
-              placement="bottomLeft"
-              trigger="click"
-              open={clickedPopoverMaNV}
-              onOpenChange={(open) => setClickedPopoverMaNV(open)}
-              content={
-                <TableMaNVIEN
-                  setRowSelection={setRowSelectionMaNVIEN}
-                  rowSelection={rowSelectionMaNVIEN}
-                  data={dataTableNhanVien}
-                  setIsSaveData={setIsSaveDataNghiepVuChamCong}
-                  setClickedPopover={setClickedPopoverMaNV}
-                />
-              }
-            >
-              <input
-                value={infoForm["MANVIEN"]}
-                readOnly={true}
-                className={styles.small}
-              />
-            </Popover>
-            <input
-              value={infoForm["TENNVIEN"]}
-              readOnly={true}
-              className={styles.medium}
+            <ItemNhanVien
+              initValue={{
+                value: infoForm["MANVIEN"],
+                label: infoForm["TENNVIEN"],
+              }}
+              changeData={(dict_data) => {
+                setInfoForm({
+                  ...infoForm,
+                  MANVIEN: dict_data["value"],
+                  TENNVIEN: dict_data["label"],
+                });
+                setDataTable([]);
+                setDataTableSub([]);
+                setRowSelection({ 0: true });
+              }}
+              size_input={"20rem"}
+              size_span={"30rem"}
+              size_selection={"50.5rem"}
             />
           </div>
         </div>
         <div className={styles.right}>
-          {/* <label className={styles.title}>Thông tin phiếu</label> */}
           <div className={styles.right_row}>
             <label>Ngày phiếu</label>
             <input

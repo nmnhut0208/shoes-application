@@ -66,9 +66,7 @@ const FormXem = ({ data, setShowModal }) => {
       .then((info) => {
         setDataTable(info);
       })
-      .catch((error) => {
-        console.log("error: ", error);
-      });
+      .catch((error) => {});
   }, []);
 
   return (

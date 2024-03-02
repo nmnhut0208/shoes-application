@@ -10,8 +10,6 @@ function FormLogin() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
-  // console.log("FormLogin: re-render", stateUser);
-
   function handleOk() {
     setLoading(true);
     form
@@ -32,7 +30,6 @@ function FormLogin() {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log("data", data);
             if (data.exist) {
               dispatchUser(actions.setUserName(values.username));
               dispatchUser(actions.setUserPassword(values.password));
@@ -45,7 +42,6 @@ function FormLogin() {
               })
                 .then((response) => response.json())
                 .then((data) => {
-                  console.log("data", data);
                   dispatchUser(actions.setPoolUserAccess(data));
                   setLoading(false);
                   dispatchUser(actions.setIsLogin(false));

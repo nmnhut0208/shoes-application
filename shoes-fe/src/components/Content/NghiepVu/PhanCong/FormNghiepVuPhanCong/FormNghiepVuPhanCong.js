@@ -65,6 +65,8 @@ const FormNghiepVuPhanCong = ({
     xem_phancong: false,
     in_tonghop: false,
     in: false,
+    xem_in_tonghop: false,
+    xem_in: false,
   });
 
   const [infoPhieu, setInfoPhieu] = useState({});
@@ -152,7 +154,6 @@ const FormNghiepVuPhanCong = ({
                 result = result.filter(
                   (obj) => !list_DH_chua_PC.includes(obj.SODH)
                 );
-                console.log(result);
                 setListDonHangDonePhanCong(result.map((obj, i) => obj.SODH));
                 setDataDonHangDaPhanCong(result);
               })
@@ -174,7 +175,6 @@ const FormNghiepVuPhanCong = ({
           return response.json();
         })
         .then((info) => {
-          console.log("setDataChiTietPhanCong: ", info);
           setDataChiTietPhanCong(info);
         })
         .catch((err) => {
@@ -247,12 +247,11 @@ const FormNghiepVuPhanCong = ({
       body: JSON.stringify(infoPhieu),
     })
       .then((response) => {
-        console.log("response: ", response);
         CustomAlert("Lưu thành công!");
       })
       .catch((error) => {
         console.log("error: ", error);
-        // CustomAlert("Lỗi! Chưa lưu được!");
+        CustomAlert("Lỗi! Chưa lưu được!");
       });
 
     if (!dataView) updateSOPHIEU(lastestSOPHIEU);
@@ -276,6 +275,8 @@ const FormNghiepVuPhanCong = ({
       xem_phancong: false,
       in_tonghop: false,
       in: false,
+      xem_in_tonghop: false,
+      xem_in: false,
     });
     dispatchTable(actions_table.setTitleModal("Đơn hàng - F0032"));
     dispatchTable(actions_table.setModeShowModal(true));
@@ -291,6 +292,8 @@ const FormNghiepVuPhanCong = ({
       xem_phancong: true,
       in_tonghop: false,
       in: false,
+      xem_in_tonghop: false,
+      xem_in: false,
     });
     dispatchTable(actions_table.setTitleModal("Xem phân công - F0038"));
     dispatchTable(actions_table.setModeShowModal(true));
@@ -302,6 +305,8 @@ const FormNghiepVuPhanCong = ({
       xem_phancong: false,
       in_tonghop: true,
       in: false,
+      xem_in_tonghop: false,
+      xem_in: false,
     });
     dispatchTable(actions_table.setTitleModal("In tổng hợp"));
     dispatchTable(actions_table.setModeShowModal(true));
@@ -313,8 +318,38 @@ const FormNghiepVuPhanCong = ({
       xem_phancong: false,
       in_tonghop: false,
       in: true,
+      xem_in_tonghop: false,
+      xem_in: false,
     });
     dispatchTable(actions_table.setTitleModal("In phân công theo nhân viên"));
+    dispatchTable(actions_table.setModeShowModal(true));
+  };
+
+  const handle_xem_in_tonghop = () => {
+    setInfoFormWillShow({
+      chitiet_donhang: false,
+      xem_phancong: false,
+      in_tonghop: false,
+      in: false,
+      xem_in_tonghop: true,
+      xem_in: false,
+    });
+    dispatchTable(actions_table.setTitleModal("Xem In tổng hợp"));
+    dispatchTable(actions_table.setModeShowModal(true));
+  };
+
+  const handle_xem_in = () => {
+    setInfoFormWillShow({
+      chitiet_donhang: false,
+      xem_phancong: false,
+      in_tonghop: false,
+      in: false,
+      xem_in_tonghop: false,
+      xem_in: true,
+    });
+    dispatchTable(
+      actions_table.setTitleModal("Xem In phân công theo nhân viên")
+    );
     dispatchTable(actions_table.setModeShowModal(true));
   };
 
@@ -404,8 +439,14 @@ const FormNghiepVuPhanCong = ({
           <button onClick={handle_in_tonghop} disabled={!isSaveData}>
             In tổng hợp
           </button>
+          <button onClick={handle_xem_in_tonghop} disabled={!isSaveData}>
+            Xem In tổng hợp
+          </button>
           <button onClick={handle_in} disabled={!isSaveData}>
             In
+          </button>
+          <button onClick={handle_xem_in} disabled={!isSaveData}>
+            Xem In
           </button>
           <button onClick={handleClickXemPhanCong}>Xem phân công</button>
 
@@ -475,6 +516,36 @@ const FormNghiepVuPhanCong = ({
       {infoFormWillShow["in"] && (
         <Modal>
           <In sophieu={infoPhieu["SOPHIEU"]} data={dataChiTietPhanCong} />
+        </Modal>
+      )}
+
+      {infoFormWillShow["xem_in_tonghop"] && (
+        <Modal>
+          <InTongHop
+            sophieu={infoPhieu["SOPHIEU"]}
+            data={dataChiTietPhanCong}
+            stylePrint={{
+              "scroll-behavior": "smooth",
+              "overflow-y": "overlay",
+              "overflow-x": "hidden",
+              height: "600px",
+            }}
+          />
+        </Modal>
+      )}
+
+      {infoFormWillShow["xem_in"] && (
+        <Modal>
+          <In
+            sophieu={infoPhieu["SOPHIEU"]}
+            data={dataChiTietPhanCong}
+            stylePrint={{
+              "scroll-behavior": "smooth",
+              "overflow-y": "overlay",
+              "overflow-x": "hidden",
+              height: "600px",
+            }}
+          />
         </Modal>
       )}
     </div>

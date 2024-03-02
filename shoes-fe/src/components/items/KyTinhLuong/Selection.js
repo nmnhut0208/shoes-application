@@ -1,6 +1,6 @@
 import { useState, memo, useEffect } from "react";
 import { Space } from "antd";
-
+import { CustomAlert } from "~utils/alert_custom";
 import { Select } from "antd";
 const { Option } = Select;
 
@@ -10,7 +10,9 @@ const customOptionStyle = {
 };
 
 const filterOption = (input, option) => {
-  return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
+  return (option?.value ?? "")
+    .toLowerCase()
+    .startsWith(input.trim().toLowerCase());
 };
 
 const Selection = ({
@@ -23,7 +25,10 @@ const Selection = ({
   size_input,
   size_span,
   className,
-  size_selection = 450,
+  have_span,
+  have_set_save,
+  isSaveData,
+  size_selection,
 }) => {
   const [maMA, setMaMau] = useState(() => {
     if (value) {
@@ -47,17 +52,15 @@ const Selection = ({
   }, [label]);
 
   const handleChange = (value) => {
-    setMaMau(value);
-    if (value.trim() !== "") {
-      let choice = data.filter((e) => e.value === value);
-      setValue(value);
-      setLabel(choice[0]["label"]);
-      setTenMau(choice[0]["label"]);
-    } else {
-      setValue("");
-      setLabel("");
-      setTenMau("");
+    if (have_set_save && !isSaveData) {
+      CustomAlert("Lưu thông tin hiện tại trước khi đổi khách hàng!!!");
+      return;
     }
+    setMaMau(value);
+    let choice = data.filter((e) => e.MAKY === value);
+    setValue(value);
+    setLabel(choice[0]["TENKY"]);
+    setTenMau(choice[0]["TENKY"]);
     setShowInput(true);
     setShowSelection(false);
   };
@@ -71,19 +74,20 @@ const Selection = ({
     setShowSelection(false);
     setShowInput(true);
   };
+
   return (
     <div className={className}>
       {showInput && (
         <Space>
           <input
-            id="MAGIAY"
+            id="MAKY"
             value={value}
             onFocus={handleFocusInput}
             onClick={handleFocusInput}
             readOnly="true"
             tabindex="-1"
             style={{
-              width: { size_input },
+              width: size_input,
               // border: "none",
               fontSize: "1.45rem",
               resize: "none",
@@ -91,7 +95,13 @@ const Selection = ({
               contenteditable: "true",
             }}
           />
-          <input readOnly={true} value={tenMau} style={{ width: size_span }} />
+          {have_span && (
+            <input
+              readOnly={true}
+              value={tenMau}
+              style={{ width: size_span }}
+            />
+          )}
         </Space>
       )}
 
@@ -101,8 +111,7 @@ const Selection = ({
           optionFilterProp="children"
           style={{
             width: size_selection,
-            // marginLeft: 200, // 600,
-            position: "absolute",
+            // position: "absolute",
           }}
           value={maMA}
           onChange={handleChange}
@@ -118,20 +127,21 @@ const Selection = ({
               {data.map((e) => (
                 <Option
                   style={customOptionStyle}
-                  value={e["value"]}
-                  key={e["value"]}
+                  value={e["MAKY"]}
+                  key={e["MAKY"]}
                 >
                   <span
                     style={{
-                      width: "100px",
+                      width: "70px",
                       display: "inline-block",
                       borderRight: "1px solid #000",
+                      paddingLeft: "0px",
                     }}
                   >
-                    {e["value"]}
+                    {e["MAKY"]}
                   </span>
-                  <span style={{ paddingLeft: "5px", width: "auto" }}>
-                    {e["label"]}
+                  <span style={{ paddingLeft: "5px", width: "200px" }}>
+                    {e["TENKY"]}
                   </span>
                 </Option>
               ))}
@@ -142,14 +152,15 @@ const Selection = ({
             <Option style={customOptionStyle} value={value} key={value}>
               <span
                 style={{
-                  width: "100px",
+                  width: "70px",
                   display: "inline-block",
                   borderRight: "1px solid #000",
+                  paddingLeft: "0px",
                 }}
               >
                 {value}
               </span>
-              <span style={{ paddingLeft: "10px", width: "auto" }}>
+              <span style={{ paddingLeft: "5px", width: "200px" }}>
                 {label}
               </span>
             </Option>

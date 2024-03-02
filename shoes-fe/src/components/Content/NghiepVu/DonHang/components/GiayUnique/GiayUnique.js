@@ -1,7 +1,6 @@
 import { useState, memo, useEffect } from "react";
 
 import { Select } from "antd";
-import TextArea from "antd/es/input/TextArea";
 const { Option } = Select;
 
 const customOptionStyle = {
@@ -17,6 +16,8 @@ const filterOption = (input, option) => {
 };
 
 const GiayUnique = ({
+  id,
+  onFocus,
   init,
   listGiayUnique,
   handleChangeDataTable,
@@ -29,7 +30,6 @@ const GiayUnique = ({
   });
   const [showSelection, setShowSelection] = useState(false);
   const [showInput, setShowInput] = useState(true);
-
   useEffect(() => {
     setMaMau(init);
   }, [init]);
@@ -41,13 +41,36 @@ const GiayUnique = ({
       value,
       choice[0]["TENGIAY"],
       choice[0]["GIABAN"],
-      choice[0]["TENCA"]
+      choice[0]["TENCA"],
+      choice[0]["HAVEHINHANH"]
     );
+
+    var keysInfo = id.split("_");
+    var x = parseInt(keysInfo[1]);
+    var y = parseInt(keysInfo[2]);
+
+    var yNewToTab = y + 1;
+    let yNewRef = yNewToTab >= 6 ? yNewToTab - 6 : yNewToTab;
+    let key = yNewToTab >= 6 ? "size" : "Id";
+    var next_element = document.getElementById(`${key}_${x}_${yNewRef}`);
+    if (yNewToTab < 6) {
+      setTimeout(function () {
+        // settimeout để hành động này thực hiện sau cùng, sau khi làm các thứ quan trọng khác trước
+        next_element.click();
+      }, 0);
+    }
+    if (yNewToTab >= 6 && yNewToTab <= 13) {
+      next_element.focus(); // phải focus trước rồi mới selection sau nên là thêm timeout chỗ này chờ focus xong
+      setTimeout(function () {
+        next_element.select();
+      }, 0);
+    }
     setShowInput(true);
     setShowSelection(false);
   };
 
   const handleFocusInput = () => {
+    onFocus();
     if (readOnly) return;
     setShowSelection(true);
     setShowInput(false);
@@ -57,15 +80,22 @@ const GiayUnique = ({
     setShowInput(true);
   };
 
+  const handleClick = () => {
+    onFocus();
+    if (readOnly) return;
+    setShowSelection(false);
+    setShowInput(true);
+  };
+
   return (
     <div style={{ position: "relative", left: "0px", width: "100%" }}>
       {showInput && (
         <input
-          id="MAGIAY"
+          id={id}
           value={maMA}
-          tabindex="-1"
+          tabindex="1"
           onFocus={handleFocusInput}
-          onClick={handleFocusInput}
+          onClick={handleClick}
           readOnly="true"
           style={{
             width: "100%",
@@ -86,6 +116,7 @@ const GiayUnique = ({
             // marginLeft: 200, // 600,
             position: "absolute",
             top: 0,
+            tabindex: "1",
           }}
           value={maMA}
           onChange={handleChange}
@@ -112,8 +143,11 @@ const GiayUnique = ({
                 {e["MAGIAY"]}
               </span>
               <span style={{ paddingLeft: "10px", width: "auto" }}>
-                {e["TENGIAY"]}
+                {e["HAVEHINHANH"]} - {e["TENGIAY"]}
               </span>
+              {/* <span style={{ paddingLeft: "10px", width: "auto" }}>
+                {e["HAVEHINHANH"]}
+              </span> */}
             </Option>
           ))}
         </Select>

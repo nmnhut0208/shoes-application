@@ -37,18 +37,15 @@ const updateData = (year, setDataTable) => {
     });
 };
 
-const GiaoHangSub = ({ isSaveData, setIsSaveDataTruyVanGiaoHang, permission }) => {
+const GiaoHangSub = ({
+  isSaveData,
+  setIsSaveDataTruyVanGiaoHang,
+  permission,
+}) => {
   const [dataTable, setDataTable] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [sendData, setSendData] = useState({});
   const [year, setYear] = useState("");
-  //   const [rowSelection, setRowSelection] = useState({});
-
-  console.log("GiaoHang");
-
-  // useEffect(() => {
-  //   if (year === "") updateData(year, setDataTable);
-  // }, [year]);
 
   useEffect(() => {
     updateData(year, setDataTable);
@@ -60,7 +57,7 @@ const GiaoHangSub = ({ isSaveData, setIsSaveDataTruyVanGiaoHang, permission }) =
 
   return (
     <div className={styles.container}>
-      <header className={styles.header_table}>Phiếu Giao hàng - F0033</header>
+      <h1 className={styles.header_table}>Truy vấn - Giao hàng</h1>
       <div className={clsx(styles.form, styles.info_query)}>
         <label>Xem dữ liệu năm</label>
         <input
@@ -78,13 +75,24 @@ const GiaoHangSub = ({ isSaveData, setIsSaveDataTruyVanGiaoHang, permission }) =
         setShowForm={setShowForm}
         setSendData={setSendData}
         setDataTable={setDataTable}
-        // rowSelection={rowSelection}
-        // setRowSelection={setRowSelection}
         maxHeight={"65rem"}
       />
       {showForm && (
-        <ModalForm setShowForm={setShowForm} isSaveData={isSaveData}>
-          <FormGiaoHang permission={permission} infoKH={sendData} setInfoKH={setSendData} year={year} setDataTableBig={setDataTable} setShowForm={setShowForm} setIsSaveDataTruyVanGiaoHang={setIsSaveDataTruyVanGiaoHang} isSaveData={isSaveData}/>
+        <ModalForm
+          setShowForm={setShowForm}
+          isSaveData={isSaveData}
+          setSaveData={setIsSaveDataTruyVanGiaoHang}
+        >
+          <FormGiaoHang
+            permission={permission}
+            infoKH={sendData}
+            setInfoKH={setSendData}
+            year={year}
+            setDataTableBig={setDataTable}
+            setShowForm={setShowForm}
+            setIsSaveDataTruyVanGiaoHang={setIsSaveDataTruyVanGiaoHang}
+            isSaveData={isSaveData}
+          />
         </ModalForm>
       )}
     </div>

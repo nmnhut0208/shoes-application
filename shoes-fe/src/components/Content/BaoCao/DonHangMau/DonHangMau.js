@@ -87,8 +87,6 @@ const DonHangMau = () => {
     documentTitle: "Đơn Hàng Mẫu",
   });
 
-  console.log("DonHangMau");
-
   useEffect(() => {
     setShowPrint(false);
     handelPrint();

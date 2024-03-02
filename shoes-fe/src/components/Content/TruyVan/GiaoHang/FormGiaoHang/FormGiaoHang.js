@@ -271,37 +271,11 @@ const FormGiaoHang = ({
   const [dataIn, setDataIn] = useState({});
   const [flag, setFlag] = useState(false);
   const [keys, setKeys] = useState(0);
-  // const test_makh = "THU";
-  // const [dataTableKhachHang, setDataTableKhachHang] = useState([]);
-  // const [rowSelectionMaKH, setRowSelectionMaKH] = useState({});
-  // const [infoKH, setInfoKH] = useState({});
-
-  console.log("GiaoHang");
 
   const handleSave = () => {
-    if (
-      // userState.userPoolAccess.some(
-      //   (obj) => obj.MAFORM === maForm && obj.THEM === 1
-      // )
-      permission.THEM === 1
-    ) {
-      // const keys = Object.keys(rowSelectionSub);
+    if (permission.THEM === 1) {
       const data = [];
-      // for (var i = 0; i < keys.length; i++) {
-      //   if (rowSelectionSub[keys[i]] === true) {
-      //     data.push(dataTableSub[keys[i]]);
-      //   }
-      // }
-      // filter data from dataTableSub with mapRowSelectedSub
-      // const keys = Object.keys(mapRowSelectedSub);
-      // for (var i = 0; i < keys.length; i++) {
-      //   const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
-      //   for (var j = 0; j < keys_sub.length; j++) {
-      //     if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
-      //       data.push(dataTableSub[keys[i]][keys_sub[j]]);
-      //     }
-      //   }
-      // }
+
       const keys = Object.keys(rowSelection);
       for (var i = 0; i < keys.length; i++) {
         if (rowSelection[keys[i]] === true) {
@@ -314,7 +288,6 @@ const FormGiaoHang = ({
           }
         }
       }
-      // console.log("size1: ", data);
       const send_data = {
         data: data,
         makh: infoKH.MAKH,
@@ -357,15 +330,7 @@ const FormGiaoHang = ({
       )
     ) {
       const data = [];
-      // const keys = Object.keys(mapRowSelectedSub);
-      // for (var i = 0; i < keys.length; i++) {
-      //   const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
-      //   for (var j = 0; j < keys_sub.length; j++) {
-      //     if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
-      //       data.push(dataTableSub[keys[i]][keys_sub[j]]);
-      //     }
-      //   }
-      // }
+
       const keys = Object.keys(rowSelection);
       for (var i = 0; i < keys.length; i++) {
         if (rowSelection[keys[i]] === true) {
@@ -386,10 +351,11 @@ const FormGiaoHang = ({
           DONGIA: item.GIABAN,
           THANHTIEN: item.THANHTIEN,
           SODH: item.SODH,
+          TENGOT: item.TENGOT,
         };
         return obj;
       });
-      // console.log("table: ", dataTableSub);
+
       // group table follow MAGIAY
       const table_group = table.reduce((acc, curr) => {
         const index = acc.findIndex((item) => item.MAGIAY === curr.MAGIAY);
@@ -401,7 +367,6 @@ const FormGiaoHang = ({
         }
         return acc;
       }, []);
-      // console.log("table group: ", table_group);
       setDataIn({
         MAKH: infoKH.MAKH,
         TENKH: infoKH.TENKH,
@@ -424,15 +389,7 @@ const FormGiaoHang = ({
       )
     ) {
       const data = [];
-      // const keys = Object.keys(mapRowSelectedSub);
-      // for (var i = 0; i < keys.length; i++) {
-      //   const keys_sub = Object.keys(mapRowSelectedSub[keys[i]]);
-      //   for (var j = 0; j < keys_sub.length; j++) {
-      //     if (mapRowSelectedSub[keys[i]][keys_sub[j]] === true) {
-      //       data.push(dataTableSub[keys[i]][keys_sub[j]]);
-      //     }
-      //   }
-      // }
+
       const keys = Object.keys(rowSelection);
       for (var i = 0; i < keys.length; i++) {
         if (rowSelection[keys[i]] === true) {
@@ -453,6 +410,7 @@ const FormGiaoHang = ({
           DONGIA: item.GIABAN,
           THANHTIEN: item.THANHTIEN,
           SODH: item.SODH,
+          TENGOT: item.TENGOT,
         };
         return obj;
       });
@@ -466,7 +424,6 @@ const FormGiaoHang = ({
           return response.json();
         })
         .then((data) => {
-          // console.log("tong no : ", data[0]["TONGNO"]);
           const table_group = table.reduce((acc, curr) => {
             const index = acc.findIndex((item) => item.MAGIAY === curr.MAGIAY);
             if (index === -1) {
@@ -497,64 +454,15 @@ const FormGiaoHang = ({
     }
   };
 
-  // useEffect(() => {
-  //   let keys = Object.keys(rowSelectionMaKH);
-  //   if (keys.length > 0) {
-  //     // setFormInfoDonHang({
-  //     //   ...formInfoDonHang,
-  //     //   MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-  //     //   TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-  //     // });
-  //     const info = {
-  //       MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-  //       TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-  //     };
-  //     setInfoKH(info);
-  //   }
-  // }, [rowSelectionMaKH]);
-
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/khachhang")
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((info) => {
-  //       console.log("info khach hang: ", info);
-  //       setDataTableKhachHang(info);
-  //     })
-  //     .catch((err) => {
-  //       console.log(":error: ", err);
-  //     });
-  // }, []);
-
   useEffect(() => {
-    console.log("info kh: ", infoKH["MAKH"]);
     if (infoKH["MAKH"] == undefined) {
       return;
     }
-    // const keys = Object.keys(rowSelection);
-    // console.log("keys row: ", dataTable[keys[0]]);
-    // let data = [];
-    // for (var i = 0; i < keys.length; i++) {
-    //   if (rowSelection[keys[i]] === true) {
-    //     data.push(dataTable[keys[i]]["SODH"]);
-    //     // console.log("data: ", dataTable[keys[i]]);
-    //     // setDataTableSub([dataTable[keys[i]]]);
-    //     // const send_data = {
-    //     //   sodh: dataTable[keys[i]]["SODH"],
-    //     //   makh: test_makh,
-    //     // };
-    //   }
-    // }
+
     const send_data = {
-      // SODH: data,
       MAKH: infoKH["MAKH"],
       SOPHIEU: infoKH["SOPHIEU"],
     };
-    // if (data.length === 0) {
-    //   setDataTableSub([]);
-    //   return;
-    // }
     fetch("http://localhost:8000/tv_giaohangsub", {
       method: "POST",
       headers: {
@@ -587,8 +495,6 @@ const FormGiaoHang = ({
       .catch((err) => {
         console.log(":error: ", err);
       });
-    // console.log("sub: ", data);
-    // setDataTableSub([...data]);
   }, []);
 
   const infoColumnsSub = useMemo(() => {
@@ -619,7 +525,6 @@ const FormGiaoHang = ({
         return response.json();
       })
       .then((info) => {
-        console.log("info dh: ", info);
         setDataTable(info);
         const selected = {};
         for (var i = 0; i < info.length; i++) {
@@ -635,25 +540,6 @@ const FormGiaoHang = ({
       });
   }, [infoKH["MAKH"]]);
 
-  // useEffect(() => {
-  //   if (mapSelected[curSelected] !== undefined) {
-  //     setMapRowSelectedSub({
-  //       ...mapRowSelectedSub,
-  //       [mapSelected[curSelected]]: rowSelectionSub,
-  //     });
-  //   }
-  // }, [rowSelectionSub]);
-
-  // useEffect(() => {
-  //   if (mapSelected[curSelected] in mapRowSelectedSub) {
-  //     setRowSelectionSub(mapRowSelectedSub[mapSelected[curSelected]]);
-  //   } else {
-  //     setRowSelectionSub({});
-  //   }
-  // }, [curSelected]);
-
-  // console.log("sub: ", curSelected, rowSelection);
-  console.log("ngay phieu: ", infoKH["NGAYPHIEU"]);
   return (
     <div className={styles.container}>
       <div className={styles.form}>

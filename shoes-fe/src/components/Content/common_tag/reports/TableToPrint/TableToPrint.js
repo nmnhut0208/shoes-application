@@ -26,8 +26,6 @@ const TableToPrint = ({
     return _footer;
   }, [data]);
 
-  console.log("footer: ", footer);
-
   return (
     <div className={styles.my_table}>
       <table style={{ width: "fit-content" }}>
@@ -77,7 +75,6 @@ const TableToPrint = ({
           <tr>
             {columns.map((col) => {
               let value = footer[col["key"]];
-              console.log("value: ", value);
               if (value === undefined) {
                 if (col["key"] === Col_Name_Footer)
                   return <th style={{ width: col["width"] }}>Tổng cộng</th>;

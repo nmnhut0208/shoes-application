@@ -11,8 +11,6 @@ export const updateInfoPhieuPhanCong = (
       return response.json();
     })
     .then((data) => {
-      console.log(":data: ", data);
-      console.log("today: ", moment().format("YYYY-MM-DD HH:mm:ss"));
       let sophieu = data["SOPC"];
       setInfoPhieu({
         ...infoPhieu,
@@ -57,7 +55,6 @@ export const processing_button_add = (
     return;
   }
   let list_key_form = Object.keys(formPhanCong);
-  console.log("formPhanCong bi gia vay troi: ", formPhanCong);
   if (!list_key_form.includes("MAGIAY") || formPhanCong["MAGIAY"] == "") return;
 
   if (
@@ -99,9 +96,7 @@ export const processing_button_add = (
       if (remain[key] > 0) is_remain = true;
     }
   }
-  console.log("nof_giay_phan_cong: ", nof_giay_phan_cong);
   if (nof_giay_phan_cong > 0) {
-    console.log("add ne: ", JSON.stringify({ ...record, ...infoPhieu }));
     fetch("http://localhost:8000/phancong/add_phancong", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -278,7 +273,6 @@ export const processing_button_delete = (
         (data) => data !== data_delete["MADONG"]
       );
 
-      console.log("new_listMADONG: ", new_listMADONG);
       setListMaDongPhanCongAddButWaitSave(new_listMADONG);
 
       if (listDonHangDonePhanCong.includes(SoDH_del)) {
@@ -311,7 +305,6 @@ export const processing_button_delete = (
 };
 
 export const updateSOPHIEU = (sophieu) => {
-  console.log("save so don hang: ", sophieu);
   fetch("http://localhost:8000/hethong/phancong/SOPC", {
     method: "put",
     headers: { "Content-Type": "application/json" },
@@ -320,19 +313,3 @@ export const updateSOPHIEU = (sophieu) => {
     console.log("error: ", error);
   });
 };
-
-// -----------------------------------------------------------------
-// export const update_status_phancongs_by_madong = (list_madong, value) => {
-//   fetch(
-//     "http://localhost:8000/donhang/update_status_phancong/?MADONG=" +
-//       list_madong.join("&MADONG=") +
-//       "&status=" +
-//       value
-//   )
-//     .then((response) => {
-//       console.log("response: ", response);
-//     })
-//     .catch((error) => {
-//       console.log("error: ", error);
-//     });
-// };

@@ -13,9 +13,8 @@ const MainTable = ({
   setIsSaveData,
   maxHeight,
   change,
-  setKeys
+  setKeys,
 }) => {
-  console.log("data: ", data);
   const handleSaveCell = (cell, value) => {
     //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here
     var row_current = data[cell.row.index];
@@ -44,7 +43,6 @@ const MainTable = ({
     } else {
       data[cell.row.index][cell.column.id] = value;
     }
-    // console.log("cell: ", data);
     //send/receive api updates here
     setDataTable([...data]); //re-render with new data
     setIsSaveData(false);
@@ -73,12 +71,12 @@ const MainTable = ({
             [row.id]: !prev[row.id],
           }));
           setCurSelected(row.id);
-          setKeys(prev => prev + 1)
+          setKeys((prev) => prev + 1);
           setIsSaveData(false);
         },
         selected: rowSelection[row.id],
         sx: {
-          cursor: 'pointer',
+          cursor: "pointer",
         },
       })}
       state={{ rowSelection }}

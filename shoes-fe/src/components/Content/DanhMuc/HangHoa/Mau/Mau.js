@@ -27,7 +27,6 @@ const Mau = () => {
     dispatchTable(actions_table.setComponentForm(FormMau));
     fetch("http://localhost:8000/mau")
       .then((response) => {
-        console.log("response: ", response);
         return response.json();
       })
       .then((info) => {

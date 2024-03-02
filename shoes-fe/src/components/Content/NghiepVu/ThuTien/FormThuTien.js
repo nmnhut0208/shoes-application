@@ -12,7 +12,6 @@ import { handleDisableKeyDownUp, handleFocus } from "~utils/event";
 import { CustomAlert } from "~utils/alert_custom";
 
 const updateSOPHIEU = (sophieu) => {
-  console.log("save so don hang");
   fetch("http://localhost:8000/hethong/phieuthu/SOPHIEU", {
     method: "put",
     headers: { "Content-Type": "application/json" },
@@ -38,16 +37,17 @@ const FormThuTien = ({ dataView, type_action }) => {
   const [lastestSOPHIEU, setLastestSOPHIEU] = useState(0);
   const [stateUser, dispatchUser] = useUserContext();
   const [showPrint, setShowPrint] = useState(false);
-  console.log("form hhe: ", form);
 
   const [maKH, setMaKH] = useState(form["MAKH"]);
   const [tenKH, setTenKH] = useState(form["TENKH"]);
   useEffect(() => {
-    setForm({
-      ...form,
-      MAKH: maKH,
-      TENKH: tenKH,
-    });
+    if (maKH !== form["MAKH"]) {
+      setForm({
+        ...form,
+        MAKH: maKH,
+        TENKH: tenKH,
+      });
+    }
   }, [maKH]);
 
   useEffect(() => {
@@ -77,7 +77,6 @@ const FormThuTien = ({ dataView, type_action }) => {
         });
     } else {
       // load data from dataView
-      console.log("dataView: ", dataView);
       setForm({
         ...dataView,
         THANHTIEN: dataView["SODUCUOI"],
@@ -104,6 +103,9 @@ const FormThuTien = ({ dataView, type_action }) => {
   };
 
   const handleSaveFrom = () => {
+    if (isSave) {
+      return;
+    }
     for (let key in list_input_required) {
       if (form[key] === undefined || form[key] === "") {
         CustomAlert("Nhập " + list_input_required[key]);
@@ -111,21 +113,18 @@ const FormThuTien = ({ dataView, type_action }) => {
       }
     }
 
-    console.log("Save form");
     let method = "";
     if (type_action === "edit") {
       method = "PUT";
     } else if (type_action === "add") {
       method = "POST";
     }
-    console.log("form: ", form);
     fetch("http://localhost:8000/congno/phieuthu", {
       method: method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     })
       .then((response) => {
-        console.log("response: ", response);
         if (type_action === "add") {
           updateSOPHIEU(lastestSOPHIEU);
         }
@@ -138,7 +137,6 @@ const FormThuTien = ({ dataView, type_action }) => {
   };
 
   const handleNhapTiep = () => {
-    console.log("................");
     let SOPHIEU_old = form["SOPHIEU"];
     const sub_components = SOPHIEU_old.split("-");
     const str_number = ("000" + (lastestSOPHIEU + 1)).slice(-4);
@@ -164,8 +162,6 @@ const FormThuTien = ({ dataView, type_action }) => {
   const handlePrint = () => {
     setShowPrint(true);
   };
-
-  console.log("isSave: ", isSave);
 
   return (
     <div>
@@ -203,9 +199,10 @@ const FormThuTien = ({ dataView, type_action }) => {
               label={form["TENKH"]}
               setLabel={setTenKH}
               size_input={"15rem"}
-              size_span={"39rem"}
+              size_span={"34.2rem"}
               have_span={true}
               readOnly={type_action !== "add"}
+              size_selection={550}
             />
           </div>
           <div className={styles.group_second_row}>
@@ -234,6 +231,7 @@ const FormThuTien = ({ dataView, type_action }) => {
                 handleChangeInformationForm({ DIENGIAIPHIEU: e.target.value })
               }
               className={styles.item_size_big}
+              style={{ width: "55rem" }}
               readOnly={view}
             />
           </div>

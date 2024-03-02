@@ -13,7 +13,6 @@ import clsx from "clsx";
 import { CustomAlert } from "~utils/alert_custom";
 
 const Table = ({ columns, data, setDataDonHang, permission }) => {
-  console.log("permission: ", permission);
   const [rowInfo, setRowInfo] = useState({});
 
   const [isSaveData, setIsSaveData] = useState(true);
@@ -194,6 +193,7 @@ const DonHang = () => {
   };
   return (
     <div style={{ width: "88%", marginLeft: "5%" }}>
+      <h1 className={styles.header_table}>Truy vấn - Đơn hàng</h1>
       <div className={clsx(styles.form, styles.info_query)}>
         <label>Xem dữ liệu năm</label>
         <input

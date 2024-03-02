@@ -55,7 +55,7 @@ const BangLuong = () => {
       isResetPageEmpty={true}
     >
       <div className={clsx(styles.page, styles.form)}>
-        <div style={{ marginBottom: "1rem" }}>
+        {/* <div style={{ marginBottom: "1rem" }}>
           <label style={{ minWidth: "3.5rem" }}>Năm</label>
           <input
             style={{ width: "15rem" }}
@@ -65,7 +65,7 @@ const BangLuong = () => {
               setForm({ ...form, YEAR: e.target.value });
             }}
           />
-        </div>
+        </div> */}
         <div>
           <label style={{ minWidth: "3.5rem" }}>Kỳ </label>
           <ItemKyTinhLuong
@@ -75,7 +75,8 @@ const BangLuong = () => {
             setLabel={setKyLabel}
             size_input={"15rem"}
             have_span={true}
-            size_span={"41.8rem"}
+            size_span={"44.5rem"}
+            size_selection={"59.5rem"}
           />
         </div>
 

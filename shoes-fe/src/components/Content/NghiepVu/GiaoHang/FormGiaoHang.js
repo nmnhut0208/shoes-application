@@ -1,12 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
-import { Popover } from "antd";
+import { ItemKhachHang } from "~items";
 import moment from "moment";
 import MainTable from "./MainTable";
 import SubTable from "./SubTable";
 import styles from "./FormGiaoHang.module.scss";
-import { convertDate } from "~utils/processing_date";
 import { useUserContext } from "~user";
-import TableMaKH from "./TableMaKH";
 import { rem_to_px } from "~config/ui";
 import {
   processingInfoColumnTable,
@@ -214,8 +212,6 @@ const FormGiaoHang = ({
   setIsSaveDataNghiepVuGiaoHang,
   permission,
 }) => {
-  console.log("=====infoColumns: ", infoColumns);
-
   const [userState, userDispatch] = useUserContext();
   const [dataTable, setDataTable] = useState([]);
   const [dataTableSub, setDataTableSub] = useState([]);
@@ -233,11 +229,15 @@ const FormGiaoHang = ({
   const [stateUser, dispatchUser] = useUserContext();
   const [stateTable, dispatchTable] = useTableContext();
   // const maForm = "F0034";
-  const [infoForm, setInfoForm] = useState({
-    SOPHIEU: "",
-    LastestGH: "",
-    DIENGIAI: "",
-    NGAYPHIEU: "",
+  const [infoForm, setInfoForm] = useState(() => {
+    return {
+      SOPHIEU: "",
+      LastestGH: "",
+      DIENGIAI: "",
+      NGAYPHIEU: moment()
+        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+        .format("YYYY-MM-DD HH:mm:ss"),
+    };
   });
   const [keys, setKeys] = useState(0);
 
@@ -277,7 +277,6 @@ const FormGiaoHang = ({
           }
         }
       }
-      // console.log("size1: ", data);
       const send_data = {
         data: data,
         makh: infoKH.MAKH,
@@ -297,7 +296,6 @@ const FormGiaoHang = ({
           return response.json();
         })
         .then((data) => {
-          console.log("data: ", data);
           if (data["status"] == "success") {
             fetch("http://localhost:8000/hethong/giaohang/SOPHIEU", {
               method: "PUT",
@@ -310,7 +308,6 @@ const FormGiaoHang = ({
                 return response.json();
               })
               .then((data) => {
-                console.log("data: ", data);
                 if (data["status"] == "success") {
                   setIsSaveDataNghiepVuGiaoHang(true);
                   CustomAlert("Lưu thành công");
@@ -351,6 +348,8 @@ const FormGiaoHang = ({
       DIENGIAI: "",
       NGAYPHIEU: moment().format("YYYY-MM-DD"),
     });
+    setMaKH("");
+    setTenKH("");
     setIsSaveDataNghiepVuGiaoHang(true);
   };
 
@@ -360,8 +359,6 @@ const FormGiaoHang = ({
         return response.json();
       })
       .then((info) => {
-        console.log("info don hang: ", info);
-        // setDataTable(info);
         setInfoForm({
           ...infoForm,
           SOPHIEU: info["SOPHIEU"],
@@ -379,85 +376,17 @@ const FormGiaoHang = ({
   }, [rowSelectionMaKH]);
 
   useEffect(() => {
-    let keys = Object.keys(rowSelectionMaKH);
-    if (keys.length > 0) {
-      // setFormInfoDonHang({
-      //   ...formInfoDonHang,
-      //   MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-      //   TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-      // });
-      const info = {
-        MAKH: dataTableKhachHang[keys[0]]["MAKH"],
-        TENKH: dataTableKhachHang[keys[0]]["TENKH"],
-        DIACHI: dataTableKhachHang[keys[0]]["DIACHI"],
-        SOPHIEU: infoForm.SOPHIEU,
-        NGAYPHIEU: infoForm.NGAYPHIEU,
-      };
-      setInfoKH(info);
-    }
-  }, [rowSelectionMaKH]);
-
-  useEffect(() => {
     fetch("http://localhost:8000/khachhang")
       .then((response) => {
         return response.json();
       })
       .then((info) => {
-        console.log("info khach hang: ", info);
         setDataTableKhachHang(info);
       })
       .catch((err) => {
         console.log(":error: ", err);
       });
   }, []);
-
-  // useEffect(() => {
-  //   console.log("info kh: ", infoKH["MAKH"]);
-  //   if (infoKH["MAKH"] == undefined || infoKH["MAKH"] == "") {
-  //     return;
-  //   }
-  //   const keys = Object.keys(rowSelection);
-  //   // console.log("keys row: ", dataTable[keys[0]]);
-  //   let data = [];
-  //   for (var i = 0; i < keys.length; i++) {
-  //     if (rowSelection[keys[i]] === true) {
-  //       data.push(dataTable[keys[i]]["SODH"]);
-  //       // console.log("data: ", dataTable[keys[i]]);
-  //       // setDataTableSub([dataTable[keys[i]]]);
-  //       // const send_data = {
-  //       //   sodh: dataTable[keys[i]]["SODH"],
-  //       //   makh: test_makh,
-  //       // };
-  //     }
-  //   }
-  //   const send_data = {
-  //     sodh: data,
-  //     makh: infoKH["MAKH"],
-  //   };
-  //   if (data.length === 0) {
-  //     setDataTableSub([]);
-  //     return;
-  //   }
-  //   fetch("http://localhost:8000/giaohang/" + infoKH["MAKH"], {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(send_data),
-  //   })
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((info) => {
-  //       console.log("info: ", info);
-  //       setDataTableSub(info);
-  //     })
-  //     .catch((err) => {
-  //       console.log(":error: ", err);
-  //     });
-  //   // console.log("sub: ", data);
-  //   // setDataTableSub([...data]);
-  // }, [rowSelection]);
 
   const infoColumnsSub = useMemo(() => {
     const infoColumnsSubInit = processingInfoColumnTableHaveFooter(
@@ -482,15 +411,11 @@ const FormGiaoHang = ({
     return infoColumnsSubInit;
   }, [curSelected, dataTableSub]);
 
-  // console.log("infoColumnsSub: ", infoColumnsSub);
-  console.log("selected: ", rowSelectionSub);
-
   useEffect(() => {
     if (infoKH["MAKH"] == undefined || infoKH["MAKH"] == "") {
       // setDataTable([]);
       return;
     }
-    console.log("Call API");
     fetch("http://localhost:8000/giaohang", {
       method: "POST",
       headers: {
@@ -526,7 +451,6 @@ const FormGiaoHang = ({
               return response.json();
             })
             .then((info) => {
-              // console.log("info: ", info);
               setDataTableSub(info);
               // get keys of info to setMapSelected expample {0: key1, 1: key2, ...}
               const keys = Object.keys(info);
@@ -536,6 +460,8 @@ const FormGiaoHang = ({
               }
               setMapSelected(map);
             });
+        } else {
+          setDataTableSub([]);
         }
       })
       .catch((err) => {
@@ -587,21 +513,11 @@ const FormGiaoHang = ({
           DONGIA: item.GIABAN,
           THANHTIEN: item.THANHTIEN,
           SODH: item.SODH,
+          TENGOT: item.TENGOT,
         };
         return obj;
       });
-      // const table = dataTableSub.map((item) => {
-      //   const obj = {
-      //     MAGIAY: item.MAGIAY,
-      //     TENGIAY: item.TENGIAY,
-      //     SOLUONG: item.SOLUONG,
-      //     DONGIA: item.GIABAN,
-      //     THANHTIEN: item.THANHTIEN,
-      //     SODH: item.SODH,
-      //   };
-      //   return obj;
-      // });
-      // console.log("table: ", dataTableSub);
+
       const table_group = table.reduce((acc, curr) => {
         const index = acc.findIndex((item) => item.MAGIAY === curr.MAGIAY);
         if (index === -1) {
@@ -670,6 +586,7 @@ const FormGiaoHang = ({
           DONGIA: item.GIABAN,
           THANHTIEN: item.THANHTIEN,
           SODH: item.SODH,
+          TENGOT: item.TENGOT,
         };
         return obj;
       });
@@ -694,7 +611,6 @@ const FormGiaoHang = ({
           return response.json();
         })
         .then((data) => {
-          // console.log("tong no : ", data[0]["TONGNO"]);
           const table_group = table.reduce((acc, curr) => {
             const index = acc.findIndex((item) => item.MAGIAY === curr.MAGIAY);
             if (index === -1) {
@@ -742,10 +658,23 @@ const FormGiaoHang = ({
   //   }
   // }, [curSelected]);
 
-  console.log("sub: ", dataTableSub);
-  // start: add to change Popover's behavior
-  const [clickedPopoverMaKH, setClickedPopoverMaKH] = useState(false);
-  // end: add to change Popover's behavior
+  const [maKH, setMaKH] = useState("");
+  const [tenKH, setTenKH] = useState("");
+
+  useEffect(() => {
+    if (maKH != "") {
+      var KhachHang = dataTableKhachHang.filter((x) => x["MAKH"] == maKH);
+      const info = {
+        MAKH: KhachHang[0]["MAKH"],
+        TENKH: KhachHang[0]["TENKH"],
+        DIACHI: KhachHang[0]["DIACHI"],
+        SOPHIEU: infoForm.SOPHIEU,
+        NGAYPHIEU: infoForm.NGAYPHIEU,
+      };
+      setInfoKH({ ...info });
+    }
+  }, [maKH]);
+
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -753,33 +682,17 @@ const FormGiaoHang = ({
           <label className={styles.title}>Đơn hàng</label>
           <div className={styles.left_row}>
             <label>Khách hàng</label>
-            {/* <input type="text" className={styles.small} value={test_makh} /> */}
-            <Popover
-              placement="bottomLeft"
-              trigger="click"
-              open={clickedPopoverMaKH}
-              onOpenChange={(open) => setClickedPopoverMaKH(open)}
-              content={
-                <TableMaKH
-                  data={dataTableKhachHang}
-                  rowSelection={rowSelectionMaKH}
-                  setRowSelection={setRowSelectionMaKH}
-                  isSaveData={isSaveData}
-                  setIsSaveData={setIsSaveDataNghiepVuGiaoHang}
-                  setClickedPopover={setClickedPopoverMaKH}
-                />
-              }
-            >
-              <input
-                name="MAKH"
-                value={infoKH["MAKH"] ? infoKH["MAKH"] : ""}
-                readOnly={true}
-              />
-            </Popover>
-            <input
-              type="text"
-              className={styles.medium}
-              value={infoKH["TENKH"] ? infoKH["TENKH"] : ""}
+            <ItemKhachHang
+              value={maKH}
+              setValue={setMaKH}
+              label={tenKH}
+              setLabel={setTenKH}
+              size_input={"15rem"}
+              size_span={"35rem"}
+              have_span={true}
+              size_selection={550}
+              have_set_save={true}
+              isSaveData={isSaveData}
             />
           </div>
         </div>
@@ -863,33 +776,29 @@ const FormGiaoHang = ({
       <div className={styles.group_button}>
         <div>
           {/* <button onClick={handleIn}>In</button> */}
-          {
-            isSaveData ? (
-              <button onClick={handleIn}>In</button>
-            ) : (
-              <></>
-            )
-          }
+          {isSaveData ? <button onClick={handleIn}>In</button> : <></>}
           {/* <button onClick={handleInCongNo}>In Công Nợ</button> */}
-          {
-            isSaveData ? (
-              <button onClick={handleInCongNo}>In Công Nợ</button>
-            ) : (
-              <></>
-            )
-          }
+          {isSaveData ? (
+            <button onClick={handleInCongNo}>In Công Nợ</button>
+          ) : (
+            <></>
+          )}
           <button onClick={handleSave}>Lưu</button>
           {/* <button onClick={handleNhapTiep}>Nhập tiếp</button> */}
-          { isSaveData ? (<button onClick={handleNhapTiep}>Nhập tiếp</button>) : (<Popconfirm
-            title="Xác nhận hành động"
-            description="Bạn muốn nhập tiếp mà không lưu thay đổi?"
-            okText="Đồng ý"
-            cancelText="Không đồng ý"
-            onConfirm={handleNhapTiep}
-            onCancel={() => {}}
-          >
-            <button>Nhập tiếp</button>
-          </Popconfirm>)}
+          {isSaveData ? (
+            <button onClick={handleNhapTiep}>Nhập tiếp</button>
+          ) : (
+            <Popconfirm
+              title="Xác nhận hành động"
+              description="Bạn muốn nhập tiếp mà không lưu thay đổi?"
+              okText="Đồng ý"
+              cancelText="Không đồng ý"
+              onConfirm={handleNhapTiep}
+              onCancel={() => {}}
+            >
+              <button>Nhập tiếp</button>
+            </Popconfirm>
+          )}
         </div>
       </div>
     </div>

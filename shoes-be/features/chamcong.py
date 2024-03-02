@@ -3,7 +3,7 @@ from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
 from utils.date import * 
-from datetime import datetime
+from datetime import datetime, timedelta
 from features.hethong import (find_info_primary_key, 
                               save_info_primary_key)
 from utils.vietnamese import convert_data_to_save_database
@@ -26,8 +26,6 @@ def get_type_nvien(manvien):
 
 @router.post("/chamcong")
 def read(data: dict) -> RESPONSE_CHAMCONG:
-    # return KH.read()
-    # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
     maky = data["MAKY"]
     manv = data["MANVIEN"]
     loainv = get_type_nvien(manv)
@@ -78,14 +76,9 @@ order by abc.NGAYPHIEU desc, abc.SOPHIEU desc
         return CC.read_custom(sql)
 
 
-    # sql = f"SELECT DISTINCT phieupc, NgayPhieu, DienGiai from CHAMCONG where MAKY='{maky}' AND MANVIEN='{manv}'"
-
-    # return CC.read_custom(sql)
-
 
 @router.get("/chamcong/nhanvien")
 def read_nhanvien():
-    # params = ("MANVIEN", "TENNVIEN", "DMNHANVIEN")
     col1 = "MANVIEN"
     col2 = "TENNVIEN"
     tbn = "DMNHANVIEN"
@@ -104,8 +97,6 @@ def read_ky():
 
 @router.post("/chamcong/{manvien}")
 def read(data: dict):
-    # return KH.read()
-    # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
     phieupc = "(" + \
         ", ".join([f"'{value}'" for value in data["PHIEUPC"]]) + ")"
     maky = data["MAKY"]
@@ -185,7 +176,7 @@ def save(data: dict) -> RESPONSE:
     manv = data["MANVIEN"]
     maky = data["MAKY"]
     phieupc = data["SOPHIEU"]
-    ngaypc = get_datetime_now() #data["NGAYPHIEU"]
+    ngaypc = get_datetime_now()
     diengiai = data["DIENGIAI"]
     sql_delete = f"""DELETE FROM CHAMCONG 
                      WHERE MAKY='{maky}' AND MANVIEN='{manv}' 
@@ -229,8 +220,10 @@ def save(data: dict) -> RESPONSE:
 
 @router.get("/chamcong/salary_compute")
 def reasalary_computed(MAKY: str, TYPE: str, YEAR: str) -> List[dict]:
-    start_date = f"{YEAR}-01-01"
-    end_date = f"{YEAR}-12-31"
+    today = datetime.now()
+    six_month_ago = today - timedelta(days=30 * 6)
+    start_date = f"{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}"
+    end_date = f"{today.year}-{today.month:02}-{today.day:02}"
     LOAINVIEN = ""
     # LOAINVIEN: TQ, TD, ALL
     if TYPE == "TQ":
@@ -240,19 +233,8 @@ def reasalary_computed(MAKY: str, TYPE: str, YEAR: str) -> List[dict]:
     else:
         pass
 
-    # sql = f"""
-    #     select MANVIEN, TENNVIEN, MaGiay as MAGIAY, SOLUONG,
-    #     DONGIA, SOLUONG * DONGIA as THANHTIEN,
-    #     PHIEUPC, DIENGIAIPHIEU, MADE, MAQUAI
-    #     from V_CHAMCONG
-    #     where MaKy = '{MAKY}'
-    #     -- and MANVIEN='LINH' -- delete this line
-    #     {LOAINVIEN}
-    #     {condition_year}
-    #     order by MANVIEN, PHIEUPC, MAGIAY
-    # """
     sql = f"""select MANVIEN, TENNVIEN, MaGiay as MAGIAY, SOLUONG,
-                DONGIA, SOLUONG * DONGIA as THANHTIEN,
+                coalesce(DONGIA, 0) as DONGIA, SOLUONG * coalesce(DONGIA, 0) as THANHTIEN,
                 PHIEUPC, DIENGIAIPHIEU, MADE, MAQUAI
             from 
             (Select CHAMCONG.PHIEUPC, CHAMCONG.MaKy, CHAMCONG.MaGiay,CHAMCONG.MANVIEN,

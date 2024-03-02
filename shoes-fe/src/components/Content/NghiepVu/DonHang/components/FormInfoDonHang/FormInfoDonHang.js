@@ -12,7 +12,6 @@ const FormInfoDonHang = ({
   action,
   resetFocusStatus,
 }) => {
-  console.log("re-render FormInfoDonHang");
   const handleChangeForm = (e) => {
     const data = { ...formInfoDonHang };
     data[e.target.name] = e.target.value;
@@ -20,14 +19,22 @@ const FormInfoDonHang = ({
     resetFocusStatus();
   };
 
-  const [maKH, setMaKH] = useState("");
-  const [tenKH, setTenKH] = useState("");
+  const [maKH, setMaKH] = useState(() => {
+    if (formInfoDonHang["MAKH"]) return formInfoDonHang["MAKH"];
+    else return "";
+  });
+  const [tenKH, setTenKH] = useState(() => {
+    if (formInfoDonHang["TENKH"]) return formInfoDonHang["TENKH"];
+    else return "";
+  });
   useEffect(() => {
-    setFormInfoDonHang({
-      ...formInfoDonHang,
-      MAKH: maKH,
-      TENKH: tenKH,
-    });
+    if (maKH !== formInfoDonHang["MAKH"]) {
+      setFormInfoDonHang({
+        ...formInfoDonHang,
+        MAKH: maKH,
+        TENKH: tenKH,
+      });
+    }
   }, [maKH]);
 
   const handleChangeFormForTypeDate = (e) => {

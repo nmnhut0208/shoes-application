@@ -31,7 +31,7 @@ const list_key = [
     Cell: ({ cell }) => (
       <p>{parseFloat(cell.getValue()).toLocaleString("en")}</p>
     ),
-  }
+  },
 ];
 
 const infoColumns = processingInfoColumnTable(list_key);
@@ -63,15 +63,12 @@ const ChamCongSub = () => {
   const [year, setYear] = useState("");
   const [allowDelete, setAllowDelete] = useState(true);
 
-  //   const [rowSelection, setRowSelection] = useState({});
-
   const handleDelete = () => {
     if (
       stateUser.userPoolAccess.some(
         (obj) => obj.MAFORM === "F0042" && obj.XOA === 1
       )
     ) {
-      console.log("handleDelete");
       setShowModal(true);
     } else {
       CustomAlert("Bạn không có quyền xóa");
@@ -85,14 +82,13 @@ const ChamCongSub = () => {
   const handleTruyVan = () => {
     updateData(year, setDataTable);
     let current_year = moment().year();
-    console.log("current_year: ", current_year, typeof current_year);
     if (year === "" || parseInt(year) == current_year) setAllowDelete(true);
     else setAllowDelete(false);
   };
 
   return (
     <div className={styles.container}>
-      <header className={styles.header_table}>Chấm công</header>
+      <h1 className={styles.header_table}>Truy vấn - Chấm công</h1>
       <div className={clsx(styles.form, styles.info_query)}>
         <label>Xem dữ liệu năm</label>
         <input

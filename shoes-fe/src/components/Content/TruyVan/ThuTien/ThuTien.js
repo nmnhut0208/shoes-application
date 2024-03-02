@@ -193,7 +193,7 @@ const ThuTien = () => {
   };
   return (
     <div style={{ width: "90%", marginLeft: "5%" }}>
-      <h1>Thu Tiền</h1>
+      <h1>Truy vấn - Thu Tiền</h1>
       <div className={clsx(styles.form, styles.info_query)}>
         <label>Xem dữ liệu năm</label>
         <input

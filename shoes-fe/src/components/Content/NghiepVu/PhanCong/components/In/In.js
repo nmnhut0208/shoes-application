@@ -70,7 +70,7 @@ const processing_data = (data, TYPE) => {
   return info_print;
 };
 
-const In = ({ sophieu, data }) => {
+const In = ({ sophieu, data, stylePrint = {} }) => {
   const [stateTable, dispatchTable] = useTableContext();
   const [dataPrint, setDataPrint] = useState([]);
 
@@ -95,7 +95,6 @@ const In = ({ sophieu, data }) => {
     let infoDetailsPrint = [];
     for (let i = 0; i < list_tho_de.length; i++) {
       let sub_data = data.filter((element) => element.THODE === list_tho_de[i]);
-      console.log("sub_data: ", sub_data);
       let _info = {
         NAME: sub_data[0]["TENTHODE"],
         TYPE: "đế",
@@ -120,13 +119,20 @@ const In = ({ sophieu, data }) => {
 
   useLayoutEffect(() => {
     if (dataPrint.length > 0) {
-      dispatchTable(actions_table.setModeShowModal(false));
-      handelPrint();
+      if (Object.keys(stylePrint).length == 0) {
+        dispatchTable(actions_table.setModeShowModal(false));
+        handelPrint();
+      }
     }
   }, [dataPrint]);
 
   return (
-    <div ref={componentRef} className={styles.print_page} id="print_content">
+    <div
+      ref={componentRef}
+      className={styles.print_page}
+      style={{ ...stylePrint }}
+      id="print_content"
+    >
       <div className={styles.each_page}>
         <h1 className={styles.print_header}>Số phiếu: {sophieu}</h1>
         {dataPrint.length > 0 &&

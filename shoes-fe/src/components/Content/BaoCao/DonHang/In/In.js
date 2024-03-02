@@ -26,9 +26,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
       .then((info) => {
         setDataTable(info);
       })
-      .catch((error) => {
-        console.log("error: ", error);
-      });
+      .catch((error) => {});
   }, []);
 
   useLayoutEffect(() => {

@@ -18,6 +18,12 @@ const infoColumns = [
   },
   // { header: "Tên Hàng", key: "TENGIAY", width: 29 * rem_to_px },
   {
+    header: "Tên Gót",
+    key: "TENGOT",
+    width: 10 * rem_to_px,
+    textAlign: "center",
+  },
+  {
     header: "SL",
     key: "SOLUONG",
     width: 10 * rem_to_px,
@@ -59,11 +65,6 @@ const In = ({ data, flag }) => {
     return sum;
   }, [data["table"]]);
 
-  // console.log("columns: ", data["table"].length);
-  // useLayoutEffect(() => {
-  //   dispatchTable(actions_table.setModeShowModal(false));
-  //   handelPrint();
-  // }, []);
   return (
     <div className={styles.container}>
       <div ref={componentRef} className={styles.print_page}>
@@ -109,7 +110,6 @@ const In = ({ data, flag }) => {
         In
       </button>
     </div>
-    
   );
 };
 

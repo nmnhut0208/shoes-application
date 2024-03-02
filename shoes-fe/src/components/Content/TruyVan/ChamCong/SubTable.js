@@ -13,12 +13,9 @@ const SubTable = ({
   setShowForm,
   setSendData,
   setData,
-  //   rowSelection,
-  //   setRowSelection,
   maxHeight,
   allowDelete,
 }) => {
-  //   console.log("data: ", data);
   const [stateUser, dispatchUser] = useUserContext();
   const maForm = "F0042";
   const [stateTable, dispatchTable] = useTableContext();

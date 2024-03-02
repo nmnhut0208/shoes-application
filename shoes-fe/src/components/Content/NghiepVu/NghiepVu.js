@@ -12,7 +12,6 @@ const NghiepVu = () => {
   const [stateUser, dispatchUser] = useUserContext();
   const inforCurrentTask = stateTask.inforCurrentTask;
   const userAccess = stateUser.userPoolAccess;
-  console.log(inforCurrentTask);
   switch (inforCurrentTask.infoDetail) {
     case "Đơn hàng":
       return <DonHang />;

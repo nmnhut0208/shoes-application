@@ -47,8 +47,6 @@ const CongNo = () => {
     });
   }, [khachHangToValue]);
 
-  console.log("form: ", form);
-
   // const handlePrint = () => {
   //   setStatusModalIn(true);
   // };
@@ -106,6 +104,7 @@ const CongNo = () => {
                 setValue={setKhachHangFromValue}
                 size_input={"15rem"}
                 have_span={false}
+                size_selection={300}
               />
             </div>
             <div className={styles.item}>
@@ -115,6 +114,7 @@ const CongNo = () => {
                 setValue={setKhachHangToValue}
                 size_input={"15rem"}
                 have_span={false}
+                size_selection={300}
               />
             </div>
           </div>

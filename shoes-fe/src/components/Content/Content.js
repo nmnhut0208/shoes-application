@@ -8,7 +8,6 @@ import BaoCao from "./BaoCao";
 const Content = () => {
   const [stateTask, dispatchTask] = useTaskContext();
   const inforCurrentTask = stateTask.inforCurrentTask;
-  console.log("inforCurrentTask", inforCurrentTask.infoContent);
   switch (inforCurrentTask.infoContent) {
     case "Header":
       return <></>;

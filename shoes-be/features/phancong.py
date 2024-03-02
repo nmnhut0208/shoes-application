@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 from utils.base_class import BaseClass
@@ -137,9 +137,11 @@ def baocao_phancong(YEAR: str=None) -> List[RESPONSE_BAOCAO_PHANCONG]:
                              and NGAYPHIEU <= '{YEAR}-12-31'
                              """
     else:
-        care_year = datetime.today().year
-        condition_year = f"""where NGAYPHIEU >= '{care_year}-01-01'
-                        """
+        today = datetime.today() + timedelta(days=1)
+        six_month_ago = today - timedelta(days=6*30)
+        condition_year = f"""where NGAYPHIEU <= '{today.year}-{today.month:02}-{today.day:02}'
+                             and NGAYPHIEU >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
+                             """
         
     sql = f"""select SOPHIEU, NGAYPHIEU,
                 DIENGIAIPHIEU, MAKY

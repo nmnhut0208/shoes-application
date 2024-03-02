@@ -13,11 +13,8 @@ const SubTable = ({
   setShowForm,
   setSendData,
   setDataTable,
-  //   rowSelection,
-  //   setRowSelection,
   maxHeight,
 }) => {
-  // console.log("databig: ", data);
   const [stateUser, dispatchUser] = useUserContext();
   const maForm = "F0033";
   const [stateTable, dispatchTable] = useTableContext();
@@ -77,7 +74,6 @@ const SubTable = ({
             title="Xác nhận hành động"
             description="Bạn thực sự muốn xoá thông tin này?"
             onConfirm={() => {
-              console.log("delete: ", row.original);
               if (
                 stateUser.userPoolAccess.some(
                   (obj) => obj.MAFORM === maForm && obj.XOA === 1

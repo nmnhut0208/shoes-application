@@ -27,6 +27,12 @@ export const INFO_COLS_DONHANG = [
     width: 25 * rem_to_px,
   },
   {
+    header: <TextHeader value={"Hình ảnh"} />,
+    key: "HAVEHINHANH",
+    width: 10 * rem_to_px,
+    enableEditing: false,
+  },
+  {
     header: <TextHeader value={"Màu đế"} />,
     key: "MAUDE",
     width: 8 * rem_to_px,

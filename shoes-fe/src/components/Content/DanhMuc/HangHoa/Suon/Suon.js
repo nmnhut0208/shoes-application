@@ -31,7 +31,6 @@ const Suon = () => {
     dispatchTable(actions_table.setComponentForm(FormSuon));
     fetch("http://localhost:8000/suon")
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((info) => {

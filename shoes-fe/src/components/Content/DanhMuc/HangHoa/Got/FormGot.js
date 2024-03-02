@@ -82,14 +82,12 @@ const FormGot = () => {
         ])
       );
     }
-    console.log("inputForm: ", inputForm);
     fetch("http://localhost:8000/got", {
       method: method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(inputForm),
     })
       .then((response) => {
-        console.log("response: ", response);
         CustomAlert("Lưu thành công.");
       })
       .catch((error) => {

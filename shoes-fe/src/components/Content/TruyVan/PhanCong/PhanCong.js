@@ -13,7 +13,6 @@ import clsx from "clsx";
 import { CustomAlert } from "~utils/alert_custom";
 
 const Table = ({ columns, data, setDataPhanCong, permission }) => {
-  console.log("vao table phan cong ne");
   const [rowInfo, setRowInfo] = useState({});
   const [isSaveData, setIsSaveData] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -224,7 +223,7 @@ const PhanCong = () => {
 
   return (
     <div style={{ width: "90%", marginLeft: "5%" }}>
-      <h1>Phân công</h1>
+      <h1>Truy vấn - Phân công</h1>
       <div className={clsx(styles.form, styles.info_query)}>
         <label>Xem dữ liệu năm</label>
         <input

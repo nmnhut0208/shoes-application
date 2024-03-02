@@ -71,7 +71,6 @@ const FormMau = () => {
       body: JSON.stringify(dataForm),
     })
       .then((response) => {
-        console.log("response: ", response);
         CustomAlert("Lưu thành công.");
       })
       .catch((error) => {

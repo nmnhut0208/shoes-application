@@ -11,8 +11,6 @@ const SubTable = ({
   setIsSaveData,
   maxHeight,
 }) => {
-  //   console.log("data: ", data);
-
   return (
     <MaterialReactTable
       columns={columns}

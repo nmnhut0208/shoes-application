@@ -18,6 +18,7 @@ import {
   updateFormDonHang,
   updateColumnsInformations,
   numberSize,
+  numberSizeToTab,
 } from "./helper";
 import { CustomAlert } from "~utils/alert_custom";
 
@@ -61,6 +62,7 @@ const FormDonHang = ({
     mau: false,
     dmGiaykh: false,
     inDonHang: false,
+    viewInDonHang: false,
   });
 
   const [showModal, setShowModal] = useState(false);
@@ -70,6 +72,8 @@ const FormDonHang = ({
 
   const [focusedRow, setFocusedRow] = useState(-1);
   const [focusedColumn, setFocusedColumn] = useState(-1);
+  const [focusedRowToTab, setFocusedRowToTab] = useState(-1);
+  const [focusedColumnToTab, setFocusedColumnToTab] = useState(-1);
   const [changeFocus, setChangeFocus] = useState(false);
 
   useEffect(() => {
@@ -81,7 +85,6 @@ const FormDonHang = ({
           return response.json();
         })
         .then((info) => {
-          console.log("GiayKH", info);
           setListGiayUnique(info);
         })
         .catch((err) => {
@@ -97,7 +100,6 @@ const FormDonHang = ({
           return response.json();
         })
         .then((info) => {
-          console.log(info);
           setListGiayKH(info);
         })
         .catch((err) => {
@@ -118,7 +120,6 @@ const FormDonHang = ({
           return response.json();
         })
         .then((info) => {
-          console.log("info donhang: ", info);
           setDataTable([...info, renderDataEmpty(INFO_COLS_DONHANG, 1)[0]]);
           setFormInfoDonHang({
             SODH: info[0]["SODH"],
@@ -141,8 +142,6 @@ const FormDonHang = ({
     setIsSaveData(true);
   }, [dataView]);
 
-  console.log("issavedata: ", isSaveData);
-
   const resetFocusStatus = () => {
     setFocusedColumn(-1);
     setFocusedRow(-1);
@@ -155,6 +154,7 @@ const FormDonHang = ({
       mau: false,
       dmGiaykh: false,
       inDonHang: false,
+      viewInDonHang: false,
     });
     setShowModal(true);
   };
@@ -166,6 +166,7 @@ const FormDonHang = ({
       mau: true,
       dmGiaykh: false,
       inDonHang: false,
+      viewInDonHang: false,
     });
     setShowModal(true);
   };
@@ -201,7 +202,6 @@ const FormDonHang = ({
     } else {
       saveDonDatHang(formInfoDonHang, dataDatHang);
       if (!dataView) {
-        console.log("updateSODH(lastestDH);: ");
         updateSODH(lastestDH);
       }
       setIsSaveData(true);
@@ -221,6 +221,7 @@ const FormDonHang = ({
       mau: false,
       dmGiaykh: true,
       inDonHang: false,
+      viewInDonHang: false,
     });
     setShowModal(true);
   };
@@ -232,7 +233,9 @@ const FormDonHang = ({
       view,
       listGiayUnique,
       setFocusedRow,
-      setFocusedColumn
+      setFocusedColumn,
+      setFocusedRowToTab,
+      setFocusedColumnToTab
     );
   }, [dataTable, listGiayUnique]);
 
@@ -256,29 +259,47 @@ const FormDonHang = ({
       mau: false,
       dmGiaykh: false,
       inDonHang: true,
+      viewInDonHang: false,
+    });
+    setShowModal(true);
+  };
+
+  const handleViewInDonHang = () => {
+    resetFocusStatus();
+    if (dataTable.length == 0) return;
+    setInfoFormWillShow({
+      giay: false,
+      mau: false,
+      dmGiaykh: false,
+      inDonHang: false,
+      viewInDonHang: true,
     });
     setShowModal(true);
   };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (focusedColumn < 0 || focusedRow < 0) {
+      if (
+        focusedColumn < 0 &&
+        focusedRow < 0 &&
+        focusedColumnToTab < 0 &&
+        focusedRowToTab < 0
+      ) {
         return;
       }
       let numberLine = dataTable.length - 1;
       if (dataTable[numberLine]["MAGIAY"] !== "") {
         numberLine = dataTable.length;
       }
-      console.log("================================================");
       let xNew = parseInt(focusedRow);
       let yNew = parseInt(focusedColumn);
-      console.log("xOld: ", xNew);
-      console.log("yOld: ", yNew);
 
+      let xNewToTab = parseInt(focusedRowToTab);
+      let yNewToTab = parseInt(focusedColumnToTab);
+      let isKeyTab = false;
       switch (e.key) {
         case "ArrowLeft":
           // Xử lý sự kiện mũi tên qua trái
-          console.log("ArrowLeft");
           yNew = yNew - 1;
           if (yNew < 0) {
             yNew = numberSize - 1;
@@ -291,7 +312,6 @@ const FormDonHang = ({
           break;
 
         case "ArrowRight":
-          console.log("ArrowRight");
           yNew = yNew + 1;
           if (yNew >= numberSize) {
             xNew = xNew + 1;
@@ -303,7 +323,6 @@ const FormDonHang = ({
           }
           break;
         case "ArrowUp":
-          console.log("ArrowUp");
           xNew = xNew - 1;
           if (xNew < 0) {
             xNew = numberLine - 1;
@@ -315,7 +334,6 @@ const FormDonHang = ({
           }
           break;
         case "ArrowDown":
-          console.log("ArrowDown");
           xNew = xNew + 1;
           if (xNew >= numberLine) {
             xNew = 0;
@@ -325,28 +343,71 @@ const FormDonHang = ({
             yNew = 0;
           }
           break;
+        case "Tab":
+          isKeyTab = true;
+          yNewToTab = yNewToTab + 1;
+          if (yNewToTab >= numberSizeToTab) {
+            xNewToTab = xNewToTab + 1;
+            yNewToTab = 0;
+          }
+          if (xNewToTab >= numberLine) {
+            xNewToTab = 0;
+            yNewToTab = 0;
+          }
+          break;
         default:
           return;
       }
-      console.log("xNew: ", xNew);
-      console.log("yNew: ", yNew);
-      setFocusedRow(xNew);
-      setFocusedColumn(yNew);
-      setChangeFocus(!changeFocus);
-      var inputElement = document.getElementById(`size_${xNew}_${yNew}`);
 
-      // Kiểm tra xem phần tử tồn tại trước khi đặt focus
-      if (inputElement) {
-        inputElement.focus();
-        if (yNew <= 7) {
-          // ko select toàn bộ text ở DIENGIAIDONG và INHIEU
-          setTimeout(function () {
-            inputElement.select();
-          }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
+      if (!isKeyTab && focusedColumn >= 0 && focusedRow >= 0) {
+        setFocusedRow(xNew);
+        setFocusedColumn(yNew);
+        var inputElement = document.getElementById(`size_${xNew}_${yNew}`);
+        // Kiểm tra xem phần tử tồn tại trước khi đặt focus
+        if (inputElement) {
+          inputElement.focus();
+          if (yNew <= 7) {
+            // ko select toàn bộ text ở DIENGIAIDONG và INHIEU
+            setTimeout(function () {
+              inputElement.select();
+            }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
+          }
+        } else {
+          //
         }
       } else {
-        console.log("Không tìm thấy phần tử có ID là 'abc'");
+        // y_New >= 6 có format là 'size_(xNew)_(y_New-6)
+        // ngược lại thì format là 'id_x_y'
+        setFocusedRowToTab(xNewToTab);
+        setFocusedColumnToTab(yNewToTab);
+        let yNewRef = yNewToTab >= 6 ? yNewToTab - 6 : yNewToTab;
+        let key = yNewToTab >= 6 ? "size" : "Id";
+
+        var inputElement = document.getElementById(
+          `${key}_${xNewToTab}_${yNewRef}`
+        );
+        // Kiểm tra xem phần tử tồn tại trước khi đặt focus
+        if (inputElement) {
+          if (yNewToTab < 6) {
+            setTimeout(function () {
+              inputElement.click();
+            }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
+          } else if (yNewToTab >= 6 && yNewToTab <= 13) {
+            inputElement.focus();
+            setTimeout(function () {
+              inputElement.select();
+            }, 0);
+          } else {
+            setTimeout(function () {
+              inputElement.select();
+            }, 0);
+          }
+        } else {
+          //
+        }
       }
+
+      setChangeFocus(!changeFocus);
     };
     window.addEventListener("keydown", handleKeyDown);
 
@@ -354,8 +415,14 @@ const FormDonHang = ({
       // Loại bỏ lắng nghe sự kiện bàn phím khi component unmount
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [focusedRow, focusedColumn, changeFocus, dataTable]);
-  console.log("infoFormWillShow: ", infoFormWillShow);
+  }, [
+    focusedRow,
+    focusedColumn,
+    changeFocus,
+    dataTable,
+    focusedColumnToTab,
+    focusedRowToTab,
+  ]);
 
   return (
     <div className={styles.page}>
@@ -390,6 +457,15 @@ const FormDonHang = ({
             }
           >
             In
+          </button>
+
+          <button
+            onClick={handleViewInDonHang}
+            disabled={
+              permission.IN === 0 || dataTable.length == 0 || !isSaveData
+            }
+          >
+            Xem thông tin đơn hàng
           </button>
 
           {action === "add" && (
@@ -466,6 +542,31 @@ const FormDonHang = ({
             )}
             // remove dòng cuối cùng
             setShowModal={setShowModal}
+            stylePrint={{}}
+          />
+        </Modal>
+      )}
+
+      {infoFormWillShow["viewInDonHang"] && (
+        <Modal
+          title="In Đơn Hàng"
+          status={showModal}
+          setShowModal={setShowModal}
+        >
+          <InDonHang
+            infoHeader={formInfoDonHang}
+            // dataTable={dataTable.slice(0, dataTable.length - 1)}
+            dataTable={dataTable.filter(
+              (data) => data["SOLUONG"] > 0 && data["MAGIAY"] !== ""
+            )}
+            // remove dòng cuối cùng
+            setShowModal={setShowModal}
+            stylePrint={{
+              "scroll-behavior": "smooth",
+              "overflow-y": "overlay",
+              "overflow-x": "hidden",
+              height: "600px",
+            }}
           />
         </Modal>
       )}

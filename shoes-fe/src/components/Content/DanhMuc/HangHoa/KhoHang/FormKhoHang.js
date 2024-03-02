@@ -60,9 +60,7 @@ const FormKhoHang = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(inputForm),
     })
-      .then((response) => {
-        console.log("response: ", response);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.log("error: ", error);
       });

@@ -6,7 +6,6 @@ import { Popconfirm } from "antd";
 const FormDelete = ({ setShowModal }) => {
   const [MAKY, setMAKY] = useState("");
   const [infoKY, setInfoKY] = useState([]);
-  console.log("record form: re-render", MAKY);
 
   const handleDelete = () => {
     if (MAKY === "") {

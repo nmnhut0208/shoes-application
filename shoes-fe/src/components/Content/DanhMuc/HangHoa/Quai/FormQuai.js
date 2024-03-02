@@ -91,7 +91,6 @@ const FormQuai = () => {
       body: JSON.stringify(inputForm),
     })
       .then((response) => {
-        console.log("response: ", response);
         CustomAlert("Lưu thành công.");
       })
       .catch((error) => {

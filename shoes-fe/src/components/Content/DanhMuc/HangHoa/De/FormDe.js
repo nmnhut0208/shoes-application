@@ -73,12 +73,8 @@ const FormDe = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(inputForm),
     })
-      .then((response) => {
-        console.log("response: ", response);
-      })
-      .catch((error) => {
-        console.log("error: ", error);
-      });
+      .then((response) => {})
+      .catch((error) => {});
     dispatchTable(actions_table.setModeShowModal(false));
   };
 

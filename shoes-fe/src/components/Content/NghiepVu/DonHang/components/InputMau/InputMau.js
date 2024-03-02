@@ -13,7 +13,13 @@ const customOptionStyle = {
 const filterOption = (input, option) => {
   return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
 };
-const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
+const InputMau = ({
+  id,
+  onFocus,
+  handleChangeDataTable,
+  readOnly,
+  init = "",
+}) => {
   const [stateItem, dispatchItem] = useItemsContext();
   const [showSelection, setShowSelection] = useState(false);
   const [showInput, setShowInput] = useState(true);
@@ -29,7 +35,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
   }, [init]);
 
   const handleChange = (value) => {
-    if (value === " ") {
+    if (value.trim() === "") {
       value = "";
       handleChangeDataTable("", "");
     } else {
@@ -37,11 +43,32 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
       handleChangeDataTable(value, choice[0]["label"]);
     }
     setMaMau(value);
+    var keysInfo = id.split("_");
+    var x = parseInt(keysInfo[1]);
+    var y = parseInt(keysInfo[2]);
+
+    var yNewToTab = y + 1;
+    let yNewRef = yNewToTab >= 6 ? yNewToTab - 6 : yNewToTab;
+    let key = yNewToTab >= 6 ? "size" : "Id";
+    var next_element = document.getElementById(`${key}_${x}_${yNewRef}`);
+    if (yNewToTab < 6) {
+      next_element.click();
+      setTimeout(function () {
+        next_element.click();
+      }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
+    }
+    if (yNewToTab >= 6 && yNewToTab <= 13) {
+      next_element.focus();
+      setTimeout(function () {
+        next_element.select();
+      }, 0);
+    }
     setShowInput(true);
     setShowSelection(false);
   };
 
   const handleFocusInput = () => {
+    onFocus();
     if (readOnly) return;
     setShowSelection(true);
     setShowInput(false);
@@ -52,6 +79,7 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
   };
 
   const handleBlurSelection = () => {
+    onFocus();
     if (readOnly) return;
     setShowSelection(false);
     setShowInput(true);
@@ -60,9 +88,9 @@ const InputMau = ({ handleChangeDataTable, readOnly, init = "" }) => {
     <div style={{ position: "relative", width: "100%" }}>
       {showInput && (
         <input
-          id="MAMAU"
+          id={id}
           value={maMA}
-          tabindex="-1"
+          tabindex="1"
           readOnly="true"
           onFocus={handleBlurSelection}
           onClick={handleFocusInput}

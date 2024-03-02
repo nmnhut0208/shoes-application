@@ -31,8 +31,6 @@ const MyTable = ({ columns, data }) => {
     return _footer;
   }, [data]);
 
-  console.log("footer: ", footer);
-
   return (
     <div className={styles.my_table}>
       <table>
@@ -78,7 +76,6 @@ const MyTable = ({ columns, data }) => {
         <tr>
           {columns.map((col) => {
             let value = footer[col["key"]];
-            console.log("value: ", value);
             if (value === undefined) {
               if (col["key"] === "TENGIAY")
                 return <th style={{ width: col["width"] }}>Tổng cộng</th>;
