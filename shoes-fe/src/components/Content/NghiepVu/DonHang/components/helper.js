@@ -11,16 +11,22 @@ import { renderDataEmpty } from "~utils/processing_data_table";
 import { CustomAlert } from "~utils/alert_custom";
 
 const dict_size_index = {
-  SIZE5: 0,
-  SIZE6: 1,
-  SIZE7: 2,
-  SIZE8: 3,
-  SIZE9: 4,
-  SIZE0: 5,
-  SIZE1: 6,
-  GIABAN: 7,
-  DIENGIAIDONG: 8,
-  INHIEU: 9,
+  MAGIAY: 0,
+  MAUDE: 1,
+  MAUGOT: 2,
+  MAUSUON: 3,
+  MAUCA: 4,
+  MAUQUAI: 5,
+  SIZE5: 6,
+  SIZE6: 7,
+  SIZE7: 8,
+  SIZE8: 9,
+  SIZE9: 10,
+  SIZE0: 11,
+  SIZE1: 12,
+  GIABAN: 13,
+  DIENGIAIDONG: 14,
+  INHIEU: 15,
 };
 
 const dict_size_index_to_tab = {
@@ -95,8 +101,6 @@ export const updateColumnsInformations = (
   setDataTable,
   view,
   listGiayUnique,
-  setFocusedRow,
-  setFocusedColumn,
   setFocusedRowToTab,
   setFocusedColumnToTab
 ) => {
@@ -117,8 +121,6 @@ export const updateColumnsInformations = (
         <GiayUnique
           id={`Id_${cell.row.id}_${dict_size_index_to_tab[key]}`}
           onFocus={() => {
-            setFocusedRow(-1);
-            setFocusedColumn(-1);
             setFocusedRowToTab(cell.row.id);
             setFocusedColumnToTab(dict_size_index_to_tab[key]);
           }}
@@ -164,8 +166,6 @@ export const updateColumnsInformations = (
           onKeyUp={handleDisableKeyDownUp}
           onFocus={(event) => {
             handleFocus(event);
-            setFocusedRow(cell.row.id);
-            setFocusedColumn(dict_size_index[key]);
             setFocusedRowToTab(cell.row.id);
             setFocusedColumnToTab(dict_size_index_to_tab[key]);
           }}
@@ -196,8 +196,6 @@ export const updateColumnsInformations = (
           onKeyDown={handleDisableKeyDownUp}
           onFocus={(event) => {
             handleFocus(event);
-            setFocusedRow(cell.row.id);
-            setFocusedColumn(dict_size_index[key]);
             setFocusedRowToTab(cell.row.id);
             setFocusedColumnToTab(dict_size_index_to_tab[key]);
           }}
@@ -243,8 +241,6 @@ export const updateColumnsInformations = (
             setDataTable([...dataTable]);
           }}
           onFocus={(event) => {
-            setFocusedRow(cell.row.id);
-            setFocusedColumn(dict_size_index[key]);
             setFocusedRowToTab(cell.row.id);
             setFocusedColumnToTab(dict_size_index_to_tab[key]);
           }}
@@ -264,8 +260,6 @@ export const updateColumnsInformations = (
             <InputMau
               id={`Id_${cell.row.id}_${dict_size_index_to_tab[key]}`}
               onFocus={() => {
-                setFocusedRow(-1);
-                setFocusedColumn(-1);
                 setFocusedRowToTab(cell.row.id);
                 setFocusedColumnToTab(dict_size_index_to_tab[key]);
               }}
