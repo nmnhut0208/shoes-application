@@ -17,7 +17,6 @@ import {
   saveDonDatHang,
   updateFormDonHang,
   updateColumnsInformations,
-  numberSize,
   numberSizeToTab,
 } from "./helper";
 import { CustomAlert } from "~utils/alert_custom";
@@ -72,6 +71,7 @@ const FormDonHang = ({
 
   const [focusedRowToTab, setFocusedRowToTab] = useState(-1);
   const [focusedColumnToTab, setFocusedColumnToTab] = useState(-1);
+  const [canDownUpArrow, setCanDownUpArrow] = useState(true);
   const [changeFocus, setChangeFocus] = useState(false);
 
   useEffect(() => {
@@ -231,7 +231,8 @@ const FormDonHang = ({
       view,
       listGiayUnique,
       setFocusedRowToTab,
-      setFocusedColumnToTab
+      setFocusedColumnToTab,
+      setCanDownUpArrow
     );
   }, [dataTable, listGiayUnique]);
 
@@ -278,15 +279,11 @@ const FormDonHang = ({
       if (focusedColumnToTab < 0 && focusedRowToTab < 0) {
         return;
       }
-      let numberLine = dataTable.length - 1;
-      if (dataTable[numberLine]["MAGIAY"] !== "") {
-        numberLine = dataTable.length;
-      }
+      let numberLine = dataTable.length;
 
       let xNewToTab = parseInt(focusedRowToTab);
       let yNewToTab = parseInt(focusedColumnToTab);
-      console.log("yNewToTab: ", yNewToTab);
-      console.log("xNewToTab: ", xNewToTab);
+      let notAction = false;
       switch (e.key) {
         case "ArrowLeft":
           // Xử lý sự kiện mũi tên qua trái
@@ -313,7 +310,8 @@ const FormDonHang = ({
           }
           break;
         case "ArrowUp":
-          if (yNewToTab < 6) {
+          if (!canDownUpArrow) {
+            notAction = true;
             return;
           }
           xNewToTab = xNewToTab - 1;
@@ -327,7 +325,8 @@ const FormDonHang = ({
           }
           break;
         case "ArrowDown":
-          if (yNewToTab < 6) {
+          if (!canDownUpArrow) {
+            notAction = true;
             return;
           }
           xNewToTab = xNewToTab + 1;
@@ -366,12 +365,13 @@ const FormDonHang = ({
         default:
           return;
       }
-      console.log("yNewToTab after: ", yNewToTab);
-      console.log("xNewToTab after: ", xNewToTab);
 
+      if (notAction) {
+        return;
+      }
       setFocusedRowToTab(xNewToTab);
       setFocusedColumnToTab(yNewToTab);
-      console.log("hihi: ", `Id_${xNewToTab}_${yNewToTab}`);
+      setCanDownUpArrow(true);
 
       var inputElement = document.getElementById(
         `Id_${xNewToTab}_${yNewToTab}`
@@ -379,7 +379,6 @@ const FormDonHang = ({
       // Kiểm tra xem phần tử tồn tại trước khi đặt focus
       if (inputElement) {
         if (yNewToTab < 6) {
-          console.log("Click!!!");
           setTimeout(function () {
             inputElement.click();
           }, 0); // để 0 cũng được, để nó vô hàng chờ thôi => brower event
@@ -405,7 +404,13 @@ const FormDonHang = ({
       // Loại bỏ lắng nghe sự kiện bàn phím khi component unmount
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [changeFocus, dataTable, focusedColumnToTab, focusedRowToTab]);
+  }, [
+    changeFocus,
+    dataTable,
+    focusedColumnToTab,
+    focusedRowToTab,
+    canDownUpArrow,
+  ]);
 
   return (
     <div className={styles.page}>

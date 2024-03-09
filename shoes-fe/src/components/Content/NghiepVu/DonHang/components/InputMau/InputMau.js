@@ -10,16 +10,18 @@ const customOptionStyle = {
   fontSize: "1.7rem",
 };
 
-const filterOption = (input, option) => {
-  return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
-};
 const InputMau = ({
   id,
   onFocus,
   handleChangeDataTable,
   readOnly,
   init = "",
+  setCanDownUpArrow,
 }) => {
+  const filterOption = (input, option) => {
+    setCanDownUpArrow(false);
+    return (option?.value ?? "").toLowerCase().startsWith(input.toLowerCase());
+  };
   const [stateItem, dispatchItem] = useItemsContext();
   const [showSelection, setShowSelection] = useState(false);
   const [showInput, setShowInput] = useState(true);
@@ -43,6 +45,7 @@ const InputMau = ({
       handleChangeDataTable(value, choice[0]["label"]);
     }
     setMaMau(value);
+    setCanDownUpArrow(true);
     var keysInfo = id.split("_");
     var x = parseInt(keysInfo[1]);
     var y = parseInt(keysInfo[2]);
@@ -118,11 +121,11 @@ const InputMau = ({
           filterOption={filterOption}
           key="maMA"
           autoFocus={true}
-          defaultOpen={true}
+          defaultOpen={false}
           onBlur={handleClickSelection}
           onClick={handleClickSelection}
-          bordered={false}
-          autoComplete="off"
+          // bordered={false}
+          // autoComplete="off"
           placement="bottomLeft"
         >
           {stateItem.infoItemMau.map((e) => (

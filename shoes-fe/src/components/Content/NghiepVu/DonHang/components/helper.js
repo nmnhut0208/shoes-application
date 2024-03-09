@@ -102,7 +102,8 @@ export const updateColumnsInformations = (
   view,
   listGiayUnique,
   setFocusedRowToTab,
-  setFocusedColumnToTab
+  setFocusedColumnToTab,
+  setCanDownUpArrow
 ) => {
   const infoColumnsInit = [];
 
@@ -120,6 +121,7 @@ export const updateColumnsInformations = (
       info["Cell"] = ({ cell }) => (
         <GiayUnique
           id={`Id_${cell.row.id}_${dict_size_index_to_tab[key]}`}
+          setCanDownUpArrow={setCanDownUpArrow}
           onFocus={() => {
             setFocusedRowToTab(cell.row.id);
             setFocusedColumnToTab(dict_size_index_to_tab[key]);
@@ -259,6 +261,7 @@ export const updateColumnsInformations = (
           >
             <InputMau
               id={`Id_${cell.row.id}_${dict_size_index_to_tab[key]}`}
+              setCanDownUpArrow={setCanDownUpArrow}
               onFocus={() => {
                 setFocusedRowToTab(cell.row.id);
                 setFocusedColumnToTab(dict_size_index_to_tab[key]);
