@@ -369,16 +369,12 @@ const FormDonHang = ({
       console.log("yNewToTab after: ", yNewToTab);
       console.log("xNewToTab after: ", xNewToTab);
 
-      // y_New >= 6 có format là 'size_(xNew)_(y_New-6)
-      // ngược lại thì format là 'id_x_y'
       setFocusedRowToTab(xNewToTab);
       setFocusedColumnToTab(yNewToTab);
-      let yNewRef = yNewToTab; // >= 6 ? yNewToTab - 6 : yNewToTab;
-      let key = yNewToTab >= 6 ? "size" : "Id";
-      console.log("hihi: ", `${key}_${xNewToTab}_${yNewRef}`);
+      console.log("hihi: ", `Id_${xNewToTab}_${yNewToTab}`);
 
       var inputElement = document.getElementById(
-        `${key}_${xNewToTab}_${yNewRef}`
+        `Id_${xNewToTab}_${yNewToTab}`
       );
       // Kiểm tra xem phần tử tồn tại trước khi đặt focus
       if (inputElement) {

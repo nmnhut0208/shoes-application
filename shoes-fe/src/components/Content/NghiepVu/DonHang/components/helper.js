@@ -146,7 +146,7 @@ export const updateColumnsInformations = (
     if (key === "GIABAN") {
       info["Cell"] = ({ cell }) => (
         <input
-          id={`size_${cell.row.id}_${dict_size_index[key]}`}
+          id={`Id_${cell.row.id}_${dict_size_index[key]}`}
           style={{
             border: "none",
             width: "100%",
@@ -175,7 +175,7 @@ export const updateColumnsInformations = (
     if (key.includes("SIZE")) {
       info["Cell"] = ({ cell }) => (
         <input
-          id={`size_${cell.row.id}_${dict_size_index[key]}`}
+          id={`Id_${cell.row.id}_${dict_size_index[key]}`}
           style={{
             border: "none",
             width: "100%",
@@ -231,7 +231,7 @@ export const updateColumnsInformations = (
             fontSize: "1.6rem",
             backgroundColor: "inherit",
           }}
-          id={`size_${cell.row.id}_${dict_size_index[key]}`}
+          id={`Id_${cell.row.id}_${dict_size_index[key]}`}
           readOnly={view}
           type="text"
           tabindex="1"
