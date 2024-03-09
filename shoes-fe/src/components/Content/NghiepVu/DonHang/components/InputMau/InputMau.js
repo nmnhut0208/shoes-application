@@ -67,7 +67,7 @@ const InputMau = ({
     setShowSelection(false);
   };
 
-  const handleFocusInput = () => {
+  const handleClick = () => {
     onFocus();
     if (readOnly) return;
     setShowSelection(true);
@@ -78,7 +78,7 @@ const InputMau = ({
     setShowInput(true);
   };
 
-  const handleBlurSelection = () => {
+  const handleFocus = () => {
     onFocus();
     if (readOnly) return;
     setShowSelection(false);
@@ -92,8 +92,8 @@ const InputMau = ({
           value={maMA}
           tabindex="1"
           readOnly="true"
-          onFocus={handleBlurSelection}
-          onClick={handleFocusInput}
+          onFocus={handleFocus}
+          onClick={handleClick}
           style={{
             width: "100%",
             border: "none",

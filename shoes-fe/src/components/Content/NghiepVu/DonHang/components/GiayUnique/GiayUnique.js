@@ -69,7 +69,7 @@ const GiayUnique = ({
     setShowSelection(false);
   };
 
-  const handleFocusInput = () => {
+  const handleFocus = () => {
     onFocus();
     if (readOnly) return;
     setShowSelection(true);
@@ -94,7 +94,7 @@ const GiayUnique = ({
           id={id}
           value={maMA}
           tabindex="1"
-          onFocus={handleFocusInput}
+          onFocus={handleFocus}
           onClick={handleClick}
           readOnly="true"
           style={{
