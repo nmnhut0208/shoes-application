@@ -73,14 +73,15 @@ const InputMau = ({
     setShowSelection(true);
     setShowInput(false);
   };
-  const handleClickSelection = () => {
-    setShowSelection(false);
-    setShowInput(true);
-  };
 
   const handleFocus = () => {
     onFocus();
     if (readOnly) return;
+    setShowSelection(false);
+    setShowInput(true);
+  };
+
+  const handleClickSelection = () => {
     setShowSelection(false);
     setShowInput(true);
   };

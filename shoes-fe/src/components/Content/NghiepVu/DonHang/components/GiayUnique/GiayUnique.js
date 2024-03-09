@@ -69,20 +69,21 @@ const GiayUnique = ({
     setShowSelection(false);
   };
 
-  const handleFocus = () => {
+  const handleClick = () => {
     onFocus();
     if (readOnly) return;
     setShowSelection(true);
     setShowInput(false);
   };
-  const handleClickSelection = () => {
+
+  const handleFocus = () => {
+    onFocus();
+    if (readOnly) return;
     setShowSelection(false);
     setShowInput(true);
   };
 
-  const handleClick = () => {
-    onFocus();
-    if (readOnly) return;
+  const handleClickSelection = () => {
     setShowSelection(false);
     setShowInput(true);
   };
