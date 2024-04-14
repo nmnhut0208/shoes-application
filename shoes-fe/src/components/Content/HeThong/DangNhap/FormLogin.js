@@ -15,12 +15,6 @@ function FormLogin() {
     form
       .validateFields()
       .then((values) => {
-        // TODO: Implement login logic
-        // if (values.username === "nhutnm4" && values.password === "123456") {
-        //   dispatchUser(actions.setUserName("nhutnm4"));
-        //   dispatchUser(actions.setUserPassword("123456"));
-        //   resetHeader(dispatchTask);
-        // }
         fetch("http://localhost:8000/login", {
           method: "POST",
           headers: {
@@ -64,8 +58,26 @@ function FormLogin() {
       });
   }
 
+  const [fields, setFields] = useState([
+    {
+      name: ["username"],
+      value: "ADMIN",
+    },
+  ]);
+
   return (
-    <Form form={form} onFinish={handleOk}>
+    <Form
+      form={form}
+      onFinish={handleOk}
+      fields={fields}
+      onFieldsChange={(_, allFields) => {
+        {
+          (allFields) => {
+            setFields(allFields);
+          };
+        }
+      }}
+    >
       <Form.Item
         name="username"
         rules={[{ required: true, message: "Please enter your username" }]}
@@ -76,7 +88,7 @@ function FormLogin() {
         name="password"
         rules={[{ required: true, message: "Please enter your password" }]}
       >
-        <Input.Password placeholder="Password" />
+        <Input.Password placeholder="Password" autoFocus />
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit" loading={loading}>
