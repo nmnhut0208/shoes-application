@@ -279,7 +279,10 @@ const FormDonHang = ({
       if (focusedColumnToTab < 0 && focusedRowToTab < 0) {
         return;
       }
-      let numberLine = dataTable.length;
+
+      var numberLine = dataTable.reduce(function (count, record) {
+        return count + (record.MAGIAY !== "" ? 1 : 0);
+      }, 0);
 
       let xNewToTab = parseInt(focusedRowToTab);
       let yNewToTab = parseInt(focusedColumnToTab);
