@@ -71,11 +71,7 @@ function FormLogin() {
       onFinish={handleOk}
       fields={fields}
       onFieldsChange={(_, allFields) => {
-        {
-          (allFields) => {
-            setFields(allFields);
-          };
-        }
+        setFields(allFields);
       }}
     >
       <Form.Item
