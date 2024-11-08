@@ -3,7 +3,6 @@ from fastapi.responses import JSONResponse
 from fastapi import Body, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import pyodbc
 import pandas as pd
 from features.khohang import router as router_khohang
 from features.mui import router as router_mui

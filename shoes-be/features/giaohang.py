@@ -22,13 +22,7 @@ GH = GIAOHANG()
 
 @router.post("/giaohang")
 def read(data: dict) -> RESPONSE_GIAOHANG:
-    # return KH.read()
-    # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
     makh = data["MAKH"]
-    # sql = f"SELECT SODH, NGAYDH, NGAYGH, DIENGIAIPHIEU, SUM(SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9) as SOLUONGCONLAI \
-    # FROM DONHANG \
-    # where MAKH = '{makh}' \
-    # GROUP BY SODH, MAKH, NGAYDH, NGAYGH, DIENGIAIPHIEU"
     sql = f"""SELECT SODH, NGAYDH, NGAYGH, DIENGIAI AS DIENGIAIDONG, SLDONHANG - SLGIAOHANG as SOLUONGCONLAI
             from 
             (SELECT DISTINCT dh.sodh,dh.ngaydh,dh.ngaygh,dh.makh,kh.tenkh,dh.diengiaiphieu AS DIENGIAI,dh.madh, dh.tmpfield as dagh,
@@ -79,7 +73,6 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
                 WHERE SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) > 0
                 order by NGAYDH desc, SODH desc
                 """
-    # return GH.read_custom(sql)
     results = GH.read_custom(sql)
     # group with SODH
     results_group = {}
