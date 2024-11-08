@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
@@ -19,17 +19,41 @@ TVGH = TVGIAOHANG()
 
 
 @router.get("/tv_giaohang")
-def read(YEAR: str=None) -> RESPONSE_TVGIAOHANG:
+def read(
+    SOPHIEU: Optional[str] = Query(None),
+    MAKH: Optional[str] = Query(None),
+    TENKH: Optional[str] = Query(None),
+    StartDate: Optional[str] = Query(None),
+    EndDate: Optional[str] = Query(None)) -> RESPONSE_TVGIAOHANG:
+    
     condition_year = ""
-    if YEAR is not None:
-        condition_year = f"""and NGAYPHIEU >= '{YEAR}-01-01'
-                             and NGAYPHIEU <= '{YEAR}-12-31'
-                             """
-    else:
+    have_query = False
+    
+    if SOPHIEU is not None:
+        condition_year += f""" and SOPHIEU like '%{SOPHIEU}%' """
+        have_query = True
+
+    if MAKH is not None:
+        condition_year += f""" and CONGNO.MAKH like '%{MAKH}%' """
+        have_query = True
+
+    if TENKH is not None:
+        condition_year += f""" and DMKHACHHANG.TENKH like '%{TENKH}%' """
+        have_query = True
+
+    if StartDate is not None:
+        condition_year += f""" and NGAYPHIEU >= '{StartDate}' """
+        have_query = True
+
+    if EndDate is not None:
+        condition_year += f""" and NGAYPHIEU <= '{EndDate}' """
+        have_query = True
+    
+    if have_query is False:
         today = datetime.today() + timedelta(days=1)
-        six_month_ago = today - timedelta(days=6*30)
-        condition_year = f"""and NGAYPHIEU <= '{today.year}-{today.month:02}-{today.day:02}'
-                             and NGAYPHIEU >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
+        six_month_ago = today - timedelta(days=3*30)
+        condition_year += f""" and NGAYPHIEU <= '{today.year}-{today.month:02}-{today.day:02}'
+                              and NGAYPHIEU >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
                              """
     sql = f"""
             SELECT distinct SOPHIEU, NGAYPHIEU, CONGNO.MAKH, 
@@ -42,7 +66,10 @@ def read(YEAR: str=None) -> RESPONSE_TVGIAOHANG:
             {condition_year}
             ORDER BY CONGNO.NGAYPHIEU desc, SOPHIEU desc
             """
-    return TVGH.read_custom(sql)
+    result = TVGH.read_custom(sql)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Không có dữ liệu")
+    return result
 
 @router.post("/tv_giaohang")
 def read(data: dict):
@@ -64,7 +91,6 @@ def read(data: dict):
 def read(data: dict):
     sophieu = data["SOPHIEU"]
     makh = data["MAKH"]
-    # sodh = "(" + ", ".join([f"'{value}'" for value in data["SODH"]]) + ")"
     sql = f"""SELECT SODH, CONGNO.MAGIAY, TENGIAY, MAUDE, MAUGOT, MAUSUON, MAUCA,
                      MAUQUAI, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9, SIZE0, coalesce(SIZE1,0) AS SIZE1, 
                      SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) as SOLUONG, 
@@ -80,7 +106,6 @@ def read(data: dict):
               AND SOPHIEU = '{sophieu}'
               """
     # print("abc: ", sql)
-    # return TVGH.read_custom(sql)
     results = TVGH.read_custom(sql)
     # group with SODH
     results_group = {}

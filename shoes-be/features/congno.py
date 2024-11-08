@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, Query
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
@@ -26,16 +26,6 @@ class CONGNO(BaseClass):
 
 congno = CONGNO()
 
-
-# @router.get("/congno/get_all_phieuthu")
-# def read() -> List[ITEM_PHIEUTHU]:
-#     sql = """select SOPHIEU, 
-#             COALESCE(DIENGIAIPHIEU, '') as DIENGIAIPHIEU,
-#             MAKH, THANHTIEN
-#             from CONGNO
-#             where LOAIPHIEU='PT'
-#             """
-#     return congno.read_custom(sql)
 
 @router.post("/congno/phieuthu")
 def add(data: ITEM_PHIEUTHU) -> RESPONSE:
@@ -105,17 +95,40 @@ def read(SOPHIEU: str, MAKH: str, DATE_TO: str, DATE_FROM: str=None) -> RESPONSE
 
 
 @router.get("/congno/truyvan_thu")
-def read(YEAR: str=None) -> RESPONSE_TVTHUCHI:
+def read(
+    SOPHIEU: Optional[str] = Query(None),
+    MAKH: Optional[str] = Query(None),
+    TENKH: Optional[str] = Query(None),
+    StartDate: Optional[str] = Query(None),
+    EndDate: Optional[str] = Query(None)) -> RESPONSE_TVTHUCHI:
+    
     condition_year = ""
-    if YEAR is not None:
-        condition_year = f"""and NGAYPHIEU >= '{YEAR}-01-01'
-                             and NGAYPHIEU <= '{YEAR}-12-31'
-                             """
-    else:
+    have_query = False
+    if SOPHIEU is not None:
+        condition_year += f""" and SOPHIEU like '%{SOPHIEU}%' """
+        have_query = True
+
+    if MAKH is not None:
+        condition_year += f""" and CONGNO.MAKH like '%{MAKH}%' """
+        have_query = True
+
+    if TENKH is not None:
+        condition_year += f""" and DMKHACHHANG.TENKH like '%{TENKH}%' """
+        have_query = True
+
+    if StartDate is not None:
+        condition_year += f""" and NGAYPHIEU >= '{StartDate}' """
+        have_query = True
+
+    if EndDate is not None:
+        condition_year += f""" and NGAYPHIEU <= '{EndDate}' """
+        have_query = True
+
+    if have_query is False:
         today = datetime.today() + timedelta(days=1)
-        six_month_ago = today - timedelta(days=6*30)
-        condition_year = f"""and NGAYPHIEU <= '{today.year}-{today.month:02}-{today.day:02}'
-                             and NGAYPHIEU >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
+        six_month_ago = today - timedelta(days=3*30)
+        condition_year += f""" and NGAYPHIEU <= '{today.year}-{today.month:02}-{today.day:02}'
+                              and NGAYPHIEU >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
                              """
         
     sql = f"""SELECT SOPHIEU, NGAYPHIEU, CONGNO.MAKH, 
@@ -126,7 +139,10 @@ def read(YEAR: str=None) -> RESPONSE_TVTHUCHI:
                      {condition_year}
                     order by NGAYPHIEU desc, SOPHIEU desc
                     """
-    return congno.read_custom(sql)
+    result = congno.read_custom(sql)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Không có dữ liệu")
+    return result
 
 @router.post("/congno_tonghop")
 def add(data: dict):

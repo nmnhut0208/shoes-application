@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Query
+from fastapi import APIRouter, Query, HTTPException
 from typing_extensions import Annotated
 from pydantic import BaseModel
 from typing import Optional
@@ -100,20 +100,46 @@ class RESPONSE_BAOCAO_DONHANG:
     MAKH: str
     TENKH: str
     DIENGIAI: str
-    SOLUONG: int 
+    SOLUONG: int    
+
 
 @router.get("/donhang/baocao_donhang")
-def baocao_donhang(YEAR: str=None) -> List[RESPONSE_BAOCAO_DONHANG]:
-    condition_year = ""
-    if YEAR is not None:
-        condition_year = f"""where NGAYDH >= '{YEAR}-01-01'
-                             and NGAYDH <= '{YEAR}-12-31'
-                             """
-    else:
+def baocao_donhang(
+    SODH: Optional[str] = Query(None),
+    MAKH: Optional[str] = Query(None),
+    TENKH: Optional[str] = Query(None),
+    StartDate: Optional[str] = Query(None),
+    EndDate: Optional[str] = Query(None)) -> List[RESPONSE_BAOCAO_DONHANG]:
+
+    condition_year = "where 1 = 1 "
+    print("StartDate: ", StartDate)
+    print("EndDate: ", EndDate)
+    have_query = False
+    if SODH is not None:
+        condition_year += f""" and SODH like '%{SODH}%' """
+        have_query = True
+
+    if MAKH is not None:
+        condition_year += f""" and DH.MAKH like '%{MAKH}%' """
+        have_query = True
+
+    if TENKH is not None:
+        condition_year += f""" and KH.TENKH like '%{TENKH}%' """
+        have_query = True
+
+    if StartDate is not None:
+        condition_year += f""" and NGAYDH >= '{StartDate}' """
+        have_query = True
+
+    if EndDate is not None:
+        condition_year += f""" and NGAYDH <= '{EndDate}' """
+        have_query = True
+
+    if have_query is False:
         today = datetime.today() + timedelta(days=1)
-        six_month_ago = today - timedelta(days=6*30)
-        condition_year = f"""where NGAYDH <= '{today.year}-{today.month:02}-{today.day:02}'
-                             and NGAYDH >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
+        three_month_ago = today - timedelta(days=3*30)
+        condition_year = condition_year + f""" and NGAYDH <= '{today.year}-{today.month:02}-{today.day:02}'
+                             and NGAYDH >= '{three_month_ago.year}-{three_month_ago.month:02}-{three_month_ago.day:02}' 
                              """
 
     sql = f"""SELECT SODH, DH.MAKH, KH.TENKH, NGAYDH, NGAYGH, 
@@ -128,6 +154,8 @@ def baocao_donhang(YEAR: str=None) -> List[RESPONSE_BAOCAO_DONHANG]:
               order by NGAYDH desc, SODH desc
             """
     result = donhang.read_custom(sql)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Không có dữ liệu")
     return result
 
 

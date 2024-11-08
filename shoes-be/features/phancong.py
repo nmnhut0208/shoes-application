@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, timedelta
@@ -130,17 +130,36 @@ class RESPONSE_BAOCAO_PHANCONG:
 
 
 @router.get("/phancong/baocao_phancong")
-def baocao_phancong(YEAR: str=None) -> List[RESPONSE_BAOCAO_PHANCONG]:
-    condition_year = ""
-    if YEAR is not None:
-        condition_year = f"""where NGAYPHIEU >= '{YEAR}-01-01'
-                             and NGAYPHIEU <= '{YEAR}-12-31'
-                             """
-    else:
+def baocao_phancong(
+    SOPHIEU: Optional[str] = Query(None),
+    MAKY: Optional[str] = Query(None),
+    StartDate: Optional[str] = Query(None),
+    EndDate: Optional[str] = Query(None)) -> List[RESPONSE_BAOCAO_PHANCONG]:
+    
+    condition_year = "where 1 = 1"
+    have_query = False
+    
+    if SOPHIEU is not None:
+        condition_year += f""" and SOPHIEU like '%{SOPHIEU}%' """
+        have_query = True
+
+    if MAKY is not None:
+        condition_year += f""" and MAKY like '%{MAKY}%' """
+        have_query = True
+
+    if StartDate is not None:
+        condition_year += f""" and NGAYPHIEU >= '{StartDate}' """
+        have_query = True
+
+    if EndDate is not None:
+        condition_year += f""" and NGAYPHIEU <= '{EndDate}' """
+        have_query = True
+
+    if have_query is False:
         today = datetime.today() + timedelta(days=1)
-        six_month_ago = today - timedelta(days=6*30)
-        condition_year = f"""where NGAYPHIEU <= '{today.year}-{today.month:02}-{today.day:02}'
-                             and NGAYPHIEU >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
+        six_month_ago = today - timedelta(days=3*30)
+        condition_year += f""" and NGAYPHIEU <= '{today.year}-{today.month:02}-{today.day:02}'
+                              and NGAYPHIEU >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
                              """
         
     sql = f"""select SOPHIEU, NGAYPHIEU,
@@ -152,6 +171,8 @@ def baocao_phancong(YEAR: str=None) -> List[RESPONSE_BAOCAO_PHANCONG]:
                 order by NGAYPHIEU desc, SOPHIEU desc
             """
     result = phancong.read_custom(sql)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Không có dữ liệu")
     return result
 
 
