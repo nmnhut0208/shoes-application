@@ -9,12 +9,6 @@ const customOptionStyle = {
   fontSize: "1.7rem",
 };
 
-const filterOption = (input, option) => {
-  return (option?.value ?? "")
-    .toLowerCase()
-    .startsWith(input.trim().toLowerCase());
-};
-
 const GiayUnique = ({
   id,
   onFocus,
@@ -22,7 +16,14 @@ const GiayUnique = ({
   listGiayUnique,
   handleChangeDataTable,
   readOnly,
+  setCanDownUpArrow,
 }) => {
+  const filterOption = (input, option) => {
+    setCanDownUpArrow(false);
+    return (option?.value ?? "")
+      .toLowerCase()
+      .startsWith(input.trim().toLowerCase());
+  };
   const [maMA, setMaMau] = useState(() => {
     if (init) {
       return init;
@@ -44,6 +45,7 @@ const GiayUnique = ({
       choice[0]["TENCA"],
       choice[0]["HAVEHINHANH"]
     );
+    setCanDownUpArrow(true);
 
     var keysInfo = id.split("_");
     var x = parseInt(keysInfo[1]);
@@ -69,20 +71,21 @@ const GiayUnique = ({
     setShowSelection(false);
   };
 
-  const handleFocusInput = () => {
+  const handleClick = () => {
     onFocus();
     if (readOnly) return;
     setShowSelection(true);
     setShowInput(false);
   };
-  const handleClickSelection = () => {
+
+  const handleFocus = () => {
+    onFocus();
+    if (readOnly) return;
     setShowSelection(false);
     setShowInput(true);
   };
 
-  const handleClick = () => {
-    onFocus();
-    if (readOnly) return;
+  const handleClickSelection = () => {
     setShowSelection(false);
     setShowInput(true);
   };
@@ -94,7 +97,7 @@ const GiayUnique = ({
           id={id}
           value={maMA}
           tabindex="1"
-          onFocus={handleFocusInput}
+          onFocus={handleFocus}
           onClick={handleClick}
           readOnly="true"
           style={{
@@ -123,7 +126,7 @@ const GiayUnique = ({
           filterOption={filterOption}
           key="maMA"
           autoFocus={true}
-          defaultOpen={true}
+          defaultOpen={false}
           onBlur={handleClickSelection}
           onClick={handleClickSelection}
         >

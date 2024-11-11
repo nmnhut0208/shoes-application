@@ -27,6 +27,8 @@ def execute_database(sql, action_type='read'):
     if action_type == 'read':
         data = pd.read_sql(sql, conn)
         conn.close()
+        if data.empty:
+            return None
         # convert vni to unicode string
         for col in data.columns:
             if check_need_convert(col):
