@@ -1,0 +1,32 @@
+@import "~common_scss/form.module.scss";
+
+.part {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 72rem;
+  // justify-content: space-around;
+  input {
+    width: 15rem;
+  }
+  label {
+    min-width: 12rem;
+  }
+  .item{
+    display: flex;
+    flex-direction: row;
+    margin-right: 10rem;
+  }
+}
+
+.group_button {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-bottom: 1.5rem;
+  margin-right: 5rem;
+  button {
+    width: 8rem;
+    margin-left: 1rem;
+  }
+}

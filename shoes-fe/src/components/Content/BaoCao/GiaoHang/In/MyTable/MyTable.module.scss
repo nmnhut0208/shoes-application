@@ -1,0 +1,33 @@
+.my_table {
+  table,
+  td,
+  th {
+    border: 1px solid;
+  }
+  tr {
+    break-inside: avoid;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+  th {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    font-size: 1.4rem;
+    padding: 3px 2px 3px 2px;
+    // to config size
+    // overflow: hidden;
+    // display: inline-block;
+    // word-break: break-word;
+  }
+  td {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.4rem;
+    padding: 3px 2px 3px 2px;
+    // to config size
+    // overflow: hidden;
+    // display: inline-block;
+    // word-break: break-word;
+  }
+}

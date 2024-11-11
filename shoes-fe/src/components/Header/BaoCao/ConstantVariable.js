@@ -15,6 +15,10 @@ export const itemsBaoCao = [
     key: "Đơn hàng mẫu",
     label: "Đơn hàng mẫu",
   },
+  {
+    key: "Giao hàng",
+    label: "Giao hàng",
+  },
   // {
   //   key: "Đơn hàng phân công",
   //   label: "Đơn hàng phân công",
