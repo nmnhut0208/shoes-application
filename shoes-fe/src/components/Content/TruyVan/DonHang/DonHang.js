@@ -145,7 +145,7 @@ const updateInfo = (permission, querySDH, queryMAKH, queryTENKH, queryStartDate,
   if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
     let url = "http://localhost:8000/donhang/baocao_donhang?";
     let params = new URLSearchParams(url.search);
-  
+
     if (querySDH != "") {
       params.append("SODH", querySDH)
     }
@@ -157,14 +157,12 @@ const updateInfo = (permission, querySDH, queryMAKH, queryTENKH, queryStartDate,
     if (queryTENKH != "") {
       params.append("TENKH", queryTENKH)
     }
-    if (queryStartDate != "")
-    {
+    if (queryStartDate != "") {
       params.append("StartDate", queryStartDate)
     }
-    if (queryEndDate != "")
-      {
-        params.append("EndDate", queryEndDate)
-      }
+    if (queryEndDate != "") {
+      params.append("EndDate", queryEndDate)
+    }
     console.log("params: ", params.toString())
     fetch(url + params.toString())
       .then((response) => {
@@ -217,7 +215,7 @@ const DonHang = () => {
     updateInfo(permission, querySDH, queryMAKH, queryTENKH, queryStartDate, queryEndDate, setDataDonHang);
   };
 
-  const handleClearFilter = () =>{
+  const handleClearFilter = () => {
     setQuerySDH("");
     setQueryMAKH("");
     setQueryTENKH("");

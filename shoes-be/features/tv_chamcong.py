@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query, HTTPException
 from utils.base_class import BaseClass
 from utils.request import *
 from utils.response import *
@@ -16,17 +16,30 @@ TVCC = TVCHAMCONG()
 
 
 @router.get("/tv_chamcong")
-def read(YEAR: str=None):
-    condition_year = ""
-    if YEAR is not None:
-        condition_year = f"""where NgayPhieu >= '{YEAR}-01-01'
-                             and NgayPhieu <= '{YEAR}-12-31'
-                             """
-    else:
+def read(
+    MANV: Optional[str] = Query(None),
+    MAKY: Optional[str] = Query(None),
+    StartDate: Optional[str] = Query(None),
+    EndDate: Optional[str] = Query(None)):
+    
+    condition_year = "where 1 = 1"
+    if MANV is not None:
+        condition_year += f""" and MANVIEN like '%{MANV}%' """
+
+    if MAKY is not None:
+        condition_year += f""" and MAKY like '%{MAKY}%' """
+
+    if StartDate is not None:
+        condition_year += f""" and NgayPhieu >= '{StartDate}' """
+
+    if EndDate is not None:
+        condition_year += f""" and NgayPhieu <= '{EndDate}' """
+
+    if StartDate is None and EndDate is None:
         today = datetime.today() + timedelta(days=1)
-        six_month_ago = today - timedelta(days=6*30)
-        condition_year = f"""where NgayPhieu <= '{today.year}-{today.month:02}-{today.day:02}'
-                             and NgayPhieu >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
+        six_month_ago = today - timedelta(days=3*30)
+        condition_year += f""" and NgayPhieu <= '{today.year}-{today.month:02}-{today.day:02}'
+                               and NgayPhieu >= '{six_month_ago.year}-{six_month_ago.month:02}-{six_month_ago.day:02}' 
                              """
     sql = f"""
         select DATEPART(YEAR, NgayPhieu) as YEAR, MAKY, MANVIEN, maphieu as MAPHIEU, NgayPhieu as NGAYPHIEU,
@@ -35,7 +48,10 @@ def read(YEAR: str=None):
         GROUP BY DATEPART(YEAR, NgayPhieu), MAKY, maphieu, NgayPhieu, MANVIEN, DienGiai
         order by DATEPART(YEAR, NgayPhieu) desc, MAKY desc, maphieu desc, NgayPhieu desc, MANVIEN desc
     """
-    return TVCC.read_custom(sql)
+    result = TVCC.read_custom(sql)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Không có dữ liệu")
+    return result
 
 @router.post("/tv_chamcong")
 def read(data: dict):
