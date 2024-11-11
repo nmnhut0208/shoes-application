@@ -401,9 +401,12 @@ def delete(SODH: str) -> RESPONSE:
     condition = f"SODH = '{SODH}'"
     return donhang.delete(condition)
 
-@router.post("/donhang/get_all_info_donhang")
-# should I change post method to get method??? 
-def read(info_query: dict) -> List[RESPONSE_GIAYDONHANG]:
+@router.get("/donhang/get_all_info_donhang")
+def read_all_info_donhang(
+    DATE_FROM: str = Query(),
+    DATE_TO: str = Query(),
+    KhachHangFrom: str = Query(),
+    KhachHangTo: str = ()) -> List[RESPONSE_GIAYDONHANG]:
     sql = f"""
             select SODH, NGAYDH, DONHANG.MAKH, TENKH, MAGIAY, TENGIAY, 
             coalesce(SIZE1, 0) as SIZE1, 
@@ -414,13 +417,15 @@ def read(info_query: dict) -> List[RESPONSE_GIAYDONHANG]:
             INNER JOIN (SELECT MAGIAY AS MA, TENGIAY FROM DMGIAY) AS DMGIAY
                 ON DMGIAY.MA = DONHANG.MAGIAY
             INNER JOIN DMKHACHHANG ON DMKHACHHANG.MAKH = DONHANG.MAKH
-            WHERE NGAYDH >= '{info_query["DATE_FROM"]}'
-            AND NGAYDH <= '{info_query["DATE_TO"]}'
-            AND DONHANG.MAKH >= '{info_query["KhachHangFrom"]}'
-            AND DONHANG.MAKH <= '{info_query["KhachHangTo"]}'
+            WHERE NGAYDH >= '{DATE_FROM}'
+            AND NGAYDH <= '{DATE_TO}'
+            AND DONHANG.MAKH >= '{KhachHangFrom}'
+            AND DONHANG.MAKH <= '{KhachHangTo}'
             ORDER BY SODH, NGAYDH, MAKH
     """
     result = donhang.read_custom(sql)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Không có dữ liệu")
     return result
 
 

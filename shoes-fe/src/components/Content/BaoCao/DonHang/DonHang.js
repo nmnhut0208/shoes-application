@@ -83,7 +83,7 @@ const DonHang = () => {
                 onChange={(e) => {
                   handleChangeInformationForm({
                     DATE_FROM: moment(e.target.value, "YYYY-MM-DD").format(
-                      "YYYY-MM-DD HH:mm:ss"
+                      "YYYY-MM-DD"
                     ),
                   });
                 }}
@@ -98,7 +98,7 @@ const DonHang = () => {
                 onChange={(e) => {
                   handleChangeInformationForm({
                     DATE_TO: moment(e.target.value, "YYYY-MM-DD").format(
-                      "YYYY-MM-DD HH:mm:ss"
+                      "YYYY-MM-DD"
                     ),
                   });
                 }}

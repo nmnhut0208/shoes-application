@@ -1,4 +1,4 @@
-import { useRef, useState, useLayoutEffect } from "react";
+import { useRef, useState, useLayoutEffect, useEffect } from "react";
 
 import { useReactToPrint } from "react-to-print";
 import { convertDateForReport } from "~utils/processing_date";
@@ -17,19 +17,31 @@ const In = ({ data, setShowModal, stylePrint }) => {
 
   useLayoutEffect(() => {
     // call API get database
-    fetch("http://localhost:8000/donhang/get_all_info_donhang", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+    var url = "http://localhost:8000/donhang/get_all_info_donhang?";
+    let params = new URLSearchParams(url.search);
+
+    for (const [key, value] of Object.entries(data)) {
+      console.log(`Key: ${key}, Value: ${value}`);
+      params.append(key, value);
+    }
+    fetch(url + params.toString(), {
+      method: "get",
     })
       .then((response) => response.json())
       .then((info) => {
-        setDataTable(info);
+        if (!Array.isArray(info)) {
+          setDataTable([]);
+        }
+        else {
+          setDataTable(info);
+        }
       })
-      .catch((error) => {});
-  }, []);
+      .catch((error) => {
+        console.log("error: ", error)
+      });
+  }, [data]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (dataTable.length > 0) {
       if (Object.keys(stylePrint).length == 0) {
         setShowModal(false);
@@ -39,6 +51,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
   }, [dataTable]);
 
   return (
+
     <div
       ref={componentRef}
       className={styles.print_page}
