@@ -156,7 +156,7 @@ def read_all_info_donhang(
             AND NGAYPHIEU <= '{DATE_TO}'
             AND CONGNO.MAKH >= '{KhachHangFrom}'
             AND CONGNO.MAKH <= '{KhachHangTo}'
-            ORDER BY SOPHIEU, NGAYPHIEU, SODH, MAKH
+            ORDER BY SOPHIEU, NGAYPHIEU, SODH, CONGNO.MAKH
     """
     result = GH.read_custom(sql)
     if result is None:
