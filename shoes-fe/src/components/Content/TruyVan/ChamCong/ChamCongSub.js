@@ -36,12 +36,28 @@ const list_key = [
 
 const infoColumns = processingInfoColumnTable(list_key);
 
-const updateData = (year, setDataTable) => {
-  let url = "http://localhost:8000/tv_chamcong";
-  if (year != "" && year > 2020) {
-    url += "?YEAR=" + year;
+const updateData = (queryMANV, queryMAKY, queryStartDate, queryEndDate, setDataTable) => {
+  let url = "http://localhost:8000/tv_chamcong?";
+
+  let params = new URLSearchParams(url.search);
+
+  if (queryMANV != "") {
+    params.append("MANV", queryMANV)
   }
-  fetch(url)
+
+  if (queryMAKY != "") {
+    params.append("MAKY", queryMAKY)
+  }
+
+  if (queryStartDate != "") {
+    params.append("StartDate", queryStartDate)
+  }
+  if (queryEndDate != "") {
+    params.append("EndDate", queryEndDate)
+  }
+  console.log("params: ", params.toString())
+
+  fetch(url + params.toString())
     .then((response) => {
       return response.json();
     })
@@ -60,7 +76,11 @@ const ChamCongSub = () => {
   const [showModal, setShowModal] = useState(false);
   const [stateUser, dispatchUser] = useUserContext();
 
-  const [year, setYear] = useState("");
+  const [queryMANV, setQueryMANV] = useState("");
+  const [queryMAKY, setQueryMAKY] = useState("");
+  const [queryStartDate, setQueryStartDate] = useState("");
+  const [queryEndDate, setQueryEndDate] = useState("");
+
   const [allowDelete, setAllowDelete] = useState(true);
 
   const handleDelete = () => {
@@ -76,29 +96,73 @@ const ChamCongSub = () => {
   };
 
   useEffect(() => {
-    updateData(year, setDataTable);
+    updateData(queryMANV, queryMAKY, queryStartDate, queryEndDate, setDataTable);
   }, [showModal]);
 
   const handleTruyVan = () => {
-    updateData(year, setDataTable);
+    updateData(queryMANV, queryMAKY, queryStartDate, queryEndDate, setDataTable);
     let current_year = moment().year();
-    if (year === "" || parseInt(year) == current_year) setAllowDelete(true);
-    else setAllowDelete(false);
+    if (queryStartDate !== "") {
+      let date = new Date(queryStartDate);
+      let year = date.getFullYear();
+      if (parseInt(year) == current_year) {
+        setAllowDelete(true);
+      }
+      else {
+        setAllowDelete(false);
+      }
+    }
+    else if (queryEndDate !== "") {
+      let date = new Date(queryEndDate);
+      let year = date.getFullYear();
+      if (parseInt(year) == current_year) {
+        setAllowDelete(true);
+      }
+      else {
+        setAllowDelete(false);
+      }
+    }
+    else setAllowDelete(true);
   };
+
+  const handleClearFilter = () => {
+    setQueryMAKY("");
+    setQueryMANV("");
+    setQueryStartDate("");
+    setQueryEndDate("");
+    updateData("", "", "", "", setDataTable);
+  }
 
   return (
     <div className={styles.container}>
       <h1 className={styles.header_table}>Truy vấn - Chấm công</h1>
       <div className={clsx(styles.form, styles.info_query)}>
-        <label>Xem dữ liệu năm</label>
+        <label>Mã kỳ</label>
         <input
-          type="number"
-          min="2020"
-          step="1"
-          value={year}
-          onChange={(e) => setYear(parseInt(e.target.value))}
+          type="text"
+          value={queryMAKY}
+          onChange={(e) => setQueryMAKY(e.target.value)}
+        />
+        <label>Mã nhân viên</label>
+        <input
+          type="text"
+          value={queryMANV}
+          onChange={(e) => setQueryMANV(e.target.value)}
+        />
+        <label>Ngày bắt đầu</label>
+        <input
+          type="date"
+          value={queryStartDate}
+          onChange={(e) => setQueryStartDate(e.target.value)}
+        />
+        <label>Ngày kết thúc</label>
+        <input
+          type="date"
+          value={queryEndDate}
+          onChange={(e) => setQueryEndDate(e.target.value)}
         />
         <button onClick={handleTruyVan}>Truy Vấn</button>
+        <button onClick={handleClearFilter}>Xoá bộ lọc</button>
       </div>
 
       <br />

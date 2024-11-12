@@ -166,14 +166,31 @@ const Table = ({ columns, data, setDataPhanCong, permission }) => {
 
 const MAFORM_TRUYVAN_PHANCONG = "F0039";
 
-const updateInfo = (permission, year, setData) => {
+const updateInfo = (permission, querySOPHIEU, queryMAKY, queryStartDate, queryEndDate, setData) => {
   if (permission === undefined) return;
   if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
-    let url = "http://localhost:8000/phancong/baocao_phancong";
-    if (year != "" && year > 2020) {
-      url += "?YEAR=" + year;
+    let url = "http://localhost:8000/phancong/baocao_phancong?";
+    let params = new URLSearchParams(url.search);
+  
+    if (querySOPHIEU != "") {
+      params.append("SOPHIEU", querySOPHIEU)
     }
-    fetch(url)
+
+    if (queryMAKY != "") {
+      params.append("MAKY", queryMAKY)
+    }
+
+    if (queryStartDate != "")
+    {
+      params.append("StartDate", queryStartDate)
+    }
+    if (queryEndDate != "")
+      {
+        params.append("EndDate", queryEndDate)
+      }
+    console.log("params: ", params.toString())
+
+    fetch(url + params.toString())
       .then((response) => {
         return response.json();
       })
@@ -182,13 +199,18 @@ const updateInfo = (permission, year, setData) => {
       })
       .catch((err) => {
         console.log(":error: ", err);
+        setData([]);
       });
   }
 };
 
 const PhanCong = () => {
   const [dataPhanCong, setDataPhanCong] = useState([]);
-  const [year, setYear] = useState("");
+
+  const [querySOPHIEU, setQuerySOPHIEU] = useState("");
+  const [queryMAKY, setQueryMAKY] = useState("");
+  const [queryStartDate, setQueryStartDate] = useState("");
+  const [queryEndDate, setQueryEndDate] = useState("");
 
   const columns = useMemo(() => {
     return processingInfoColumnTable(INFO_COLS_PHANCONG);
@@ -204,7 +226,7 @@ const PhanCong = () => {
   }, []);
 
   useEffect(() => {
-    updateInfo(permission, year, setDataPhanCong);
+    updateInfo(permission, querySOPHIEU, queryMAKY, queryStartDate, queryEndDate, setDataPhanCong);
   }, []);
 
   if (
@@ -217,23 +239,47 @@ const PhanCong = () => {
   }
 
   const handleTruyVan = () => {
-    if (year === "") return;
-    updateInfo(permission, year, setDataPhanCong);
+    updateInfo(permission, querySOPHIEU, queryMAKY, queryStartDate, queryEndDate, setDataPhanCong);
   };
+
+  const handleClearFilter = () =>{
+    setQuerySOPHIEU("");
+    setQueryMAKY("");
+    setQueryStartDate("");
+    setQueryEndDate("");
+    updateInfo(permission, "", "", "", "", setDataPhanCong);
+  }
 
   return (
     <div style={{ width: "90%", marginLeft: "5%" }}>
       <h1>Truy vấn - Phân công</h1>
       <div className={clsx(styles.form, styles.info_query)}>
-        <label>Xem dữ liệu năm</label>
+      <label>Mã kỳ</label>
         <input
-          type="number"
-          min="2020"
-          step="1"
-          value={year}
-          onChange={(e) => setYear(parseInt(e.target.value))}
+          type="text"
+          value={queryMAKY}
+          onChange={(e) => setQueryMAKY(e.target.value)}
+        />
+      <label>Số phiếu</label>
+        <input
+          type="text"
+          value={querySOPHIEU}
+          onChange={(e) => setQuerySOPHIEU(e.target.value)}
+        />
+        <label>Ngày bắt đầu</label>
+        <input
+          type="date"
+          value={queryStartDate}
+          onChange={(e) => setQueryStartDate(e.target.value)}
+        />
+        <label>Ngày kết thúc</label>
+        <input
+          type="date"
+          value={queryEndDate}
+          onChange={(e) => setQueryEndDate(e.target.value)}
         />
         <button onClick={handleTruyVan}>Truy Vấn</button>
+        <button onClick={handleClearFilter}>Xoá bộ lọc</button>
       </div>
       <Table
         columns={columns}

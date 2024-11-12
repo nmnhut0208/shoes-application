@@ -6,6 +6,7 @@ import CongNo from "./CongNo";
 import BangLuong from "./BangLuong";
 import DonHangMau from "./DonHangMau";
 import { CustomAlert } from "~utils/alert_custom";
+import GiaoHang from "./GiaoHang";
 
 const BaoCao = () => {
   const [stateTask, dispatchTask] = useTaskContext();
@@ -15,6 +16,8 @@ const BaoCao = () => {
   switch (inforCurrentTask.infoDetail) {
     case "Đơn hàng":
       return <DonHang />;
+    case "Giao hàng":
+      return <GiaoHang />;
     case "Công nợ":
       if (userAccess.some((obj) => obj.MAFORM === "F0046" && obj.XEM === 1)) {
         return <CongNo />;

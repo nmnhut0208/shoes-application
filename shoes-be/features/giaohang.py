@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query, HTTPException
 from datetime import datetime
 from utils.base_class import BaseClass
 from utils.request import *
@@ -22,13 +22,7 @@ GH = GIAOHANG()
 
 @router.post("/giaohang")
 def read(data: dict) -> RESPONSE_GIAOHANG:
-    # return KH.read()
-    # sql = "SELECT MADE, TENDE, DONGIA, GHICHU FROM DMDE"
     makh = data["MAKH"]
-    # sql = f"SELECT SODH, NGAYDH, NGAYGH, DIENGIAIPHIEU, SUM(SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9) as SOLUONGCONLAI \
-    # FROM DONHANG \
-    # where MAKH = '{makh}' \
-    # GROUP BY SODH, MAKH, NGAYDH, NGAYGH, DIENGIAIPHIEU"
     sql = f"""SELECT SODH, NGAYDH, NGAYGH, DIENGIAI AS DIENGIAIDONG, SLDONHANG - SLGIAOHANG as SOLUONGCONLAI
             from 
             (SELECT DISTINCT dh.sodh,dh.ngaydh,dh.ngaygh,dh.makh,kh.tenkh,dh.diengiaiphieu AS DIENGIAI,dh.madh, dh.tmpfield as dagh,
@@ -79,7 +73,6 @@ def read(data: dict) -> RESPONSE_GIAOHANG:
                 WHERE SIZE5 + SIZE6 + SIZE7 + SIZE8 + SIZE9 + SIZE0 + coalesce(SIZE1,0) > 0
                 order by NGAYDH desc, SODH desc
                 """
-    # return GH.read_custom(sql)
     results = GH.read_custom(sql)
     # group with SODH
     results_group = {}
@@ -141,4 +134,32 @@ def save(data: dict) -> RESPONSE:
     save_info_primary_key("CONGNO", "BH", year, gh)
 
     return {"status": "success"}
+
+@router.get("/giaohang/get_all_info_giaohang")
+def read_all_info_donhang(
+    DATE_FROM: str = Query(),
+    DATE_TO: str = Query(),
+    KhachHangFrom: str = Query(),
+    KhachHangTo: str = ()):
+    sql = f"""
+            select SOPHIEU, NGAYPHIEU, SODH, CONGNO.MAKH, DMKHACHHANG.TENKH, MAGIAY, TENGIAY,
+            coalesce(SIZE1, 0) as SIZE1, 
+                        Size0 as SIZE0, SIZE5, SIZE6, SIZE7, SIZE8, SIZE9,
+                        (Size0+coalesce(SIZE1, 0)+SIZE5+SIZE6+SIZE7+SIZE8+SIZE9) AS SOLUONG,
+            GIABAN, THANHTIEN         
+            from CONGNO
+            INNER JOIN (SELECT MAGIAY AS MA, TENGIAY FROM DMGIAY) AS DMGIAY
+                            ON DMGIAY.MA = CONGNO.MAGIAY
+            INNER JOIN DMKHACHHANG ON DMKHACHHANG.MAKH = CONGNO.MAKH
+            where LOAIPHIEU = 'BH'
+            AND NGAYPHIEU >= '{DATE_FROM}'
+            AND NGAYPHIEU <= '{DATE_TO}'
+            AND CONGNO.MAKH >= '{KhachHangFrom}'
+            AND CONGNO.MAKH <= '{KhachHangTo}'
+            ORDER BY SOPHIEU, NGAYPHIEU, SODH, MAKH
+    """
+    result = GH.read_custom(sql)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Không có dữ liệu")
+    return result
 

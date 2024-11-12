@@ -11,6 +11,8 @@ class BaseClass:
 
     def read_custom(self, sql: str):
         df = read_sql_custom(sql)
+        if df is None:
+            return None
         return df.to_dict(orient="records")
     
     def read_custom_congno(self, sql: str):

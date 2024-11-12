@@ -17,7 +17,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
 
   useLayoutEffect(() => {
     // call API get database
-    var url = "http://localhost:8000/donhang/get_all_info_donhang?";
+    var url = "http://localhost:8000/giaohang/get_all_info_giaohang?";
     let params = new URLSearchParams(url.search);
 
     for (const [key, value] of Object.entries(data)) {
@@ -58,7 +58,7 @@ const In = ({ data, setShowModal, stylePrint }) => {
       id="print_content"
       style={{ ...stylePrint }}
     >
-      <h1>BÁO CÁO ĐƠN HÀNG</h1>
+      <h1>BÁO CÁO GIAO HÀNG</h1>
       <div className={styles.info_time}>
         <label>Từ ngày </label>
         <label>{convertDateForReport(data["DATE_FROM"])} </label>

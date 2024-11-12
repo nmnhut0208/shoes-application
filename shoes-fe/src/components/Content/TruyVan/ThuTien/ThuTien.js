@@ -103,7 +103,7 @@ const Table = ({ columns, data, setData, permission }) => {
                 title="Xác nhận hành động"
                 description="Bạn thực sự muốn xoá thông tin này?"
                 onConfirm={() => handleDeleteRow(row.original)}
-                onCancel={() => {}}
+                onCancel={() => { }}
                 okText="Đồng ý"
                 cancelText="Không đồng ý"
               >
@@ -140,14 +140,33 @@ const Table = ({ columns, data, setData, permission }) => {
 
 const MAFORM_TRUYVAN_PHIEUTHU = "F0035";
 
-const updateInfo = (permission, year, setData) => {
+const updateInfo = (permission, querySOPHIEU, queryMAKH, queryTENKH, queryStartDate, queryEndDate, setData) => {
   if (permission === undefined) return;
   if (permission.XEM + permission.SUA + permission.XOA + permission.IN > 0) {
-    let url = "http://localhost:8000/congno/truyvan_thu";
-    if (year != "" && year > 2020) {
-      url += "?YEAR=" + year;
+    let url = "http://localhost:8000/congno/truyvan_thu?";
+
+    let params = new URLSearchParams(url.search);
+
+    if (querySOPHIEU != "") {
+      params.append("SOPHIEU", querySOPHIEU)
     }
-    fetch(url)
+
+    if (queryMAKH != "") {
+      params.append("MAKH", queryMAKH)
+    }
+
+    if (queryTENKH != "") {
+      params.append("TENKH", queryTENKH)
+    }
+    if (queryStartDate != "") {
+      params.append("StartDate", queryStartDate)
+    }
+    if (queryEndDate != "") {
+      params.append("EndDate", queryEndDate)
+    }
+    console.log("params: ", params.toString())
+
+    fetch(url + params.toString())
       .then((response) => {
         return response.json();
       })
@@ -155,6 +174,7 @@ const updateInfo = (permission, year, setData) => {
         setData(info);
       })
       .catch((err) => {
+        setData([])
         console.log(":error: ", err);
       });
   }
@@ -162,7 +182,13 @@ const updateInfo = (permission, year, setData) => {
 
 const ThuTien = () => {
   const [data, setData] = useState([]);
-  const [year, setYear] = useState("");
+
+  const [querySOPHIEU, setQuerySOPHIEU] = useState("");
+  const [queryMAKH, setQueryMAKH] = useState("");
+  const [queryTENKH, setQueryTENKH] = useState("");
+  const [queryStartDate, setQueryStartDate] = useState("");
+  const [queryEndDate, setQueryEndDate] = useState("");
+
   const column = useMemo(() => {
     return processingInfoColumnTable(COLUMNS);
   }, []);
@@ -176,7 +202,7 @@ const ThuTien = () => {
   }, []);
 
   useEffect(() => {
-    updateInfo(permission, year, setData);
+    updateInfo(permission, querySOPHIEU, queryMAKH, queryTENKH, queryStartDate, queryEndDate, setData);
   }, []);
 
   if (
@@ -188,22 +214,54 @@ const ThuTien = () => {
     return <></>;
   }
   const handleTruyVan = () => {
-    if (year === "") return;
-    updateInfo(permission, year, setData);
+    updateInfo(permission, querySOPHIEU, queryMAKH, queryTENKH, queryStartDate, queryEndDate, setData);
   };
+
+  const handleClearFilter = () => {
+    setQuerySOPHIEU("");
+    setQueryMAKH("");
+    setQueryTENKH("");
+    setQueryStartDate("");
+    setQueryEndDate("");
+    updateInfo(permission, "", "", "", "", "", setData);
+  }
+
   return (
     <div style={{ width: "90%", marginLeft: "5%" }}>
       <h1>Truy vấn - Thu Tiền</h1>
       <div className={clsx(styles.form, styles.info_query)}>
-        <label>Xem dữ liệu năm</label>
+        <label>Số phiếu</label>
         <input
-          type="number"
-          min="2020"
-          step="1"
-          value={year}
-          onChange={(e) => setYear(parseInt(e.target.value))}
+          type="text"
+          value={querySOPHIEU}
+          onChange={(e) => setQuerySOPHIEU(e.target.value)}
+        />
+        <label>Mã khách hàng</label>
+        <input
+          type="text"
+          value={queryMAKH}
+          onChange={(e) => setQueryMAKH(e.target.value)}
+        />
+        <label>Tên khách hàng</label>
+        <input
+          type="text"
+          value={queryTENKH}
+          onChange={(e) => setQueryTENKH(e.target.value)}
+        />
+        <label>Ngày bắt đầu</label>
+        <input
+          type="date"
+          value={queryStartDate}
+          onChange={(e) => setQueryStartDate(e.target.value)}
+        />
+        <label>Ngày kết thúc</label>
+        <input
+          type="date"
+          value={queryEndDate}
+          onChange={(e) => setQueryEndDate(e.target.value)}
         />
         <button onClick={handleTruyVan}>Truy Vấn</button>
+        <button onClick={handleClearFilter}>Xoá bộ lọc</button>
       </div>
       <Table
         columns={column}

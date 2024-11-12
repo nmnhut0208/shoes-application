@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Modal } from "~nghiep_vu/DonHang";
-import styles from "./DonHang.module.scss";
+import styles from "./GiaoHang.module.scss";
 import { ItemKhachHang } from "~items";
 import moment from "moment";
 import { convertDate } from "~utils/processing_date";
 import { useItemsContext } from "~items_context";
 import In from "./In";
 
-const DonHang = () => {
+const GiaoHang = () => {
   const [statusModal, setStatusModal] = useState(true);
   const [statusModalIn, setStatusModalIn] = useState(false);
   const [stateItem, dispatchItem] = useItemsContext();
@@ -67,7 +67,7 @@ const DonHang = () => {
   return (
     <>
       <Modal
-        title="Báo cáo Đơn Hàng - F0051"
+        title="Báo cáo Giao Hàng - F0058"
         status={statusModal}
         isSaveData={true}
         setShowModal={setStatusModal}
@@ -151,4 +151,4 @@ const DonHang = () => {
   );
 };
 
-export default DonHang;
+export default GiaoHang;
