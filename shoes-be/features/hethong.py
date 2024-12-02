@@ -29,7 +29,7 @@ def find_info_primary_key(table, key, today):
             and KEYSTRING = '{key}{year}'"""
     data = hethong.read_custom(sql)
     lastnumber = 1
-    if len(data) == 0:
+    if data is None or len(data) == 0:
         sql_insert = f"""INSERT INTO V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
                         VALUES ('{table}', '{key}{year}', 0)"""
         hethong.execute_custom(sql_insert)
@@ -56,7 +56,7 @@ def find_info_UI(table_nam, keystring):
             and KEYSTRING = '{keystring}--{month}/{year}'"""
     data = hethong.read_custom(sql)
     lastnumber = 1
-    if len(data) == 0:
+    if data is None or len(data) == 0:
         sql_insert = f"""INSERT INTO 
                          V1T4444 (TABLENAME, KEYSTRING, LASTKEY)
                          VALUES ('{table_nam}', 

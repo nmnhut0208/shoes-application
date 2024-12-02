@@ -23,7 +23,7 @@ def read(data: dict) -> RESPONSE_LOGIN:
               AND MATKHAU COLLATE SQL_Latin1_General_CP1_CS_AS ='{pwd}'
               """
     data =  LG.read_custom(sql)
-    if len(data) > 0:
+    if data is not None and len(data) > 0:
         return {"exist": True}
     else:
         return {"exist": False}
@@ -52,7 +52,7 @@ def read(data: dict) -> RESPONSE_EXISTUSER:
               where MANVIEN COLLATE SQL_Latin1_General_CP1_CS_AS ='{data['username']}'
               """
     data = LG.read_custom(sql)
-    if len(data) > 0:
+    if data is not None and len(data) > 0:
         return {"exist": True}
     else:
         return {"exist": False}
