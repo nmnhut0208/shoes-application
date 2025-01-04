@@ -24,12 +24,12 @@ export const INFO_COLS_DONHANG = [
   {
     header: "Mã giày",
     key: "MAGIAY",
-    width: 25 * rem_to_px,
+    width: 20 * rem_to_px,
   },
   {
-    header: <TextHeader value={"Hình ảnh"} />,
+    header: <TextHeader value={"H. Ảnh"} />,
     key: "HAVEHINHANH",
-    width: 10 * rem_to_px,
+    width: 5 * rem_to_px,
     enableEditing: false,
   },
   {
@@ -58,7 +58,6 @@ export const INFO_COLS_DONHANG = [
     width: 8 * rem_to_px,
   },
   {
-    // header: "Size 5",
     key: "SIZE5",
     width: 5 * rem_to_px,
     header: <TextHeader value={"Size 5"} />,
@@ -96,7 +95,7 @@ export const INFO_COLS_DONHANG = [
   {
     header: <TextHeader value={"Số lượng"} />,
     key: "SOLUONG",
-    width: 8 * rem_to_px,
+    width: 5 * rem_to_px,
   },
   {
     header: <TextHeader value={"Giá bán"} />,
@@ -106,7 +105,7 @@ export const INFO_COLS_DONHANG = [
   {
     header: <TextHeader value={"Thành tiền"} />,
     key: "THANHTIEN",
-    width: 10 * rem_to_px,
+    width: 9 * rem_to_px,
   },
   {
     header: "Diễn giải",

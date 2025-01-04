@@ -11,19 +11,23 @@
   .input_query {
     display: grid;
     grid-template-columns: 0.75fr 0.75fr 0.5fr 2fr;
+
     input[type="text"] {
       width: 12rem;
     }
+
     .pair:not(:first-child) {
       label {
         text-align: right;
         padding-right: 0.2rem;
       }
     }
+
     .pair:last-child {
       text-align: right;
+
       input {
-        width: 80%;
+        width: 40%;
       }
     }
   }
@@ -33,6 +37,7 @@
     grid-template-columns: 0.25fr 0.75fr 2fr 3fr;
 
     row-gap: 0.5rem;
+
     .span_text {
       width: 90%;
       height: 100%;
@@ -40,11 +45,13 @@
       padding: var(--padding-setting);
       border: var(--border-setting);
       margin-left: var(--margin-bottom-config);
-    @extend .font-setting;
+      @extend .font-setting;
     }
+
     .title_phancong {
       grid-column: 1 / 5;
     }
+
     .info_thode {
       grid-column: 2/4 !important;
       width: 100%;
@@ -54,10 +61,12 @@
       grid-column: 4/5;
       display: grid;
       grid-template-columns: 1fr 2.2fr;
+
       label {
         text-align: right;
         padding-right: 0.2rem;
       }
+
       input {
         width: 10rem;
       }
@@ -66,6 +75,7 @@
         @extend .flex-row;
         justify-content: space-between;
       }
+
       .info_thoquai {
         grid-column: 1/3;
         width: 100%;
@@ -78,17 +88,21 @@
       grid-column: 1/5;
       display: grid;
       grid-template-columns: repeat(7, 1fr);
+
       input {
         width: 7rem;
       }
+
       .pair_info:not(:first-child) {
         label {
           text-align: right;
           margin-right: 0.2rem;
         }
+
         text-align: right;
       }
     }
+
     .input_diengiai {
       grid-column: 2/5;
       grid-row: 5/6;
@@ -99,33 +113,38 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
     button {
       margin-left: 1rem;
       font-size: 1.7rem;
       min-width: 5rem;
       min-height: 2rem;
     }
-    .button_left{
+
+    .button_left {
       width: 40%;
       display: flex;
       flex-direction: row-reverse;
       justify-content: space-around;
 
     }
-    .button_right{
+
+    .button_right {
       width: 60%;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      .button_save{
-        background-color:darkorange;
+
+      .button_save {
+        background-color: darkorange;
         border-color: darkorange;
         color: whitesmoke;
       }
+
       .button_save:hover {
         opacity: 0.8;
       }
-      
+
     }
   }
 }

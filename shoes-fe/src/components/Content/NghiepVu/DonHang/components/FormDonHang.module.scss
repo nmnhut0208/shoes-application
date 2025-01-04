@@ -3,6 +3,7 @@
 .group_button {
   @extend .flex_row_flex-end;
   margin-top: 1rem;
+
   button:not(:last-child) {
     margin-right: 1rem;
   }
@@ -10,12 +11,12 @@
 
 .page {
   height: 90vh;
-  width: 85vw;
+  width: 90vw;
 }
 
 .update_button {
   padding: 5px 10px;
-  background-color:  #28a745;
+  background-color: #28a745;
   color: #fff;
   border: none;
   cursor: pointer;

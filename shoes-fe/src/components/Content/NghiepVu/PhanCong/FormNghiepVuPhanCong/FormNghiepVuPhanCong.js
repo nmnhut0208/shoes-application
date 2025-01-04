@@ -144,7 +144,7 @@ const FormNghiepVuPhanCong = ({
             // update setDataDonHangDaPhanCong
             fetch(
               "http://localhost:8000/phancong/get_info_donhang?SOPHIEU=" +
-                encodeURIComponent(dataView["SOPHIEU"])
+              encodeURIComponent(dataView["SOPHIEU"])
             )
               .then((response) => {
                 return response.json();
@@ -169,7 +169,7 @@ const FormNghiepVuPhanCong = ({
       // update dataChiTietPhanCong
       fetch(
         "http://localhost:8000/phancong?SOPHIEU=" +
-          encodeURIComponent(dataView["SOPHIEU"])
+        encodeURIComponent(dataView["SOPHIEU"])
       )
         .then((response) => {
           return response.json();
@@ -265,7 +265,7 @@ const FormNghiepVuPhanCong = ({
       dataChiTietPhanCong.length == 0 ||
       Object.keys(rowSelectionChiTietPhanCong).length == 0 ||
       parseInt(Object.keys(rowSelectionChiTietPhanCong)[0]) >=
-        dataChiTietPhanCong.length
+      dataChiTietPhanCong.length
     ) {
       return false;
     }
@@ -391,13 +391,13 @@ const FormNghiepVuPhanCong = ({
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ width: "95vw" }}>
       <InfoPhieu
         infoPhieu={infoPhieu}
         setInfoPhieu={setInfoPhieu}
         view={view}
       />
-      <div style={{ width: "80vw" }}>
+      <div style={{ width: "95vw" }}>
         <TableDonHang
           columns={infoTableDonHang}
           data={dataDonHang}
@@ -460,7 +460,7 @@ const FormNghiepVuPhanCong = ({
           )}
         </div>
       </div>
-      <div style={{ width: "80vw" }}>
+      <div style={{ width: "95vw" }}>
         <TableChiTietPhanCong
           columns={infoTableChiTietPhanCong}
           data={dataChiTietPhanCong}
@@ -475,7 +475,7 @@ const FormNghiepVuPhanCong = ({
           <FormDonHang
             dataView={
               dataChiTietPhanCong[
-                parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])
+              parseInt(Object.keys(rowSelectionChiTietPhanCong)[0])
               ]
             }
             isSaveData={true}
