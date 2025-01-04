@@ -30,7 +30,8 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
   }, [kyTinhLuong]);
 
   return (
-    <div className={clsx(styles.form, styles.input_query)}>
+    <div className={clsx(styles.form, styles.input_query)}
+      style={{ alignItems: "center" }}>
       <div className={styles.pair}>
         <label>Số phiếu</label>
         <input
@@ -53,10 +54,11 @@ const InfoPhieu = ({ infoPhieu, setInfoPhieu, view }) => {
       <div
         className={styles.pair}
         style={{
-          width: "100px",
+          width: "150px",
           display: "flex",
           flexDirection: "row",
           marginLeft: "2.5rem",
+          alignItems: "center"
         }}
       >
         <label>Kỳ</label>

@@ -91,8 +91,8 @@ const FormDonHang = ({
 
       fetch(
         "http://localhost:8000/donhang/khachhang/" +
-          encodeURIComponent(formInfoDonHang["MAKH"]) +
-          "/giay"
+        encodeURIComponent(formInfoDonHang["MAKH"]) +
+        "/giay"
       )
         .then((response) => {
           return response.json();
@@ -112,7 +112,7 @@ const FormDonHang = ({
     if (dataView) {
       fetch(
         "http://localhost:8000/donhang?SODH=" +
-          encodeURIComponent(dataView["SODH"])
+        encodeURIComponent(dataView["SODH"])
       )
         .then((response) => {
           return response.json();
@@ -416,7 +416,7 @@ const FormDonHang = ({
   ]);
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} style={{ width: "100%" }}>
       <FormInfoDonHang
         formInfoDonHang={formInfoDonHang}
         setFormInfoDonHang={setFormInfoDonHang}
@@ -429,7 +429,7 @@ const FormDonHang = ({
         Thêm giày đã đặt vào đơn hàng
       </button>
 
-      <div style={{ width: "85vw" }}>
+      <div>
         <TableDonHang
           columns={infoColumns}
           data={dataTable}
